@@ -5,7 +5,7 @@ abstract class AppColors {
   // Light Mode
 
   // static const lightMoonSunTheme = Color(0xff4b644a);
-  static const lightPrimary = Color(0xff19db8a);
+  static const lightPrimary = Color.fromARGB(255, 25, 93, 219);
   static const lightSecondary = Color(0xffd8334a);
   static const lightTertiary = Color(0xfff3e9dc);
   static const lightAlternate = Color(0xffff8c42);
@@ -27,9 +27,9 @@ abstract class AppColors {
   static const lightRevoke = Color(0xff696072);
   static const lightCancelled = Color(0xff56567B);
   static const lightdropDownColor = Color.fromARGB(255, 209, 211, 211);
-  static const lightCompleteded = Color(0xff3F8A56);
+  static const lightCompleteded = Color.fromARGB(255, 79, 63, 138);
   static const lightPending = Color(0xffB3A06E);
-  static const lightPaid = Color(0xff3C7A54);
+  static const lightPaid = Color.fromARGB(255, 60, 82, 122);
   static const lightSeeDetailes = Color(0xff7A7B83);
   static const lightText1 = Color(0xffB5F5E8);
   static const lightText2 = Color.fromARGB(255, 11, 12, 12);
@@ -37,7 +37,7 @@ abstract class AppColors {
   static const lightFavouriteOutline = Color(0xffffc0cb);
 
   // Dark Mode
-  static const darkPrimary = Color(0xff19db8a); //0xff5f7760
+  static const darkPrimary = Color.fromARGB(255, 25, 93, 219); //0xff5f7760
   static const darkSecondary = Color(0xffb83030);
   static const darkTertiary = Color(0xff5d2e46);
   static const darkAlternate = Color(0xffff9747);
@@ -61,9 +61,9 @@ abstract class AppColors {
   static const darkDelete = Color(0xffA33A50);
   static const darkRevoke = Color(0xff696072);
   static const darkCancelled = Color(0xff56567B);
-  static const darkCompleteded = Color(0xff3F8A56);
+  static const darkCompleteded = Color.fromARGB(255, 77, 63, 138);
   static const darkPending = Color(0xffB3A06E);
-  static const darkPaid = Color(0xff3C7A54);
+  static const darkPaid = Color.fromARGB(255, 64, 60, 122);
   static const darkSeeDetailes = Color.fromARGB(43, 122, 123, 131);
   static const darkText1 = Color(0xffB5F5E8);
   static const darkText2 = Color.fromARGB(255, 243, 243, 243);

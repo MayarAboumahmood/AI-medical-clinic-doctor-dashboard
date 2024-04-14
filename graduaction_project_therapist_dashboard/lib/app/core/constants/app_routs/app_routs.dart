@@ -5,6 +5,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/bottom_navig
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 
 // Define route names
 const String welcomeScreen = '/welcomeScreen';
@@ -13,9 +14,11 @@ const String editProfile = '/editProfile';
 const String changePasswordPage = '/changePasswordPage';
 const String helpCenter = '/helpCenter';
 const String registerFirstStep = '/registerFirstStep';
+const String initialRoute = '/';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
+  initialRoute: (context) => const InitializerWidget(),
   welcomeScreen: (context) => WelcomeScreen(),
   bottomNavigationBar: (context) => const BottomNavigationWidget(),
   editProfile: (context) => const EditProfile(),

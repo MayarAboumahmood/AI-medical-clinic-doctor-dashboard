@@ -88,8 +88,8 @@ void main() async {
   themeBloc.add(ThemeChanged(themeMode: isDarkMode));
   runApp(BlocProvider(
     create: (context) => ConnectivityBloc(),
-    child: EasyLocalization(
-      startLocale:
+    child: EasyLocalization(  
+      startLocale:  
           Locale(sharedPreferences?.getString('language_code') ?? 'en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translation',
@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
                     selectionHandleColor: Color(0xff19db8a))),
             darkTheme: AppTheme.dark,
             routes: routes,
-            initialRoute: welcomeScreen,
+            initialRoute: initialRoute,
           );
         }));
   }
