@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 
 Future<bool> checkInternet() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
@@ -15,26 +16,25 @@ Future<bool> checkInternet() async {
   }
 }
 
-bool checkIfThereIsNoConnection(List<ConnectivityResult> connectivityResult) {
-  return connectivityResult.contains(ConnectivityResult.none) ||
-      (connectivityResult.contains(ConnectivityResult.none) &&
-          connectivityResult.contains(ConnectivityResult.vpn)) ||
-      (connectivityResult.contains(ConnectivityResult.none) &&
-          connectivityResult.contains(ConnectivityResult.bluetooth));
+bool checkIfThereIsNoConnection(ConnectivityResult connectivityResult) {
+  return connectivityResult == ConnectivityResult.none ||
+      (connectivityResult == ConnectivityResult.none &&
+          connectivityResult == ConnectivityResult.vpn) ||
+      (connectivityResult == ConnectivityResult.none &&
+          connectivityResult == ConnectivityResult.bluetooth);
 }
 
+// RxBool connectionState = true.obs;
 
-/*startTracking() {
+startTracking() {
+  // checkInternet();
   Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none ||
-        (connectivityResult == ConnectivityResult.none &&
-            connectivityResult == ConnectivityResult.vpn) ||
-        (connectivityResult == ConnectivityResult.none &&
-            connectivityResult == ConnectivityResult.bluetooth)) {
+    if (checkIfThereIsNoConnection(connectivityResult)) {
       // Device is not connected to the internet
 
       log("Device is not connected to the internet");
+      // return false;
     } else {
       log("Device is connected to the internet in tracking");
       // Device is connected to the internet
@@ -49,4 +49,3 @@ bool checkIfThereIsNoConnection(List<ConnectivityResult> connectivityResult) {
     }
   });
 }
-*/

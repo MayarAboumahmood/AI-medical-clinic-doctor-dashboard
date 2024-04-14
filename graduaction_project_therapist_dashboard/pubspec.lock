@@ -125,18 +125,18 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: e9feae83b1849f61bad9f6f33ee00646e3410d54ce0821e02f262f9901dad3c9
+      sha256: "224a77051d52a11fbad53dd57827594d3bd24f945af28bd70bab376d68d437f0"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.1"
+    version: "5.0.2"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
       name: connectivity_plus_platform_interface
-      sha256: b6a56efe1e6675be240de39107281d4034b64ac23438026355b4234042a35adb
+      sha256: cf1d1c28f4416f8c654d7dc3cd638ec586076255d407cef3ddbdaf178272a71a
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "1.2.4"
   convert:
     dependency: transitive
     description:
@@ -561,10 +561,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.6.7"
   leak_tracker:
     dependency: transitive
     description:
@@ -617,10 +617,10 @@ packages:
     dependency: transitive
     description:
       name: location_web
-      sha256: "924da8436db7ded5eef92a7ef3ae6aa3715831a93965376c91738f586302350e"
+      sha256: "15ad7b4c8a9f55abee513373755e093a40c04d7e24fc1b4f89676fe99523d034"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "5.0.1"
   marquee:
     dependency: "direct main"
     description:
@@ -801,10 +801,10 @@ packages:
     dependency: "direct main"
     description:
       name: pushy_flutter
-      sha256: "4324b8cf9578a2b4f80329870a5196d8bbdf2df483911ecca97bd71aa44e186d"
+      sha256: fa60e5405cbed7b026e37d68605589c67e2fe6c32b70d018d4eeb41d7ed41b96
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.19"
+    version: "2.0.18"
   rxdart:
     dependency: transitive
     description:

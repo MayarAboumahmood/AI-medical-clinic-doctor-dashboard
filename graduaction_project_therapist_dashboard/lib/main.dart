@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
                     selectionHandleColor: Color(0xff19db8a))),
             darkTheme: AppTheme.dark,
             routes: routes,
-            initialRoute: '/',
+            initialRoute: welcomeScreen,
           );
         }));
   }

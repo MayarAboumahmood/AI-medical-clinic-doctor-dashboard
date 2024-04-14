@@ -34,7 +34,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   get_it: ^7.6.8
   easy_localization: ^3.0.5
-  pushy_flutter: ^2.0.19
+  pushy_flutter: 
   shared_preferences: ^2.2.2
   flutter_native_splash: ^2.4.0
   equatable: ^2.0.5
@@ -45,7 +45,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_advanced_switch: ^3.1.0
   image_picker: ^1.0.7
-  connectivity_plus: ^6.0.1 
+  connectivity_plus: ^5.0.2
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
   marquee: ^2.2.3

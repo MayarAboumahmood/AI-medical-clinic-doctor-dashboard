@@ -8,12 +8,12 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/c
 
 class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   ConnectivityBloc() : super(ConnectivityInitial()) {
     // Listen to the connectivity status
     _connectivitySubscription = _connectivity.onConnectivityChanged
-        .listen((List<ConnectivityResult> connectivityResult) {
+        .listen((ConnectivityResult connectivityResult) {
       if (checkIfThereIsNoConnection(connectivityResult)) {
         add(ConnectivityDisconnected());
       } else {
