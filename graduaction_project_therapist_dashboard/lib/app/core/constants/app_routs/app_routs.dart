@@ -3,7 +3,6 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/password_step.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/home_page/view/screens/home_page_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
@@ -19,7 +18,6 @@ const String editProfile = '/editProfile';
 const String changePasswordPage = '/changePasswordPage';
 const String helpCenter = '/helpCenter';
 const String initialRoute = '/';
-const String homePageScreen = '/homePageScreen';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
