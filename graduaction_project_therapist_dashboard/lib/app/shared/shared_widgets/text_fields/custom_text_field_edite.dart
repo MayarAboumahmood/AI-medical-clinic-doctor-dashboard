@@ -21,12 +21,10 @@ Widget customTextFieldEdite(
       errorText: errorText,
       labelText: label.tr(),
       labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.secondaryText,
             fontSize: 12,
           ),
       hintStyle: customTextStyle.bodyMedium.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.secondaryText,
           fontWeight: FontWeight.w400,
           fontSize: 12),
@@ -63,7 +61,6 @@ Widget customTextFieldEdite(
       contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
     ),
     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.secondaryText,
         ),
     validator: validator,

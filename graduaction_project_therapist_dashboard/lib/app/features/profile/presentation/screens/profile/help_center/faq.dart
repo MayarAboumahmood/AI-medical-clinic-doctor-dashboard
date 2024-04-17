@@ -7,16 +7,16 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/pres
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/widgets/help_center_category_chip.dart';
 
 import '../../../../../../../main.dart';
-import '../../../../../../shared/shared_widgets/text_field/search_text_field.dart';
+import '../../../../../../shared/shared_widgets/text_fields/search_text_field.dart';
 
 class FAQ extends StatefulWidget {
   const FAQ({super.key});
 
   @override
-  _FAQState createState() => _FAQState();
+  FAQState createState() => FAQState();
 }
 
-class _FAQState extends State<FAQ> {
+class FAQState extends State<FAQ> {
   final List<FAQItem> faqItems = [
     FAQItem("tables_intro", "tables_intro_description", 'General'),
     FAQItem("tables_functions", "tables_functions_description", 'General'),
@@ -154,7 +154,6 @@ class _FAQState extends State<FAQ> {
                           child: Text(
                             question.tr(),
                             style: customTextStyle.displaySmall.copyWith(
-                              fontFamily: 'Nunito',
                               color: customColors.text2,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -178,7 +177,6 @@ class _FAQState extends State<FAQ> {
                         Text(
                           answer.tr(),
                           style: customTextStyle.bodyMedium.copyWith(
-                            fontFamily: 'Nunito',
                             color: customColors.secondaryText,
                           ),
                         ),

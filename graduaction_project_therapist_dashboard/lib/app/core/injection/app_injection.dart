@@ -3,7 +3,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/re
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/data_source/remot_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/repository_imp/auth_repository_impl.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/data_source/notification_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/repository_imp/get_notification_data_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
@@ -12,6 +12,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/data
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/repository_imp/edit_profile_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/theme_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared_blocs/language_bloc.dart';
 import '../service/navigation_service.dart';
@@ -23,16 +24,6 @@ final sls = GetIt.instance();
 
 Future<void> init() async {
 // Features - posts
-
-// Bloc
-  sl.registerFactory(() => SignInCubit());
-  sl.registerFactory(() => RegisterCubit());
-  sl.registerLazySingleton(() => LanguageBloc());
-  sl.registerLazySingleton(() => BottomNavigationWidgetBloc());
-  sl.registerLazySingleton(() => ProfileBloc(editProfileRepositoryImpl: sl()));
-  sl.registerLazySingleton(
-      () => NotificationBloc(notificationRepository: sl()));
-  sl.registerLazySingleton(() => ThemeBloc());
 
 // Usecases
 
@@ -53,6 +44,17 @@ Future<void> init() async {
       () => NotificationDataSourceImp(client: http.Client()));
   sl.registerLazySingleton<ProfileDataSource>(
       () => ProfileDataSourceImpl(client: http.Client()));
+
+// Bloc
+  sl.registerFactory(() => SignInCubit());
+  sl.registerFactory(() => RegisterCubit());
+  sl.registerFactory(() => ProfileBloc(editProfileRepositoryImpl: sl()));
+  sl.registerLazySingleton(() => LanguageBloc());
+  sl.registerFactory(() => GetUserDataBloc());
+  sl.registerLazySingleton(() => BottomNavigationWidgetBloc());
+  sl.registerLazySingleton(
+      () => NotificationBloc(notificationRepository: sl()));
+  sl.registerLazySingleton(() => ThemeBloc());
 
 // External
 

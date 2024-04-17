@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Widget iconPagesButton({
@@ -22,7 +22,7 @@ Widget iconPagesButton({
       child: Container(
         color: Colors.transparent, // Set the color to transparent
 
-        height: 60, width: responsiveUtil.screenWidth * .22,
+        height: 60, width: responsiveUtil.screenWidth * .1,
         child: Icon(icon,
             color: index == currentPage
                 ? customColors.primary

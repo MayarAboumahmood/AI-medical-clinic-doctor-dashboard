@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_field/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 import '../bloc/profile_event.dart';
@@ -182,7 +182,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           height: 45,
           color: customColors.primary,
           textStyle: customTextStyle.titleSmall.copyWith(
-            fontFamily: 'Lexend Deca',
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.normal,

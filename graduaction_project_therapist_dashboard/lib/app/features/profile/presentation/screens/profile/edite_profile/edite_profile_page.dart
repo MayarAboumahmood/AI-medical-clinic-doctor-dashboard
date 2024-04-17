@@ -16,7 +16,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_field/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -135,14 +135,12 @@ class _EditeProfileState extends State<EditProfile> {
                       Text(
                         'Edit Profile'.tr(),
                         style: customTextStyle.titleLarge.copyWith(
-                            fontFamily: 'Roboto',
                             color: customColors.text2,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
                         'Below, your profile details'.tr(),
                         style: customTextStyle.titleSmall.copyWith(
-                            fontFamily: 'Roboto',
                             color: customColors.secondaryText,
                             fontWeight: FontWeight.normal),
                       ),
@@ -272,7 +270,6 @@ class _EditeProfileState extends State<EditProfile> {
                     Text(
                       'Date Of Birth: '.tr(),
                       style: customTextStyle.bodyMedium.copyWith(
-                        fontFamily: 'Readex Pro',
                         color: customColors.primaryText,
                         fontWeight: FontWeight.w400,
                         fontSize: 12,
@@ -281,7 +278,6 @@ class _EditeProfileState extends State<EditProfile> {
                     Text(
                       DateFormat('yyyy/MM/dd').format(dateTime),
                       style: customTextStyle.bodyMedium.copyWith(
-                        fontFamily: 'Readex Pro',
                         color: customColors.primary,
                         fontWeight: FontWeight.w400,
                         fontSize: 12,
@@ -319,12 +315,10 @@ class _EditeProfileState extends State<EditProfile> {
             value: selectedGender,
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(
-                  fontFamily: 'Readex Pro',
                   color: customColors.primaryText,
                   fontWeight: FontWeight.w400,
                   fontSize: 12),
               labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontFamily: 'Readex Pro',
                     color: customColors.primary,
                     fontSize: 12,
                   ),
@@ -367,12 +361,10 @@ class _EditeProfileState extends State<EditProfile> {
             decoration: InputDecoration(
               hintText: 'State'.tr(),
               hintStyle: customTextStyle.bodyMedium.copyWith(
-                  fontFamily: 'Readex Pro',
                   color: customColors.primaryText,
                   fontWeight: FontWeight.w400,
                   fontSize: 12),
               labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontFamily: 'Readex Pro',
                     color: customColors.primary,
                     fontSize: 12,
                   ),
@@ -534,7 +526,6 @@ Widget saveButton(BuildContext context, String title,
       borderRadius: BorderRadius.circular(10),
       color: customColors.primary,
       textStyle: customTextStyle.titleSmall.copyWith(
-        fontFamily: 'Lexend Deca',
         color: Colors.white, // customColors.primaryBackGround,
         fontSize: 16,
         fontWeight: FontWeight.normal,
@@ -575,7 +566,6 @@ GestureDetector cancelButtons(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: customTextStyle.titleSmall.copyWith(
-              fontFamily: 'Lexend Deca',
               color: isDeleteButton ? customColors.primary : Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.normal,

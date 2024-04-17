@@ -37,7 +37,6 @@ class HelpCenterScreen extends StatelessWidget {
                         labelColor: customColors.text2,
                         unselectedLabelColor: customColors.secondaryText,
                         labelStyle: customTextStyle.titleSmall.copyWith(
-                          fontFamily: 'Nunito',
                           fontWeight: FontWeight.w500,
                         ),
                         dividerColor: Colors.transparent,

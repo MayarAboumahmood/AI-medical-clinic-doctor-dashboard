@@ -32,13 +32,11 @@ Widget customTextField(
       errorText: errorText,
       labelText: label.tr(),
       labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.secondaryText,
             fontSize: 12,
           ),
       hintText: hintText,
       hintStyle: customTextStyle.bodyMedium.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.secondaryText,
           fontWeight: FontWeight.w400,
           fontSize: 12),
@@ -76,7 +74,6 @@ Widget customTextField(
       contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
     ),
     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.secondaryText,
         ),
     validator: validator,
@@ -110,13 +107,11 @@ Widget editeProfileTextField(
       errorText: errorText,
       labelText: label.tr(),
       labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.primary,
             fontSize: 12,
           ),
       hintText: hintText,
       hintStyle: customTextStyle.bodyMedium.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.primaryText,
           fontWeight: FontWeight.w400,
           fontSize: 12),
@@ -152,7 +147,6 @@ Widget editeProfileTextField(
       fillColor: customColors.primaryBackGround,
     ),
     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.primaryText,
         ),
     validator: validator,

@@ -10,17 +10,16 @@ import 'package:graduation_project_therapist_dashboard/app/core/theme/app_theme.
 import 'package:graduation_project_therapist_dashboard/app/core/utils/responsive_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/language_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/generated/l10n.dart';
 import 'package:location/location.dart';
-import 'package:pushy_flutter/pushy_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/core/injection/app_injection.dart' as di;
@@ -29,7 +28,6 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/injection/app_injection.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/service/navigation_service.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/theme_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/notification_service.dart';
 
 late ResponsiveUtil responsiveUtil;
 late AppColorsExtension customColors;
@@ -55,22 +53,22 @@ void startTimerToRemoveSplashScreen() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  startTimerToRemoveSplashScreen();
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized  ();
+  // startTimerToRemoveSplashScreen();
   await di.init();
   // Start the Pushy service
-  Pushy.listen();
+  // Pushy.listen();
 
   // Enable in-app notification banners (iOS 10+)
-  Pushy.toggleInAppBanner(true);
+  // Pushy.toggleInAppBanner(true);
 
   // Set custom notification icon (Android)
-  Pushy.setNotificationIcon('@mipmap/launcher_icon');
+  // Pushy.setNotificationIcon('@mipmap/launcher_icon');
 
 // Listen for push notifications received
-  Pushy.setNotificationListener(backgroundNotificationListener);
-  Pushy.setNotificationClickListener((data) {});
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // Pushy.setNotificationListenerg(backgroundNotificationListener);
+  // Pushy.setNotificationClickListener((data) {});
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await EasyLocalization.ensureInitialized();
 
   navigationService = sl.get<NavigationService>();
@@ -88,8 +86,8 @@ void main() async {
   themeBloc.add(ThemeChanged(themeMode: isDarkMode));
   runApp(BlocProvider(
     create: (context) => ConnectivityBloc(),
-    child: EasyLocalization(  
-      startLocale:  
+    child: EasyLocalization(
+      startLocale:
           Locale(sharedPreferences?.getString('language_code') ?? 'en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translation',
@@ -122,6 +120,7 @@ class _MyAppState extends State<MyApp> {
         providers: [
           BlocProvider(create: (_) => di.sl<ThemeBloc>()),
           BlocProvider(create: (_) => di.sl<LanguageBloc>()),
+          BlocProvider(create: (_) => di.sl<GetUserDataBloc>()),
           BlocProvider(create: (_) => di.sl<NotificationBloc>()),
           BlocProvider(create: (_) => di.sl<ProfileBloc>()),
           BlocProvider(create: (_) => di.sl<SignInCubit>()),
@@ -161,13 +160,14 @@ class InitializerWidget extends StatelessWidget {
       if (state is LanguageLoadSuccess) {
         context.setLocale(state.locale); // <-- Change the locale
       }
-      if (sharedPreferences!.getString('token') != null) {
+      /*if (sharedPreferences!.getString('token') != null) {
         if (sharedPreferences!.getString('isRegisterCompleted') == 'true') {
           return const BottomNavigationWidget();
         }
       }
-
-      return WelcomeScreen();
+      */
+      return const BottomNavigationWidget();
+      // return WelcomeScreen();
     });
   }
 }

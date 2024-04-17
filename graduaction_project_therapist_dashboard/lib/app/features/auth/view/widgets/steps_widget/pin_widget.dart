@@ -3,7 +3,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../../../main.dart';
 
-Widget pinWidget(BuildContext context, Function(String?) onCompleted,{TextEditingController? pinCodeController}) {
+Widget otpWidget(BuildContext context, Function(String?) onCompleted,
+    {TextEditingController? pinCodeController}) {
   return SizedBox(
     width: responsiveUtil.scaleWidth(300),
     child: PinCodeTextField(
@@ -11,7 +12,6 @@ Widget pinWidget(BuildContext context, Function(String?) onCompleted,{TextEditin
       appContext: context,
       length: 5,
       textStyle: customTextStyle.titleSmall.copyWith(
-        fontFamily: 'Readex Pro',
         color: customColors.primaryText,
       ),
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -37,7 +37,7 @@ Widget pinWidget(BuildContext context, Function(String?) onCompleted,{TextEditin
         inactiveFillColor: customColors.secondaryBackGround,
         selectedFillColor: customColors.secondaryText,
       ),
-       controller: pinCodeController,
+      controller: pinCodeController,
       // onChanged: onChanged,
       // onSaved: onSaved,
       onCompleted: onCompleted,

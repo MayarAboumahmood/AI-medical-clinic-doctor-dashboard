@@ -39,7 +39,7 @@ class AppString {
   static String password = "Password";
   static String setYourPassword = "Set your password";
   static String signIn = 'Sign in';
-  static String step = "STEP ";
+  static String step = "Step ";
   static String toGiveYouCustomize =
       "To give you a customize experience we need to know your gender";
   static String validatLenghtPassword =
@@ -49,11 +49,13 @@ class AppString {
   static String validationEmail = "The input is not email";
   //validation error
   static String validationName = "The name should be at least 3 digits";
+  static String validationInfo = "You must enter more detailed information";
+  static String validationEmpty = "This field can't be empty";
 
   static String validationphoneLong = "The input is not a Sayian phone number";
   static String validationphoneLong963 = "The input should be 12 digit";
   static String validationPassowrdNotMatched =
-      "check the new password or retype the new password";
+      "New passwords do not match. Please ensure they match.";
   static String validationphonefirstTwoNumber =
       "The phone number should start with 09";
   static String validationphonefirstThreeNumber =

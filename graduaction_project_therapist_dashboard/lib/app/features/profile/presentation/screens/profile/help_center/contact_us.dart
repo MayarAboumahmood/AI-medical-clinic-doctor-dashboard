@@ -19,7 +19,8 @@ class ContactUs extends StatelessWidget {
               children: [
                 contactWidget(context, "Customer Service",
                     Icons.miscellaneous_services_sharp),
-                contactWidget(context, "WhatsApp", 'assets/images/WhatsApp.png'),
+                contactWidget(
+                    context, "WhatsApp", 'assets/images/WhatsApp.png'),
                 contactWidget(context, "Website", Icons.language_sharp),
                 contactWidget(context, "Facebook", Icons.facebook),
                 contactWidget(
@@ -76,7 +77,6 @@ class ContactUs extends StatelessWidget {
                   Text(
                     title.tr(),
                     style: customTextStyle.displaySmall.copyWith(
-                      fontFamily: 'Nunito',
                       color: customColors.text2,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

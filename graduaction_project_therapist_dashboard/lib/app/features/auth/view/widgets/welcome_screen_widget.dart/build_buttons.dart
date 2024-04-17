@@ -76,8 +76,9 @@ Widget _buildContinueAsGuest(BuildContext context) {
   return // Generated code for this Row Widget...
       InkWell(
     onTap: () async {
-      isGuest = true;
-      Navigator.of(context).pushReplacementNamed(bottomNavigationBar);
+      //TODO: make is guest ture here.
+      navigationService.navigateTo(bottomNavigationBar);
+      // isGuest = true;
     },
     splashColor: Colors.transparent,
     focusColor: Colors.transparent,
@@ -90,7 +91,6 @@ Widget _buildContinueAsGuest(BuildContext context) {
         Text(
           AppString.continueAsGuest.tr(),
           style: customTextStyle.bodyMedium.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.info,
             fontSize: 16,
           ),

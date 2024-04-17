@@ -4,7 +4,7 @@ import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/injection/app_injection.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/theme/app_theme.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/theme_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';

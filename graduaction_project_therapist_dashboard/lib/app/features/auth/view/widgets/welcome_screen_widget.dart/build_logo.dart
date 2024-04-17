@@ -7,14 +7,14 @@ Widget buildLogo() {
         padding: const EdgeInsets.only(top: 70),
         child: Container(
           width: 210,
-          height: 60  ,
+          height: 60,
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: Image.asset(
-                'assets/images/Tables-Fin2al.png'
-                // AppImages.preview,
-              ).image,
+              image: Image.asset('assets/images/male.png'
+                      // AppImages.preview,
+                      )
+                  .image,
             ),
           ),
         ),

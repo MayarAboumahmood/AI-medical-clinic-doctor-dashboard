@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/data/repository_imp/edit_profile_repo_imp.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/profile/data/edite_profile_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
 import 'package:flutter/foundation.dart';
@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final EditProfileRepositoryImpl editProfileRepositoryImpl;
+  final EditProfileRepository editProfileRepositoryImpl;
   late File image = File('');
   final imagePicker = ImagePicker();
   late Uint8List imageInBytes;
@@ -66,10 +67,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         imageInBytes = await image.readAsBytes();
       } else if (event.selectedPicture is String) {
         try {
-          // final directory =
-          // await getApplicationDocumentsDirectory();
-          // final File file = File("${directory.path}/${event.selectedPicture}");
-          // imageInBytes = await file.readAsBytes();
+          final directory = await getApplicationDocumentsDirectory();
+          final File file = File("${directory.path}/${event.selectedPicture}");
+          imageInBytes = await file.readAsBytes();
         } catch (e) {
           if (kDebugMode) {
             print('error in selecting pic in Auth bloc bloc: $e');

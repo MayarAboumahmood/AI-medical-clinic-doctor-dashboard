@@ -27,7 +27,6 @@ Future<dynamic> termOfUseBottomSheet(BuildContext context) {
                 Text(
                   'Tables" App Usage Policy'.tr(),
                   style: customTextStyle.bodyLarge.copyWith(
-                    fontFamily: 'Inter',
                     color: customColors.text2,
                     fontSize: 20,
                   ),

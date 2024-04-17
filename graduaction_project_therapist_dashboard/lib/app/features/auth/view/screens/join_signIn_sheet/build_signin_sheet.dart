@@ -9,9 +9,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_field/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
-
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({super.key});
@@ -100,7 +99,6 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
           Text(
             AppString.signIn.tr(),
             style: customTextStyle.bodyMedium.copyWith(
-                fontFamily: 'Readex Pro',
                 fontSize: 25,
                 fontWeight: FontWeight.w600,
                 color: customColors.primaryText),

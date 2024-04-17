@@ -4,7 +4,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 
 import '../../../../../../main.dart';
 
-Widget buildTermPrivacy(bool isChecked, VoidCallback toggleCheckbox,BuildContext context) {
+Widget buildTermPrivacy(
+    bool isChecked, VoidCallback toggleCheckbox, BuildContext context) {
   return Column(
     children: [
       Padding(
@@ -18,10 +19,8 @@ Widget buildTermPrivacy(bool isChecked, VoidCallback toggleCheckbox,BuildContext
               },
               child: Text(
                 "Terms of Use".tr(),
-                style: customTextStyle.bodyMedium.copyWith(
-                    fontFamily: 'Readex Pro',
-                    fontSize: 12,
-                    color: customColors.primaryText),
+                style: customTextStyle.bodyMedium
+                    .copyWith(fontSize: 12, color: customColors.primaryText),
               ),
             ),
             Padding(

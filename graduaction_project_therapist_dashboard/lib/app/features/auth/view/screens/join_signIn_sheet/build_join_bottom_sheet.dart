@@ -11,7 +11,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_field/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class JoinWidget extends StatefulWidget {
@@ -41,11 +41,9 @@ class _JoinWidgetState extends State<JoinWidget> {
     return BlocConsumer<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state is SuccessRequest) {
-          navigationService.navigationOfAllPagesToName(
-              context, registerFirstStep);
+          navigationService.navigateTo(oTPCodeStep);
         } else if (state is RegisterPhoneNumberNotVerifiedState) {
-          navigationService.navigationOfAllPagesToName(
-              context, registerFirstStep);
+          navigationService.navigateTo(oTPCodeStep);
         }
       },
       builder: (context, state) {
@@ -110,11 +108,18 @@ class _JoinWidgetState extends State<JoinWidget> {
           buildCancelButton(context),
           joinTextWidget(),
           joinOurCommintyTextWidget(),
-          firstLastNameTextFieldRow(context),
-          phoneNumberTextField(context),
+          firstLastNameTextFieldRow(),
+          emailTextField(),
+          phoneNumberTextField(),
+          const SizedBox(
+            height: 20,
+          ),
+          selectSpecialtyDropDown(),
           byJoiningOurTimeTextWidget(),
           buildTermPrivacy(isTermsAccepted, toggleTermsCheckbox, context),
-          buildJoinButton(loading, context),
+          buildJoinButton(
+            loading,
+          ),
         ],
       ),
     );
@@ -126,7 +131,6 @@ class _JoinWidgetState extends State<JoinWidget> {
       child: Text(
         AppString.byjoining.tr(),
         style: customTextStyle.bodyMedium.copyWith(
-          fontFamily: 'Readex Pro',
           color: customColors.secondaryText,
           fontSize: 10,
         ),
@@ -134,7 +138,32 @@ class _JoinWidgetState extends State<JoinWidget> {
     );
   }
 
-  Padding phoneNumberTextField(BuildContext context) {
+  Padding emailTextField() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              child: customTextField(
+                  textInputType: TextInputType.emailAddress,
+                  validator: (value) {
+                    return ValidationFunctions.isValidEmail(value!);
+                  },
+                  context: context,
+                  onSaved: (value) {
+                    context
+                        .read<RegisterCubit>()
+                        .updateUserInfo(userEmail: value ?? '');
+                  },
+                  label: AppString.emailAdress.tr()))
+        ],
+      ),
+    );
+  }
+
+  Padding phoneNumberTextField() {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
       child: Row(
@@ -150,8 +179,8 @@ class _JoinWidgetState extends State<JoinWidget> {
                   },
                   context: context,
                   onSaved: (value) {
-                    BlocProvider.of<RegisterCubit>(context)
-                        .setPhoneNumber(formatSyrianPhoneNumber(value ?? ''));
+                    context.read<RegisterCubit>().updateUserInfo(
+                        phoneNumber: formatSyrianPhoneNumber(value ?? ''));
                   },
                   label: AppString.mobilePhone.tr()))
         ],
@@ -159,7 +188,7 @@ class _JoinWidgetState extends State<JoinWidget> {
     );
   }
 
-  Padding firstLastNameTextFieldRow(BuildContext context) {
+  Padding firstLastNameTextFieldRow() {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
       child: Row(
@@ -176,7 +205,7 @@ class _JoinWidgetState extends State<JoinWidget> {
                   context: context,
                   onSaved: (value) {
                     BlocProvider.of<RegisterCubit>(context)
-                        .setFirstName(value!);
+                        .updateUserInfo(firstName: value!);
                   },
                   label: AppString.firstName.tr())),
           const SizedBox(width: 5),
@@ -188,7 +217,8 @@ class _JoinWidgetState extends State<JoinWidget> {
                   },
                   context: context,
                   onSaved: (value) {
-                    BlocProvider.of<RegisterCubit>(context).setLastName(value!);
+                    BlocProvider.of<RegisterCubit>(context)
+                        .updateUserInfo(lastName: value!);
                   },
                   label: AppString.lastName.tr())),
         ],
@@ -210,14 +240,13 @@ class _JoinWidgetState extends State<JoinWidget> {
     return Text(
       'Join'.tr(),
       style: customTextStyle.bodyMedium.copyWith(
-          fontFamily: 'Readex Pro',
           fontSize: 25,
           fontWeight: FontWeight.w600,
           color: customColors.primaryText),
     );
   }
 
-  Align buildJoinButton(bool loading, BuildContext context) {
+  Align buildJoinButton(bool loading) {
     return Align(
       alignment: const AlignmentDirectional(0.00, 1.00),
       child: Padding(
@@ -227,13 +256,15 @@ class _JoinWidgetState extends State<JoinWidget> {
           onPressed: () async {
             FormState? formdata = formKey.currentState;
             if (isTermsAccepted) {
-              if (formdata!.validate()) {
-                formdata.save();
-                if (!loading) {
-                  BlocProvider.of<RegisterCubit>(context).sendRegisterRequest();
-                }
+              // if (formdata!.validate()) {
+              formdata?.save();
+              if (!loading) {
+                BlocProvider.of<RegisterCubit>(context).sendRegisterRequest();
+                //TODO: remove the navigation from here and put it in the listener.
+                navigationService.navigateTo(oTPCodeStep);
               }
             }
+            //   }
           },
           text: 'Join'.tr(),
           options: ButtonOptions(
@@ -245,7 +276,6 @@ class _JoinWidgetState extends State<JoinWidget> {
                 ? customColors.primary
                 : customColors.completeded,
             textStyle: customTextStyle.titleSmall.copyWith(
-              fontFamily: 'Lexend Deca',
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -260,4 +290,57 @@ class _JoinWidgetState extends State<JoinWidget> {
       ),
     );
   }
+
+  Padding selectSpecialtyDropDown() {
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: customColors.secondaryBackGround)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: DropdownButtonFormField<String>(
+            value: registerCubit.userInfo.selectedSpecialization,
+            decoration: InputDecoration(
+              hintStyle: customTextStyle.bodyMedium.copyWith(
+                  color: customColors.primaryText,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12),
+              labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: customColors.primary,
+                    fontSize: 12,
+                  ),
+              labelText: 'Specialty:'.tr(),
+              border: InputBorder.none,
+            ),
+            dropdownColor: customColors.primaryBackGround,
+            items: specialtyList.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value.tr(),
+                  style: customTextStyle.bodySmall
+                      .copyWith(color: customColors.primaryText),
+                ),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                registerCubit.userInfo
+                    .copyWith(selectedSpecialization: newValue);
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<String> specialtyList = ['Doctor', 'Therapist'];
 }

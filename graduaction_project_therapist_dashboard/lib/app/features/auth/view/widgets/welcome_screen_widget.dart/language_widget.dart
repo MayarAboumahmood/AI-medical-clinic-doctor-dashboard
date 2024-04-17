@@ -26,7 +26,7 @@ class LanguageSelector extends StatelessWidget {
             width: 200,
             height: 50,
             decoration: BoxDecoration(
-              color: customColors.primary,
+              // color: customColors.primary,
               borderRadius: BorderRadius.circular(8),
             ),
             child: dropDown(context),
@@ -46,44 +46,46 @@ Widget dropDown(BuildContext context) {
   ];
   Language selectedLanguage =
       currentLanguage == 'ar' ? languages[1] : languages[0];
-  return SizedBox(
-    height: 40,
-    child: DropdownButtonHideUnderline(
-      child: DropdownButton2<Language>(
-        isExpanded: true,
-        hint: hintText(selectedLanguage),
-        value: selectedLanguage,
-        iconStyleData: IconStyleData(
-            iconEnabledColor: AppColors.info,
-            icon: Container(
-              height: 40,
-              color: customColors.primaryBackGround,
-              child: Icon(
-                Icons.arrow_drop_down,
-                color: customColors.info,
-              ),
-            )),
-        onChanged: (Language? newValue) {
-          final languageBloc = BlocProvider.of<LanguageBloc>(context);
-          if (newValue!.name == 'English') {
-            languageBloc.add(LanguageSelected(const Locale('en')));
-            sharedPreferences!.setString('language_code', 'en');
-          } else {
-            sharedPreferences!.setString('language_code', 'ar');
-            languageBloc.add(LanguageSelected(const Locale('ar')));
-            sharedPreferences!.setString('language_code', 'ar');
-          }
-          Navigator.pop(context);
+  return Flexible(
+    child: SizedBox(
+      height: 40,
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<Language>(
+          isExpanded: true,
+          hint: hintText(selectedLanguage),
+          value: selectedLanguage,
+          iconStyleData: IconStyleData(
+              iconEnabledColor: AppColors.info,
+              icon: Container(
+                height: 40,
+                color: customColors.primaryBackGround,
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  color: customColors.info,
+                ),
+              )),
+          onChanged: (Language? newValue) {
+            final languageBloc = BlocProvider.of<LanguageBloc>(context);
+            if (newValue!.name == 'English') {
+              languageBloc.add(LanguageSelected(const Locale('en')));
+              sharedPreferences!.setString('language_code', 'en');
+            } else {
+              sharedPreferences!.setString('language_code', 'ar');
+              languageBloc.add(LanguageSelected(const Locale('ar')));
+              sharedPreferences!.setString('language_code', 'ar');
+            }
+            Navigator.pop(context);
           },
-        items: languages.map<DropdownMenuItem<Language>>((Language language) {
-          return langaugeChangeItems(language);
-        }).toList(),
-        dropdownStyleData: DropdownStyleData(
-          maxHeight: 200,
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: customColors.primaryBackGround,
+          items: languages.map<DropdownMenuItem<Language>>((Language language) {
+            return langaugeChangeItems(language);
+          }).toList(),
+          dropdownStyleData: DropdownStyleData(
+            maxHeight: 200,
+            width: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: customColors.primaryBackGround,
+            ),
           ),
         ),
       ),

@@ -19,7 +19,24 @@ final class RegisterLoadingRequest extends RegisterState {
   @override
   List<Object?> get props => [];
 }
+
 final class RegisterPhoneNumberNotVerifiedState extends RegisterState {
   @override
   List<Object?> get props => [];
+}
+
+final class RegisterSuccessRequest extends RegisterState {
+  @override
+  List<Object?> get props => [];
+}
+final class RegisterOTPSendSuccessRequest extends RegisterState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class RegisterServerErrorRequest extends RegisterState {
+  final StatusRequest statusRequest;
+  RegisterServerErrorRequest({required this.statusRequest});
+  @override
+  List<Object?> get props => [statusRequest];
 }

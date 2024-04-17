@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/profile_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/geust/geust_page.dart';
@@ -23,7 +24,9 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentPage = 0;
   @override
   void initState() {
-    _checkAndRequestBatteryOptimization(context);
+    if (mounted) {
+      _checkAndRequestBatteryOptimization(context);
+    }
     // locationService.getCurrentLocation();
 
     super.initState();
@@ -84,14 +87,18 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                             : Icons.favorite_outline,
                         currentPage: _currentPage,
                         index: 1),
-                    SizedBox(
-                      width: responsiveUtil.screenWidth * .1,
-                    ),
+                    iconPagesButton(
+                        context: context,
+                        icon: _currentPage == 2
+                            ? Icons.explore
+                            : Icons.explore_outlined,
+                        currentPage: _currentPage,
+                        index: 2),
                     iconPagesButton(
                         context: context,
                         icon: _currentPage == 3
-                            ? Icons.explore
-                            : Icons.explore_outlined,
+                            ? CupertinoIcons.chat_bubble_2_fill
+                            : CupertinoIcons.chat_bubble_2,
                         currentPage: _currentPage,
                         index: 3),
                     iconPagesButton(
@@ -144,6 +151,7 @@ void _checkAndRequestBatteryOptimization(BuildContext context) async {
   if (!isIgnoringBatteryOptimizations && !alreadyAsked) {
     sharedPreferences!.setBool('AlreadyAsked', true);
     showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -158,45 +166,51 @@ void _checkAndRequestBatteryOptimization(BuildContext context) async {
             style: customTextStyle.bodyMedium,
           ),
           actions: <Widget>[
-            GeneralButtonOptions(
-              text: 'let\'s Do it'.tr(),
-              options: ButtonOptions(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: customColors.primary,
-                  width: 1,
-                ),
-                color: customColors.primary,
-                textStyle: customTextStyle.bodyMedium.copyWith(
-                    color: customColors.primaryText,
-                    fontWeight: FontWeight.w800),
-              ),
-              onPressed: () {
-                navigationService.goBack(); // Just close the dialog
-                removeBatteryRestrictionForNotification();
-              },
-            ),
-            GeneralButtonOptions(
-              text: 'Cancel'.tr(),
-              options: ButtonOptions(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: customColors.error,
-                  width: 1,
-                ),
-                color: customColors.primaryBackGround,
-                textStyle: customTextStyle.bodyMedium
-                    .copyWith(color: customColors.error),
-              ),
-              onPressed: () {
-                navigationService.goBack(); // Just close the dialog
-              },
-            ),
+            goToSettingToRemoveBattaryOpButton(),
+            cancelButton(),
           ],
         );
       },
     );
   }
+}
+
+GeneralButtonOptions cancelButton() {
+  return GeneralButtonOptions(
+    text: 'Cancel'.tr(),
+    options: ButtonOptions(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: customColors.error,
+        width: 1,
+      ),
+      color: customColors.primaryBackGround,
+      textStyle: customTextStyle.bodyMedium.copyWith(color: customColors.error),
+    ),
+    onPressed: () {
+      navigationService.goBack(); // Just close the dialog
+    },
+  );
+}
+
+GeneralButtonOptions goToSettingToRemoveBattaryOpButton() {
+  return GeneralButtonOptions(
+    text: 'let\'s Do it'.tr(),
+    options: ButtonOptions(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: customColors.primary,
+        width: 1,
+      ),
+      color: customColors.primary,
+      textStyle: customTextStyle.bodyMedium.copyWith(
+          color: customColors.primaryText, fontWeight: FontWeight.w800),
+    ),
+    onPressed: () {
+      navigationService.goBack(); // Just close the dialog
+      removeBatteryRestrictionForNotification();
+    },
+  );
 }
 
 void removeBatteryRestrictionForNotification() {

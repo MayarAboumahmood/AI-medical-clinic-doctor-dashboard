@@ -99,7 +99,6 @@ Widget buildImageWithName(String name, BuildContext context) {
         name,
         style: customTextStyle.bodyLarge.copyWith(
           color: customColors.primary,
-          fontFamily: 'Inter',
           fontSize: 20,
           fontWeight: FontWeight.normal,
         ),

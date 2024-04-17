@@ -8,7 +8,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/injection/app_in
 import 'package:graduation_project_therapist_dashboard/app/core/service/shared_preferences.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_flow_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/welcome_screen_widget.dart/language_widget.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
@@ -120,12 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                accountChoiceWidget(
-                    title: "Booking".tr(),
-                    icon: Icons.bookmarks_outlined,
-                    onTap: () {
-                      // navigationService.navigateTo(userBooking);
-                    }),
                 accountChoiceWidget(
                     title: "Notification".tr(),
                     icon: Icons.notifications_none_outlined,

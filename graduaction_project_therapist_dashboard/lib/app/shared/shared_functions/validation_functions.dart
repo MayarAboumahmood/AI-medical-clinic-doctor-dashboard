@@ -10,6 +10,15 @@ class ValidationFunctions {
     return null;
   }
 
+  static String? informationValidation(String? value) {
+    if (value!.isEmpty) {
+      return AppString.validationEmpty.tr();
+    } else if (value.length < 6) {
+      return AppString.validationInfo.tr();
+    }
+    return null;
+  }
+
   static String? isValidEmail(String? input) {
     final RegExp regex = RegExp(
       r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+',

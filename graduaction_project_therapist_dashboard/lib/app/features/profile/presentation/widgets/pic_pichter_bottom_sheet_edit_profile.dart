@@ -65,7 +65,6 @@ Widget choosePhotoSource(
         child: Text(
           title,
           style: customTextStyle.bodyMedium.copyWith(
-              fontFamily: 'Readex Pro',
               fontSize: 20,
               fontWeight: FontWeight.w400,
               color: customColors.primaryText),

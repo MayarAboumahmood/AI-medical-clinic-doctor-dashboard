@@ -41,7 +41,7 @@ class GuestWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            'assets/images/Tables-Fin2al.png',
+            'assets/images/male.png',
             width: 290,
             height: 90,
             fit: BoxFit.cover,
@@ -51,7 +51,6 @@ class GuestWidget extends StatelessWidget {
         Text(
           'To view or edit your profile, you need to be logged in.'.tr(),
           style: customTextStyle.headlineSmall.copyWith(
-            fontFamily: 'Inter',
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -62,7 +61,6 @@ class GuestWidget extends StatelessWidget {
           'Being a registered user allows you to personalize your experience, track your activities, and engage more deeply with our community.'
               .tr(),
           style: customTextStyle.bodyMedium.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.secondaryText,
             fontSize: 14,
           ),
@@ -103,7 +101,6 @@ class GuestWidget extends StatelessWidget {
         Text(
           'We\'re looking forward to seeing your profile!'.tr(),
           style: customTextStyle.bodyMedium.copyWith(
-            fontFamily: 'Readex Pro',
             color: customColors.primary,
           ),
           textAlign: TextAlign.start,
@@ -131,7 +128,6 @@ class GuestWidget extends StatelessWidget {
           height: 50,
           color: color,
           textStyle: customTextStyle.titleSmall.copyWith(
-            fontFamily: 'Readex Pro',
             color: textColor,
           ),
           borderSide: BorderSide(

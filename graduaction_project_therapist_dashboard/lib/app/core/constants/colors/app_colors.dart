@@ -27,7 +27,7 @@ abstract class AppColors {
   static const lightRevoke = Color(0xff696072);
   static const lightCancelled = Color(0xff56567B);
   static const lightdropDownColor = Color.fromARGB(255, 209, 211, 211);
-  static const lightCompleteded = Color.fromARGB(255, 79, 63, 138);
+  static const lightCompleteded = Color.fromARGB(75, 63, 102, 138);
   static const lightPending = Color(0xffB3A06E);
   static const lightPaid = Color.fromARGB(255, 60, 82, 122);
   static const lightSeeDetailes = Color(0xff7A7B83);
@@ -61,7 +61,7 @@ abstract class AppColors {
   static const darkDelete = Color(0xffA33A50);
   static const darkRevoke = Color(0xff696072);
   static const darkCancelled = Color(0xff56567B);
-  static const darkCompleteded = Color.fromARGB(255, 77, 63, 138);
+  static const darkCompleteded = Color.fromARGB(64, 68, 63, 138);
   static const darkPending = Color(0xffB3A06E);
   static const darkPaid = Color.fromARGB(255, 64, 60, 122);
   static const darkSeeDetailes = Color.fromARGB(43, 122, 123, 131);

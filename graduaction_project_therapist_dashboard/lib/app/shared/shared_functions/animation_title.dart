@@ -30,7 +30,6 @@ class AnimationAppBarTitle extends StatelessWidget {
         title.tr(),
         style: customTextStyle.bodyMedium.copyWith(
             color: customColors.primary,
-            fontFamily: 'Inter',
             fontSize: 22,
             fontWeight: FontWeight.bold),
       ),

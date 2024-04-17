@@ -28,7 +28,7 @@ class GuestPopupWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'assets/images/Tables-Fin2al.png',
+                  'assets/images/male.png',
                   width: responsiveUtil.screenWidth * .7,
                   height: 100,
                   fit: BoxFit.contain,
@@ -45,7 +45,6 @@ class GuestPopupWidget extends StatelessWidget {
                           .tr(),
                       textAlign: TextAlign.start,
                       style: customTextStyle.headlineSmall.copyWith(
-                        fontFamily: 'Inter',
                         fontSize: 16,
                       ),
                     ),
@@ -85,7 +84,6 @@ class GuestPopupWidget extends StatelessWidget {
                               24, 0, 24, 0),
                           color: customColors.primaryBackGround,
                           textStyle: customTextStyle.titleSmall.copyWith(
-                            fontFamily: 'Readex Pro',
                             color: customColors.primaryText,
                           ),
                           borderSide: const BorderSide(
@@ -123,7 +121,6 @@ class GuestPopupWidget extends StatelessWidget {
                               24, 0, 24, 0),
                           color: customColors.secondaryBackGround,
                           textStyle: customTextStyle.titleSmall.copyWith(
-                            fontFamily: 'Readex Pro',
                             color: customColors.primaryText,
                           ),
                           borderSide: BorderSide(
@@ -143,7 +140,6 @@ class GuestPopupWidget extends StatelessWidget {
                   'We\'re excited to have you onboard!'.tr(),
                   textAlign: TextAlign.start,
                   style: customTextStyle.bodyMedium.copyWith(
-                    fontFamily: 'Readex Pro',
                     color: customColors.primary,
                   ),
                 ),

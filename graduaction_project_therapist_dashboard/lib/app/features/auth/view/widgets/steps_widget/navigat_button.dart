@@ -18,7 +18,6 @@ Widget navigateButton(Function() onPressed, text, loading) {
           iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
           color: customColors.primary,
           textStyle: customTextStyle.titleSmall.copyWith(
-            fontFamily: 'Roboto',
             color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.normal,

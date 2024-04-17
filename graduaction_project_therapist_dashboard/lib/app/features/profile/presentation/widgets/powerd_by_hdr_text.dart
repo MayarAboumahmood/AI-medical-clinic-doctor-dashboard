@@ -17,7 +17,7 @@ Padding poweredByHDR() {
           style: customTextStyle.bodyLarge,
         ),
         Text(
-          'HDR Group',
+          'Mayar ab',
           style:
               customTextStyle.bodyLarge.copyWith(color: customColors.primary),
         ),
