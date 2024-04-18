@@ -51,6 +51,7 @@ class AppString {
   static String validationName = "The name should be at least 3 digits";
   static String validationInfo = "You must enter more detailed information";
   static String validationEmpty = "This field can't be empty";
+  static String listValidationEmpty = "You have to choose one at least";
 
   static String validationphoneLong = "The input is not a Sayian phone number";
   static String validationphoneLong963 = "The input should be 12 digit";

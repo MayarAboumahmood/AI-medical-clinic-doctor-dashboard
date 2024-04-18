@@ -1,0 +1,140 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/navigat_button.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/widgets/pic_pichter_bottom_sheet_complete_certifications.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
+
+class CompleteCertificationsPage extends StatelessWidget {
+  const CompleteCertificationsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<RegistrationDataCompleteCubit,
+        RegistrationDataCompleteState>(
+      listener: (context, state) {
+        if (state is RegistrationDataCompleteDoneSuccseflyState) {
+          navigationService.navigationOfAllPagesToName(
+              context, bottomNavigationBar);
+          customSnackBar(
+              'we recived your requiest, we will let you know the result soon',
+              context);
+        }
+      },
+      child: Scaffold(
+          backgroundColor: customColors.primaryBackGround,
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [buildCompleteYourCertificationsBody(context)],
+            ),
+          )),
+    );
+  }
+
+  Widget buildCompleteYourCertificationsBody(BuildContext context) {
+    RegistrationDataCompleteCubit registrationDataCompleteCubit =
+        context.read<RegistrationDataCompleteCubit>();
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          vertical: responsiveUtil.screenHeight * .04,
+          horizontal: responsiveUtil.screenWidth * .04),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Padding(
+            padding: responsiveUtil.padding(
+                responsiveUtil.screenWidth * .012, 0, 0, 0),
+            child: Text(
+              "${'Add the Certifications That only the admin can see'.tr()} ",
+              textAlign: TextAlign.center,
+              style: customTextStyle.bodyMedium.copyWith(
+                fontSize: 14,
+                letterSpacing: 0.2,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: responsiveUtil.screenHeight * .05,
+          ),
+          listViewOfImages(),
+          const SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () async {
+              await showBottomSheetWidget(
+                context,
+                buildimageSourcesBottomSheetCompleteCertifications(context),
+              );
+            },
+            child: Text(
+              'Add Certifications images'.tr(),
+              style: customTextStyle.bodyMedium,
+            ),
+          ),
+          BlocBuilder<RegistrationDataCompleteCubit,
+              RegistrationDataCompleteState>(
+            builder: (context, state) {
+              final bool isLoading =
+                  state is RegistrationDataCompleteLoadingState;
+              return navigateButton(() {
+                if (registrationDataCompleteCubit
+                    .certificationImages.isNotEmpty) {
+                  registrationDataCompleteCubit.submitteUserData();
+                } else {
+                  customSnackBar(
+                      'Opps! You have to add certifications', context);
+                }
+              }, "submitte".tr(), isLoading);
+            },
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
+  }
+
+  BlocSelector<RegistrationDataCompleteCubit, RegistrationDataCompleteState,
+      List<String>> listViewOfImages() {
+    return BlocSelector<RegistrationDataCompleteCubit,
+        RegistrationDataCompleteState, List<String>>(
+      selector: (state) {
+        if (state is RegistrationDataCompleteImagesUpdated) {
+          return state.certificationImages;
+        } else {
+          return [];
+        }
+      },
+      builder: (context, state) {
+        final List<String> certificationImages = state;
+        if (state is RegistrationDataCompleteImagesUpdated) {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: state.length,
+            itemBuilder: (context, index) {
+              final imagePath = certificationImages[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.file(File(imagePath), width: 100, height: 100),
+              );
+            },
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}

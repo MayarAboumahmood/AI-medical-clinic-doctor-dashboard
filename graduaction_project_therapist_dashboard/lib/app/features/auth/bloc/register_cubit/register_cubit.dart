@@ -25,29 +25,18 @@ class RegisterCubit extends Cubit<RegisterState> {
     String? lastName,
     String? phoneNumber,
     String? userEmail,
-    String? locationInfo,
     String? password,
-    String? studieInfo,
-    String? selectedSpecialization,
   }) {
     userInfo = userInfo.copyWith(
       firstName: firstName ?? userInfo.firstName,
       lastName: lastName ?? userInfo.lastName,
       phoneNumber: phoneNumber ?? userInfo.phoneNumber,
       userEmail: userEmail ?? userInfo.userEmail,
-      locationInfo: locationInfo ?? userInfo.locationInfo,
       password: password ?? userInfo.password,
-      studieInfo: studieInfo ?? userInfo.studieInfo,
-      selectedSpecialization:
-          selectedSpecialization ?? userInfo.selectedSpecialization,
     );
   }
 
   void sendRegisterRequest() {
-    print('ssssssssssssssssssss ${userInfo.firstName}');
-    print('ssssssssssssssssssss ${userInfo.lastName}');
-    print('ssssssssssssssssssss ${userInfo.phoneNumber}');
-    print('ssssssssssssssssssss ${userInfo.password}');
     //TODO: send the register requiest and than change the state.
     emit(RegisterSuccessRequest());
   }

@@ -37,7 +37,7 @@ class ThemeTypography {
     final Color primaryColor = isDarkTheme
         ? AppColors.darkPrimaryText
         : AppColors.lightPrimaryText; // example
-    final Color info = isDarkTheme ? AppColors.info : AppColors.info; // example
+    // final Color info = isDarkTheme ? AppColors.info : AppColors.info; // example
     final Color secondaryColor = isDarkTheme
         ? AppColors.darkSecondaryText
         : AppColors.lightSecondaryText; // example
@@ -89,13 +89,13 @@ class ThemeTypography {
       ),
       titleMedium: GoogleFonts.getFont(
         'Montserrat',
-        color: info,
+        color: primaryColor,
         fontWeight: FontWeight.normal,
         fontSize: 16,
       ),
       titleSmall: GoogleFonts.getFont(
         'Montserrat',
-        color: info,
+        color: primaryColor,
         fontWeight: FontWeight.w500,
         fontSize: 14,
       ),
@@ -137,110 +137,3 @@ class ThemeTypography {
     );
   }
 }
-/*
-  TextTheme get textTheme {
-    // Define your text styles, possibly switching colors based on isDarkTheme
-    final Color primaryColor = isDarkTheme
-        ? AppColors.darkPrimaryText
-        : AppColors.lightPrimaryText; // example
-    final Color info = isDarkTheme ? AppColors.info : AppColors.info; // example
-    final Color secondaryColor = isDarkTheme
-        ? AppColors.darkSecondaryText
-        : AppColors.lightSecondaryText; // example
-
-    return TextTheme(
-      displayLarge: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 64,
-      ),
-
-      displayMedium: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 44,
-      ),
-
-      displaySmall: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.w600,
-        fontSize: 36,
-      ),
-      headlineLarge: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.w600,
-        fontSize: 32,
-      ),
-      headlineMedium: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 24,
-      ),
-      headlineSmall: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.w500,
-        fontSize: 24,
-      ),
-      titleLarge: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.w500,
-        fontSize: 23,
-      ),
-      titleMedium: GoogleFonts.getFont(
-        'Montserrat',
-        color: info,
-        fontWeight: FontWeight.normal,
-        fontSize: 18,
-      ),
-      titleSmall: GoogleFonts.getFont(
-        'Montserrat',
-        color: info,
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-      ),
-      labelLarge: GoogleFonts.getFont(
-        'Montserrat',
-        color: secondaryColor,
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-      ),
-      labelMedium: GoogleFonts.getFont(
-        'Montserrat',
-        color: secondaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 14,
-      ),
-      labelSmall: GoogleFonts.getFont('Montserrat',
-          color: secondaryColor, fontWeight: FontWeight.normal, fontSize: 12),
-      bodyLarge: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.w600,
-        fontSize: 17.0,
-      ),
-      bodyMedium: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      ),
-      bodySmall: GoogleFonts.getFont(
-        'Montserrat',
-        color: primaryColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      ),
-
-      // other text styles...
-      // headline2, headline3, bodyText1, bodyText2, etc.
-    );
-  }
-}
- */

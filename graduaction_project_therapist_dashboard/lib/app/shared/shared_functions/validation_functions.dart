@@ -10,6 +10,12 @@ class ValidationFunctions {
     return null;
   }
 
+  static String? specializationValidation(List<String>? value) {
+    if (value!.isEmpty) {
+      return AppString.listValidationEmpty.tr();
+    } 
+    return null;
+  }
   static String? informationValidation(String? value) {
     if (value!.isEmpty) {
       return AppString.validationEmpty.tr();

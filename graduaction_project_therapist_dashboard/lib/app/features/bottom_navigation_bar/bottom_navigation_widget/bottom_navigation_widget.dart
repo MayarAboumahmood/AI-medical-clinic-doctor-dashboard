@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/profile_screen.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/your_data_notcompleted_yet_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/geust/geust_page.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -35,7 +36,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   List<Widget> get homePageWidgets {
     return [
       const SizedBox(),
-      isGuest == true ? GuestWidget() : const SizedBox(),
+      isGuest == true ? GuestWidget() :  YourDataNotCompletedYetPage(),
       isGuest == true ? GuestWidget() : const SizedBox(),
       isGuest == true ? GuestWidget() : const SizedBox(),
       isGuest == true ? GuestWidget() : const ProfileScreen(),
