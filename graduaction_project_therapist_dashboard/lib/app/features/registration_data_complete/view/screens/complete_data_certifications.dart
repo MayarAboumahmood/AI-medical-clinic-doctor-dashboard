@@ -111,29 +111,35 @@ class CompleteCertificationsPage extends StatelessWidget {
       List<String>> listViewOfImages() {
     return BlocSelector<RegistrationDataCompleteCubit,
         RegistrationDataCompleteState, List<String>>(
+      
       selector: (state) {
-        if (state is RegistrationDataCompleteImagesUpdated) {
-          return state.certificationImages;
-        } else {
-          return [];
-        }
+        print('sssssssssssssssssss :$state');
+        // This will only return certificationImages when the state is RegistrationDataCompleteImagesUpdated
+        // or an empty list otherwise.
+        return state is RegistrationDataCompleteImagesUpdated
+            ? state.certificationImages
+            : [];
       },
-      builder: (context, state) {
-        final List<String> certificationImages = state;
-        if (state is RegistrationDataCompleteImagesUpdated) {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: state.length,
-            itemBuilder: (context, index) {
-              final imagePath = certificationImages[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.file(File(imagePath), width: 100, height: 100),
-              );
-            },
+      builder: (context, certificationImages) {
+        print('sssssssssssssssssss :$certificationImages');
+        if (certificationImages.isNotEmpty) {
+          return SizedBox(height: responsiveUtil.screenHeight*.2,  
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: certificationImages.length,
+              itemBuilder: (context, index) {
+                final imagePath = certificationImages[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.file(File(imagePath), width: 100, height: 100),
+                );
+              },
+            ),
           );
+        } else {
+          // Returning an empty widget when there are no images.
+          return const SizedBox();
         }
-        return const SizedBox();
       },
     );
   }

@@ -24,7 +24,6 @@ class RegistrationDataCompleteCubit
   void updateSelectedMedicalSpecialty(List<String> values) {
     selectedMedicalSpecialty.clear();
     selectedMedicalSpecialty.addAll(values);
-    print('ssssssssssssssssssssssss $selectedMedicalSpecialty');
   }
 
   void updateStudiesInfo(updatedInfo) {

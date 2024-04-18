@@ -140,7 +140,6 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
                   },
                   context: context,
                   onSaved: (value) {
-                    print('ssssssssssssss: $value');
                     registerCubit.updateUserInfo(password: value ?? '');
                   },
                   label: "Current Password".tr()))
@@ -160,7 +159,6 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
               child: customTextField(
                   textInputType: TextInputType.emailAddress,
                   validator: (value) {
-                    print('ssssssssssssssssssssss: $password, $reTypePassword');
                     return ValidationFunctions.isNewPasswordEqualreType(
                         password, reTypePassword);
                   },
