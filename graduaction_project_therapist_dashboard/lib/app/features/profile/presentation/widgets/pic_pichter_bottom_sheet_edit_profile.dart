@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 Widget buildimageSourcesBottomSheetForEditProfile(BuildContext context) {
   return Container(
     color: customColors.secondaryBackGround,
-    height: responsiveUtil.screenHeight*.4,
+    height: responsiveUtil.screenHeight*.35,
     child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,

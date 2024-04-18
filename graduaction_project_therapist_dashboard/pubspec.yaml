@@ -47,6 +47,8 @@ dependencies:
   flutter_advanced_switch: ^3.1.0
   image_picker: ^1.0.7
   connectivity_plus: ^5.0.2
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
   marquee: ^2.2.3

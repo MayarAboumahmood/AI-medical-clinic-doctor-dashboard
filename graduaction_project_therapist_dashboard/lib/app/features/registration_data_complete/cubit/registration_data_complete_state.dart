@@ -14,6 +14,7 @@ final class RegistrationDataCompleteLoadingState
   @override
   List<Object?> get props => [];
 }
+
 final class RegistrationDataCompleteDoneSuccseflyState
     extends RegistrationDataCompleteState {
   @override
@@ -22,8 +23,9 @@ final class RegistrationDataCompleteDoneSuccseflyState
 
 final class RegistrationDataCompleteImagesUpdated
     extends RegistrationDataCompleteState {
-  final List<String> certificationImages ; // List to store image paths
-  RegistrationDataCompleteImagesUpdated({required this.certificationImages});
+  final List<String> certificationImages;
+  final DateTime dateTime ;
+  RegistrationDataCompleteImagesUpdated({required this.certificationImages,required this.dateTime});
   @override
-  List<Object?> get props => [certificationImages];
+  List<Object?> get props => [certificationImages, dateTime];
 }

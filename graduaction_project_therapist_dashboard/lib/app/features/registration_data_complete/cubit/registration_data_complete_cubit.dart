@@ -12,13 +12,16 @@ class RegistrationDataCompleteCubit
   String studiesInfo = '';
   String locationInfo = '';
   String specialtyInfo = '';
-  final List<String> certificationImages = []; // List to store image paths
+  List<String> certificationImages = []; // List to store image paths
 
   void addCertificationImage(String imagePath) {
     certificationImages.add(imagePath);
+    print('ssssssssssssssssssssss state $certificationImages');
+    print('ssssssssssssssssssssss state2 ${certificationImages.length}');
+    print('ssssssssssssssssssssss state3 $imagePath');
 
     emit(RegistrationDataCompleteImagesUpdated(
-        certificationImages: certificationImages));
+        certificationImages: certificationImages, dateTime: DateTime.now()));
   }
 
   void updateSelectedMedicalSpecialty(List<String> values) {

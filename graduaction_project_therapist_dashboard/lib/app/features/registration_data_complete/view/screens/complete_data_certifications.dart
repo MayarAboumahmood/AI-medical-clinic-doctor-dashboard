@@ -67,7 +67,7 @@ class CompleteCertificationsPage extends StatelessWidget {
           SizedBox(
             height: responsiveUtil.screenHeight * .05,
           ),
-          listViewOfImages(),
+          blocSelectorListViewOfImages(context),
           const SizedBox(
             height: 10,
           ),
@@ -83,11 +83,15 @@ class CompleteCertificationsPage extends StatelessWidget {
               style: customTextStyle.bodyMedium,
             ),
           ),
+          SizedBox(
+            height: responsiveUtil.screenHeight * .3,
+          ),
           BlocBuilder<RegistrationDataCompleteCubit,
               RegistrationDataCompleteState>(
             builder: (context, state) {
               final bool isLoading =
                   state is RegistrationDataCompleteLoadingState;
+
               return navigateButton(() {
                 if (registrationDataCompleteCubit
                     .certificationImages.isNotEmpty) {
@@ -107,40 +111,45 @@ class CompleteCertificationsPage extends StatelessWidget {
     );
   }
 
-  BlocSelector<RegistrationDataCompleteCubit, RegistrationDataCompleteState,
-      List<String>> listViewOfImages() {
-    return BlocSelector<RegistrationDataCompleteCubit,
-        RegistrationDataCompleteState, List<String>>(
-      
-      selector: (state) {
-        print('sssssssssssssssssss :$state');
-        // This will only return certificationImages when the state is RegistrationDataCompleteImagesUpdated
-        // or an empty list otherwise.
-        return state is RegistrationDataCompleteImagesUpdated
-            ? state.certificationImages
-            : [];
-      },
-      builder: (context, certificationImages) {
-        print('sssssssssssssssssss :$certificationImages');
+  BlocBuilder<RegistrationDataCompleteCubit, RegistrationDataCompleteState>
+      blocSelectorListViewOfImages(BuildContext context) {
+    RegistrationDataCompleteCubit registrationDataCompleteCubit =
+        context.read<RegistrationDataCompleteCubit>();
+    return BlocBuilder<RegistrationDataCompleteCubit,
+        RegistrationDataCompleteState>(
+      builder: (context, state) {
+        List<String> certificationImages = [];
+        if (state is RegistrationDataCompleteImagesUpdated) {
+          certificationImages = state.certificationImages;
+        }
         if (certificationImages.isNotEmpty) {
-          return SizedBox(height: responsiveUtil.screenHeight*.2,  
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: certificationImages.length,
-              itemBuilder: (context, index) {
-                final imagePath = certificationImages[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.file(File(imagePath), width: 100, height: 100),
-                );
-              },
-            ),
-          );
+          return listviewOfImages(certificationImages);
+        } else if (registrationDataCompleteCubit
+            .certificationImages.isNotEmpty) {
+          return listviewOfImages(
+              registrationDataCompleteCubit.certificationImages);
         } else {
           // Returning an empty widget when there are no images.
           return const SizedBox();
         }
       },
+    );
+  }
+
+  SizedBox listviewOfImages(List<String> certificationImages) {
+    return SizedBox(
+      height: responsiveUtil.screenHeight * .2,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: certificationImages.length,
+        itemBuilder: (context, index) {
+          final imagePath = certificationImages[index];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.file(File(imagePath), width: 100, height: 100),
+          );
+        },
+      ),
     );
   }
 }
