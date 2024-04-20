@@ -53,7 +53,7 @@ bool ifThereActionInAppBar(int pageNumber) {
 
 AppBar buildAppBarWithLineIndicatorincenter(
     int pageNumber, BuildContext context) {
-  double percent = (pageNumber / 3);
+  double percent = (pageNumber / 4);
   return AppBar(
     surfaceTintColor: customColors.primaryBackGround,
     title: Center(

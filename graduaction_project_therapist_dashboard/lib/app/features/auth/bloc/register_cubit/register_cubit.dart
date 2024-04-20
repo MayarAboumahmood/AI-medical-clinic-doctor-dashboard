@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +36,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       userEmail: userEmail ?? userInfo.userEmail,
       password: password ?? userInfo.password,
     );
+  }
+
+  Uint8List? selectedImage; // Variable to store the image data
+
+  void setImage(Uint8List imageBytes) {
+    selectedImage = imageBytes;
+    emit(RegisterProfilePictureUpdated(imageBytes: imageBytes));
   }
 
   void sendRegisterRequest() {

@@ -27,6 +27,7 @@ class _SignInWidgetState extends State<SignInWidget> {
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);
+            comingFromRegisterOrLogin=true;
       }
     }, builder: (context, state) {
       if (state is SignInErrorRequeistState) {

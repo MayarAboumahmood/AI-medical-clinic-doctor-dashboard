@@ -15,6 +15,14 @@ final class RegisterValidationErrorRequest extends RegisterState {
   List<Object?> get props => [statusRequest];
 }
 
+final class RegisterProfilePictureUpdated extends RegisterState {
+  final Uint8List imageBytes;
+  RegisterProfilePictureUpdated({required this.imageBytes});
+
+  @override
+  List<Object?> get props => [imageBytes];
+}
+
 final class RegisterLoadingRequest extends RegisterState {
   @override
   List<Object?> get props => [];
@@ -29,6 +37,7 @@ final class RegisterSuccessRequest extends RegisterState {
   @override
   List<Object?> get props => [];
 }
+
 final class RegisterOTPSendSuccessRequest extends RegisterState {
   @override
   List<Object?> get props => [];

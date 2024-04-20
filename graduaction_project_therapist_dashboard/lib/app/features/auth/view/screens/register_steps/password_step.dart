@@ -37,8 +37,8 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
     return BlocListener<RegisterCubit, RegisterState>(
         listener: (ccontext, state) {
           if (state is RegisterSuccessRequest) {
-            navigationService.navigationOfAllPagesToName(
-                context, bottomNavigationBar);
+            navigationService.navigateTo(selectImageRegisterStep);
+            comingFromRegisterOrLogin = true;
           } else if (state is RegisterValidationErrorRequest) {
             customSnackBar('Check your inputs', context);
           } else if (state is RegisterServerErrorRequest) {

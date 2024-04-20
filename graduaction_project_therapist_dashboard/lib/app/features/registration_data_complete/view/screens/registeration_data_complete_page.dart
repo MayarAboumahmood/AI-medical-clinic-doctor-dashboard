@@ -73,7 +73,7 @@ class CompleteDataPage extends StatelessWidget {
                   FormState? formdata = formKey.currentState;
                   if (formdata!.validate()) {
                     formdata.save();
-                    navigationService.navigateTo(completeCertificationsPage);
+                    navigationService.navigateTo(selectLocationMapPage);
                   }
                 }, AppString.continueButton.tr(), false),
                 const SizedBox(

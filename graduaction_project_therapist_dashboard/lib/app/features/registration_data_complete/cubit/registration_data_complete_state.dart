@@ -14,6 +14,11 @@ final class RegistrationDataCompleteLoadingState
   @override
   List<Object?> get props => [];
 }
+final class GettingUserLocationState
+    extends RegistrationDataCompleteState {
+  @override
+  List<Object?> get props => [];
+}
 
 final class RegistrationDataCompleteDoneSuccseflyState
     extends RegistrationDataCompleteState {

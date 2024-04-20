@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
 
 part 'registration_data_complete_state.dart';
@@ -13,6 +14,14 @@ class RegistrationDataCompleteCubit
   String locationInfo = '';
   String specialtyInfo = '';
   List<String> certificationImages = []; // List to store image paths
+  LatLng? userLatLng;
+  void emitInitState() {
+    emit(RegistrationDataCompleteInitial());
+  }
+
+  void setUserLating(LatLng newLating) {
+    userLatLng = newLating;
+  }
 
   void addCertificationImage(String imagePath) {
     certificationImages.add(imagePath);
@@ -44,5 +53,9 @@ class RegistrationDataCompleteCubit
   void submitteUserData() {
     //TODO: send the request.
     emit(RegistrationDataCompleteDoneSuccseflyState());
+  }
+
+  void gettingUserLocation() {
+    emit(GettingUserLocationState());
   }
 }

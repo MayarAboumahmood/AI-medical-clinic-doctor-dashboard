@@ -31,7 +31,7 @@ Widget richedTextSteps(BuildContext context, int stepNumber) {
           ),
         ),
         TextSpan(
-          text: "3",
+          text: "4",
           style: TextStyle(
             color: customColors.primary,
           ),
