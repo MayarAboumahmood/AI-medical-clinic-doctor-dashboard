@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/edit_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
@@ -186,6 +187,10 @@ class _EditeProfileState extends State<EditProfile> {
                       ),
                       selectStateDropDown(),
                       const SizedBox(
+                        height: 10,
+                      ),
+                      selecteLocationOnMapButton(),
+                      const SizedBox(
                         height: 30,
                       ),
                       const SizedBox(
@@ -202,6 +207,22 @@ class _EditeProfileState extends State<EditProfile> {
         ),
       );
     });
+  }
+
+  Padding selecteLocationOnMapButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GeneralButtonOptions(
+          text: 'Change Location on Map',
+          onPressed: () {
+            navigationService.navigateTo(selectLocationMapPage);
+          },
+          options: ButtonOptions(
+              color: customColors.primary,
+              width: responsiveUtil.screenWidth,
+              maxLines: 1,
+              textStyle: customTextStyle.bodyMedium)),
+    );
   }
 
   Row buildDoneCancelButtons(BuildContext context) {

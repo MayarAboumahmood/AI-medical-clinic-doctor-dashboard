@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class SelectLocationMapPage extends StatefulWidget {
   MapPageState createState() => MapPageState();
 }
 
+//TODO set argument I send from the prev screen and if it's from seting the info or editing I act defrently.
 LocationData? _initialPosition;
 
 class MapPageState extends State<SelectLocationMapPage> {
@@ -24,6 +26,7 @@ class MapPageState extends State<SelectLocationMapPage> {
   LocationService locationService = LocationService();
   late RegistrationDataCompleteCubit registrationDataCompleteCubit;
   List<Marker> markers = []; // List to hold markers
+  List<Marker> userCurrentLocationmarkers = []; // List to hold markers
   @override
   void initState() {
     super.initState();
@@ -32,21 +35,49 @@ class MapPageState extends State<SelectLocationMapPage> {
         context.read<RegistrationDataCompleteCubit>();
   }
 
-  void _handleLongTap(LatLng latlng) {
-    print(
-        "user long pressed on: Latitude: ${latlng.latitude}, Longitude: ${latlng.longitude}");
-    setState(() {
-      markers.clear();
-      markers.add(
-        Marker(
-          width: 80.0,
-          height: 80.0,
-          point: latlng,
-          child: const Icon(Icons.location_on, size: 40.0, color: Colors.red),
-        ),
+  void animateToUserLocation() {
+    if (_initialPosition != null) {
+      _mapController.move(
+        LatLng(_initialPosition!.latitude!, _initialPosition!.longitude!),
+        13.0,
       );
+      LatLng userLatLng =
+          LatLng(_initialPosition!.latitude!, _initialPosition!.longitude!);
+      setState(() {
+        addUserLocationMarker(userLatLng);
+      });
+    }
+  }
+
+  void _handleLongTap(LatLng latlng) {
+    setState(() {
+      addMarker(latlng);
     });
     registrationDataCompleteCubit.setUserLating(latlng);
+  }
+
+  void addMarker(LatLng latlng) {
+    markers.clear();
+    markers.add(
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: latlng,
+        child: const Icon(Icons.location_on, size: 40.0, color: Colors.red),
+      ),
+    );
+  }
+
+  void addUserLocationMarker(LatLng latlng) {
+    userCurrentLocationmarkers.clear();
+    userCurrentLocationmarkers.add(
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: latlng,
+        child: Icon(Icons.location_on, size: 40.0, color: customColors.primary),
+      ),
+    );
   }
 
   Future<void> _determinePosition() async {
@@ -82,21 +113,30 @@ class MapPageState extends State<SelectLocationMapPage> {
     );
   }
 
+  List<Polygon> polygons = [];
+
   Scaffold buildMapBody() {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigationService.navigateTo(completeCertificationsPage);
-        },
-        child: Icon(
-          Icons.assistant_navigation,
-          color: customColors.primary,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(top: responsiveUtil.screenHeight * .7),
+        child: Column(
+          children: [
+            floatingActionSingleButtom(
+              Icons.assistant_navigation,
+              () {
+                navigationService.navigateTo(completeCertificationsPage);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            floatingActionSingleButtom(
+                Icons.my_location_outlined, animateToUserLocation),
+          ],
         ),
       ),
-      appBar: AppBar(
-        title:
-            appBarPushingScreens('Select your locaiton', isFromScaffold: true),
-      ),
+      appBar:
+          appBarPushingScreens('Select your locaiton', isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: FlutterMap(
         mapController: _mapController,
@@ -107,7 +147,6 @@ class MapPageState extends State<SelectLocationMapPage> {
           initialCenter:
               LatLng(_initialPosition!.latitude!, _initialPosition!.longitude!),
           initialZoom: 13.0,
-          // onTap: (_, latlng) => _handleTap(latlng),
         ),
         children: [
           TileLayer(
@@ -115,19 +154,46 @@ class MapPageState extends State<SelectLocationMapPage> {
             subdomains: const [],
           ),
           MarkerLayer(
-            markers: markers, // Use the markers list
+            markers:
+                markers + userCurrentLocationmarkers, // Use the markers list
           ),
+          PolygonLayer(polygons: polygons),
+          MobileLayerTransformer(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text('Long press on your clinic location to define it'.tr(),
+                style: customTextStyle.bodyLarge
+                    .copyWith(color: customColors.primary)),
+          ))
         ],
+      ),
+    );
+  }
+
+  GestureDetector floatingActionSingleButtom(
+      IconData icon, void Function()? onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: customColors.primaryBackGround,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Icon(
+            icon,
+            color: customColors.primary,
+          ),
+        ),
       ),
     );
   }
 
   Scaffold circularProgressScafold() {
     return Scaffold(
-      appBar: AppBar(
-        title:
-            appBarPushingScreens('Select your locaiton', isFromScaffold: true),
-      ),
+      appBar:
+          appBarPushingScreens('Select your locaiton', isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: Center(
           child: CircularProgressIndicator(

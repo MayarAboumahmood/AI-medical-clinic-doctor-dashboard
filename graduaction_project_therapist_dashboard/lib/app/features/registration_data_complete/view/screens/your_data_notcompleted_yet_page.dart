@@ -17,13 +17,16 @@ class YourDataNotCompletedYetPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildTopSection(),
-              _buildBottomSection(context),
-            ],
+          child: SizedBox(
+            width: responsiveUtil.screenWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildTopSection(),
+                _buildBottomSection(context),
+              ],
+            ),
           ),
         ),
       ),
