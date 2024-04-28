@@ -7,6 +7,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/bottom_navig
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/data_source/notification_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/repository_imp/get_notification_data_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/data_source/profile_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/edite_profile_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/repository_imp/edit_profile_repo_imp.dart';
@@ -49,6 +50,7 @@ Future<void> init() async {
 // Bloc
   sl.registerFactory(() => SignInCubit());
   sl.registerFactory(() => RegisterCubit());
+  sl.registerFactory(() => PatientRequestsCubit());
   sl.registerFactory(() => RegistrationDataCompleteCubit());
   sl.registerFactory(() => ProfileBloc(editProfileRepositoryImpl: sl()));
   sl.registerLazySingleton(() => LanguageBloc());
