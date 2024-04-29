@@ -11,7 +11,7 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   List<PatientRequestModel> fakeUserRequests = [
     PatientRequestModel(
       userName: "John Doe",
-      userInfo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      userInfo: "Lorem consectetur adipiscing elit.",
       userImage: "https://via.placeholder.com/150",
     ),
     PatientRequestModel(

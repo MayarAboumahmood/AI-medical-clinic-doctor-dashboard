@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class SignInWidget extends StatefulWidget {

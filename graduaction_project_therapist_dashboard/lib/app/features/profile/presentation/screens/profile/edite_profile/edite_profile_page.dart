@@ -17,7 +17,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

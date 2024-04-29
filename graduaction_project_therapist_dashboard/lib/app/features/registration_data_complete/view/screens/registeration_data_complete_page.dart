@@ -7,7 +7,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/constants/app_st
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/navigat_button.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';

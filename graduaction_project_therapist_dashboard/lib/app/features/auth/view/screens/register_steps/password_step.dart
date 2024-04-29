@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/wi
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import '../../../../../core/constants/app_string/app_string.dart';
 import '../../widgets/steps_widget/navigat_button.dart';

@@ -3,150 +3,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_fl
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../main.dart';
-
-Widget bookingDetailsShimmer(PreferredSize appbar) {
-  return Scaffold(
-    backgroundColor: customColors.primaryBackGround,
-    appBar: appbar,
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Shimmer.fromColors(
-          baseColor: customColors.secondaryBackGround,
-          highlightColor: customColors.primaryBackGround,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(height: 30 // Adjust the height as needed
-                  ),
-              imageWithNameShimmer(),
-              Column(
-                children: List.generate(
-                    5, (index) => generalElementForEachCardShimmer()),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget homePageshimmer(Widget f, Widget ff, Widget? fff) {
-  return SafeArea(
-    bottom: false,
-    child: SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(children: [
-          f,
-          const SizedBox(
-            height: 20,
-          ),
-          ff,
-          const SizedBox(
-            height: 20,
-          ),
-          fff ?? categoryCardShimmer(),
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: Shimmer.fromColors(
-                baseColor: customColors.secondaryBackGround,
-                highlightColor: customColors.primaryBackGround,
-                child: ListView.builder(
-                    itemCount: 10, // Number of shimmer items
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10, left: 12, right: 12, bottom: 15),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          height: 200, // Adjust based on your content
-                        ),
-                      );
-                    })),
-          ),
-        ]),
-      ),
-    ),
-  );
-}
-
-Widget discoverPageshimmer(Widget f, Widget? fff, Widget discoverWithIcon) {
-  return SafeArea(
-    bottom: false,
-    child: SizedBox(
-      width: double.infinity,
-      child: Column(children: [
-        const SizedBox(
-          height: 15,
-        ),
-        f,
-        const SizedBox(
-          height: 20,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: fff ?? categoryCardShimmer(),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        discoverWithIcon,
-        Expanded(
-          child: Shimmer.fromColors(
-              baseColor: customColors.secondaryBackGround,
-              highlightColor: customColors.primaryBackGround,
-              child: ListView.builder(
-                  itemCount: 10, // Number of shimmer items
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 12, right: 12, bottom: 15),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        height: 200, // Adjust based on your content
-                      ),
-                    );
-                  })),
-        ),
-      ]),
-    ),
-  );
-}
-
-SizedBox categoryCardShimmer() {
-  return SizedBox(
-    height: 55,
-    child: Shimmer.fromColors(
-        baseColor: customColors.secondaryBackGround,
-        highlightColor: customColors.primaryBackGround,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 10, // Number of shimmer items
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: customColors.secondaryBackGround),
-                ),
-              );
-            })),
-  );
-}
+import '../../../../../main.dart';
 
 Widget followingPageshimmer(PreferredSize f) {
   return Scaffold(
@@ -260,27 +117,31 @@ Widget buildListOfShimmerForViewAllPage() {
           List.generate(8, (index) => generalElementForEachCardShimmer()));
 }
 
-Widget achivementShimmer() {
-  return Expanded(
-    child: Shimmer.fromColors(
-        baseColor: customColors.secondaryBackGround,
-        highlightColor: customColors.primaryBackGround,
-        child: SingleChildScrollView(
-          child: Column(
-            children: List.generate(10, (index) {
-              // Number of items
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15)),
-                  height: 160, // Adjust based on your content
-                ),
-              );
-            }),
-          ),
-        )),
+Widget mediumSizeCardShimmer() {
+  return Column(
+    children: [
+      Expanded(
+        child: Shimmer.fromColors(
+            baseColor: customColors.secondaryBackGround,
+            highlightColor: customColors.primaryBackGround,
+            child: SingleChildScrollView(
+              child: Column(
+                children: List.generate(6, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      height: 160, // Adjust based on your content
+                    ),
+                  );
+                }),
+              ),
+            )),
+      ),
+    ],
   );
 }
 

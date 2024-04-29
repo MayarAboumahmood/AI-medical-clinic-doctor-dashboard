@@ -7,7 +7,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/pres
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/widgets/help_center_category_chip.dart';
 
 import '../../../../../../../main.dart';
-import '../../../../../../shared/shared_widgets/text_fields/search_text_field.dart';
+import '../../../../../../shared/shared_widgets/text_related_widget/text_fields/search_text_field.dart';
 
 class FAQ extends StatefulWidget {
   const FAQ({super.key});

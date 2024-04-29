@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/user_request_card.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/patient_request_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_fields/loadin_widget.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 late PatientRequestsCubit patientRequestsCubit;
@@ -38,11 +38,19 @@ class PaeientRequestsPage extends StatelessWidget {
             patientRequestsCubit = context.read<PatientRequestsCubit>();
             patientRequestsCubit.getPatientRequests();
           } else if (state is PatientRequestLoadingState) {
-            return achivementShimmer();
+            return Column(
+              children: [
+                mediumSizeCardShimmer(),
+              ],
+            );
           } else if (state is PatientRequestDataLoadedState) {
             return patientRequestsListBody(context, state.patientRequestModels);
           }
-          return achivementShimmer();
+          return Column(
+            children: [
+              mediumSizeCardShimmer(),
+            ],
+          );
         },
       ),
     );
@@ -52,8 +60,10 @@ class PaeientRequestsPage extends StatelessWidget {
       BuildContext context, List<PatientRequestModel> patientRequestModels) {
     return SingleChildScrollView(
       child: Column(
-        children: List.generate(patientRequestModels.length,
-            (index) => userRequestCard(context, patientRequestModels[index])),
+        children: List.generate(
+            patientRequestModels.length,
+            (index) =>
+                patientRequestCard(context, patientRequestModels[index])),
       ),
     );
   }
