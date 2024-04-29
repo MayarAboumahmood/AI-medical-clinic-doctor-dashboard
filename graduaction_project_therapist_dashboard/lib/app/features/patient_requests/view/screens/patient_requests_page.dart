@@ -11,8 +11,23 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 
 late PatientRequestsCubit patientRequestsCubit;
 
-class PaeientRequestsPage extends StatelessWidget {
+class PaeientRequestsPage extends StatefulWidget {
   const PaeientRequestsPage({super.key});
+
+  @override
+  State<PaeientRequestsPage> createState() => _PaeientRequestsPageState();
+}
+
+class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
+  @override
+  void initState() {
+    super.initState();
+    patientRequestsCubit=context.read<PatientRequestsCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      patientRequestsCubit.getPatientRequests();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<PatientRequestsCubit, PatientRequestsState>(
@@ -34,23 +49,12 @@ class PaeientRequestsPage extends StatelessWidget {
       appBar: appBarPushingScreens('Patient Requests', isFromScaffold: true),
       body: BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
         builder: (context, state) {
-          if (state is PatientRequestsInitial) {
-            patientRequestsCubit = context.read<PatientRequestsCubit>();
-            patientRequestsCubit.getPatientRequests();
-          } else if (state is PatientRequestLoadingState) {
-            return Column(
-              children: [
-                mediumSizeCardShimmer(),
-              ],
-            );
+    if (state is PatientRequestLoadingState) {
+            return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {
             return patientRequestsListBody(context, state.patientRequestModels);
           }
-          return Column(
-            children: [
-              mediumSizeCardShimmer(),
-            ],
-          );
+          return mediumSizeCardShimmer();
         },
       ),
     );

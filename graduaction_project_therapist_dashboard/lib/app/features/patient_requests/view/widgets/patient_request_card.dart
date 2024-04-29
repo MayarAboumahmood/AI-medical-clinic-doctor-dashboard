@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/select_time_date_bottomsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
@@ -40,9 +41,9 @@ Widget patientRequestCard(
             children: [
               GeneralButtonOptions(
                   text: "Accept".tr(),
-                  onPressed: () {
-
-
+                  onPressed: () async {
+                    await showBottomSheetWidget(
+                        context, const SelectTimeDateBottomSheet());
                   },
                   options: ButtonOptions(
                       color: customColors.primary,
@@ -102,14 +103,14 @@ Widget buildRejectPatientRequestBottomSheet(BuildContext context) {
                 backgroundColor:
                     MaterialStateProperty.all(customColors.primary),
               ),
-              onPressed: () {
-                //TODO: Handle Accept Action
+              onPressed: () async {
+                await showBottomSheetWidget(
+                    context, const SelectTimeDateBottomSheet());
                 Navigator.pop(context); // Close the bottom sheet
               },
               child: Text(
                 'Yes'.tr(),
-                style: customTextStyle.bodyMedium
-                    ,
+                style: customTextStyle.bodyMedium,
               ),
             ),
             ElevatedButton(
