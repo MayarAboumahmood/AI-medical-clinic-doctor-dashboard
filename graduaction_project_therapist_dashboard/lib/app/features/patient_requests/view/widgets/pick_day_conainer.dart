@@ -2,41 +2,51 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/choose_time.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-class PickTImeContainer extends StatefulWidget {
-  const PickTImeContainer({super.key});
+class PickDayContainer extends StatefulWidget {
+  const PickDayContainer({super.key});
 
   @override
-  State<PickTImeContainer> createState() => _PickTImeContainerState();
+  State<PickDayContainer> createState() => _PickDayContainerState();
 }
 
-class _PickTImeContainerState extends State<PickTImeContainer> {
+class _PickDayContainerState extends State<PickDayContainer> {
+  late DateTime selectedDay;
   late PatientRequestsCubit patientRequestsCubit;
-  late String selectedTime;
+  late String selectedDayString;
   @override
   initState() {
-    super.initState();
     patientRequestsCubit = context.read<PatientRequestsCubit>();
-    selectedTime = DateFormat('hh:mm a').format(DateTime.now());
+    super.initState();
+    selectedDay = DateTime.now();
+    selectedDayString = DateFormat('yyyy/MM/dd').format(selectedDay);
   }
 
   @override
   Widget build(BuildContext context) {
-    return pickTImeContainer(selectedTime);
+    return pickDayContainer();
   }
 
-  GestureDetector pickTImeContainer(String time) {
+  GestureDetector pickDayContainer() {
     return GestureDetector(
       onTap: () {
-        buildChooseTime(context, time, (newDateTime) {
-          patientRequestsCubit.setSelectedTime(newDateTime);
-          setState(() {
-            selectedTime = newDateTime;
-          });
-          navigationService.goBack();
-        });
+        buildChooseDate(
+          context,
+          selectedDay, // Use the state variable directly
+          (newDateTime) {
+            selectedDay = newDateTime;
+            setState(() {
+              selectedDayString = DateFormat('yyyy/MM/dd').format(newDateTime);
+            });
+            patientRequestsCubit.setSelectedDay(
+              selectedDayString,
+            );
+
+            navigationService.goBack();
+          },
+        );
       },
       child: Container(
         width: responsiveUtil.screenWidth * .3,
@@ -53,7 +63,7 @@ class _PickTImeContainerState extends State<PickTImeContainer> {
           child: Row(
             children: [
               Text(
-                'Time'.tr(),
+                'Day'.tr(),
                 style: customTextStyle.bodyMedium
                     .copyWith(color: customColors.primary),
               ),
@@ -61,7 +71,7 @@ class _PickTImeContainerState extends State<PickTImeContainer> {
                 width: 5,
               ),
               Text(
-                time,
+                selectedDayString,
                 style: customTextStyle.bodySmall,
               ),
             ],

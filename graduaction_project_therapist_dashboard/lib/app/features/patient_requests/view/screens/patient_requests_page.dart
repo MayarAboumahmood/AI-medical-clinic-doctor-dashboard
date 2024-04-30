@@ -22,7 +22,7 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
   @override
   void initState() {
     super.initState();
-    patientRequestsCubit=context.read<PatientRequestsCubit>();
+    patientRequestsCubit = context.read<PatientRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       patientRequestsCubit.getPatientRequests();
     });
@@ -49,7 +49,7 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
       appBar: appBarPushingScreens('Patient Requests', isFromScaffold: true),
       body: BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
         builder: (context, state) {
-    if (state is PatientRequestLoadingState) {
+          if (state is PatientRequestLoadingState) {
             return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {
             return patientRequestsListBody(context, state.patientRequestModels);

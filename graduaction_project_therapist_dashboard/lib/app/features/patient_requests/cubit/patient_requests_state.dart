@@ -13,6 +13,12 @@ final class PatientRequestLoadingState extends PatientRequestsState {
   List<Object?> get props => [];
 }
 
+final class PatientRequestApprovedSuccessfullyState
+    extends PatientRequestsState {
+  @override
+  List<Object?> get props => [];
+}
+
 final class PatientRequestErrorState extends PatientRequestsState {
   final StatusRequest statusRequest;
   PatientRequestErrorState({required this.statusRequest});

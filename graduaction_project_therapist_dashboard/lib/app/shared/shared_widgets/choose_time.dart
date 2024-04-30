@@ -10,12 +10,13 @@ Future buildChooseTime(
 ) {
   DateTime initialDateTime;
   try {
-    // Try parsing assuming a 24-hour format first
-    initialDateTime = DateFormat('HH:mm:ss').parse(time);
-  } catch (e) {
     // Fallback to 12-hour format if the first parse fails
+    initialDateTime = DateFormat('hh:mm a').parse(time,true);
+  } catch (e) {
+    print('first error assigning the time: $e');
     try {
-      initialDateTime = DateFormat('hh:mm a').parse(time);
+      // Try parsing assuming a 24-hour format first
+      initialDateTime = DateFormat('HH:mm').parse(time);
     } catch (e) {
       // If both fail, log an error or handle gracefully
       print("Error parsing time: $e");

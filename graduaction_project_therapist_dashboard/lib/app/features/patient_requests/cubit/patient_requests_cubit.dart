@@ -8,6 +8,9 @@ part 'patient_requests_state.dart';
 
 class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   PatientRequestsCubit() : super(PatientRequestsInitial());
+  String? selectedTime;
+  String? selectedDay;
+
   List<PatientRequestModel> fakeUserRequests = [
     PatientRequestModel(
       userName: "John Doe",
@@ -27,6 +30,18 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
       userImage: "https://via.placeholder.com/150",
     ),
   ];
+  void setSelectedTime(String newSelectedTime) {
+    selectedTime = newSelectedTime;
+  }
+
+  void setSelectedDay(String newSelectedDay) {
+    selectedDay = newSelectedDay;
+  }
+
+  void approveOnPatientRequest() {
+    //TODO send the date to the backend.
+    emit(PatientRequestApprovedSuccessfullyState());
+  }
 
   void getPatientRequests() {
     emit(PatientRequestLoadingState());
