@@ -35,6 +35,10 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
         if (state is PatientRequestErrorState) {
           String errorMessage = getMessageFromStatus(state.statusRequest);
           customSnackBar(errorMessage, context);
+        } else if (state is PatientRequestApprovedSuccessfullyState) {
+          customSnackBar('session confirmed Successfully', context);
+        } else if (state is PatientRequestRejectedSuccessfullyState) {
+          customSnackBar('session rejected Successfully', context);
         }
       },
       child: patientRequestsPage(context),
@@ -53,6 +57,12 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
             return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {
             return patientRequestsListBody(context, state.patientRequestModels);
+          } else if (state is PatientRequestApprovedSuccessfullyState) {
+            return patientRequestsListBody(
+                context, patientRequestsCubit.cachedUserRequests);
+          } else if (state is PatientRequestRejectedSuccessfullyState) {
+            return patientRequestsListBody(
+                context, patientRequestsCubit.cachedUserRequests);
           }
           return mediumSizeCardShimmer();
         },

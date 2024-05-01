@@ -24,11 +24,16 @@ Widget getImageNetwork({
       fit: fit,
       loadingBuilder: (BuildContext context, Widget child,
           ImageChunkEvent? loadingProgress) {
-        if (loadingProgress != null) {
-          return buildLoadingShimmer(width, height);
+        if (loadingProgress == null ||
+            loadingProgress.expectedTotalBytes == null) {
+          return child; // Image is loaded or the total size is not determined.
         }
-        return child;
-        // Image has finished loading
+        if (loadingProgress.cumulativeBytesLoaded <
+            loadingProgress.expectedTotalBytes!) {
+          return buildLoadingShimmer(width ?? double.infinity,
+              height ?? double.infinity); // Show shimmer when image is loading
+        }
+        return child; // Image has finished loading
       },
       errorBuilder:
           (BuildContext context, Object error, StackTrace? stackTrace) {

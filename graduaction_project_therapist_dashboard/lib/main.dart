@@ -17,6 +17,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/language_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
@@ -42,7 +43,7 @@ UserData? userData;
 late Timer timer;
 bool isGuest = false;
 LocationData? globalUserLocation;
-bool comingFromRegisterOrLogin=false;
+bool comingFromRegisterOrLogin = false;
 void startTimerToRemoveSplashScreen() {
   timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
     if (t.tick == 2) {
@@ -123,6 +124,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => di.sl<ThemeBloc>()),
           BlocProvider(create: (_) => di.sl<LanguageBloc>()),
           BlocProvider(create: (_) => di.sl<RegistrationDataCompleteCubit>()),
+          BlocProvider(create: (_) => di.sl<UserProfileCubit>()),
           BlocProvider(create: (_) => di.sl<GetUserDataBloc>()),
           BlocProvider(create: (_) => di.sl<NotificationBloc>()),
           BlocProvider(create: (_) => di.sl<ProfileBloc>()),

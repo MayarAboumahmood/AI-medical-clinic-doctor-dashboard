@@ -5,12 +5,11 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_time_container.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class SelectTimeDateBottomSheet extends StatefulWidget {
-  const SelectTimeDateBottomSheet({super.key});
-
+  const SelectTimeDateBottomSheet({super.key, required this.requestID});
+  final int requestID;
   @override
   State<SelectTimeDateBottomSheet> createState() =>
       _SelectTimeDateBottomSheetState();
@@ -26,40 +25,46 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PatientRequestsCubit, PatientRequestsState>(
-      listener: (context, state) {
-    if(state is PatientRequestApprovedSuccessfullyState){
-      customSnackBar('session confirmed Successfully', context);
-    }
-      },
-      child: Container(
-        width: responsiveUtil.screenWidth,
-        height: responsiveUtil.screenHeight * .3,
-        decoration: BoxDecoration(
-            color: customColors.primaryBackGround,
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-        child: const SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              PickTImeContainer(),
-              SizedBox(
-                height: 20,
-              ),
-              PickDayContainer(),
-            ],
-          ),
+    return Container(
+      width: responsiveUtil.screenWidth,
+      height: responsiveUtil.screenHeight * .3,
+      decoration: BoxDecoration(
+          color: customColors.primaryBackGround,
+          borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(10), topLeft: Radius.circular(10))),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            const PickTImeContainer(),
+            const SizedBox(
+              height: 20,
+            ),
+            const PickDayContainer(),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                cancelButton(context),
+                SizedBox(
+                  width: responsiveUtil.screenWidth * .1,
+                ),
+                doneButton(context)
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 
-  GeneralButtonOptions rejectButton(BuildContext context) {
+  GeneralButtonOptions cancelButton(BuildContext context) {
     return GeneralButtonOptions(
-      text: 'Reject'.tr(),
+      text: 'Cancel'.tr(),
       options: ButtonOptions(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(
@@ -82,16 +87,15 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
       options: ButtonOptions(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(
-          color: customColors.error,
+          color: customColors.primary,
           width: 1,
         ),
-        color: customColors.primaryBackGround,
-        textStyle:
-            customTextStyle.bodyMedium.copyWith(color: customColors.error),
+        color: customColors.primary,
+        textStyle: customTextStyle.bodyMedium,
       ),
       onPressed: () async {
         navigationService.goBack();
-        patientRequestsCubit.approveOnPatientRequest();
+        patientRequestsCubit.approveOnPatientRequest(widget.requestID);
       },
     );
   }

@@ -11,19 +11,22 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   String? selectedTime;
   String? selectedDay;
 
-  List<PatientRequestModel> fakeUserRequests = [
+  List<PatientRequestModel> cachedUserRequests = [
     PatientRequestModel(
+      id: 1,
       userName: "John Doe",
       userInfo: "Lorem consectetur adipiscing elit.",
       userImage: "https://via.placeholder.com/150",
     ),
     PatientRequestModel(
+      id: 2,
       userName: "Jane Smith",
       userInfo:
           "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       userImage: "https://via.placeholder.com/150",
     ),
     PatientRequestModel(
+      id: 3,
       userName: "Alice Johnson",
       userInfo:
           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -38,9 +41,20 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     selectedDay = newSelectedDay;
   }
 
-  void approveOnPatientRequest() {
+  void approveOnPatientRequest(int requestID) {
+    // if (response.statusCode == 200) {
+    cachedUserRequests.removeWhere((item) => item.id == requestID);
+    // }
     //TODO send the date to the backend.
     emit(PatientRequestApprovedSuccessfullyState());
+  }
+
+  void rejectOnPatientRequest(int requestID) {
+    // if (response.statusCode == 200) {
+    cachedUserRequests.removeWhere((item) => item.id == requestID);
+    // }
+    //TODO send the date to the backend.
+    emit(PatientRequestRejectedSuccessfullyState());
   }
 
   void getPatientRequests() {
@@ -48,7 +62,7 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
 
     Future.delayed(const Duration(seconds: 1), () {
       emit(PatientRequestDataLoadedState(
-          patientRequestModels: fakeUserRequests));
+          patientRequestModels: cachedUserRequests));
     });
   }
 }

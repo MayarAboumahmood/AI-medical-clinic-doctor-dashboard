@@ -13,6 +13,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/data
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/repository_imp/edit_profile_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/theme_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,6 +59,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => BottomNavigationWidgetBloc());
   sl.registerLazySingleton(
       () => NotificationBloc(notificationRepository: sl()));
+  sl.registerFactory(() => UserProfileCubit());
   sl.registerLazySingleton(() => ThemeBloc());
 
 // External

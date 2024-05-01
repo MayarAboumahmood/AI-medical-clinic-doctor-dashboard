@@ -35,62 +35,6 @@ Widget followingPageshimmer(PreferredSize f) {
   );
 }
 
-Widget mapPageshimmer(Widget appBarShimmerChild) {
-  final ScrollController scrollController =
-      ScrollController(initialScrollOffset: 280.0);
-  return Scaffold(
-    backgroundColor: customColors.primaryBackGround,
-    appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 110),
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: appBarShimmerChild)),
-    body: SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Shimmer.fromColors(
-          baseColor: customColors.secondaryBackGround,
-          highlightColor: customColors.primaryBackGround,
-          child: SizedBox(
-              height: 280, // Height of the shimmer list area
-              child: ListView.builder(
-                  controller: scrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10, // Number of shimmer items
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 30),
-                      child: Container(
-                        width: 310, // Width of each shimmer item
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    );
-                  })),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget profilePageshimmer() {
-  return Flexible(
-      fit: FlexFit.loose,
-      child: Container(
-          padding: responsiveUtil.padding(20, 15, 0, 15),
-          child: TabBarView(
-            children: [
-              buildListOfShimmerForProfilePage(),
-              buildListOfShimmerForProfilePage(),
-            ],
-          )));
-}
-
 Widget buildListOfShimmerForProfilePage() {
   return Shimmer.fromColors(
       baseColor: customColors.secondaryBackGround,

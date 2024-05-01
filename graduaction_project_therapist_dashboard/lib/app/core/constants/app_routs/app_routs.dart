@@ -10,6 +10,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/pres
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/complete_data_certifications.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/registeration_data_complete_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/set_location_on_map.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/screens/user_profile.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 // Define route names
@@ -26,6 +27,7 @@ const String completeDataPage = '/CompleteDataPage';
 const String completeCertificationsPage = '/CompleteCertificationsPage';
 const String selectLocationMapPage = '/SelectLocationMapPage';
 const String selectImageRegisterStep = '/SelectImageRegisterStep';
+const String userProfilePage = '/UserProfilePage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -41,4 +43,5 @@ final Map<String, WidgetBuilder> routes = {
   completeCertificationsPage: (context) => const CompleteCertificationsPage(),
   selectLocationMapPage: (context) => const SelectLocationMapPage(),
   selectImageRegisterStep: (context) => const SelectImageRegisterStep(),
+  userProfilePage: (context) => const UserProfilePage(),
 };
