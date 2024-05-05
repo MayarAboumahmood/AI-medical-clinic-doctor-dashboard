@@ -11,14 +11,14 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 
 late PatientRequestsCubit patientRequestsCubit;
 
-class PaeientRequestsPage extends StatefulWidget {
-  const PaeientRequestsPage({super.key});
+class PatientRequestsPage extends StatefulWidget {
+  const PatientRequestsPage({super.key});
 
   @override
-  State<PaeientRequestsPage> createState() => _PaeientRequestsPageState();
+  State<PatientRequestsPage> createState() => _PatientRequestsPageState();
 }
 
-class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
+class _PatientRequestsPageState extends State<PatientRequestsPage> {
   @override
   void initState() {
     super.initState();
@@ -35,9 +35,8 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
         if (state is PatientRequestErrorState) {
           String errorMessage = getMessageFromStatus(state.statusRequest);
           customSnackBar(errorMessage, context);
-        } else if (state is PatientRequestApprovedSuccessfullyState) {
-          customSnackBar('session confirmed Successfully', context);
-        } else if (state is PatientRequestRejectedSuccessfullyState) {
+        } else if (state is PatientRequestRejectedSuccessfullyState ||
+            state is PatientRequestApprovedSuccessfullyState) {
           customSnackBar('session rejected Successfully', context);
         }
       },
@@ -73,12 +72,15 @@ class _PaeientRequestsPageState extends State<PaeientRequestsPage> {
   SingleChildScrollView patientRequestsListBody(
       BuildContext context, List<PatientRequestModel> patientRequestModels) {
     return SingleChildScrollView(
-      child: Column(
-        children: List.generate(
+      child: Column(children: [
+        ...List.generate(
             patientRequestModels.length,
             (index) =>
                 patientRequestCard(context, patientRequestModels[index])),
-      ),
+        const SizedBox(
+          height: 50,
+        ),
+      ]),
     );
   }
 }

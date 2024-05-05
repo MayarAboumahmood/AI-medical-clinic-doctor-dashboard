@@ -106,7 +106,7 @@ class _EditeProfileState extends State<EditProfile> {
         customSnackBar(
           'Your profile has been updated',
           context,
-          shouldFloating: true,
+          isFloating: true,
         );
 
         navigationService.goBack();

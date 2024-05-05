@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/view/screens/patient_reservations_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/profile_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/your_data_notcompleted_yet_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
@@ -38,8 +39,8 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     return [
       const SizedBox(),
       isGuest == true ? GuestWidget() : YourDataNotCompletedYetPage(),
-      isGuest == true ? GuestWidget() : const PaeientRequestsPage(),
-      isGuest == true ? GuestWidget() : const SizedBox(),
+      isGuest == true ? GuestWidget() : const PatientRequestsPage(),
+      isGuest == true ? GuestWidget() : const PatientReservationsPage(),
       isGuest == true ? GuestWidget() : const ProfileScreen(),
     ];
   }

@@ -79,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           });
         } else if (state is ServerErrorRequest) {
           customSnackBar(getMessageFromStatus(state.statusRequest), context,
-              shouldFloating: true);
+              isFloating: true);
         }
       },
       child: profileBody(context),

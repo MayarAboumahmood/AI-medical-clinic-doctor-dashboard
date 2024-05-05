@@ -114,7 +114,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       navigationService.goBack();
                       customSnackBar(
                           'your password has been changed'.tr(), context,
-                          shouldFloating: true);
+                          isFloating: true);
                     });
 
                     return saveButton(context, true);

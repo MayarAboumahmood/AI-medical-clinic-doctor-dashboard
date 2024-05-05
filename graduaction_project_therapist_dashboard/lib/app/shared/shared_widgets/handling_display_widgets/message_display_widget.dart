@@ -38,7 +38,7 @@ void messageDisplayWidget(
           }
         } else {
           if (context.mounted) {
-            customSnackBar('Server Error', context, shouldFloating: true);
+            customSnackBar('Server Error', context, isFloating: true);
           }
         }
       }
