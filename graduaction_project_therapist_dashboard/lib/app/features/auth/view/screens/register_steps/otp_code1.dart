@@ -56,10 +56,10 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterCubit, RegisterState>(
-        listener: (ccontext, state) {
+        listener: (context, state) {
           if (state is RegisterOTPSendSuccessRequest) {
-            navigationService.navigateTo(
-                passwordStepPage);
+            navigationService.navigationOfAllPagesToName(
+                context, bottomNavigationBar);
           } else if (state is RegisterValidationErrorRequest) {
             customSnackBar('Check your inputs', context);
           } else if (state is RegisterServerErrorRequest) {
@@ -68,7 +68,7 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
         },
         child: Scaffold(
             backgroundColor: customColors.primaryBackGround,
-            appBar: buildAppBarWithLineIndicatorincenter(2, context),
+            appBar: buildAppBarWithLineIndicatorincenter(4, context),
             body: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,

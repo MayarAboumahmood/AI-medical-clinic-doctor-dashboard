@@ -36,6 +36,7 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
   Widget build(BuildContext context) {
     return BlocListener<RegisterCubit, RegisterState>(
         listener: (ccontext, state) {
+          print('ssssssssssssss: $state');
           if (state is RegisterSuccessRequest) {
             navigationService.navigateTo(selectImageRegisterStep);
             comingFromRegisterOrLogin = true;
@@ -47,7 +48,7 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
         },
         child: Scaffold(
             backgroundColor: customColors.primaryBackGround,
-            appBar: buildAppBarWithLineIndicatorincenter(3, context),
+            appBar: buildAppBarWithLineIndicatorincenter(2, context),
             body: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -106,6 +107,7 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
                   builder: (context, state) {
                     final bool isLoading = state is RegisterLoadingRequest;
                     return navigateButton(() {
+                      print('ssssssssssssss: $state');
                       FormState? formdata = formKey.currentState;
                       if (formdata!.validate()) {
                         formdata.save();

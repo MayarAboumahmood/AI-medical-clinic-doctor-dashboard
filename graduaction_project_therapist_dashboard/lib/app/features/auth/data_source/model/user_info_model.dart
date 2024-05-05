@@ -7,6 +7,7 @@ class UserInfo {
   final String studieInfo;
   final String password;
   final String? selectedSpecialization;
+  final String? selectedGender;
 
   UserInfo({
     required this.firstName,
@@ -17,6 +18,7 @@ class UserInfo {
     required this.locationInfo,
     required this.studieInfo,
     this.selectedSpecialization,
+    this.selectedGender,
   });
   UserInfo copyWith({
     String? firstName,
@@ -27,6 +29,7 @@ class UserInfo {
     String? studieInfo,
     String? password,
     String? selectedSpecialization,
+    String? selectedGender,
   }) {
     return UserInfo(
       firstName: firstName ?? this.firstName,
@@ -38,6 +41,7 @@ class UserInfo {
       studieInfo: studieInfo ?? this.studieInfo,
       selectedSpecialization:
           selectedSpecialization ?? this.selectedSpecialization,
+      selectedGender: selectedGender ?? this.selectedGender,
     );
   }
 }

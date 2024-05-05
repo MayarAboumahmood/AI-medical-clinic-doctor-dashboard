@@ -14,6 +14,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/bottom_navig
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
@@ -131,6 +132,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => di.sl<SignInCubit>()),
           BlocProvider(create: (_) => di.sl<RegisterCubit>()),
           BlocProvider(create: (_) => di.sl<PatientRequestsCubit>()),
+          BlocProvider(create: (_) => di.sl<PatientReservationsCubit>()),
           BlocProvider(create: (_) => di.sl<BottomNavigationWidgetBloc>()),
         ],
         child: BlocBuilder<ThemeBloc, ThemeData>(builder: (context, theme) {

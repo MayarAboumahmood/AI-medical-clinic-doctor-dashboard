@@ -7,6 +7,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -33,18 +34,9 @@ Widget patientReservationCard(
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              GeneralButtonOptions(
-                  text: "Accept".tr(),
-                  onPressed: () async {
-                    await showBottomSheetWidget(
-                        context,
-                        SelectTimeDateBottomSheet(
-                            requestID: patientReservationModel.id));
-                  },
-                  options: ButtonOptions(
-                      color: customColors.primary,
-                      textStyle: customTextStyle.bodyMedium
-                          .copyWith(color: Colors.white))),
+              enterSessionButton(context, patientReservationModel),
+              const SizedBox(width: 8),
+              updateButton(context, patientReservationModel),
               const SizedBox(width: 8),
               cancelButton(context, patientReservationModel.id),
             ],
@@ -53,6 +45,44 @@ Widget patientReservationCard(
       ),
     ),
   );
+}
+
+GeneralButtonOptions enterSessionButton(
+    BuildContext context, PatientReservationModel patientReservationModel) {
+  PatientReservationsCubit patientReservationsCubit =
+      context.read<PatientReservationsCubit>();
+  bool canEnterTheSession =
+      patientReservationsCubit.checkIfSessionIsNear(patientReservationModel.id);
+  return GeneralButtonOptions(
+      text: "Enter session".tr(),
+      onPressed: canEnterTheSession
+          ? () async {
+              await showBottomSheetWidget(
+                  context,
+                  SelectTimeDateBottomSheet(
+                      requestID: patientReservationModel.id));
+            }
+          : () {
+              customSnackBar('Not available yet', context, isFloating: true);
+            },
+      options: ButtonOptions(
+          color: canEnterTheSession
+              ? customColors.primary
+              : customColors.completeded,
+          textStyle: customTextStyle.bodyMedium.copyWith(color: Colors.white)));
+}
+
+GeneralButtonOptions updateButton(
+    BuildContext context, PatientReservationModel patientReservationModel) {
+  return GeneralButtonOptions(
+      text: "Update".tr(),
+      onPressed: () async {
+        await showBottomSheetWidget(context,
+            SelectTimeDateBottomSheet(requestID: patientReservationModel.id));
+      },
+      options: ButtonOptions(
+          color: customColors.primary,
+          textStyle: customTextStyle.bodyMedium.copyWith(color: Colors.white)));
 }
 
 GestureDetector buildUserNameAndImage(

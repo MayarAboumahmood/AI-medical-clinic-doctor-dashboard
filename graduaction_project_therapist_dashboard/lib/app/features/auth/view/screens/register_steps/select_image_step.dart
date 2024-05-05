@@ -31,7 +31,7 @@ class SelectImageRegisterStep extends StatelessWidget {
 
           return Scaffold(
               backgroundColor: customColors.primaryBackGround,
-              appBar: buildAppBarWithLineIndicatorincenter(4, context),
+              appBar: buildAppBarWithLineIndicatorincenter(3, context),
               body: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -91,7 +91,7 @@ class SelectImageRegisterStep extends StatelessWidget {
             Uint8List? imageList =
                 BlocProvider.of<RegisterCubit>(context).selectedImage;
             if (imageList != null) {
-              navigationService.navigateTo(bottomNavigationBar);
+              navigationService.navigateTo(oTPCodeStep);
             } else {
               customSnackBar('You have to choos an image', context);
             }

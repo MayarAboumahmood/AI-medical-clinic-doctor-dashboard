@@ -61,7 +61,7 @@ abstract class AppColors {
   static const darkDelete = Color(0xffA33A50);
   static const darkRevoke = Color(0xff696072);
   static const darkCancelled = Color(0xff56567B);
-  static const darkCompleteded = Color.fromARGB(64, 68, 63, 138);
+  static const darkCompleteded = Color.fromARGB(64, 101, 100, 104);
   static const darkPending = Color(0xffB3A06E);
   static const darkPaid = Color.fromARGB(255, 64, 60, 122);
   static const darkSeeDetailes = Color.fromARGB(43, 122, 123, 131);

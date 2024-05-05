@@ -115,6 +115,10 @@ class _JoinWidgetState extends State<JoinWidget> {
             height: 20,
           ),
           selectSpecialtyDropDown(),
+          const SizedBox(
+            height: 15,
+          ),
+          selectGenderDropDown(),
           byJoiningOurTimeTextWidget(),
           buildTermPrivacy(isTermsAccepted, toggleTermsCheckbox, context),
           buildJoinButton(
@@ -261,7 +265,7 @@ class _JoinWidgetState extends State<JoinWidget> {
               if (!loading) {
                 BlocProvider.of<RegisterCubit>(context).sendRegisterRequest();
                 //TODO: remove the navigation from here and put it in the listener.
-                navigationService.navigateTo(oTPCodeStep);
+                navigationService.navigateTo(passwordStepPage);
               }
             }
             //   }
@@ -342,5 +346,56 @@ class _JoinWidgetState extends State<JoinWidget> {
     );
   }
 
-  List<String> specialtyList = ['Doctor', 'Therapist'];
+  Padding selectGenderDropDown() {
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: customColors.secondaryBackGround)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: DropdownButtonFormField<String>(
+            value: registerCubit.userInfo.selectedGender,
+            decoration: InputDecoration(
+              hintStyle: customTextStyle.bodyMedium.copyWith(
+                  color: customColors.primaryText,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12),
+              labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: customColors.primary,
+                    fontSize: 12,
+                  ),
+              labelText: 'Gender:'.tr(),
+              border: InputBorder.none,
+            ),
+            dropdownColor: customColors.primaryBackGround,
+            items: genderList.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value.tr(),
+                  style: customTextStyle.bodySmall
+                      .copyWith(color: customColors.primaryText),
+                ),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                registerCubit.userInfo.copyWith(selectedGender: newValue);
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<String> specialtyList = ['Doctor'.tr(), 'Therapist'.tr()];
+  List<String> genderList = ['Femal'.tr(), 'Male'.tr()];
 }
