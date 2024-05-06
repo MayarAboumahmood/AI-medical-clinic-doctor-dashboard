@@ -8,10 +8,12 @@ class UserInfo {
   final String password;
   final String? selectedSpecialization;
   final String? selectedGender;
+  final String dateOfBirth;
 
   UserInfo({
     required this.firstName,
     required this.lastName,
+    required this.dateOfBirth,
     required this.phoneNumber,
     required this.userEmail,
     required this.password,
@@ -27,6 +29,7 @@ class UserInfo {
     String? userEmail,
     String? locationInfo,
     String? studieInfo,
+    String? dateOfBirth,
     String? password,
     String? selectedSpecialization,
     String? selectedGender,
@@ -35,6 +38,7 @@ class UserInfo {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       userEmail: userEmail ?? this.userEmail,
       password: password ?? this.password,
       locationInfo: locationInfo ?? this.locationInfo,

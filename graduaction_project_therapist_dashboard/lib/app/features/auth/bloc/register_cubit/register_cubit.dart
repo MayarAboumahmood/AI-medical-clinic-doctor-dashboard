@@ -12,6 +12,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
   String otpCode = '';
   UserInfo userInfo = UserInfo(
+    dateOfBirth: '',
     firstName: '',
     lastName: '',
     password: '',
@@ -28,13 +29,16 @@ class RegisterCubit extends Cubit<RegisterState> {
     String? phoneNumber,
     String? userEmail,
     String? password,
+    String? dateOfBirth,
   }) {
+    print('sssssssssssss register: $dateOfBirth');
     userInfo = userInfo.copyWith(
       firstName: firstName ?? userInfo.firstName,
       lastName: lastName ?? userInfo.lastName,
       phoneNumber: phoneNumber ?? userInfo.phoneNumber,
       userEmail: userEmail ?? userInfo.userEmail,
       password: password ?? userInfo.password,
+      dateOfBirth: dateOfBirth ?? userInfo.dateOfBirth,
     );
   }
 
@@ -47,7 +51,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void sendRegisterRequest() {
     //TODO: send the register requiest and than change the state.
-    emit(RegisterSuccessRequest());
+    emit(RegisterSuccessRequestWithoutOTP());
   }
 
   void sendVerifyPinRequest() {

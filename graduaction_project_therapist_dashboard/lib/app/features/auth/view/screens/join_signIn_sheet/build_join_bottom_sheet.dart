@@ -267,8 +267,8 @@ class _JoinWidgetState extends State<JoinWidget> {
                 //TODO: remove the navigation from here and put it in the listener.
                 navigationService.navigateTo(passwordStepPage);
               }
+              // }
             }
-            //   }
           },
           text: 'Join'.tr(),
           options: ButtonOptions(
@@ -310,6 +310,9 @@ class _JoinWidgetState extends State<JoinWidget> {
             horizontal: 10,
           ),
           child: DropdownButtonFormField<String>(
+            validator: (value) {
+              return ValidationFunctions.dropDownValidation(value);
+            },
             value: registerCubit.userInfo.selectedSpecialization,
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(
@@ -361,6 +364,9 @@ class _JoinWidgetState extends State<JoinWidget> {
             horizontal: 10,
           ),
           child: DropdownButtonFormField<String>(
+            validator: (value) {
+              return ValidationFunctions.dropDownValidation(value);
+            },
             value: registerCubit.userInfo.selectedGender,
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(

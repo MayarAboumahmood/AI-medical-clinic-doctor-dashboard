@@ -6,6 +6,8 @@ import 'package:graduation_project_therapist_dashboard/app/core/constants/app_ro
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/pic_picture_sheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -17,32 +19,38 @@ import '../../widgets/steps_widget/riched_text.dart';
 
 Uint8List? imageBytes;
 
-class SelectImageRegisterStep extends StatelessWidget {
-  const SelectImageRegisterStep({super.key});
+class SelectImageAndDateRegisterStep extends StatelessWidget {
+  const SelectImageAndDateRegisterStep({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterState>(
-        listener: (ccontext, state) {},
-        builder: (context, state) {
-          if (state is RegisterProfilePictureUpdated) {
-            imageBytes = state.imageBytes;
-          }
+        listener: (context, state) {
+      if (state is RegisterSuccessRequestWithoutOTP) {
+        navigationService.navigateTo(oTPCodeStep);
+      } else if (state is RegisterServerErrorRequest) {
+        customSnackBar(getMessageFromStatus(state.statusRequest), context);
+      }
+    }, builder: (context, state) {
+      if (state is RegisterProfilePictureUpdated) {
+        imageBytes = state.imageBytes;
+      }
 
-          return Scaffold(
-              backgroundColor: customColors.primaryBackGround,
-              appBar: buildAppBarWithLineIndicatorincenter(3, context),
-              body: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [buildSelectImageBody(context, imageBytes)],
-                ),
-              ));
-        });
+      return Scaffold(
+          backgroundColor: customColors.primaryBackGround,
+          appBar: buildAppBarWithLineIndicatorincenter(3, context),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [buildSelectImageBody(context, imageBytes)],
+            ),
+          ));
+    });
   }
 
   Widget buildSelectImageBody(context, pictureProfile) {
+    // RegisterCubit registerCubit=context.read<RegisterCubit>();
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: responsiveUtil.screenHeight * .04,
@@ -52,7 +60,7 @@ class SelectImageRegisterStep extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          richedTextSteps(context, 4),
+          richedTextSteps(context, 3),
           Padding(
             padding: EdgeInsets.only(top: responsiveUtil.screenWidth * .08),
             child: Text(
@@ -68,7 +76,7 @@ class SelectImageRegisterStep extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          addImageContainer(imageBytes),
+          addImageContainer(context, imageBytes),
           Container(
             alignment: Alignment.center,
             margin:
@@ -84,14 +92,23 @@ class SelectImageRegisterStep extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w500)),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          PickDayContainer(
+            whatBlocShouldDoOnTap: (selectedDate) {
+              BlocProvider.of<RegisterCubit>(context)
+                  .updateUserInfo(dateOfBirth: selectedDate);
+            },
+          ),
           SizedBox(
-            height: responsiveUtil.screenHeight * .055,
+            height: responsiveUtil.screenHeight * .035,
           ),
           navigateButton(() async {
             Uint8List? imageList =
                 BlocProvider.of<RegisterCubit>(context).selectedImage;
             if (imageList != null) {
-              navigationService.navigateTo(oTPCodeStep);
+              BlocProvider.of<RegisterCubit>(context).sendRegisterRequest();
             } else {
               customSnackBar('You have to choos an image', context);
             }
@@ -101,26 +118,32 @@ class SelectImageRegisterStep extends StatelessWidget {
     );
   }
 
-  Widget addImageContainer(Uint8List? imageBytes) {
-    if (imageBytes != null) {
-      return CircleAvatar(
-        radius: 60,
-        backgroundImage: MemoryImage(imageBytes),
-      );
-    } else {
-      return Container(
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: customColors.primary)),
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Icon(
-            size: 45,
-            Icons.add_a_photo,
-            color: customColors.secondaryBackGround,
-          ),
-        ),
-      );
-    }
+  Widget addImageContainer(
+    BuildContext context,
+    Uint8List? imageBytes,
+  ) {
+    return GestureDetector(
+        onTap: () async {
+          await showBottomSheetWidget(
+              context, buildimageSourcesBottomSheet(context));
+        },
+        child: imageBytes != null
+            ? CircleAvatar(
+                radius: 60,
+                backgroundImage: MemoryImage(imageBytes),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: customColors.primary)),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Icon(
+                    size: 45,
+                    Icons.add_a_photo,
+                    color: customColors.secondaryBackGround,
+                  ),
+                ),
+              ));
   }
 }

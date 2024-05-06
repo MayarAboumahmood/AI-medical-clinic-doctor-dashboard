@@ -33,7 +33,7 @@ final class RegisterPhoneNumberNotVerifiedState extends RegisterState {
   List<Object?> get props => [];
 }
 
-final class RegisterSuccessRequest extends RegisterState {
+final class RegisterSuccessRequestWithoutOTP extends RegisterState {
   @override
   List<Object?> get props => [];
 }

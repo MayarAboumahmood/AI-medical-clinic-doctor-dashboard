@@ -42,6 +42,6 @@ final Map<String, WidgetBuilder> routes = {
   completeDataPage: (context) => const CompleteDataPage(),
   completeCertificationsPage: (context) => const CompleteCertificationsPage(),
   selectLocationMapPage: (context) => const SelectLocationMapPage(),
-  selectImageRegisterStep: (context) => const SelectImageRegisterStep(),
+  selectImageRegisterStep: (context) => const SelectImageAndDateRegisterStep(),
   userProfilePage: (context) => const UserProfilePage(),
 };

@@ -6,7 +6,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class PickDayContainer extends StatefulWidget {
-  const PickDayContainer({super.key});
+  final void Function(String selectedDate)? whatBlocShouldDoOnTap;
+  const PickDayContainer({super.key, required this.whatBlocShouldDoOnTap});
 
   @override
   State<PickDayContainer> createState() => _PickDayContainerState();
@@ -34,16 +35,13 @@ class _PickDayContainerState extends State<PickDayContainer> {
       onTap: () {
         buildChooseDate(
           context,
-          selectedDay, // Use the state variable directly
+          selectedDay,
           (newDateTime) {
             selectedDay = newDateTime;
             setState(() {
               selectedDayString = DateFormat('yyyy/MM/dd').format(newDateTime);
             });
-            patientRequestsCubit.setSelectedDay(
-              selectedDayString,
-            );
-
+            widget.whatBlocShouldDoOnTap?.call(selectedDayString);
             navigationService.goBack();
           },
         );

@@ -25,18 +25,25 @@ class OTPCodeStep extends StatefulWidget {
 class _OTPCodeStepState extends State<OTPCodeStep> {
   late Timer timer;
   int tickCount = 0;
-  int minitTimer = 0;
+  int minitTimer = 6;
 
-  void startTImer() {
+  void startTimer() {
+    // Start the timer from 6 minutes
+    int initialSeconds = 6 * 60;
+
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
-        tickCount = t.tick % 60;
-        minitTimer = t.tick ~/ 60;
+        // Calculate minutes and seconds from tick count
+        minitTimer = initialSeconds ~/ 60;
+        tickCount = initialSeconds % 60;
+
+        // Decrement the tick count
+        initialSeconds--;
+
+        // Check if the timer reaches zero
       });
-      // Check if you've reached the desired duration (6 minutes in this case)
-      if (t.tick == 60 * 6) {
-        // Do something when the timer reaches 6 minutes
-        t.cancel(); // Stop the timer
+      if (initialSeconds == -1) {
+        t.cancel(); // Stop the timer when it reaches zero
       }
     });
   }
@@ -50,7 +57,7 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
   @override
   void initState() {
     super.initState();
-    startTImer();
+    startTimer();
   }
 
   @override
@@ -99,7 +106,7 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          richedTextSteps(context, 2),
+          richedTextSteps(context, 4),
           Padding(
             padding: responsiveUtil.padding(
                 responsiveUtil.screenWidth * .012, 0, 0, 0),
