@@ -56,12 +56,9 @@ GeneralButtonOptions enterSessionButton(
   return GeneralButtonOptions(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
-          ? () async {
-              await showBottomSheetWidget(
-                  context,
-                  SelectTimeDateBottomSheet(
-                      requestID: patientReservationModel.id));
-            }
+          ? () {
+            
+          }
           : () {
               customSnackBar('Not available yet', context, isFloating: true);
             },
