@@ -42,7 +42,11 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
             const SizedBox(
               height: 20,
             ),
-            const PickDayContainer(),
+            PickDayContainer(
+              whatBlocShouldDoOnTap: (selectedDate) {
+                patientRequestsCubit.setSelectedDay(selectedDate);
+              },
+            ),
             const SizedBox(
               height: 20,
             ),

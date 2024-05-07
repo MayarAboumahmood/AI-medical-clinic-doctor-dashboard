@@ -11,7 +11,7 @@ import '../../../../../core/constants/app_string/app_string.dart';
 Widget buildimageSourcesBottomSheet(BuildContext context) {
   return Container(
     color: customColors.secondaryBackGround,
-    height: responsiveUtil.scaleHeight(200),
+    height: responsiveUtil.screenHeight * .35,
     child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
@@ -28,7 +28,7 @@ Widget buildimageSourcesBottomSheet(BuildContext context) {
               context: context,
               title: AppString.gallery.tr(),
               onPress: () {
-                 pickImage(ImageSource.gallery, context); 
+                pickImage(ImageSource.gallery, context);
 
                 navigationService.goBack();
               }),
@@ -39,7 +39,7 @@ Widget buildimageSourcesBottomSheet(BuildContext context) {
               context: context,
               title: AppString.camera.tr(),
               onPress: () {
-                pickImage(ImageSource.camera,context); 
+                pickImage(ImageSource.camera, context);
                 navigationService.goBack();
               })
         ]),

@@ -37,7 +37,7 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
     return BlocListener<RegisterCubit, RegisterState>(
         listener: (ccontext, state) {
           print('ssssssssssssss: $state');
-          if (state is RegisterSuccessRequest) {
+          if (state is RegisterSuccessRequestWithoutOTP) {
             navigationService.navigateTo(selectImageRegisterStep);
             comingFromRegisterOrLogin = true;
           } else if (state is RegisterValidationErrorRequest) {
@@ -68,7 +68,7 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          richedTextSteps(context, 3),
+          richedTextSteps(context, 2),
           Padding(
             padding: responsiveUtil.padding(
                 responsiveUtil.screenWidth * .012, 0, 0, 0),
@@ -107,12 +107,13 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
                   builder: (context, state) {
                     final bool isLoading = state is RegisterLoadingRequest;
                     return navigateButton(() {
-                      print('ssssssssssssss: $state');
                       FormState? formdata = formKey.currentState;
-                      if (formdata!.validate()) {
-                        formdata.save();
-                        registerCubit.sendRegisterRequest();
-                      }
+                      // if (formdata!.validate()) {
+                      formdata?.save();
+                      navigationService.navigateTo(selectImageRegisterStep);
+
+                      // registerCubit.sendRegisterRequest();
+                      // }
                     }, AppString.continueButton.tr(), isLoading);
                   },
                 )

@@ -13,11 +13,23 @@ class ValidationFunctions {
   static String? specializationValidation(List<String>? value) {
     if (value!.isEmpty) {
       return AppString.listValidationEmpty.tr();
-    } 
+    }
     return null;
   }
+
+  static String? dropDownValidation(String? value) {
+    if (value == null) {
+      return AppString.validationDropDownEmpty.tr();
+    } else if (value.isEmpty) {
+      return AppString.validationDropDownEmpty.tr();
+    }
+    return null;
+  }
+
   static String? informationValidation(String? value) {
-    if (value!.isEmpty) {
+    if (value == null) {
+      return AppString.validationEmpty.tr();
+    } else if (value.isEmpty) {
       return AppString.validationEmpty.tr();
     } else if (value.length < 6) {
       return AppString.validationInfo.tr();
