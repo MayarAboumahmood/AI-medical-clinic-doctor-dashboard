@@ -70,6 +70,7 @@ dependencies:
   intl: ^0.18.1
   fading_edge_scrollview: ^3.0.0
   flutter_cache_manager: ^3.3.1
+  pubnub: ^4.3.4
 
 dev_dependencies:
   flutter_test:

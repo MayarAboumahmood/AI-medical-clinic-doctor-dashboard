@@ -4,6 +4,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/select_image_step.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
@@ -28,6 +29,7 @@ const String completeCertificationsPage = '/CompleteCertificationsPage';
 const String selectLocationMapPage = '/SelectLocationMapPage';
 const String selectImageRegisterStep = '/SelectImageRegisterStep';
 const String userProfilePage = '/UserProfilePage';
+const String chatPage = '/ChatPage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -44,4 +46,5 @@ final Map<String, WidgetBuilder> routes = {
   selectLocationMapPage: (context) => const SelectLocationMapPage(),
   selectImageRegisterStep: (context) => const SelectImageAndDateRegisterStep(),
   userProfilePage: (context) => const UserProfilePage(),
+  chatPage: (context) => const ChatPage(),
 };

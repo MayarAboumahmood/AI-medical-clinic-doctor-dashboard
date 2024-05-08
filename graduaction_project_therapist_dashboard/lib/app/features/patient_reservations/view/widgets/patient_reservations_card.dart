@@ -57,7 +57,7 @@ GeneralButtonOptions enterSessionButton(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
           ? () {
-            
+           navigationService.navigateTo(chatPage); 
           }
           : () {
               customSnackBar('Not available yet', context, isFloating: true);
