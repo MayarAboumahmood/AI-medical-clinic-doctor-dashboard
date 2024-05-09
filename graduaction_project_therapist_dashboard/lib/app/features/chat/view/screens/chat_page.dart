@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_bloc.dart';
@@ -20,16 +21,20 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
-      appBar: appBarPushingScreens('Chat'),
+      appBar: appBarPushingScreens('Chat', isFromScaffold: true),
       body: Column(
         children: [
           Expanded(
             child: BlocBuilder<ChatBloc, ChatState>(
               builder: (context, state) {
                 if (state is NewMessageState) {
-                  return Text("New message: ${state.message}");
+                  return Text(
+                    "New message: ${state.message}",
+                    style: customTextStyle.bodyMedium,
+                  );
                 }
-                return const Text("No new messages");
+                return Text("No messages".tr(),
+                    style: customTextStyle.bodyMedium);
               },
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/si
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/data_source/remot_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/repository_imp/auth_repository_impl.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/data_source/notification_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/repository_imp/get_notification_data_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
@@ -52,6 +53,7 @@ Future<void> init() async {
 // Bloc
   sl.registerFactory(() => SignInCubit());
   sl.registerFactory(() => RegisterCubit());
+  sl.registerFactory(() => ChatBloc());
   sl.registerFactory(() => PatientRequestsCubit());
   sl.registerFactory(() => PatientReservationsCubit());
   sl.registerFactory(() => RegistrationDataCompleteCubit());

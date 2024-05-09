@@ -20,7 +20,7 @@ class ChatCard extends StatelessWidget {
               radius: 30,
             ),
             const SizedBox(width: 10),
-           
+        
             Text(
               chatCardModel.name,
               style: customTextStyle.bodyMedium, // Custom text style

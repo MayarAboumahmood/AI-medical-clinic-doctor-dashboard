@@ -71,6 +71,9 @@ dependencies:
   fading_edge_scrollview: ^3.0.0
   flutter_cache_manager: ^3.3.1
   pubnub: ^4.3.4
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:
