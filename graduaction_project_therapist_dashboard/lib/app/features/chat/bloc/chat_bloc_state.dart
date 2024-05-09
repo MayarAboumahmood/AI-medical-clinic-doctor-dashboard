@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/models/chat_card_model.dart';
 
 abstract class ChatState extends Equatable {}
 
@@ -8,6 +9,10 @@ class ChatBlocInitial extends ChatState {
 }
 
 class MessageSentState extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
+class GetAllChatsLoaidngState extends ChatState {
   @override
   List<Object?> get props => [];
 }
@@ -26,4 +31,12 @@ class ErrorState extends ChatState {
   ErrorState(this.errorMessage);
   @override
   List<Object?> get props => [errorMessage];
+}
+
+class GetingAllChatsState extends ChatState {
+  final List<ChatCardModel> chatsCardsModels;
+
+  GetingAllChatsState(this.chatsCardsModels);
+  @override
+  List<Object?> get props => [chatsCardsModels];
 }

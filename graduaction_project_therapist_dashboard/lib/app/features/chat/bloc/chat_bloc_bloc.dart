@@ -1,12 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_state.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/models/chat_card_model.dart';
 
 import 'package:pubnub/pubnub.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late PubNub pubnub;
   Subscription? _subscription;
+  List<ChatCardModel> chatsCardsModels = [
+    ChatCardModel(name: 'one', image: ''),
+    ChatCardModel(name: 'two', image: ''),
+    ChatCardModel(name: 'three', image: ''),
+  ];
 
   ChatBloc() : super(ChatBlocInitial()) {
     // Initialize PubNub
@@ -31,6 +37,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       } catch (e) {
         emit(ErrorState(e.toString()));
       }
+    });
+    on<GetAllChatsEvent>((event, emit) async {
+      emit(GetAllChatsLoaidngState());
+      Future.delayed(const Duration(seconds: 1), () {
+        emit(GetingAllChatsState(chatsCardsModels));
+      });
     });
 
     // on<UnsubscribeEvent>((event, emit) {
