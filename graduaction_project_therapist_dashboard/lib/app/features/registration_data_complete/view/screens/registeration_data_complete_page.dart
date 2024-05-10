@@ -159,7 +159,7 @@ class CompleteDataPage extends StatelessWidget {
         children: [
           Expanded(
               child: customTextField(
-                  textInputType: TextInputType.emailAddress,
+                  textInputType: TextInputType.text,
                   validator: (value) {
                     return ValidationFunctions.informationValidation(value!);
                   },
@@ -185,7 +185,7 @@ class CompleteDataPage extends StatelessWidget {
         children: [
           Expanded(
               child: customTextField(
-                  textInputType: TextInputType.emailAddress,
+                  textInputType: TextInputType.text,
                   validator: (value) {
                     return ValidationFunctions.informationValidation(value!);
                   },
@@ -211,7 +211,7 @@ class CompleteDataPage extends StatelessWidget {
         children: [
           Expanded(
               child: customTextField(
-                  textInputType: TextInputType.emailAddress,
+                  textInputType: TextInputType.text,
                   validator: (value) {
                     return ValidationFunctions.informationValidation(value!);
                   },

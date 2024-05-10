@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_flow_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
@@ -115,6 +118,42 @@ Widget imageWithNameShimmer() {
         ),
       ],
     ),
+  );
+}
+
+Widget messageShimmer(bool isFirstMessage, bool isSender) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Shimmer.fromColors(
+      baseColor: customColors.secondaryBackGround,
+      highlightColor: customColors.primaryBackGround,
+      child: BubbleSpecialThree(
+        text: generateRandomEmptyString(),
+        textStyle: const TextStyle(color: Colors.transparent), // Hide text
+        tail: isFirstMessage,
+        color: customColors.secondaryBackGround,
+
+        isSender: isSender,
+      ),
+    ),
+  );
+}
+
+String generateRandomEmptyString() {
+  Random random = Random();
+  int length =
+      random.nextInt(10) + 5; // Generate a random length between 1 and 20
+  return '         ' * length; // Fill the string with spaces
+}
+
+Widget messageListShimmer() {
+  return ListView.builder(
+    itemCount: 10,
+    itemBuilder: (context, index) {
+      bool isFirstMessage = index == 0 || index == 6;
+      bool isSender = index > 5;
+      return messageShimmer(isFirstMessage, isSender);
+    },
   );
 }
 

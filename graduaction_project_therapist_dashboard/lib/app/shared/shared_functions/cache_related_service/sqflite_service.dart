@@ -35,18 +35,18 @@ class SqfLiteServices {
     ''');
   }
 
-  Future<Message> storeMessage(Message message) async {
+  Future<MessageModel> storeMessage(MessageModel message) async {
     final db = await database;
     final id = await db.insert('messages', message.toMap());
     return message.copyWith(id: id);
   }
 
-  Future<List<Message>> getMessages() async {
+  Future<List<MessageModel>> getMessages() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('messages');
 
     return List.generate(maps.length, (i) {
-      return Message.fromMap(maps[i]);
+      return MessageModel.fromMap(maps[i]);
     });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc_state.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/chat_card_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/widgets/chat_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
@@ -33,9 +33,9 @@ class _ChatsUsersPageState extends State<ChatsUsersPage> {
           // TODO: implement listener
         },
         builder: (context, state) {
-          if (state is GetAllChatsLoaidngState) {
+          if (state is ChatsLoadingState) {
             return mediumSizeCardShimmer();
-          } else if (state is GetingAllChatsState) {
+          } else if (state is GotAllChatsState) {
             chatsCardsModels = state.chatsCardsModels;
             return chatsBody();
           }

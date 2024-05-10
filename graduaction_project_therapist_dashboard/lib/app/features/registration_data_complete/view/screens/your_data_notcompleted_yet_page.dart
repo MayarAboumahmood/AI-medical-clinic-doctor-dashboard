@@ -19,13 +19,15 @@ class YourDataNotCompletedYetPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: SizedBox(
             width: responsiveUtil.screenWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTopSection(),
-                _buildBottomSection(context),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildTopSection(),
+                  _buildBottomSection(context),
+                ],
+              ),
             ),
           ),
         ),
