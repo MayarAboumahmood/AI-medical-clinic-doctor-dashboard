@@ -19,7 +19,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final _controller = TextEditingController();
+  final _textFeildController = TextEditingController();
   final _scrollController = ScrollController();
 
   List<MessageModel> messages = [];
@@ -30,8 +30,22 @@ class _ChatPageState extends State<ChatPage> {
     chatBloc = context.read<ChatBloc>();
     chatBloc.add(GetAllMessagesEvent());
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToBottom();
+      _jumpToBottom();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textFeildController.dispose();
+    _scrollController.dispose();
+    messages.clear();
+  }
+
+  void _jumpToBottom() {
+    _scrollController.jumpTo(
+      _scrollController.position.maxScrollExtent,
+    );
   }
 
   void _scrollToBottom() {
@@ -60,8 +74,6 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: BlocBuilder<ChatBloc, ChatState>(
               builder: (context, state) {
-                print('sssssssssssssssssss $state');
-                print('sssssssssssssssssss ${messages.length}');
                 if (state is ChatsLoadingState) {
                   return messageListShimmer();
                 } else if (state is GotAllMessagesState) {
@@ -69,7 +81,9 @@ class _ChatPageState extends State<ChatPage> {
                   return listOfMessagesBody();
                 } else if (state is MessageSentState) {
                   messages.add(state.messageModel);
-                  _scrollToBottom();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scrollToBottom();
+                  });
                   return listOfMessagesBody();
                 }
                 return listOfMessagesBody();
@@ -115,24 +129,43 @@ class _ChatPageState extends State<ChatPage> {
             : messages[index - 1].iAmTheSender;
   }
 
-  Padding messageTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextField(
-        controller: _controller,
-        enabled: chatBloc.state is ChatsLoadingState,
-        decoration: InputDecoration(
-            labelText: 'Send a message',
-            labelStyle: customTextStyle.bodyMedium),
-        style: customTextStyle.bodyMedium,
-        onSubmitted: (value) {
-          print('sssssssssssssssssssssssssss : $value');
-          print('sssssssssssssssssssssssssss : ${chatBloc.messages.length}');
-          chatBloc.add(SendMessageEvent(
-              message: value, messageType: MessageTypeEnum.text));
-          _controller.clear();
-        },
-      ),
+  Widget messageTextField() {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              controller: _textFeildController,
+              enabled: chatBloc.state is! ChatsLoadingState,
+              decoration: InputDecoration(
+                  suffixIcon: const Icon(Icons.camera_alt), // Camera icon
+                  labelText: 'Send a message',
+                  labelStyle: customTextStyle.bodyMedium),
+              style: customTextStyle.bodyMedium,
+              onSubmitted: (message) {
+                onSubmittedTextField(message);
+              },
+            ),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.send),
+          onPressed: () {
+            String message = _textFeildController.text;
+            onSubmittedTextField(message);
+          },
+        ),
+      ],
     );
+  }
+
+  void onSubmittedTextField(String message) {
+    message = message.trim();
+    if (message.isNotEmpty) {
+      chatBloc.add(SendMessageEvent(
+          message: message, messageType: MessageTypeEnum.text));
+      _textFeildController.clear();
+    }
   }
 }
