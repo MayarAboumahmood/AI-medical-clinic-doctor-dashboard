@@ -8,6 +8,7 @@ import 'package:pubnub/pubnub.dart';
 
 String publishKey = 'pub-c-720243bc-7287-40bc-8607-378fe73e2447';
 String subscribeKey = 'sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043';
+String channelName = 'graduationProject...';
 String secretKey = 'sec-c-MDdiNWFiYzAtY2I1ZS00MTYxLTk4MGEtMGE5YjA2Y2Y5ZWMw';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -52,12 +53,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     // Initialize PubNub
     pubnub = PubNub(
         defaultKeyset: Keyset(
-            subscribeKey: 'subscribeKey',
-            publishKey: 'publishKey',
+            subscribeKey: subscribeKey,
+            publishKey: publishKey,
             userId: UserId(generateUserId())));
 
     on<SubscribeMessagesEvent>((event, emit) async {
-      _subscription = pubnub.subscribe(channels: {'channel_name'});
+      _subscription = pubnub.subscribe(channels: {channelName});
       await for (final envelope in _subscription!.messages) {
         emit(NewMessageState(envelope.content));
       }
@@ -65,7 +66,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on<SendMessageEvent>((event, emit) async {
       try {
-        // await pubnub.publish('channel_name', event.message);
+        await pubnub.publish(channelName, event.message);
 
         final MessageModel newMessage = MessageModel(
             type: event.messageType,
