@@ -63,7 +63,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(NewMessageState(envelope.content));
       }
     });
-
+ 
     on<SendMessageEvent>((event, emit) async {
       try {
         await pubnub.publish(channelName, event.message);
