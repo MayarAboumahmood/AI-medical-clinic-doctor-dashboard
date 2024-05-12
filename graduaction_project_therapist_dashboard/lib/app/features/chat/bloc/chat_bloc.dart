@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
+
+import 'package:pubnub/pubnub.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/chat_card_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
-import 'package:uuid/uuid.dart';
-import 'package:pubnub/pubnub.dart';
 
 String publishKey = 'pub-c-720243bc-7287-40bc-8607-378fe73e2447';
 String subscribeKey = 'sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043';
@@ -50,24 +52,37 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   ChatBloc() : super(ChatInitial()) {
-    // Initialize PubNub
     pubnub = PubNub(
-        defaultKeyset: Keyset(
-            subscribeKey: subscribeKey,
-            publishKey: publishKey,
-            userId: UserId(generateUserId())));
+      defaultKeyset: Keyset(
+        subscribeKey: subscribeKey,
+        publishKey: publishKey,
+        userId: UserId(
+          generateUserId(),
+        ),
+      ),
+    );
+    void reciveMessages() {
+      _subscription!.messages.listen((message) {
+        print('Received message: ${message.content}');
+      });
+    }
 
     on<SubscribeMessagesEvent>((event, emit) async {
       _subscription = pubnub.subscribe(channels: {channelName});
+      reciveMessages();
+      int numberofMessages = await _subscription!.messages.length;
+      print(
+          'sssssssssssssssssssssssssssssssReceived envelope:$numberofMessages ');
       await for (final envelope in _subscription!.messages) {
+        print('sssssssssssssssssssssssssssssssReceived envelope: $envelope');
         emit(NewMessageState(envelope.content));
       }
     });
- 
+
     on<SendMessageEvent>((event, emit) async {
+      print('sssssssssssssssssssdfsdfdsfdsf');
       try {
         await pubnub.publish(channelName, event.message);
-
         final MessageModel newMessage = MessageModel(
             type: event.messageType,
             content: event.message,
@@ -77,6 +92,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(MessageSentState(
             dateTime: DateTime.now(), messageModel: newMessage));
       } catch (e) {
+        print(
+            'sssssssssssssssss error in the bloc when sending the message: ${e.toString()}');
         emit(ChatErrorState(e.toString()));
       }
     });

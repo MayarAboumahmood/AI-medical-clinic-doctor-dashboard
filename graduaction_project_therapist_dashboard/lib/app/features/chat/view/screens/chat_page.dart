@@ -8,6 +8,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/ch
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/widgets/message_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -20,7 +21,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final _textFeildController = TextEditingController();
-  final _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   List<MessageModel> messages = [];
   late final ChatBloc chatBloc;
@@ -29,9 +30,9 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     chatBloc = context.read<ChatBloc>();
     chatBloc.add(GetAllMessagesEvent());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _jumpToBottom();
-    });
+    chatBloc.add(SubscribeMessagesEvent());
+
+    _jumpToBottom();
   }
 
   @override
@@ -39,59 +40,67 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
     _textFeildController.dispose();
     _scrollController.dispose();
+    chatBloc.add(UnsubscribeEvent());
     messages.clear();
   }
 
   void _jumpToBottom() {
-    _scrollController.jumpTo(
-      _scrollController.position.maxScrollExtent,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
+      }
+    });
   }
 
   void _scrollToBottom() {
-    Future.delayed(const Duration(milliseconds: 300), () {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
     });
-
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: customColors.primaryBackGround,
-      appBar: appBarPushingScreens('Chat', isFromScaffold: true),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<ChatBloc, ChatState>(
-              builder: (context, state) {
-                if (state is ChatsLoadingState) {
-                  return messageListShimmer();
-                } else if (state is GotAllMessagesState) {
-                  messages.addAll(state.messages);
-                  return listOfMessagesBody();
-                } else if (state is MessageSentState) {
-                  messages.add(state.messageModel);
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
+    return BlocListener<ChatBloc, ChatState>(
+      listener: (context, state) {
+        if (state is ChatErrorState) {
+          customSnackBar(state.errorMessage, context);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: customColors.primaryBackGround,
+        appBar: appBarPushingScreens('Chat', isFromScaffold: true),
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<ChatBloc, ChatState>(
+                builder: (context, state) {
+                  if (state is ChatsLoadingState) {
+                    return messageListShimmer();
+                  } else if (state is GotAllMessagesState) {
+                    messages.addAll(state.messages);
+                    return listOfMessagesBody();
+                  } else if (state is MessageSentState) {
+                    messages.add(state.messageModel);
                     _scrollToBottom();
-                  });
+                    return listOfMessagesBody();
+                  }
                   return listOfMessagesBody();
-                }
-                return listOfMessagesBody();
-              },
+                },
+              ),
             ),
-          ),
-          messageTextField(),
-        ],
+            messageTextField(),
+          ],
+        ),
       ),
     );
   }
@@ -105,8 +114,6 @@ class _ChatPageState extends State<ChatPage> {
           child: Column(children: [
             const SizedBox(height: 20),
             ...List.generate(messages.length, (index) {
-              print(
-                  'sssssssss what is going on?:${index == 0 ? true : !messages[index - 1].iAmTheSender}');
               bool iAmTheSender = messages[index].iAmTheSender;
               return MessageCard(
                 iAmTheSender: iAmTheSender,
@@ -136,12 +143,14 @@ class _ChatPageState extends State<ChatPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
+              cursorColor: customColors.primary,
               controller: _textFeildController,
               enabled: chatBloc.state is! ChatsLoadingState,
               decoration: InputDecoration(
                   suffixIcon: const Icon(Icons.camera_alt), // Camera icon
-                  labelText: 'Send a message',
-                  labelStyle: customTextStyle.bodyMedium),
+                  hintText: 'Send a message',
+                  hintStyle: customTextStyle.bodyMedium
+                      .copyWith(color: customColors.secondaryText)),
               style: customTextStyle.bodyMedium,
               onSubmitted: (message) {
                 onSubmittedTextField(message);
