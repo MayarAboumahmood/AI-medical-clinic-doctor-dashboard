@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:pubnub/pubnub.dart';
 import 'package:uuid/uuid.dart';
@@ -10,7 +11,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/chat/models/
 
 String publishKey = 'pub-c-720243bc-7287-40bc-8607-378fe73e2447';
 String subscribeKey = 'sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043';
-String channelName = 'graduationProject...';
+String channelName = 'graduationProject';
 String secretKey = 'sec-c-MDdiNWFiYzAtY2I1ZS00MTYxLTk4MGEtMGE5YjA2Y2Y5ZWMw';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -69,20 +70,25 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on<SubscribeMessagesEvent>((event, emit) async {
       _subscription = pubnub.subscribe(channels: {channelName});
-      reciveMessages();
-      int numberofMessages = await _subscription!.messages.length;
-      print(
-          'sssssssssssssssssssssssssssssssReceived envelope:$numberofMessages ');
-      await for (final envelope in _subscription!.messages) {
-        print('sssssssssssssssssssssssssssssssReceived envelope: $envelope');
-        emit(NewMessageState(envelope.content));
-      }
-    });
 
+      // reciveMessages();
+      await getAllMessages(emit);
+    });
+    final KeysetStore keysetStore = pubnub.keysets;
+    late String senderId;
     on<SendMessageEvent>((event, emit) async {
-      print('sssssssssssssssssssdfsdfdsfdsf');
       try {
-        await pubnub.publish(channelName, event.message);
+        if (keysetStore.keysets.isNotEmpty) {
+          final Keyset keyset = keysetStore.keysets.first;
+          senderId = keyset.userId.value;
+        }
+        await pubnub.publish(
+          channelName,
+          {
+            'senderId': senderId,
+            'content': event.message,
+          },
+        );
         final MessageModel newMessage = MessageModel(
             type: event.messageType,
             content: event.message,
@@ -109,11 +115,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(GotAllMessagesState(messages: messages));
       // });
     });
+  }
 
-    on<UnsubscribeEvent>((event, emit) {
-      _subscription?.unsubscribe();
-      emit(UnsubscribedState());
-    });
+  Future<void> getAllMessages(Emitter<ChatState> emit) async {
+    await for (final envelope in _subscription!.messages) {
+      print(
+          'sssssssssssssssssssssssssssssssReceived envelope: ${envelope.content}');
+      final String timestamp =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+      // final bool iAmTheSender = pubnub;
+      messages.add(MessageModel(
+          type: MessageTypeEnum.text,
+          content: envelope.content,
+          timestamp: timestamp,
+          iAmTheSender: false));
+      emit(NewMessageState(envelope.content));
+    }
   }
 
   @override
@@ -122,3 +140,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return super.close();
   }
 }
+
+    // on<UnsubscribeEvent>((event, emit) {
+    //   _subscription?.unsubscribe();
+    //   emit(UnsubscribedState());
+    // });
