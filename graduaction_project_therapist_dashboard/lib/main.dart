@@ -147,7 +147,9 @@ class _MyAppState extends State<MyApp> {
             locale: context.locale,
             theme: theme.copyWith(
                 textSelectionTheme: const TextSelectionThemeData(
-                    selectionHandleColor: Color(0xff19db8a))),
+                    cursorColor: Color.fromARGB(255, 25, 93, 219),
+                    selectionColor: Color.fromARGB(255, 25, 93, 219),
+                    selectionHandleColor: Color.fromARGB(255, 25, 93, 219))),
             darkTheme: AppTheme.dark,
             routes: routes,
             initialRoute: initialRoute,

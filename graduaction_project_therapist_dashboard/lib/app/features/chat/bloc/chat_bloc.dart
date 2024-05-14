@@ -44,12 +44,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         content: 'This is another text message.',
         timestamp: '5/7/2022',
         iAmTheSender: true),
-    // Add more fake messages as needed
   ];
 
   String generateUserId() {
     var uuid = const Uuid();
-    return uuid.v4(); // Generates a version 4 UUID.
+    return uuid.v4();
   }
 
   ChatBloc() : super(ChatInitial()) {
@@ -62,16 +61,26 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ),
       ),
     );
-    void reciveMessages() {
+
+    on<ReciveNewMessageEvent>((event, emit) async {
       _subscription!.messages.listen((message) {
         print('Received message: ${message.content}');
+
+        MessageModel newRecivedMessage = MessageModel(
+          type: MessageTypeEnum.text,
+          content: message.content,
+          timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+          iAmTheSender: false,
+        );
+        messages.add(newRecivedMessage);
+        emit(NewMessageReceivedState(messageModel: newRecivedMessage));
       });
-    }
+    });
 
     on<SubscribeMessagesEvent>((event, emit) async {
       _subscription = pubnub.subscribe(channels: {channelName});
 
-      // reciveMessages();
+      add(ReciveNewMessageEvent());
       await getAllMessages(emit);
     });
     final KeysetStore keysetStore = pubnub.keysets;
@@ -95,8 +104,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             timestamp: event.timestamp,
             iAmTheSender: true);
         messages.add(newMessage);
-        emit(MessageSentState(
-            dateTime: DateTime.now(), messageModel: newMessage));
+        emit(MessageSentState(messageModel: newMessage));
       } catch (e) {
         print(
             'sssssssssssssssss error in the bloc when sending the message: ${e.toString()}');
@@ -123,11 +131,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           'sssssssssssssssssssssssssssssssReceived envelope: ${envelope.content}');
       final String timestamp =
           DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-      // final bool iAmTheSender = pubnub;
       messages.add(MessageModel(
           type: MessageTypeEnum.text,
-          content: envelope.content,
+          content: envelope.content[''],
           timestamp: timestamp,
           iAmTheSender: false));
       emit(NewMessageState(envelope.content));
