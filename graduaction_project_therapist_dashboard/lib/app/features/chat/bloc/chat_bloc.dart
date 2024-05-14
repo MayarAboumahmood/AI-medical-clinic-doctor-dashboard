@@ -76,13 +76,37 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(NewMessageReceivedState(messageModel: newRecivedMessage));
       });
     });
+// Helper method to determine message type from envelope
+    MessageTypeEnum getMessageTypeFromEnvelope(dynamic envelope) {
+      // Implement logic based on envelope properties
+      return MessageTypeEnum.text; // Example default return
+    }
 
     on<SubscribeMessagesEvent>((event, emit) async {
+      // Subscription to the channel
       _subscription = pubnub.subscribe(channels: {channelName});
 
-      add(ReciveNewMessageEvent());
-      await getAllMessages(emit);
+      // Listen to new messages
+      _subscription!.messages.listen((envelope) {
+        print('Received message: ${envelope.content}');
+
+        // Assuming 'content' is a field in the message envelope
+        MessageModel newReceivedMessage = MessageModel(
+            type: getMessageTypeFromEnvelope(
+                envelope), // Ensure you have a method to determine the message type
+            content:
+                envelope.content['content'], // Access the correct content field
+            timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+            iAmTheSender: false // Determine if the sender is the user
+            );
+
+        messages.add(newReceivedMessage);
+        emit(NewMessageReceivedState(messageModel: newReceivedMessage));
+      });
+
+      // add(ReciveNewMessageEvent()); // You might not need this if the listener is already set up
     });
+
     final KeysetStore keysetStore = pubnub.keysets;
     late String senderId;
     on<SendMessageEvent>((event, emit) async {
@@ -118,33 +142,49 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       });
     });
     on<GetAllMessagesEvent>((event, emit) async {
-      // emit(ChatsLoadingState());
-      // Future.delayed(const Duration(milliseconds: 200), () {
-      emit(GotAllMessagesState(messages: messages));
-      // });
+      emit(ChatsLoadingState());
+
+      await getAllMessages(emit);
     });
   }
 
   Future<void> getAllMessages(Emitter<ChatState> emit) async {
-    await for (final envelope in _subscription!.messages) {
-      print(
-          'sssssssssssssssssssssssssssssssReceived envelope: ${envelope.content}');
-      final String timestamp =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-      messages.add(MessageModel(
-          type: MessageTypeEnum.text,
-          content: envelope.content[''],
-          timestamp: timestamp,
-          iAmTheSender: false));
-      emit(NewMessageState(envelope.content));
+    if (_subscription == null) {
+      print('Subscription is null, returning');
+      return;
+    } else {
+      print('Subscription is not null');
     }
+    try {
+      print('Listening for messages');
+      await for (final envelope in _subscription!.messages) {
+        print('Received envelope: ');
+        print('Received envelope: ${envelope.content}');
+        final String timestamp =
+            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        messages.add(MessageModel(
+            type: MessageTypeEnum
+                .text, // Make sure this is dynamically determined based on actual message
+            content: envelope.content['content'], // Ensure this key is correct
+            timestamp: timestamp,
+            iAmTheSender: false));
+        emit(NewMessageState(envelope.content));
+      }
+      print('evelope not enter');
+    } catch (e) {
+      print('Error while getting messages: $e');
+      emit(ChatErrorState(e.toString()));
+    }
+
+    // Always emit a state to update the UI
+    emit(GotAllMessagesState(messages: messages));
   }
 
-  @override
-  Future<void> close() {
-    _subscription?.unsubscribe();
-    return super.close();
-  }
+  // @override
+  // Future<void> close() {
+  //   _subscription?.unsubscribe();
+  //   return super.close();
+  // }
 }
 
     // on<UnsubscribeEvent>((event, emit) {

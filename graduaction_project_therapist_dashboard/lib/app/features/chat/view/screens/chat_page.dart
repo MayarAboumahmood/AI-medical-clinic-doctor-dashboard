@@ -29,10 +29,19 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     chatBloc = context.read<ChatBloc>();
-    chatBloc.add(GetAllMessagesEvent());
     chatBloc.add(SubscribeMessagesEvent());
+  }
 
-    _jumpToBottom();
+  bool firstTime = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firstTime) {
+      chatBloc.add(GetAllMessagesEvent());
+      _jumpToBottom();
+      _jumpToBottom();
+      firstTime = false;
+    }
   }
 
   @override
@@ -84,6 +93,7 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
+                  print('ssssssssssssssssss: State $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
