@@ -18,10 +18,12 @@ class MessageSentState extends ChatState {
 }
 class NewMessageReceivedState extends ChatState {
   final MessageModel messageModel;
+  final DateTime dateTime;
   
-  NewMessageReceivedState({required this.messageModel});
+  
+  NewMessageReceivedState({required this.messageModel,required this.dateTime});
   @override
-  List<Object?> get props => [messageModel];
+  List<Object?> get props => [messageModel,dateTime];
 }
 
 class ChatsLoadingState extends ChatState {

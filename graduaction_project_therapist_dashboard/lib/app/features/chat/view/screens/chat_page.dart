@@ -38,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
     super.didChangeDependencies();
     if (firstTime) {
       chatBloc.add(GetAllMessagesEvent());
-      _jumpToBottom();
+      chatBloc.add(ReceiveNewMessageEvent());
       _jumpToBottom();
       firstTime = false;
     }
@@ -100,6 +100,10 @@ class _ChatPageState extends State<ChatPage> {
                     messages.addAll(state.messages);
                     return listOfMessagesBody();
                   } else if (state is MessageSentState) {
+                    messages.add(state.messageModel);
+                    _jumpToBottom();
+                    return listOfMessagesBody();
+                  } else if (state is NewMessageReceivedState) {
                     messages.add(state.messageModel);
                     _scrollToBottom();
                     return listOfMessagesBody();

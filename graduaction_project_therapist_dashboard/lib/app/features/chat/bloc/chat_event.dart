@@ -20,7 +20,8 @@ class SubscribeMessagesEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
-class ReciveNewMessageEvent extends ChatEvent {
+
+class ReceiveNewMessageEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
