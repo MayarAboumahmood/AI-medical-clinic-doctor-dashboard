@@ -4,12 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_images/app_images.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/app_bar_steps.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/riched_text.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/password_textfield.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import '../../../../../core/constants/app_string/app_string.dart';
 import '../../widgets/steps_widget/navigat_button.dart';
@@ -23,8 +24,8 @@ class PasswordStepPage extends StatefulWidget {
 
 class _PasswordStepPageState extends State<PasswordStepPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  String password = '';
-  String reTypePassword = '';
+  bool passwordSecurFirst = true;
+  bool passwordSecurSecond = true;
   late RegisterCubit registerCubit;
   @override
   void initState() {
@@ -36,7 +37,6 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
   Widget build(BuildContext context) {
     return BlocListener<RegisterCubit, RegisterState>(
         listener: (ccontext, state) {
-          print('ssssssssssssss: $state');
           if (state is RegisterSuccessRequestWithoutOTP) {
             navigationService.navigateTo(selectImageRegisterStep);
             comingFromRegisterOrLogin = true;
@@ -101,80 +101,34 @@ class _PasswordStepPageState extends State<PasswordStepPage> {
             key: formKey,
             child: Column(
               children: [
-                passwordTextField(),
-                reTypePasswordTextField(),
+                PasswordTextField(
+                  controller: registerCubit.passwordtextgController,
+                  label: "Current Password",
+                ),
+                PasswordTextField(
+                  controller: registerCubit.retypePasswordtextController,
+                  label: "Re-type new Password",
+                  validator: (value) {
+                    return ValidationFunctions.isNewPasswordEqualreType(
+                        registerCubit.passwordtextgController.text,
+                        registerCubit.retypePasswordtextController.text);
+                  },
+                ),
                 BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, state) {
-                    final bool isLoading = state is RegisterLoadingRequest;
+                    final bool isLoading = state is RegisterLoadingState;
                     return navigateButton(() {
                       FormState? formdata = formKey.currentState;
-                      // if (formdata!.validate()) {
-                      formdata?.save();
-                      navigationService.navigateTo(selectImageRegisterStep);
-
-                      // registerCubit.sendRegisterRequest();
-                      // }
+                      if (formdata!.validate()) {
+                        formdata.save();
+                        navigationService.navigateTo(selectImageRegisterStep);
+                      }
                     }, AppString.continueButton.tr(), isLoading);
                   },
                 )
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Padding passwordTextField() {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              child: customTextField(
-                  textInputType: TextInputType.emailAddress,
-                  validator: (value) {
-                    return ValidationFunctions.isStrongPassword(value!);
-                  },
-                  onChanged: (value) {
-                    password = value!;
-                  },
-                  context: context,
-                  onSaved: (value) {
-                    registerCubit.updateUserInfo(password: value ?? '');
-                  },
-                  label: "Current Password".tr()))
-        ],
-      ),
-    );
-  }
-
-  Padding reTypePasswordTextField() {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              child: customTextField(
-                  textInputType: TextInputType.emailAddress,
-                  validator: (value) {
-                    return ValidationFunctions.isNewPasswordEqualreType(
-                        password, reTypePassword);
-                  },
-                  context: context,
-                  onChanged: (value) {
-                    reTypePassword = value!;
-                  },
-                  onSaved: (value) {
-                    context
-                        .read<RegisterCubit>()
-                        .updateUserInfo(password: value ?? '');
-                  },
-                  label: "Re-type new Password".tr()))
         ],
       ),
     );

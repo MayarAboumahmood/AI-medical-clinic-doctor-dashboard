@@ -6,14 +6,14 @@ Widget customTextFieldEdite(
     {Widget? prefix,
     required BuildContext context,
     required String label,
-    bool? isPassWordVisible,
+    bool? isPassWordInVisible,
     Widget? suffixIcon,
     String? errorText,
     required String? Function(String?) validator,
     required Function(String?)? onChanged}) {
   return TextFormField(
     onChanged: onChanged,
-    obscureText: isPassWordVisible ?? false,
+    obscureText: isPassWordInVisible ?? false,
     decoration: InputDecoration(
       hoverColor: customColors.secondaryBackGround,
       suffixIcon: suffixIcon,

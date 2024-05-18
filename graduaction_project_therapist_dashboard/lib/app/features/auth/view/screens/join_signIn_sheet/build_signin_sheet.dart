@@ -9,6 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/password_textfield.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -27,7 +28,7 @@ class _SignInWidgetState extends State<SignInWidget> {
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);
-            comingFromRegisterOrLogin=true;
+        comingFromRegisterOrLogin = true;
       }
     }, builder: (context, state) {
       if (state is SignInErrorRequeistState) {
@@ -87,6 +88,12 @@ class _BuildBodySignIn extends StatefulWidget {
 class _BuildBodySignInState extends State<_BuildBodySignIn> {
   bool passwordSecur = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late SignInCubit signInCubit;
+  @override
+  void initState() {
+    super.initState();
+    signInCubit = context.read<SignInCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +119,9 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
             ),
           ),
           phoneNumbertextFeild(context),
-          passwordTextField(context),
+          PasswordTextField(
+              controller: signInCubit.passwordtextgController,
+              label: AppString.enterPassword),
           const SizedBox(
             height: 25,
           ),
@@ -209,45 +218,6 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
                         .setPhoneNumber(formatSyrianPhoneNumber(value!));
                   },
                   label: AppString.mobilePhone.tr())),
-        ],
-      ),
-    );
-  }
-
-  Padding passwordTextField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: customTextField(
-                textInputType: TextInputType.visiblePassword,
-                validator: (value) {
-                  return ValidationFunctions.isStrongPassword(value!);
-                },
-                context: context,
-                isPassWordVisible: true, // passwordSecur,
-                onChanged: (value) {
-                  BlocProvider.of<SignInCubit>(context).setPassword(value!);
-                },
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      passwordSecur = !passwordSecur;
-                    });
-                  },
-                  child: Icon(
-                    passwordSecur
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    color: customColors.secondaryText,
-                    size: 18,
-                  ),
-                ),
-                label: AppString.enterPassword.tr()),
-          ),
         ],
       ),
     );

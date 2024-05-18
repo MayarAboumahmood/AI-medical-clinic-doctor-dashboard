@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_images/app_images.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/app_bar_steps.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
@@ -66,7 +67,10 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
         listener: (context, state) {
           if (state is RegisterOTPSendSuccessRequest) {
             navigationService.navigationOfAllPagesToName(
-                context, bottomNavigationBar);
+                context, welcomeScreen);
+            customSnackBar(
+                'You registerd successfully, Now you can login using your account',
+                context);
           } else if (state is RegisterValidationErrorRequest) {
             customSnackBar('Check your inputs', context);
           } else if (state is RegisterServerErrorRequest) {
@@ -135,9 +139,8 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
           SizedBox(
             height: responsiveUtil.screenHeight * .09,
           ),
-          otpWidget(context, (value) {
-            registerCubit.otpCode = value!;
-          }),
+          otpWidget(context, (_) {},
+              pinCodeController: registerCubit.otpCodeController),
           buildTimerTextValue(),
           Padding(
             padding: EdgeInsets.only(top: responsiveUtil.screenHeight * .01),
@@ -155,7 +158,7 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
           ),
           BlocBuilder<RegisterCubit, RegisterState>(
             builder: (context, state) {
-              final isLoading = state is RegisterLoadingRequest;
+              final isLoading = state is RegisterLoadingState;
               return navigateButton(() {
                 registerCubit.sendVerifyPinRequest();
               }, AppString.continueButton.tr(), isLoading);

@@ -1,6 +1,8 @@
-part of 'register_cubit.dart';
+import 'dart:typed_data';
 
-@immutable
+import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/status_requests/staus_request.dart';
+
 sealed class RegisterState extends Equatable {}
 
 final class RegisterInitial extends RegisterState {
@@ -23,7 +25,7 @@ final class RegisterProfilePictureUpdated extends RegisterState {
   List<Object?> get props => [imageBytes];
 }
 
-final class RegisterLoadingRequest extends RegisterState {
+final class RegisterLoadingState extends RegisterState {
   @override
   List<Object?> get props => [];
 }
@@ -36,6 +38,15 @@ final class RegisterPhoneNumberNotVerifiedState extends RegisterState {
 final class RegisterSuccessRequestWithoutOTP extends RegisterState {
   @override
   List<Object?> get props => [];
+}
+
+final class RegisterFailureState extends RegisterState {
+  final StatusRequest statusRequest;
+  final String errorMessage;
+  RegisterFailureState(
+      {required this.statusRequest, required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage, statusRequest];
 }
 
 final class RegisterOTPSendSuccessRequest extends RegisterState {

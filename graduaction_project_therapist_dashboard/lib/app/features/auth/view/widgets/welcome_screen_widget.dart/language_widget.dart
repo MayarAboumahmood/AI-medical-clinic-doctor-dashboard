@@ -68,15 +68,15 @@ Widget dropDown(BuildContext context) {
           onChanged: (Language? newValue) {
             final languageBloc = BlocProvider.of<LanguageBloc>(context);
             if (newValue!.name == 'English') {
-              if (comingFromRegisterOrLogin) {
-                context.setLocale(const Locale('en')); // <-- Change the locale
-              }
+              // if (comingFromRegisterOrLogin) {
+              context.setLocale(const Locale('en')); // <-- Change the locale
+              // }
               languageBloc.add(LanguageSelected(const Locale('en')));
               sharedPreferences!.setString('language_code', 'en');
             } else {
-              if (comingFromRegisterOrLogin) {
-                context.setLocale(const Locale('ar')); // <-- Change the locale
-              }
+              // if (comingFromRegisterOrLogin) {
+              context.setLocale(const Locale('ar')); // <-- Change the locale
+              // }
 
               sharedPreferences!.setString('language_code', 'ar');
               languageBloc.add(LanguageSelected(const Locale('ar')));

@@ -50,19 +50,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       // Ensure subscription is active and not null.
       if (_subscription == null || _subscription!.isPaused) {
         // Handle case where subscription might not be set up or is paused.
-        print("Subscription is not active.");
+        debugPrint("Subscription is not active.");
         return;
       }
-
       try {
         // Await for each message in the subscription's stream.
         await for (final message in _subscription!.messages) {
-          print('Received message: ${message.content}');
-          print('Received message: ${message.content['content']}');
-
           // Check if Bloc is closed before emitting a new state.
           if (isClosed) {
-            print("Bloc is closed, stopping message processing.");
+            debugPrint("Bloc is closed, stopping message processing.");
             return;
           }
           if (message.content['senderId'] == userID.toString()) {
@@ -74,24 +70,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 .text, // Determine type more dynamically if needed
             content: message.content['content'],
             timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-            iAmTheSender:
-                false, // Determine this based on message sender ID vs current user ID
+            iAmTheSender: false,
           );
 
-          // Add the new message to your list of messages.
           messages.add(newReceivedMessage);
-
-          // Emit a new state with the received message.
           emit(NewMessageReceivedState(
               messageModel: newReceivedMessage, dateTime: DateTime.now()));
         }
       } catch (e) {
-        print('Error processing messages: $e');
-        // Optionally handle or emit error state
+        debugPrint('Error processing messages: $e');
       }
     });
 
-// Helper method to determine message type from envelope
     MessageTypeEnum getMessageTypeFromEnvelope(dynamic envelope) {
       // Implement logic based on envelope properties
       return MessageTypeEnum.text; // Example default return
@@ -100,7 +90,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<UnsubscribeEvent>((event, emit) {
       messages.clear();
       _subscription?.unsubscribe();
-      print('sssssssssssssssssssss unsubscribe: $messages');
 
       emit(UnsubscribedState());
     });
@@ -174,7 +163,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       debugPrint('Error while getting messages: $e');
       emit(ChatErrorState(e.toString()));
     }
-
     // Always emit a state to update the UI
     emit(GotAllMessagesState(messages: messages));
   }
@@ -183,7 +171,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   // Future<void> close() {
   //   _subscription?.unsubscribe();
   //   messages.clear();
-  //   print('sssssssssssssssssssss unsubscribe: $messages');
   //   return super.close();
   // }
 }

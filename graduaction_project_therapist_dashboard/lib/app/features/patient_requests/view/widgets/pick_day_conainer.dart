@@ -21,7 +21,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
   initState() {
     patientRequestsCubit = context.read<PatientRequestsCubit>();
     super.initState();
-    selectedDay = DateTime.now();
+    selectedDay = DateTime(2001,1,1);
     selectedDayString = DateFormat('yyyy/MM/dd').format(selectedDay);
   }
 

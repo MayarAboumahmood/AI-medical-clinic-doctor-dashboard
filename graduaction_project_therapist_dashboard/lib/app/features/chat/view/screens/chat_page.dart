@@ -59,6 +59,13 @@ class _ChatPageState extends State<ChatPage> {
         _scrollController.jumpTo(
           _scrollController.position.maxScrollExtent,
         );
+      } else {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          print('not have client but we got this');
+          _scrollController.jumpTo(
+            _scrollController.position.maxScrollExtent,
+          );
+        });
       }
     });
   }
@@ -93,7 +100,6 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
-                  print('ssssssssssssssssss: State $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {

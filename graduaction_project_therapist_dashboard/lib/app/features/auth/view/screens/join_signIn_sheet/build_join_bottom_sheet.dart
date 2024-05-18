@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/join_signIn_screen/term_privacy.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/format_the_syrain_number.dart';
@@ -50,7 +51,7 @@ class _JoinWidgetState extends State<JoinWidget> {
         if (state is RegisterValidationErrorRequest) {
           errorMessage = getMessageFromStatus(state.statusRequest);
         }
-        bool isLoading = state is RegisterLoadingRequest;
+        bool isLoading = state is RegisterLoadingState;
         return buildRegisterBottomSheetBody(isLoading, context, state);
       },
     );
@@ -184,7 +185,9 @@ class _JoinWidgetState extends State<JoinWidget> {
                   context: context,
                   onSaved: (value) {
                     context.read<RegisterCubit>().updateUserInfo(
-                        phoneNumber: formatSyrianPhoneNumber(value ?? ''));
+                        phoneNumber:
+                            formatSyrianPhoneNumberForMakeItStartWIth09(
+                                value ?? ''));
                   },
                   label: AppString.mobilePhone.tr()))
         ],
@@ -260,14 +263,12 @@ class _JoinWidgetState extends State<JoinWidget> {
           onPressed: () async {
             FormState? formdata = formKey.currentState;
             if (isTermsAccepted) {
-              // if (formdata!.validate()) {
-              formdata?.save();
-              if (!loading) {
-                BlocProvider.of<RegisterCubit>(context).sendRegisterRequest();
-                //TODO: remove the navigation from here and put it in the listener.
-                navigationService.navigateTo(passwordStepPage);
+              if (formdata!.validate()) {
+                formdata.save();
+                if (!loading) {
+                  navigationService.navigateTo(passwordStepPage);
+                }
               }
-              // }
             }
           },
           text: 'Join'.tr(),
@@ -313,7 +314,7 @@ class _JoinWidgetState extends State<JoinWidget> {
             validator: (value) {
               return ValidationFunctions.dropDownValidation(value);
             },
-            value: registerCubit.userInfo.selectedSpecialization,
+            value: registerCubit.getRoleID(),
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(
                   color: customColors.primaryText,
@@ -339,8 +340,7 @@ class _JoinWidgetState extends State<JoinWidget> {
             }).toList(),
             onChanged: (String? newValue) {
               setState(() {
-                registerCubit.userInfo
-                    .copyWith(selectedSpecialization: newValue);
+                registerCubit.setRoleID(newValue!);
               });
             },
           ),
@@ -367,7 +367,7 @@ class _JoinWidgetState extends State<JoinWidget> {
             validator: (value) {
               return ValidationFunctions.dropDownValidation(value);
             },
-            value: registerCubit.userInfo.selectedGender,
+            value: registerCubit.getSelectedGender(),
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(
                   color: customColors.primaryText,
@@ -392,9 +392,8 @@ class _JoinWidgetState extends State<JoinWidget> {
               );
             }).toList(),
             onChanged: (String? newValue) {
-              setState(() {
-                registerCubit.userInfo.copyWith(selectedGender: newValue);
-              });
+              setState(() {});
+              registerCubit.setGender(newValue!);
             },
           ),
         ),
@@ -403,5 +402,5 @@ class _JoinWidgetState extends State<JoinWidget> {
   }
 
   List<String> specialtyList = ['Doctor'.tr(), 'Therapist'.tr()];
-  List<String> genderList = ['Femal'.tr(), 'Male'.tr()];
+  List<String> genderList = ['Female'.tr(), 'Male'.tr()];
 }

@@ -7,7 +7,7 @@ Widget customTextField(
     Color? borderSideColor,
     required BuildContext context,
     required String label,
-    bool? isPassWordVisible,
+    bool? isPassWordInVisible,
     String? hintText,
     TextInputType? textInputType,
     Widget? suffixIcon,
@@ -24,7 +24,7 @@ Widget customTextField(
     onSaved: onSaved,
     onChanged: onChanged,
     controller: controller,
-    obscureText: isPassWordVisible ?? false,
+    obscureText: isPassWordInVisible ?? false,
     decoration: InputDecoration(
       hoverColor: customColors.secondaryText,
       suffixIcon: suffixIcon,
@@ -85,7 +85,7 @@ Widget editeProfileTextField(
     required BuildContext context,
     required String label,
     required TextEditingController controller,
-    bool? isPassWordVisible,
+    bool? isPassWordInVisible,
     GlobalKey? key,
     String? hintText,
     Widget? suffixIcon,
@@ -95,12 +95,13 @@ Widget editeProfileTextField(
     Function(String?)? onChanged,
     Function(String?)? onSaved}) {
   return TextFormField(
+    
     key: key,
     keyboardType: textInputType,
     controller: controller,
     onSaved: onSaved,
     onChanged: onChanged,
-    obscureText: isPassWordVisible ?? false,
+    obscureText: isPassWordInVisible ?? false,
     decoration: InputDecoration(
       hoverColor: customColors.secondaryText,
       suffixIcon: suffixIcon,

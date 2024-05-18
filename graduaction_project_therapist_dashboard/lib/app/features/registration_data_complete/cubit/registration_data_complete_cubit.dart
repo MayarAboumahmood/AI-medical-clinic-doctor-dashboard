@@ -25,9 +25,6 @@ class RegistrationDataCompleteCubit
 
   void addCertificationImage(String imagePath) {
     certificationImages.add(imagePath);
-    print('ssssssssssssssssssssss state $certificationImages');
-    print('ssssssssssssssssssssss state2 ${certificationImages.length}');
-    print('ssssssssssssssssssssss state3 $imagePath');
 
     emit(RegistrationDataCompleteImagesUpdated(
         certificationImages: certificationImages, dateTime: DateTime.now()));

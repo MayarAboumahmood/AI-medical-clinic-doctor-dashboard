@@ -216,7 +216,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           errorText: errorMessage,
           controller: controller,
           context: context,
-          isPassWordVisible: true,
+          isPassWordInVisible: true,
           //  type == 1
           //     ? passwordSecur1
           //     : type == 2

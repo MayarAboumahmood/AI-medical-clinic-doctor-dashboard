@@ -52,7 +52,7 @@ Future<void> init() async {
 
 // Bloc
   sl.registerFactory(() => SignInCubit());
-  sl.registerFactory(() => RegisterCubit());
+  sl.registerFactory(() => RegisterCubit(authRemoteDataSource: sl()));
   sl.registerLazySingleton(() => ChatBloc());
   sl.registerFactory(() => PatientRequestsCubit());
   sl.registerFactory(() => PatientReservationsCubit());

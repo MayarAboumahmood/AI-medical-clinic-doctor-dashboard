@@ -1,14 +1,13 @@
 class ServerConfig {
   // static const String url = "http://10.0.2.2:8040";
-  static const String url = "http://94.141.219.13:8001"; //for the server...
-  // static const String url = "www.tables.sy"; //for the server...
+  static const String url = "http://127.0.0.1:3000/";
 
-  static const String baseURL = '$url/api/customer/';
+  static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';
   static const String images = '$url/';
-  static const String register = 'register';
+  static const String register = 'specs/register';
   static const String signin = 'login';
-  static const String verify = 'verify';
+  static const String otpVerify = 'otp/verify';
   static const String completeRegister = 'register_complete';
   static const String forgetPasswordSendPhoneURL = 'forgot_password';
   static const String forgetPasswordChangePasswordURL = 'change_password';

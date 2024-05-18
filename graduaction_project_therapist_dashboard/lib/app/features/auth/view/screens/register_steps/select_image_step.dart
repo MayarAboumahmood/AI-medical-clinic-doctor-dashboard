@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/pic_picture_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
@@ -19,23 +20,33 @@ import '../../widgets/steps_widget/riched_text.dart';
 
 Uint8List? imageBytes;
 
+bool isLoading = false;
+
 class SelectImageAndDateRegisterStep extends StatelessWidget {
   const SelectImageAndDateRegisterStep({super.key});
-
   @override
   Widget build(BuildContext context) {
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
+
     return BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
       if (state is RegisterSuccessRequestWithoutOTP) {
         navigationService.navigateTo(oTPCodeStep);
+        customSnackBar(
+            'We send the otp code to: ${registerCubit.userInfo.userEmail}',
+            context);
       } else if (state is RegisterServerErrorRequest) {
         customSnackBar(getMessageFromStatus(state.statusRequest), context);
+      } else if (state is RegisterFailureState) {
+        print(
+            'ssssssssssssssssssssssssssss : state is register failure state ${state.errorMessage} ');
+        customSnackBar(state.errorMessage, context);
       }
     }, builder: (context, state) {
       if (state is RegisterProfilePictureUpdated) {
         imageBytes = state.imageBytes;
       }
-
+      isLoading = state is RegisterLoadingState;
       return Scaffold(
           backgroundColor: customColors.primaryBackGround,
           appBar: buildAppBarWithLineIndicatorincenter(3, context),
@@ -50,7 +61,6 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
   }
 
   Widget buildSelectImageBody(context, pictureProfile) {
-    // RegisterCubit registerCubit=context.read<RegisterCubit>();
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: responsiveUtil.screenHeight * .04,
@@ -112,7 +122,7 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
             } else {
               customSnackBar('You have to choos an image', context);
             }
-          }, AppString.continueButton.tr(), false)
+          }, AppString.continueButton.tr(), isLoading)
         ],
       ),
     );

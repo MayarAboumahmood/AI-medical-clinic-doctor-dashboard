@@ -3,14 +3,14 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../../../main.dart';
 
-Widget otpWidget(BuildContext context, Function(String?) onCompleted,
+Widget otpWidget(BuildContext context, Function(String?)? onCompleted,
     {TextEditingController? pinCodeController}) {
   return SizedBox(
     width: responsiveUtil.scaleWidth(300),
     child: PinCodeTextField(
       autoDisposeControllers: true,
       appContext: context,
-      length: 5,
+      length: 6,
       textStyle: customTextStyle.titleSmall.copyWith(
         color: customColors.primaryText,
       ),
