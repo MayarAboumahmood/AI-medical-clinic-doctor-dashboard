@@ -6,7 +6,7 @@ class ServerConfig {
   static const String baseURLForSearch = '$url/api/';
   static const String images = '$url/';
   static const String register = 'specs/register';
-  static const String signin = 'login';
+  static const String login = 'specs/login';
   static const String otpVerify = 'otp/verify';
   static const String completeRegister = 'register_complete';
   static const String forgetPasswordSendPhoneURL = 'forgot_password';

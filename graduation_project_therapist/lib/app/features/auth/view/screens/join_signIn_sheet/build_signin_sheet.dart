@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/format_the_syrain_number.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
@@ -25,6 +24,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SignInCubit, SignInState>(listener: (context, state) {
+      print('sssssssssssssssssss: State $state in sign in');
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);
@@ -33,6 +33,8 @@ class _SignInWidgetState extends State<SignInWidget> {
     }, builder: (context, state) {
       if (state is SignInErrorRequeistState) {
         errorMessage = getMessageFromStatus(state.statusRequest);
+      } else if (state is SignInFailureState) {
+        errorMessage = state.errorMessage;
       }
       bool isLoading = state is SignInLoadingState;
       return PopScope(
@@ -118,14 +120,14 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
               style: customTextStyle.bodyMedium,
             ),
           ),
-          phoneNumbertextFeild(context),
+          userEmailtextFeild(context),
           PasswordTextField(
               controller: signInCubit.passwordtextgController,
               label: AppString.enterPassword),
           const SizedBox(
             height: 25,
           ),
-          // buildforgetPasswordText(),//TODO delete this if we don't have a forgate password way.
+          buildforgetPasswordText(),
           const SizedBox(
             height: 25,
           ),
@@ -198,7 +200,7 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
     );
   }
 
-  Padding phoneNumbertextFeild(BuildContext context) {
+  Padding userEmailtextFeild(BuildContext context) {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
       child: Row(
@@ -209,15 +211,13 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
               child: customTextField(
                   textInputType: TextInputType.phone,
                   validator: (value) {
-                    return ValidationFunctions.validateSyrianPhoneNumber(
-                        value ?? '');
+                    return ValidationFunctions.isValidEmail(value ?? '');
                   },
                   context: context,
                   onChanged: (value) {
-                    BlocProvider.of<SignInCubit>(context)
-                        .setPhoneNumber(formatSyrianPhoneNumber(value!));
+                    BlocProvider.of<SignInCubit>(context).setUserEmail(value!);
                   },
-                  label: AppString.mobilePhone.tr())),
+                  label: AppString.emailAdress.tr())),
         ],
       ),
     );

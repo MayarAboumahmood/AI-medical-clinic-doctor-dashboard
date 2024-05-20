@@ -51,7 +51,7 @@ Future<void> init() async {
       () => ProfileDataSourceImpl(client: http.Client()));
 
 // Bloc
-  sl.registerFactory(() => SignInCubit());
+  sl.registerFactory(() => SignInCubit(authRemoteDataSource: sl()));
   sl.registerFactory(() => RegisterCubit(authRemoteDataSource: sl()));
   sl.registerLazySingleton(() => ChatBloc());
   sl.registerFactory(() => PatientRequestsCubit());

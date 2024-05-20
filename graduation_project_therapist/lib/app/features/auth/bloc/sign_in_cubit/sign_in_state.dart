@@ -21,6 +21,14 @@ final class SignInErrorRequeistState extends SignInState {
   List<Object?> get props => [statusRequest];
 }
 
+final class SignInFailureState extends SignInState {
+  final String errorMessage;
+
+  SignInFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
 final class SignInLoadingState extends SignInState {
   @override
   List<Object?> get props => [];

@@ -10,6 +10,7 @@ import 'package:http/http.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Response> register(UserInfo registerModel, Uint8List? imageBytes);
+  Future<Response> login(String userEmail, String password);
   sendOTPCode(String userEmail, String otpToken);
 }
 
@@ -40,13 +41,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     // Add text fields
     request.fields['fullName'] =
         '${registerModel.firstName} ${registerModel.lastName}';
-    request.fields['lastName'] = registerModel.lastName;
-    request.fields['email'] = registerModel.userEmail;
-    request.fields['phone'] = registerModel.phoneNumber;
-    request.fields['password'] = registerModel.password;
+    request.fields['email'] = registerModel.userEmail.trim();
+    request.fields['phone'] = registerModel.phoneNumber.trim();
+    request.fields['password'] = registerModel.password.trim();
     request.fields['roleId'] = registerModel.roleId.toString();
     request.fields['dateOfBirth'] = isDateOFBirthExist
-        ? registerModel.dateOfBirth!
+        ? registerModel.dateOfBirth!.trim()
         : DateFormat('yyyy/MM/dd').format(DateTime(2001, 1, 1));
     request.fields['gender'] = registerModel.gender.toString();
 
@@ -75,33 +75,45 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Response> sendOTPCode(String userEmail, String otpToken) async {
-    // Construct the URL
     var url = Uri.parse(ServerConfig.url + ServerConfig.otpVerify);
-
-    // Prepare the headers
     var headers = {
       'Content-Type': 'application/json',
     };
-
-    // Prepare the body
     var body = jsonEncode({
-      'token': otpToken,
+      'token': otpToken.trim(),
     });
-
-    // Send the POST request
     var response = await http.post(url, headers: headers, body: body);
-
-    // Debug output
     debugPrint('Status Code: ${response.statusCode}');
     debugPrint('Response Body: ${response.body}');
-
-    // Handling the response based on status code
     if (response.statusCode == 200 || response.statusCode == 201) {
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {
       return http.Response(response.body, response.statusCode);
     } else {
-      return http.Response('ServerError', response.statusCode);
+      return http.Response(response.body, response.statusCode);
+    }
+  }
+
+  @override
+  Future<http.Response> login(String userEmail, String password) async {
+    var url = Uri.parse(ServerConfig.url + ServerConfig.login);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var body = jsonEncode({
+      'email': userEmail.trim(),
+      'password': password.trim(),
+    });
+    var response = await http.post(url, headers: headers, body: body);
+    debugPrint('login Status Code: ${response.statusCode}');
+    debugPrint('login Response Body: $body');
+    debugPrint('login Response Body: ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return http.Response(response.body, response.statusCode);
+    } else if (response.statusCode != 500) {
+      return http.Response(response.body, response.statusCode);
+    } else {
+      return http.Response(response.body, response.statusCode);
     }
   }
 }

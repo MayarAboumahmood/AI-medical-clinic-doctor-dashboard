@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   ChatBloc() : super(ChatInitial()) {
-    channelName = '${user2ID.toString()}graduationProject${userID.toString()}';
+    String channelName = assignChannelName();
 
     pubnub = PubNub(
       defaultKeyset: Keyset(
@@ -137,6 +139,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       await getAllMessages(emit);
     });
+  }
+
+  String assignChannelName() {
+    int firstID = max(userID, user2ID);
+    int secondID = min(userID, user2ID);
+    return '${firstID}graduationProject$secondID';
   }
 
   Future<void> getAllMessages(Emitter<ChatState> emit) async {
