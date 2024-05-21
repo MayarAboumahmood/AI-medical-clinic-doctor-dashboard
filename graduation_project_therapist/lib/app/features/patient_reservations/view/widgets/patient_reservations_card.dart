@@ -8,7 +8,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 

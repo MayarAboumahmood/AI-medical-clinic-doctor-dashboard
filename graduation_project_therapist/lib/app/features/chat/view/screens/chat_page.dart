@@ -1,16 +1,21 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/pic_picture_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_state.dart';
 
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/widgets/message_card.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -55,19 +60,16 @@ class _ChatPageState extends State<ChatPage> {
 
   void _jumpToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent,
-        );
-      } else {
-        Future.delayed(const Duration(milliseconds: 300), () {
-          print('not have client but we got this');
+      // Future.delayed(const Duration(milliseconds: 300), () {
+        if (_scrollController.hasClients) {
           _scrollController.jumpTo(
             _scrollController.position.maxScrollExtent,
           );
-        });
-      }
-    });
+        } else {
+          debugPrint("we can't jumb to bottom, yet.");
+        }
+      });
+    // });
   }
 
   void _scrollToBottom() {
@@ -100,14 +102,17 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
+                  print('sssssssssssssssss the state in chat page $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
                     messages.addAll(state.messages);
+                    _jumpToBottom();
+
                     return listOfMessagesBody();
                   } else if (state is MessageSentState) {
                     messages.add(state.messageModel);
-                    _jumpToBottom();
+                    _scrollToBottom();
                     return listOfMessagesBody();
                   } else if (state is NewMessageReceivedState) {
                     messages.add(state.messageModel);
@@ -127,23 +132,64 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget listOfMessagesBody() {
     if (messages.isEmpty) {
-      return Text("No messages".tr(), style: customTextStyle.bodyMedium);
+      return noMessageYetContainer();
     } else {
       return SingleChildScrollView(
           controller: _scrollController,
           child: Column(children: [
             const SizedBox(height: 20),
             ...List.generate(messages.length, (index) {
+              MessageTypeEnum messageTypeEnum = messages[index].type;
               bool iAmTheSender = messages[index].iAmTheSender;
-              return MessageCard(
-                iAmTheSender: iAmTheSender,
-                isConsecutiveMessage:
-                    shouldMessageHaveTail(iAmTheSender, index),
-                text: messages[index].content,
-              );
+              switch (messageTypeEnum) {
+                case MessageTypeEnum.text:
+                  return MessageCard(
+                    iAmTheSender: iAmTheSender,
+                    isConsecutiveMessage:
+                        shouldMessageHaveTail(iAmTheSender, index),
+                    text: messages[index].content as String,
+                    messageType: messages[index].type,
+                  );
+                case MessageTypeEnum.image:
+                  return MessageCard(
+                    iAmTheSender: iAmTheSender,
+                    isConsecutiveMessage:
+                        shouldMessageHaveTail(iAmTheSender, index),
+                    text: '',
+                    imageData:
+                        messages[index].content as Uint8List? ?? Uint8List(1),
+                    messageType: messages[index].type,
+                  );
+
+                case MessageTypeEnum.voice:
+                  return const SizedBox();
+                default:
+                  return const SizedBox();
+              }
             })
           ]));
     }
+  }
+
+  Padding noMessageYetContainer() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          Container(
+              width: responsiveUtil.screenWidth,
+              height: responsiveUtil.screenHeight * .1,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: customColors.primary.withOpacity(0.1),
+              ),
+              child: Center(
+                  child: Text("No messages yet".tr(),
+                      style: customTextStyle.bodyMedium))),
+          const Spacer(),
+        ],
+      ),
+    );
   }
 
   bool shouldMessageHaveTail(bool iAmTheSender, int index) {
@@ -154,6 +200,18 @@ class _ChatPageState extends State<ChatPage> {
         : index == 0
             ? true
             : messages[index - 1].iAmTheSender;
+  }
+
+  Future<void> pickImageToSend(ImageSource source, BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+    if (image != null) {
+      final Uint8List imageBytes = await image.readAsBytes();
+      chatBloc.add(SendMessageEvent(
+        imageData: imageBytes,
+        messageType: MessageTypeEnum.image,
+      ));
+    }
   }
 
   Widget messageTextField() {
@@ -167,7 +225,15 @@ class _ChatPageState extends State<ChatPage> {
               controller: _textFeildController,
               enabled: chatBloc.state is! ChatsLoadingState,
               decoration: InputDecoration(
-                  suffixIcon: const Icon(Icons.camera_alt), // Camera icon
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.camera_alt),
+                    onPressed: () async {
+                      await showBottomSheetWidget(
+                          context,
+                          buildimageSourcesBottomSheet(context,
+                              pickImage: pickImageToSend));
+                    },
+                  ),
                   hintText: 'Send a message',
                   hintStyle: customTextStyle.bodyMedium
                       .copyWith(color: customColors.secondaryText)),

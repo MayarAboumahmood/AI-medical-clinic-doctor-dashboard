@@ -32,7 +32,6 @@ class SignInCubit extends Cubit<SignInState> {
         emit(SuccessRequest());
       } else {
         final error = responseBody['error'] ?? 'Server Error'.tr();
-        print('ssssssssssssssssssss: in the cubit:${responseBody['error']}');
         emit(SignInFailureState(errorMessage: error));
       }
     } catch (error) {

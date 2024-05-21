@@ -1,14 +1,12 @@
-import 'dart:typed_data';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../core/constants/app_string/app_string.dart';
+import '../../../core/constants/app_string/app_string.dart';
 
-Widget buildimageSourcesBottomSheet(BuildContext context) {
+Widget buildimageSourcesBottomSheet(BuildContext context,
+    {required Future<void> Function(ImageSource source, BuildContext context)
+        pickImage}) {
   return Container(
     color: customColors.secondaryBackGround,
     height: responsiveUtil.screenHeight * .35,
@@ -71,13 +69,4 @@ Widget choosePhotoSource(
       ),
     ),
   );
-}
-
-Future<void> pickImage(ImageSource source, BuildContext context) async {
-  final ImagePicker _picker = ImagePicker();
-  final XFile? image = await _picker.pickImage(source: source);
-  if (image != null) {
-    final Uint8List imageBytes = await image.readAsBytes();
-    BlocProvider.of<RegisterCubit>(context).setImage(imageBytes);
-  }
 }

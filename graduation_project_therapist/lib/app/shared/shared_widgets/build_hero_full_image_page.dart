@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 
 class FullScreenImagePage extends StatelessWidget {
   final String imageName;

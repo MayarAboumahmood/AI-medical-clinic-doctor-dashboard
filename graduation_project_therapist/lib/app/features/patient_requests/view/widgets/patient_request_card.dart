@@ -6,7 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/select_time_date_bottomsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/build_hero_full_image_page.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/network_image.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';

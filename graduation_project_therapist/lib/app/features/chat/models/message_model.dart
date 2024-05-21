@@ -1,7 +1,7 @@
 class MessageModel {
   int? id; // Auto-incremented database ID
   MessageTypeEnum type; // 'text', 'image', or 'voice'
-  String content; // URL or text content
+  Object? content; 
   String timestamp; // Store timestamps as String
   bool iAmTheSender;
   MessageModel(

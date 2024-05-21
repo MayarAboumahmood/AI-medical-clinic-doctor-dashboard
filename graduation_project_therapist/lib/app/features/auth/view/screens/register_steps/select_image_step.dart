@@ -6,11 +6,12 @@ import 'package:graduation_project_therapist_dashboard/app/core/constants/app_ro
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/pic_picture_sheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/pic_picture_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../shared/shared_functions/show_bottom_sheet.dart';
 
@@ -38,8 +39,6 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
       } else if (state is RegisterServerErrorRequest) {
         customSnackBar(getMessageFromStatus(state.statusRequest), context);
       } else if (state is RegisterFailureState) {
-        print(
-            'ssssssssssssssssssssssssssss : state is register failure state ${state.errorMessage} ');
         customSnackBar(state.errorMessage, context);
       }
     }, builder: (context, state) {
@@ -94,7 +93,9 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 await showBottomSheetWidget(
-                    context, buildimageSourcesBottomSheet(context));
+                    context,
+                    buildimageSourcesBottomSheet(context,
+                        pickImage: pickImage));
               },
               child: Text(AppString.addCustomPhoto.tr(),
                   textAlign: TextAlign.center,
@@ -128,14 +129,24 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
     );
   }
 
+  Future<void> pickImage(ImageSource source, BuildContext context) async {
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+    if (image != null) {
+      final Uint8List imageBytes = await image.readAsBytes();
+      registerCubit.setImage(imageBytes);
+    }
+  }
+
   Widget addImageContainer(
     BuildContext context,
     Uint8List? imageBytes,
   ) {
     return GestureDetector(
         onTap: () async {
-          await showBottomSheetWidget(
-              context, buildimageSourcesBottomSheet(context));
+          await showBottomSheetWidget(context,
+              buildimageSourcesBottomSheet(context, pickImage: pickImage));
         },
         child: imageBytes != null
             ? CircleAvatar(

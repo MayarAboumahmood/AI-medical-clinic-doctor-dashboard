@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
@@ -7,13 +9,15 @@ sealed class ChatEvent extends Equatable {}
 class SendMessageEvent extends ChatEvent {
   final String message;
   final MessageTypeEnum messageType;
+  final Uint8List? imageData;
   final String timestamp =
       DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-  SendMessageEvent({required this.message, required this.messageType});
+  SendMessageEvent(
+      {this.message = '', required this.messageType, this.imageData});
 
   @override
-  List<Object?> get props => [message, messageType, timestamp];
+  List<Object?> get props => [message, messageType, imageData];
 }
 
 class SubscribeMessagesEvent extends ChatEvent {
@@ -37,6 +41,13 @@ class GetAllMessagesEvent extends ChatEvent {
 }
 
 class UnsubscribeEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddImageToSendEvent extends ChatEvent {
+  final Uint8List imageToSend;
+  AddImageToSendEvent({required this.imageToSend});
   @override
   List<Object?> get props => [];
 }
