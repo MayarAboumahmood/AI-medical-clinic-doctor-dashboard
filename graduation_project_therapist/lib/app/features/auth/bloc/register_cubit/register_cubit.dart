@@ -108,7 +108,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         emit(RegisterSuccessRequestWithoutOTP());
       } else {
         final error = responseBody['error'] ?? 'Server Error'.tr();
-        print('ssssssssssssssssssss: in the cubit:${responseBody['error']}');
+        debugPrint('ssssssssssssssssssss: in the cubit:${responseBody['error']}');
         emit(RegisterFailureState(
             statusRequest: StatusRequest.serverError, errorMessage: error));
       }

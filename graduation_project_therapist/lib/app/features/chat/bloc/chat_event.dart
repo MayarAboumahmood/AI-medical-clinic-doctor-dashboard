@@ -10,11 +10,15 @@ class SendMessageEvent extends ChatEvent {
   final String message;
   final MessageTypeEnum messageType;
   final Uint8List? imageData;
+  final String? imageName;
   final String timestamp =
       DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
   SendMessageEvent(
-      {this.message = '', required this.messageType, this.imageData});
+      {this.message = '',
+      required this.messageType,
+      this.imageData,
+      this.imageName});
 
   @override
   List<Object?> get props => [message, messageType, imageData];

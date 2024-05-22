@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
 
 import 'package:pubnub/pubnub.dart';
 import 'package:uuid/uuid.dart';
@@ -41,7 +42,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   String assignChannelName() {
     int firstID = max(userID, user2ID);
     int secondID = min(userID, user2ID);
-    return '${firstID}graduationProjectll$secondID';
+    return '${firstID}graduationProjecttestrelease$secondID';
   }
 
   ChatBloc() : super(ChatInitial()) {
@@ -56,35 +57,48 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
 
+    final KeysetStore keysetStore = pubnub.keysets;
+    late String senderId;
     on<AddImageToSendEvent>((event, emit) async {
       imageToSend = event.imageToSend;
     });
 
     on<ReceiveNewMessageEvent>((event, emit) async {
-      // Ensure subscription is active and not null.
       if (_subscription == null || _subscription!.isPaused) {
-        // Handle case where subscription might not be set up or is paused.
         debugPrint("Subscription is not active.");
         return;
       }
+      if (keysetStore.keysets.isNotEmpty) {
+        final Keyset keyset = keysetStore.keysets.first;
+        senderId = keyset.userId.value;
+      }
+
       try {
-        // Await for each message in the subscription's stream.
         await for (final message in _subscription!.messages) {
-          // Check if Bloc is closed before emitting a new state.
           if (isClosed) {
             debugPrint("Bloc is closed, stopping message processing.");
             return;
           }
-          if (message.content['senderId'] == userID.toString()) {
-            return;
+          var content = message.content['content'];
+          debugPrint("receiving up: $content");
+
+          String messageType =
+              message.content['messageType'] == 'text' ? 'text' : 'image';
+          if (messageType == 'image') {
+            String fileId = message.content['file']['id'];
+            String fileName = message.content['file']['name'];
+            Uri fileUrl =
+                pubnub.files.getFileUrl(channelName, fileId, fileName);
+            content = fileUrl;
           }
-          // Create a new received message model.
+
+          bool iAmTheSender = senderId == userID.toString();
+
           MessageModel newReceivedMessage = MessageModel(
-            type: MessageTypeEnum
-                .text, // Determine type more dynamically if needed
-            content: message.content['content'],
+            type: messageTypeFromString(messageType),
+            content: content,
             timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-            iAmTheSender: false,
+            iAmTheSender: iAmTheSender,
           );
 
           messages.add(newReceivedMessage);
@@ -96,19 +110,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
     });
 
-    String getMessageTypeFromEnvelope(MessageTypeEnum messageType) {
-      switch (messageType) {
-        case MessageTypeEnum.text:
-          return 'text';
-        case MessageTypeEnum.image:
-          return 'image';
-        case MessageTypeEnum.voice:
-          return 'voice';
-        default:
-          return 'text';
-      }
-    }
-
     on<UnsubscribeEvent>((event, emit) {
       messages.clear();
       _subscription?.unsubscribe();
@@ -119,8 +120,44 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       // Subscription to the channel
       _subscription = pubnub.subscribe(channels: {channelName});
     });
-    final KeysetStore keysetStore = pubnub.keysets;
-    late String senderId;
+    Future<void> getAllMessages(Emitter<ChatState> emit) async {
+      final myChannel = pubnub.channel(channelName);
+      var history = myChannel.history(chunkSize: 50);
+      await history.more();
+      if (keysetStore.keysets.isNotEmpty) {
+        final Keyset keyset = keysetStore.keysets.first;
+        senderId = keyset.userId.value;
+      }
+
+      try {
+        Uri? fileUrl;
+        for (final envelope in history.messages) {
+          bool iAmTheSender = senderId == userID.toString();
+
+          if (!hasMessageData(envelope.originalMessage)) {
+            String fileId = envelope.originalMessage['message']['file']['id'];
+            String fileName =
+                envelope.originalMessage['message']['file']['name'];
+            fileUrl = pubnub.files.getFileUrl(channelName, fileId, fileName);
+          }
+          final String timestamp =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+          messages.add(MessageModel(
+              type: messageTypeFromString(
+                  envelope.content['messageType'] == 'text' ? 'text' : 'image'),
+              content: hasMessageData(envelope.originalMessage)
+                  ? envelope.content['content']
+                  : fileUrl,
+              timestamp: timestamp,
+              iAmTheSender: iAmTheSender));
+          emit(NewMessageState(envelope.content));
+        }
+      } catch (e) {
+        debugPrint('Error while getting messages: $e');
+        emit(ChatErrorState(e.toString()));
+      }
+      emit(GotAllMessagesState(messages: messages));
+    }
 
     on<SendMessageEvent>((event, emit) async {
       try {
@@ -134,12 +171,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           content = event.imageData;
           await pubnub.files.sendFile(
             channelName,
-            'fileName',
+            event.imageName!,
             event.imageData!,
             fileMessage: '',
             fileMessageMeta: {
               'senderId': senderId,
-              'content': content,
               'messageType': getMessageTypeFromEnvelope(event.messageType),
             },
           );
@@ -154,13 +190,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             },
           );
         }
-        final MessageModel newMessage = MessageModel(
-            type: event.messageType,
-            content: content,
-            timestamp: event.timestamp,
-            iAmTheSender: true);
-        messages.add(newMessage);
-        emit(MessageSentState(messageModel: newMessage));
       } catch (e) {
         debugPrint('Error when sending the message: ${e.toString()}');
         emit(ChatErrorState(e.toString()));
@@ -177,68 +206,5 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(ChatsLoadingState());
       await getAllMessages(emit);
     });
-  }
-
-  MessageTypeEnum messageTypeFromString(String type) {
-    switch (type) {
-      case 'text':
-        return MessageTypeEnum.text;
-      case 'image':
-        return MessageTypeEnum.image;
-      case 'voice':
-        return MessageTypeEnum.voice;
-      default:
-        throw MessageTypeEnum.text;
-    }
-  }
-
-  bool hasMessageData(Map<String, dynamic> messageObj) {
-    if (messageObj.containsKey('message')) {
-      Map<String, dynamic> message = messageObj['message'];
-
-      if (message.containsKey('content') &&
-          message['content'] != null &&
-          message['content'].toString().isNotEmpty) {
-        return true;
-      }
-      if (message.containsKey('senderId') && message['senderId'] != null) {
-        return true;
-      }
-      if (message.containsKey('messageType') &&
-          message['messageType'] != null &&
-          message['messageType'].toString().isNotEmpty) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  Future<void> getAllMessages(Emitter<ChatState> emit) async {
-    final myChannel = pubnub.channel(channelName);
-    var history = myChannel.history(chunkSize: 50);
-    await history.more();
-    try {
-      for (final envelope in history.messages) {
-        if (!hasMessageData(envelope.originalMessage)) {
-          print(
-              'sssssssssssssssssss error: ${envelope.originalMessage['message']['file']}');
-        }
-
-        bool iAmTheSender = envelope.content['senderId'] == userID.toString();
-        final String timestamp =
-            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-        messages.add(MessageModel(
-            type: messageTypeFromString(
-                envelope.content['messageType'] ?? 'image'),
-            content: envelope.content['content'],
-            timestamp: timestamp,
-            iAmTheSender: iAmTheSender));
-        emit(NewMessageState(envelope.content));
-      }
-    } catch (e) {
-      debugPrint('Error while getting messages: $e');
-      emit(ChatErrorState(e.toString()));
-    }
-    emit(GotAllMessagesState(messages: messages));
   }
 }

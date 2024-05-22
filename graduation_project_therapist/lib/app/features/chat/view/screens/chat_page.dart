@@ -60,15 +60,14 @@ class _ChatPageState extends State<ChatPage> {
 
   void _jumpToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Future.delayed(const Duration(milliseconds: 300), () {
-        if (_scrollController.hasClients) {
-          _scrollController.jumpTo(
-            _scrollController.position.maxScrollExtent,
-          );
-        } else {
-          debugPrint("we can't jumb to bottom, yet.");
-        }
-      });
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
+      } else {
+        debugPrint("we can't jumb to bottom, yet.");
+      }
+    });
     // });
   }
 
@@ -102,12 +101,18 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
-                  print('sssssssssssssssss the state in chat page $state');
+                  debugPrint('sssssssssssssssss the state in chat page $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
                     messages.addAll(state.messages);
                     _jumpToBottom();
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      _jumpToBottom();
+                    });
+                    Future.delayed(const Duration(seconds: 2), () {
+                      _jumpToBottom();
+                    });
 
                     return listOfMessagesBody();
                   } else if (state is MessageSentState) {
@@ -147,7 +152,7 @@ class _ChatPageState extends State<ChatPage> {
                     iAmTheSender: iAmTheSender,
                     isConsecutiveMessage:
                         shouldMessageHaveTail(iAmTheSender, index),
-                    text: messages[index].content as String,
+                    text: messages[index].content as String?,
                     messageType: messages[index].type,
                   );
                 case MessageTypeEnum.image:
@@ -156,8 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                     isConsecutiveMessage:
                         shouldMessageHaveTail(iAmTheSender, index),
                     text: '',
-                    imageData:
-                        messages[index].content as Uint8List? ?? Uint8List(1),
+                    imageData: messages[index].content as Uri? ?? Uri(),
                     messageType: messages[index].type,
                   );
 
@@ -207,8 +211,11 @@ class _ChatPageState extends State<ChatPage> {
     final XFile? image = await picker.pickImage(source: source);
     if (image != null) {
       final Uint8List imageBytes = await image.readAsBytes();
+      final String fileName =
+          image.name; // Get the file name from the XFile object
       chatBloc.add(SendMessageEvent(
         imageData: imageBytes,
+        imageName: fileName,
         messageType: MessageTypeEnum.image,
       ));
     }
