@@ -61,9 +61,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     // Send the request
     final response = await request.send();
 
-    debugPrint('ssssssssssssssssssssssssssss : ${response.statusCode}');
+    print('ssssssssssssssssssssssssssss : ${response.statusCode}');
     final responseBody = await response.stream.bytesToString();
-    debugPrint('ssssssssssssssssssssssssssss : $responseBody');
+    print('ssssssssssssssssssssssssssss : $responseBody');
     if (response.statusCode == 201 || response.statusCode == 200) {
       return http.Response(responseBody, response.statusCode);
     } else if (response.statusCode != 500) {
@@ -83,8 +83,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'token': otpToken.trim(),
     });
     var response = await http.post(url, headers: headers, body: body);
-    debugPrint('Status Code: ${response.statusCode}');
-    debugPrint('Response Body: ${response.body}');
+    print('Status Code: ${response.statusCode}');
+    print('Response Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {
@@ -105,9 +105,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'password': password.trim(),
     });
     var response = await http.post(url, headers: headers, body: body);
-    debugPrint('login Status Code: ${response.statusCode}');
-    debugPrint('login Response Body: $body');
-    debugPrint('login Response Body: ${response.body}');
+    print('login Status Code: ${response.statusCode}');
+    print('login Response Body: $body');
+    print('login Response Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {

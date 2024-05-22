@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
           _scrollController.position.maxScrollExtent,
         );
       } else {
-        debugPrint("we can't jumb to bottom, yet.");
+        print("we can't jumb to bottom, yet.");
       }
     });
     // });
@@ -101,7 +101,7 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
-                  debugPrint('sssssssssssssssss the state in chat page $state');
+                  print('sssssssssssssssss the state in chat page $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {

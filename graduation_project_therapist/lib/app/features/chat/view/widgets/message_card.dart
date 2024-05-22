@@ -38,14 +38,7 @@ class MessageCard extends StatelessWidget {
     }
   }
 
-/*
-/v1/files/sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043/channels/2graduationProjectll1/files/7a63c05f-086c-408c-8b9c-dff805fdc63a/f52e61ca-fb52-4c21-b4c6-46a023ae9fde3228954913482788058.jpg
-
-
- */
   Align imageCard() {
-    print(
-        'file path sssssssssssssssssssssssss: in image card ${imageData!.path}');
     return Align(
         alignment: iAmTheSender ? Alignment.topRight : Alignment.topLeft,
         child: Padding(

@@ -164,11 +164,9 @@ class InitializerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure these lines are under MaterialApp in the widget tree
     customTextStyle = Theme.of(context).extension<AppTextStylesExtension>()!;
     customColors = Theme.of(context).extension<AppColorsExtension>()!;
 
-    // After initializing, return the next screen in the flow
     return BlocBuilder<LanguageBloc, LanguageState>(builder: (context, state) {
       if (state is LanguageLoadSuccess) {
         context.setLocale(state.locale); // <-- Change the locale

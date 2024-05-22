@@ -25,19 +25,22 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentPage = 0;
-  @override
-  void initState() {
-    if (mounted) {
-      _checkAndRequestBatteryOptimization(context);
-    }
-    // locationService.getCurrentLocation();
 
-    super.initState();
+  bool firstTime = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firstTime) {
+      if (mounted) {
+        _checkAndRequestBatteryOptimization(context);
+      }
+      firstTime = false;
+    }
   }
 
   List<Widget> get homePageWidgets {
     return [
-      const SizedBox(),
+      YourDataNotCompletedYetPage(),
       isGuest == true ? GuestWidget() : YourDataNotCompletedYetPage(),
       isGuest == true ? GuestWidget() : const PatientRequestsPage(),
       isGuest == true ? GuestWidget() : const PatientReservationsPage(),
@@ -59,7 +62,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
           },
           canPop: _currentPage == 0,
           child: Scaffold(
-            extendBody: true,
+            // extendBody: true,
             backgroundColor: customColors.primaryBackGround,
             bottomNavigationBar: ClipRRect(
               borderRadius: const BorderRadius.only(

@@ -65,7 +65,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on<ReceiveNewMessageEvent>((event, emit) async {
       if (_subscription == null || _subscription!.isPaused) {
-        debugPrint("Subscription is not active.");
+        print("Subscription is not active.");
         return;
       }
       if (keysetStore.keysets.isNotEmpty) {
@@ -76,11 +76,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         await for (final message in _subscription!.messages) {
           if (isClosed) {
-            debugPrint("Bloc is closed, stopping message processing.");
+            print("Bloc is closed, stopping message processing.");
             return;
           }
           var content = message.content['content'];
-          debugPrint("receiving up: $content");
+          print("receiving up: $content");
 
           String messageType =
               message.content['messageType'] == 'text' ? 'text' : 'image';
@@ -106,7 +106,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               messageModel: newReceivedMessage, dateTime: DateTime.now()));
         }
       } catch (e) {
-        debugPrint('Error processing messages: $e');
+        print('Error processing messages: $e');
       }
     });
 
@@ -153,7 +153,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           emit(NewMessageState(envelope.content));
         }
       } catch (e) {
-        debugPrint('Error while getting messages: $e');
+        print('Error while getting messages: $e');
         emit(ChatErrorState(e.toString()));
       }
       emit(GotAllMessagesState(messages: messages));
@@ -191,7 +191,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           );
         }
       } catch (e) {
-        debugPrint('Error when sending the message: ${e.toString()}');
+        print('Error when sending the message: ${e.toString()}');
         emit(ChatErrorState(e.toString()));
       }
     });

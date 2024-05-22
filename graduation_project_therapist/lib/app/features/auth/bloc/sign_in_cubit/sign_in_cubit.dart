@@ -35,7 +35,7 @@ class SignInCubit extends Cubit<SignInState> {
         emit(SignInFailureState(errorMessage: error));
       }
     } catch (error) {
-      debugPrint('error in sign in: $error');
+      print('error in sign in: $error');
       emit(SignInFailureState(errorMessage: 'Server Error'));
     }
   }
