@@ -110,7 +110,7 @@ class _ChatPageState extends State<ChatPage> {
                     Future.delayed(const Duration(milliseconds: 300), () {
                       _jumpToBottom();
                     });
-                    Future.delayed(const Duration(seconds: 2), () {
+                    Future.delayed(const Duration(seconds: 5), () {
                       _jumpToBottom();
                     });
 
