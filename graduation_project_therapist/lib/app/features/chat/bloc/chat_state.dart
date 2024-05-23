@@ -11,19 +11,19 @@ class ChatInitial extends ChatState {
 
 class MessageSentState extends ChatState {
   final MessageModel messageModel;
-  
+
   MessageSentState({required this.messageModel});
   @override
   List<Object?> get props => [messageModel];
 }
+
 class NewMessageReceivedState extends ChatState {
   final MessageModel messageModel;
   final DateTime dateTime;
-  
-  
-  NewMessageReceivedState({required this.messageModel,required this.dateTime});
+
+  NewMessageReceivedState({required this.messageModel, required this.dateTime});
   @override
-  List<Object?> get props => [messageModel,dateTime];
+  List<Object?> get props => [messageModel, dateTime];
 }
 
 class ChatsLoadingState extends ChatState {
@@ -66,4 +66,19 @@ class GotAllMessagesState extends ChatState {
   GotAllMessagesState({required this.messages});
   @override
   List<Object?> get props => [messages];
+}
+
+class LoadingEarlierMessagesState extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
+
+class EarlierMessagesLoadedState extends ChatState {
+  final List<MessageModel> earlierMessages;
+  final bool noMoreMessages;
+  EarlierMessagesLoadedState(
+      {required this.earlierMessages, required this.noMoreMessages});
+
+  @override
+  List<Object?> get props => [earlierMessages, noMoreMessages];
 }

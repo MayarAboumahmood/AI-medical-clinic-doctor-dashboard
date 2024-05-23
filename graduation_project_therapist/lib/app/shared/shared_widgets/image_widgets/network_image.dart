@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -13,13 +12,13 @@ Widget getImageNetwork({
   BoxFit fit = BoxFit.cover,
   bool needAErrorBackgroundColor = true,
 }) {
-  return const SizedBox();
+  // return const SizedBox();
   return Container(
     width: width,
     color: color,
     height: height,
     child: Image.network(
-      ServerConfig.images + url,
+      url,
       color: imageColor,
       alignment: Alignment.center,
       fit: fit,
@@ -51,14 +50,14 @@ Widget imageLoader({
   Color? color,
   BoxFit fit = BoxFit.cover,
 }) {
-  return const SizedBox();
+  // return const SizedBox();
 
   return CachedNetworkImage(
       width: width,
       color: color,
       height: height,
       fit: fit,
-      imageUrl: ServerConfig.images + url,
+      imageUrl: url,
       progressIndicatorBuilder: (context, url, downloadProgress) =>
           buildLoadingShimmer(width, height),
       errorWidget: (context, url, error) =>

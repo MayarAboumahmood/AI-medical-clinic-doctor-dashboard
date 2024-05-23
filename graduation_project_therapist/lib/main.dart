@@ -10,6 +10,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/theme/app_theme.
 import 'package:graduation_project_therapist_dashboard/app/core/utils/responsive_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
@@ -177,8 +178,8 @@ class InitializerWidget extends StatelessWidget {
         }
       }
       */
-      return const BottomNavigationWidget();
-      // return WelcomeScreen();
+      // return const BottomNavigationWidget();
+      return WelcomeScreen();
     });
   }
 }

@@ -14,13 +14,11 @@ class ChatCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-           
             CircleAvatar(
               backgroundImage: NetworkImage(chatCardModel.image),
               radius: 30,
             ),
             const SizedBox(width: 10),
-        
             Text(
               chatCardModel.name,
               style: customTextStyle.bodyMedium, // Custom text style

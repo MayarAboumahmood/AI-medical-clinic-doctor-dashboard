@@ -27,12 +27,18 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final _textFeildController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
   List<MessageModel> messages = [];
   late final ChatBloc chatBloc;
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset <=
+              _scrollController.position.minScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        chatBloc.add(LoadEarlierMessagesEvent());
+      }
+    });
     chatBloc = context.read<ChatBloc>();
     chatBloc.add(SubscribeMessagesEvent());
   }
@@ -73,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -94,6 +100,7 @@ class _ChatPageState extends State<ChatPage> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: customColors.primaryBackGround,
         appBar: appBarPushingScreens('Chat', isFromScaffold: true),
         body: Column(
@@ -107,13 +114,6 @@ class _ChatPageState extends State<ChatPage> {
                   } else if (state is GotAllMessagesState) {
                     messages.addAll(state.messages);
                     _jumpToBottom();
-                    Future.delayed(const Duration(milliseconds: 300), () {
-                      _jumpToBottom();
-                    });
-                    Future.delayed(const Duration(seconds: 5), () {
-                      _jumpToBottom();
-                    });
-
                     return listOfMessagesBody();
                   } else if (state is MessageSentState) {
                     messages.add(state.messageModel);
@@ -123,6 +123,13 @@ class _ChatPageState extends State<ChatPage> {
                     messages.add(state.messageModel);
                     _scrollToBottom();
                     return listOfMessagesBody();
+                  } else if (state is EarlierMessagesLoadedState) {
+                    messages.clear();
+                    messages.addAll(state.earlierMessages);
+                    return listOfMessagesBody(
+                        noMoreMessages: state.noMoreMessages);
+                  } else if (state is LoadingEarlierMessagesState) {
+                    return listOfMessagesBody(isLoadingEarlierMessages: true);
                   }
                   return listOfMessagesBody();
                 },
@@ -135,13 +142,31 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget listOfMessagesBody() {
+  Widget listOfMessagesBody(
+      {bool isLoadingEarlierMessages = false, bool noMoreMessages = false}) {
     if (messages.isEmpty) {
       return noMessageYetContainer();
     } else {
       return SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           child: Column(children: [
+            isLoadingEarlierMessages
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CircularProgressIndicator(
+                      color: customColors.primary,
+                    ),
+                  )
+                : const SizedBox(),
+            noMoreMessages
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'That was all your messages'.tr(),
+                      style: customTextStyle.bodyMedium,
+                    ))
+                : const SizedBox(),
             const SizedBox(height: 20),
             ...List.generate(messages.length, (index) {
               MessageTypeEnum messageTypeEnum = messages[index].type;
@@ -228,6 +253,9 @@ class _ChatPageState extends State<ChatPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
+              onTap: () {
+                _scrollToBottom();
+              },
               cursorColor: customColors.primary,
               controller: _textFeildController,
               enabled: chatBloc.state is! ChatsLoadingState,

@@ -55,3 +55,8 @@ class AddImageToSendEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
+
+class LoadEarlierMessagesEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}
