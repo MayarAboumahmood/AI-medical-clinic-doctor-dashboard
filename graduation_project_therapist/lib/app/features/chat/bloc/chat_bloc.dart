@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
 
 import 'package:pubnub/pubnub.dart';
