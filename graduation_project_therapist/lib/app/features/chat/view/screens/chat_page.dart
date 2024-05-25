@@ -91,12 +91,17 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  bool isLoadingOrError = true;
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is ChatErrorState) {
-          customSnackBar(state.errorMessage, context);
+          if (state.errorMessage.length > 20) {
+            customSnackBar('Server error', context);
+          } else {
+            customSnackBar(state.errorMessage, context);
+          }
         }
       },
       child: Scaffold(
@@ -108,6 +113,8 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
+                  isLoadingOrError = (chatBloc.state is ChatsLoadingState ||
+                      chatBloc.state is ChatErrorState);
                   print('sssssssssssssssss the state in chat page $state');
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
@@ -135,13 +142,12 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            messageTextField(),
+            isLoadingOrError ? const SizedBox() : messageTextField()
           ],
         ),
       ),
     );
   }
-
 
   Widget listOfMessagesBody(
       {bool isLoadingEarlierMessages = false, bool noMoreMessages = false}) {
@@ -163,9 +169,17 @@ class _ChatPageState extends State<ChatPage> {
             noMoreMessages
                 ? Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      'That was all your messages'.tr(),
-                      style: customTextStyle.bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'That was all your messages'.tr(),
+                          style: customTextStyle.bodyMedium,
+                        ),
+                        Text(
+                          'Long press on any message to see the date'.tr(),
+                          style: customTextStyle.bodySmall,
+                        ),
+                      ],
                     ))
                 : const SizedBox(),
             const SizedBox(height: 20),
@@ -184,7 +198,7 @@ class _ChatPageState extends State<ChatPage> {
                   );
                 case MessageTypeEnum.image:
                   return MessageCard(
-                    date: formatTime(messages[index].timestamp),
+                    date: messages[index].timestamp,
                     iAmTheSender: iAmTheSender,
                     isConsecutiveMessage:
                         shouldMessageHaveTail(iAmTheSender, index),

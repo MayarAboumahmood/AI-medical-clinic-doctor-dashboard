@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
+import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_flow_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
@@ -127,7 +127,7 @@ Widget messageShimmer(bool isFirstMessage, bool isSender) {
     child: Shimmer.fromColors(
       baseColor: customColors.secondaryBackGround,
       highlightColor: customColors.primaryBackGround,
-      child: BubbleSpecialThree(
+      child: BubbleSpecialOne(
         text: generateRandomEmptyString(),
         textStyle: const TextStyle(color: Colors.transparent), // Hide text
         tail: isFirstMessage,

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/model/register_model.dart';

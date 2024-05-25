@@ -1,7 +1,6 @@
 import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/build_hero_full_image_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
@@ -31,26 +30,32 @@ class MessageCard extends StatelessWidget {
 
     switch (messageType) {
       case MessageTypeEnum.text:
-        return BubbleSpecialOne(
-          text: '$text\n$time',
-          textStyle: customTextStyle.bodyMedium.copyWith(color: Colors.white),
-          tail: isConsecutiveMessage,
-          color: iAmTheSender ? customColors.primary : customColors.accent2,
-          isSender: iAmTheSender,
+        return GestureDetector(
+          onLongPress: () {
+            showGuestDialog(context, time, day, text ?? 'Unknown'.tr());
+          },
+          child: BubbleSpecialOne(
+            text: '$text\n$time',
+            textStyle: customTextStyle.bodyMedium.copyWith(color: Colors.white),
+            tail: isConsecutiveMessage,
+            color: iAmTheSender ? customColors.primary : customColors.accent2,
+            isSender: iAmTheSender,
+          ),
         );
       case MessageTypeEnum.image:
         return imageData == null
             ? const SizedBox.shrink()
-            : imageCard(context, time, day);
+            : messageImageCard(context, time, day);
       default:
         return const SizedBox.shrink();
     }
   }
 
-  GestureDetector imageCard(BuildContext context, String time, String day) {
+  GestureDetector messageImageCard(
+      BuildContext context, String time, String day) {
     return GestureDetector(
       onLongPress: () {
-        showGuestDialog(context, day);
+        showGuestDialog(context, time, day, 'Image'.tr());
       },
       onTap: () {
         Navigator.push(
@@ -85,7 +90,7 @@ class MessageCard extends StatelessWidget {
                     Text(
                       time,
                       style: customTextStyle.bodyMedium
-                          .copyWith(color: Colors.white),
+                          .copyWith(color: customColors.primary),
                     )
                   ],
                 ),
@@ -97,36 +102,64 @@ class MessageCard extends StatelessWidget {
 }
 
 String formatTime(String timeString) {
-  DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-  DateTime dateTime = inputFormat.parse(timeString);
-
-  DateFormat outputFormat = DateFormat("hh:mm a");
-  return outputFormat.format(dateTime);
+  print('error: time : $timeString');
+  try {
+    DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime dateTime = inputFormat.parse(timeString);
+    DateFormat outputFormat = DateFormat("hh:mm a");
+    return outputFormat.format(dateTime);
+  } catch (e) {
+    debugPrint("Error parsing time string: $timeString");
+    return "Invalid date".tr();
+  }
 }
 
 String getDayFromDate(String timeString) {
-  DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-  DateTime dateTime = inputFormat.parse(timeString);
-
-  // Use "EEEE, MMMM d, yyyy" to get a full date string with day name
-  DateFormat dayFormat = DateFormat("EEEE, MMMM d, yyyy");
-  return dayFormat.format(dateTime);
+  try {
+    DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime dateTime = inputFormat.parse(timeString);
+    DateFormat dayFormat = DateFormat("EEEE, MMMM d, yyyy");
+    return dayFormat.format(dateTime);
+  } catch (e) {
+    debugPrint("Error parsing date string: $timeString");
+    return "Invalid date".tr();
+  }
 }
 
-void showGuestDialog(BuildContext context, String day) {
+void showGuestDialog(
+    BuildContext context, String time, String day, String text) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return SimpleDialog(
         alignment: Alignment.center,
-        backgroundColor: Colors.red,
         contentPadding: EdgeInsets.zero, // Removes default padding
+        backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(20)), // Removes default rounded corners
         children: <Widget>[
           Container(
-            child: Text('${'Day:'.tr()}$day'),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: customColors.secondaryBackGround),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Text(
+                    '${'The Message:'.tr()} $text',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: customTextStyle.bodyMedium,
+                  ),
+                  Text(
+                    '${'Day:'.tr()} $day on $time',
+                    style: customTextStyle.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       );
