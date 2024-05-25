@@ -142,6 +142,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+
   Widget listOfMessagesBody(
       {bool isLoadingEarlierMessages = false, bool noMoreMessages = false}) {
     if (messages.isEmpty) {
@@ -174,6 +175,7 @@ class _ChatPageState extends State<ChatPage> {
               switch (messageTypeEnum) {
                 case MessageTypeEnum.text:
                   return MessageCard(
+                    date: messages[index].timestamp,
                     iAmTheSender: iAmTheSender,
                     isConsecutiveMessage:
                         shouldMessageHaveTail(iAmTheSender, index),
@@ -182,6 +184,7 @@ class _ChatPageState extends State<ChatPage> {
                   );
                 case MessageTypeEnum.image:
                   return MessageCard(
+                    date: formatTime(messages[index].timestamp),
                     iAmTheSender: iAmTheSender,
                     isConsecutiveMessage:
                         shouldMessageHaveTail(iAmTheSender, index),

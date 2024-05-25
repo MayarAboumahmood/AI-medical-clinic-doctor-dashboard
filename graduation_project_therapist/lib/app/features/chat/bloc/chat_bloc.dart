@@ -19,11 +19,11 @@ String secretKey = 'sec-c-MDdiNWFiYzAtY2I1ZS00MTYxLTk4MGEtMGE5YjA2Y2Y5ZWMw';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late PubNub pubnub;
-  final int userID = 1;
+  final int userID = 2;
   Uint8List? imageToSend;
   int chunkSize = 20;
 
-  int user2ID = 2;
+  int user2ID = 1;
   late String channelName;
   Subscription? _subscription;
   List<ChatCardModel> chatsCardsModels = [
@@ -40,7 +40,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   ChatBloc() : super(ChatInitial()) {
-    channelName = assignChannelName(user2ID, userID);
+    channelName = assignChannelName(userID, user2ID);
     pubnub = PubNub(
       defaultKeyset: Keyset(
         subscribeKey: subscribeKey,
@@ -69,24 +69,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
           var content = message.content['content'];
           bool iAmTheSender = false;
+          String sendeDate = '';
           String messageType =
               message.content['messageType'] == 'text' ? 'text' : 'image';
           if (messageType == 'image') {
-            iAmTheSender = userID.toString() == message.content['message'];
-
+            iAmTheSender = userID.toString() ==
+                getFileSenderID(message.content['message']);
+            sendeDate = getFileDate(message.content['message']);
             String fileId = message.content['file']['id'];
             String fileName = message.content['file']['name'];
             Uri fileUrl =
                 pubnub.files.getFileUrl(channelName, fileId, fileName);
             content = fileUrl;
           } else {
+            sendeDate = message.content['time'];
             iAmTheSender = message.content['senderId'] == userID.toString();
           }
 
           MessageModel newReceivedMessage = MessageModel(
             type: messageTypeFromString(messageType),
             content: content,
-            timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+            timestamp: sendeDate,
             iAmTheSender: iAmTheSender,
           );
 
@@ -114,16 +117,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           List<MessageModel> newMessages = [];
           Uri? fileUrl;
           bool iAmTheSender = false;
+          String sendeDate = '';
+
           for (final envelope in history.messages) {
             String messageType =
                 envelope.content['messageType'] == 'text' ? 'text' : 'image';
             if (messageType == 'image') {
-              iAmTheSender = userID.toString() == envelope.content['message'];
+              iAmTheSender = userID.toString() ==
+                  getFileSenderID(envelope.content['message']);
+              sendeDate = getFileDate(envelope.content['message']);
 
               String fileId = envelope.content['file']['id'];
               String fileName = envelope.content['file']['name'];
               fileUrl = pubnub.files.getFileUrl(channelName, fileId, fileName);
             } else {
+              sendeDate = envelope.originalMessage['message']['time'];
               iAmTheSender = userID.toString() ==
                   envelope.originalMessage['message']['senderId'];
             }
@@ -131,8 +139,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               type: messageTypeFromString(messageType),
               content:
                   messageType == 'text' ? envelope.content['content'] : fileUrl,
-              timestamp:
-                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+              timestamp: sendeDate,
               iAmTheSender: iAmTheSender,
             ));
           }
@@ -164,27 +171,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         Uri? fileUrl;
         for (final envelope in history.messages) {
+          String sendeDate = '';
           bool iAmTheSender = false;
           if (!hasMessageData(envelope.originalMessage)) {
-            iAmTheSender = userID.toString() == envelope.content['message'];
+            iAmTheSender = userID.toString() ==
+                getFileSenderID(envelope.content['message']);
+            sendeDate = getFileDate(envelope.content['message']);
+
             String fileId = envelope.originalMessage['message']['file']['id'];
             String fileName =
                 envelope.originalMessage['message']['file']['name'];
             fileUrl = pubnub.files.getFileUrl(channelName, fileId, fileName);
           } else {
+            sendeDate = envelope.content['time'];
             iAmTheSender = userID.toString() ==
                 envelope.originalMessage['message']['senderId'];
           }
 
-          final String timestamp =
-              DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
           messages.add(MessageModel(
               type: messageTypeFromString(
                   envelope.content['messageType'] == 'text' ? 'text' : 'image'),
               content: hasMessageData(envelope.originalMessage)
                   ? envelope.content['content']
                   : fileUrl,
-              timestamp: timestamp,
+              timestamp: sendeDate,
               iAmTheSender: iAmTheSender));
         }
       } catch (e) {
@@ -204,11 +214,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             channelName,
             event.imageName!,
             event.imageData!,
-            fileMessage: userID.toString(),
-            fileMessageMeta: {
-              'senderId': userID.toString(),
-              'messageType': getMessageTypeFromEnvelope(event.messageType),
-            },
+            fileMessage:
+                '$userID///${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}',
+            // fileMessageMeta: {
+            //   'senderId': userID.toString(),
+            //   'messageType': getMessageTypeFromEnvelope(event.messageType),
+            // },
           );
         } else {
           content = event.message;
@@ -216,6 +227,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             channelName,
             {
               'senderId': userID.toString(),
+              'time': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
               'content': content,
               'messageType': getMessageTypeFromEnvelope(event.messageType),
             },

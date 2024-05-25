@@ -49,8 +49,27 @@ bool hasMessageData(Map<String, dynamic> messageObj) {
   return false;
 }
 
-String assignChannelName(int userID, int user2ID){
+String assignChannelName(int userID, int user2ID) {
   int firstID = max(userID, user2ID);
   int secondID = min(userID, user2ID);
-  return '${firstID}lastTextchat$secondID';
+  return '${firstID}fortime$secondID';
+}
+
+String getFileSenderID(String input) {
+  int delimiterIndex = input.indexOf('///');
+  if (delimiterIndex == -1) {
+    // If the delimiter is not found, return the whole string or handle as needed
+    return input;
+  }
+  return input.substring(0, delimiterIndex);
+}
+
+String getFileDate(String input) {
+  int delimiterIndex = input.indexOf('///');
+  if (delimiterIndex == -1) {
+    // If the delimiter is not found, return an empty string or handle as needed
+    return '';
+  }
+  // Adding 3 to skip the length of '///'
+  return input.substring(delimiterIndex + 3);
 }
