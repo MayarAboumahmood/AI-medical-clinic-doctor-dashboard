@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
 
 import 'package:pubnub/pubnub.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_state.dart';
@@ -33,11 +32,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ];
 
   List<MessageModel> messages = [];
-
-  String generateUserId() {
-    var uuid = const Uuid();
-    return uuid.v4();
-  }
 
   ChatBloc() : super(ChatInitial()) {
     channelName = assignChannelName(userID, user2ID);
