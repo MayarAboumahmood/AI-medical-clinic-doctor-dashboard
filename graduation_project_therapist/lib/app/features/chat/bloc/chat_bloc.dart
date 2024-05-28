@@ -76,7 +76,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             iAmTheSender = userID.toString() ==
                 getFileSenderID(message.content['message']);
             sendeDate = getFileDate(message.content['message']);
-            
+
             String fileId = message.content['file']['id'];
             String fileName = message.content['file']['name'];
             Uri fileUrl =

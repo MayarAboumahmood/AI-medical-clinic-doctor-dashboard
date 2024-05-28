@@ -116,6 +116,9 @@ class _ChatPageState extends State<ChatPage> {
                   isLoadingOrError = (chatBloc.state is ChatsLoadingState ||
                       chatBloc.state is ChatErrorState);
                   print('sssssssssssssssss the state in chat page $state');
+                  print(
+                      'sssssssssssssssss the is loaidng in the chat page $isLoadingOrError');
+
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
@@ -142,7 +145,12 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            isLoadingOrError ? const SizedBox() : messageTextField()
+            BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                return Visibility(
+                    visible: isLoadingOrError, child: messageTextField());
+              },
+            )
           ],
         ),
       ),
