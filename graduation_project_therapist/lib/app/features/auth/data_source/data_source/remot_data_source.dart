@@ -85,14 +85,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'Content-Type': 'application/json',
     };
     var body = jsonEncode({
-      'token': otpToken.trim(),
+      'token': otpToken,
     });
     var response = await http.post(url, headers: headers, body: body);
     print('Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
-      sharedPreferences!.setString('token', decodedResponse['token']);
+      String accessToken = decodedResponse['data']['accessToken'];
+      // Storing the access token in shared preferences
+      sharedPreferences!.setString('token', accessToken);
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {
       return http.Response(response.body, response.statusCode);
@@ -117,11 +119,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     print('login Response Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
-      sharedPreferences!.setString('token', decodedResponse['token']);
+      String accessToken = decodedResponse['data']['accessToken'];
+      print('login Response Body token: $accessToken');
+
+      sharedPreferences!.setString('token', accessToken);
+      print(
+          'login Response Body token: ${sharedPreferences!.getString('token')}');
 
       return http.Response(response.body, response.statusCode);
-    } 
-    else if (response.statusCode != 500) {
+    } else if (response.statusCode != 500) {
       return http.Response(response.body, response.statusCode);
     } else {
       return http.Response(response.body, response.statusCode);
@@ -131,6 +137,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<http.Response> forgetPasswordChangePasswordCode(
       String newPassword, String otpCode) async {
+    print('the otp is in forget pass: $otpCode');
     var url =
         Uri.parse(ServerConfig.url + ServerConfig.passwordforgotChangePassword);
     var headers = {
@@ -138,7 +145,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     };
     var body = jsonEncode({
       'newPassword': newPassword.trim(),
-      'token': otpCode.trim(),
+      'token': otpCode,
     });
     var response = await http.post(url, headers: headers, body: body);
     print('changing password statuscode: ${response.statusCode}');

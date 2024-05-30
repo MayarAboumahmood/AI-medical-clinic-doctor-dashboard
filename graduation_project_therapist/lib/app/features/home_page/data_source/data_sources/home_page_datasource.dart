@@ -10,7 +10,7 @@ class HomePageDataSource {
   Future<Response> getUserProfileData() async {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url + ServerConfig.getUserInfourl);
-    var headers = {'Content-Type': 'application/json', 'token': token};
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(
       url,
@@ -25,7 +25,7 @@ class HomePageDataSource {
   Future<Response> getUserStatusData() async {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url + ServerConfig.getUserStatus);
-    var headers = {'Content-Type': 'application/json', 'token': token};
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(
       url,

@@ -60,7 +60,7 @@ class _Step2PageState extends State<ForgetPasswordResetPassword> {
   BlocConsumer<SignInCubit, SignInState> signInCubitConsumer() {
     return BlocConsumer<SignInCubit, SignInState>(
       listener: (context, state) {
-        if (state is SuccessRequestForgetPasswordResetPassword) {
+        if (state is SuccessRequest) {
           customSnackBar('Your password changed successful', context,
               isFloating: true);
           Navigator.pushNamedAndRemoveUntil(
@@ -170,22 +170,22 @@ class _Step2PageState extends State<ForgetPasswordResetPassword> {
         validator: (value) {
           return ValidationFunctions.isStrongPassword(value!);
         },
-        isPassWordInVisible: false,
+        isPassWordInVisible: passwordSecurReWrite,
         context: context,
-        // suffixIcon: GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       passwordSecurReWrite = !passwordSecurReWrite;
-        //     });
-        //   },
-        //   child: Icon(
-        //     passwordSecurReWrite
-        //         ? Icons.visibility_off_outlined
-        //         : Icons.visibility_outlined,
-        //     color: customColors.secondaryText,
-        //     size: 18,
-        //   ),
-        // ),
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              passwordSecurReWrite = !passwordSecurReWrite;
+            });
+          },
+          child: Icon(
+            passwordSecurReWrite
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
+            color: customColors.secondaryText,
+            size: 18,
+          ),
+        ),
         controller: confirmPasswordController,
         label: 'Confirm the new password'.tr());
   }
@@ -197,21 +197,21 @@ class _Step2PageState extends State<ForgetPasswordResetPassword> {
           return ValidationFunctions.isStrongPassword(value!);
         },
         context: context,
-        isPassWordInVisible: false,
-        // suffixIcon: GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       passwordSecur = !passwordSecur;
-        //     });
-        //   },
-        //   child: Icon(
-        //     passwordSecur
-        //         ? Icons.visibility_off_outlined
-        //         : Icons.visibility_outlined,
-        //     color: customColors.secondaryText,
-        //     size: 18,
-        //   ),
-        // ),
+        isPassWordInVisible: passwordSecur,
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              passwordSecur = !passwordSecur;
+            });
+          },
+          child: Icon(
+            passwordSecur
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
+            color: customColors.secondaryText,
+            size: 18,
+          ),
+        ),
         controller: newPasswordController,
         label: 'Enter new password'.tr());
   }

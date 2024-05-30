@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/model/register_model.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/home_page_datasource.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/data_sources/home_page_datasource.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/user_profile_model.dart';
 
 class HomePageRepositoryImp {
   final HomePageDataSource _homePageDataSource;
 
   HomePageRepositoryImp(this._homePageDataSource);
-  Future<Either<String, UserInfo>> getUserProfileData() async {
+  Future<Either<String, UserProfileModel>> getUserProfileData() async {
     final response = await _homePageDataSource.getUserProfileData();
     final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      final UserInfo userInfo = UserInfo.fromJson(decodedResponse);
-      return right(userInfo);
+      final UserProfileModel userProfileModel = UserProfileModel.fromJson(decodedResponse);
+      return right(userProfileModel);
     } else if (response.statusCode == 500) {
       return left('Server error');
     } else {

@@ -48,8 +48,3 @@ final class ForgetPasswordSendingEmailSuccessState extends SignInState {
   @override
   List<Object?> get props => [];
 }
-
-final class SuccessRequestForgetPasswordResetPassword extends SignInState {
-  @override
-  List<Object?> get props => [];
-}
