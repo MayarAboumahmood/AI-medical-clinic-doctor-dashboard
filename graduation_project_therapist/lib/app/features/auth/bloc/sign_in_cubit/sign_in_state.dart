@@ -29,7 +29,27 @@ final class SignInFailureState extends SignInState {
   List<Object?> get props => [errorMessage];
 }
 
+final class SignInaccountNotverifiedState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
+
 final class SignInLoadingState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class SignInSendingOtpCodeLoadingState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class ForgetPasswordSendingEmailSuccessState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class SuccessRequestForgetPasswordResetPassword extends SignInState {
   @override
   List<Object?> get props => [];
 }

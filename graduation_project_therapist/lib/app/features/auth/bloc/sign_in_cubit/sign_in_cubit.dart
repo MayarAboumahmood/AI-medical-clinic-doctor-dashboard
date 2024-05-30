@@ -15,6 +15,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   TextEditingController passwordtextgController = TextEditingController();
   String userEmail = '';
+  String otpCode = '';
 
   void setUserEmail(updatedUserEmail) {
     userEmail = updatedUserEmail;
@@ -30,6 +31,8 @@ class SignInCubit extends Cubit<SignInState> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         emit(SuccessRequest());
+      } else if (response.statusCode == 403) {
+        emit(SignInaccountNotverifiedState());
       } else {
         final error = responseBody['error'] ?? 'Server Error'.tr();
         emit(SignInFailureState(errorMessage: error));
@@ -38,5 +41,52 @@ class SignInCubit extends Cubit<SignInState> {
       print('error in sign in: $error');
       emit(SignInFailureState(errorMessage: 'Server Error'));
     }
+  }
+
+  void pinUpdated({required String newOTPCode}) {
+    otpCode = newOTPCode;
+  }
+
+  void forgetPasswordChangePassword(String newPassword) async {
+    emit(SignInLoadingState());
+    try {
+      final response = await authRemoteDataSource
+          .forgetPasswordChangePasswordCode(newPassword, otpCode);
+      final responseBody = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(SuccessRequest());
+      } else {
+        final error = responseBody['error'] ?? 'Server Error'.tr();
+        emit(SignInFailureState(errorMessage: error));
+      }
+    } catch (error) {
+      debugPrint('error in forget Password Change Password: $error');
+      emit(SignInFailureState(errorMessage: 'Server Error'));
+    }
+  }
+
+  void sendEmailToGetOtp() async {
+    emit(SignInLoadingState());
+    try {
+      final response = await authRemoteDataSource.sendEmailToGetOtp(userEmail);
+      final responseBody = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        emit(ForgetPasswordSendingEmailSuccessState());
+      } else {
+        final error = responseBody['error'] ?? 'Server Error'.tr();
+        emit(SignInFailureState(errorMessage: error));
+      }
+    } catch (error) {
+      debugPrint('error in send Email To Get Otp: $error');
+      emit(SignInFailureState(errorMessage: 'Server Error'));
+    }
+  }
+
+  void resetSignInCubit() {
+    userEmail = '';
+    otpCode = '';
+    emit(SignInInitial());
   }
 }

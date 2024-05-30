@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/forget_password/enter_email.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/forget_password/forget_passowrd_otp.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/forget_password/reset_password.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/otp_code1.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/password_step.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/select_image_step.dart';
@@ -30,6 +33,9 @@ const String selectLocationMapPage = '/SelectLocationMapPage';
 const String selectImageRegisterStep = '/SelectImageRegisterStep';
 const String userProfilePage = '/UserProfilePage';
 const String chatPage = '/ChatPage';
+const String forgetPasswordOTP = '/ForgetPasswordOTP';
+const String forgetPasswordResetPassword = '/ForgetPasswordResetPassword';
+const String forgetPasswordEmail = '/ForgetPasswordEmail';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -47,4 +53,7 @@ final Map<String, WidgetBuilder> routes = {
   selectImageRegisterStep: (context) => const SelectImageAndDateRegisterStep(),
   userProfilePage: (context) => const UserProfilePage(),
   chatPage: (context) => const ChatPage(),
+  forgetPasswordOTP: (context) => const ForgetPasswordOTP(),
+  forgetPasswordResetPassword: (context) => const ForgetPasswordResetPassword(),
+  forgetPasswordEmail: (context) => const ForgetPasswordEmail(),
 };

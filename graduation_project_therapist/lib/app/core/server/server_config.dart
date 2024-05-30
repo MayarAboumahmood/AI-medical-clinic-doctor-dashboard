@@ -1,6 +1,7 @@
 class ServerConfig {
-  // static const String url = "http://10.0.2.2:8040";
-  static const String url = "http://127.0.0.1:3000/";
+  // static const String url = "http://127.0.0.1:3000/";
+  static const String url =
+      "http://192.168.100.38:3000/"; //for mobile with ip config.
 
   static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';
@@ -8,50 +9,13 @@ class ServerConfig {
   static const String register = 'specs/register';
   static const String login = 'specs/login';
   static const String otpVerify = 'otp/verify';
-  static const String completeRegister = 'register_complete';
-  static const String forgetPasswordSendPhoneURL = 'forgot_password';
-  static const String forgetPasswordChangePasswordURL = 'change_password';
-  static const String forgetPasswordSendOTPURL = 'check_code';
-  static const String mainPageData = 'proposal_Restaurants';
-  static const String resturantDetailes = 'details/';
-  static const String resturantDetailesGuest = 'details_guest/';
-  static const String offerDetailes = 'details_offer/';
-  static const String myReservations = 'my_reservations';
-  // static const String reversationCancel = 'reversation_cancel/';
-  static const String reversationCancel = 'invoice/cancelReservation/';
-  static const String deleteHistoryURL = 'reservation_delete/';
-  static const String following = 'list_rec_follow';
-  static const String discover = 'nearest_Restaurants';
-  static const String discoverFilter = 'advansearch';
-  static const String mapRes = 'map_res';
+  static const String sendOTP = 'otp/sendOTP';
+  static const String getUserInfourl = 'specs/profile';
+  static const String getUserStatus = 'specs/status';
+  static const String passwordforgotChangePassword = 'specs/password/forgot';
   static const String notifications = 'notification';
   static const String editProfile = 'edit_profile';
-  static const String setFollowURL = 'follow/';
-  static const String setUnFollowURL = 'unfollow/';
   static const String resetPassword = 'reset_password';
-  static const String detailsCategory = 'details_category/';
-  static const String availableTimes = 'available_times/';
-  static const String availableTables = 'available_tables/';
-  static const String availableTablesDiscoverFilter = 'types_tables';
-  static const String userInfo = 'profile';
-  static const String getAchivements = 'current_coupons';
-  static const String getAllNewOp = 'new_opening';
-  static const String getAllOffers = 'offers';
-  static const String getAllForYou = 'forYouRestaurants';
-  static const String getAllFeatured = 'featured';
-  static const String getAllBeasedOnYourTest = 'taste';
-  // static const String makeReservation = 'reversation/';
-  static const String makeReservation = 'invoice/create/';
-  static const String completePayURL = 'invoice/confirmPayment/';
-  static const String resendOTPCodeURL = 'invoice/resendCode/';
-  static const String makeAReview = 'review/';
-  static const String getReservationDetails = 'reservation_details/';
-  static const String getAllResturant = 'restaurants_token';
-  static const String getAllResturantWithoutToken = 'get_all_restaurants';
-  static const String discoverNearbyPlaces = 'map_res';
-  static const String filterRestaurantsURL = 'filtersearch';
-  static const String getAllCuisineURL = 'cuisines';
   static const String deleteAccountURL = 'delete_account';
   static const String getAllNotificationURL = 'get_notifications';
-  static const String getRestaurantLogoAndTaxieURL = 'restaurant_info/';
 }

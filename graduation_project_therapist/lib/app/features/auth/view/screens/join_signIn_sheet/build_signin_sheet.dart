@@ -8,6 +8,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/password_textfield.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -23,12 +24,19 @@ class _SignInWidgetState extends State<SignInWidget> {
   String? errorMessage; // Variable to hold the error message
   @override
   Widget build(BuildContext context) {
+    SignInCubit signInCubit = context.read<SignInCubit>();
+
     return BlocConsumer<SignInCubit, SignInState>(listener: (context, state) {
       print('sssssssssssssssssss: State $state in sign in');
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);
         comingFromRegisterOrLogin = true;
+      } else if (state is SignInaccountNotverifiedState) {
+        customSnackBar('Your account not verified yet', context);
+        signInCubit.sendEmailToGetOtp();
+      } else if (state is ForgetPasswordSendingEmailSuccessState) {
+        navigationService.navigationOfAllPagesToName(context, oTPCodeStep);
       }
     }, builder: (context, state) {
       if (state is SignInErrorRequeistState) {
@@ -179,10 +187,10 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
   GestureDetector buildforgetPasswordText() {
     return GestureDetector(
       onTap: () {
-        /*navigationService.navigationOfAllPagesToName(
+        navigationService.navigationOfAllPagesToName(
           context,
-          forgetPasswordPhoneNumber,
-        );*/
+          forgetPasswordEmail,
+        );
       },
       child: Row(
         children: [

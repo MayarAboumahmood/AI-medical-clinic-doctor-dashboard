@@ -1,15 +1,50 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/repository/home_page_repository_imp.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:meta/meta.dart';
 
 part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  HomePageBloc() : super(HomePageInitial()) {
+  HomePageRepositoryImp homePageRepositoryImp;
+  HomePageBloc({required this.homePageRepositoryImp})
+      : super(HomePageInitial()) {
     on<HomePageEvent>((event, emit) {
-      if (state is HomePageInitial) {
-        
+      if (state is HomePageInitial) {}
+    });
+    on<GetUserInfoEvent>((event, emit) async {
+      if (!isGuest) {
+        if (sharedPreferences!.getString('user_profile') == null) {
+          final getUserData = await homePageRepositoryImp.getUserProfileData();
+          getUserData.fold((onError) {
+            emit(FetchDataFauilerState(errorMessage: onError));
+          }, (data) {
+            Map<String, dynamic> jsonUserInfo = data.toJson();
+            sharedPreferences!.setString(
+              'user_profile',
+              jsonEncode(jsonUserInfo),
+            );
+          });
+        }
+      }
+    });
+    on<GetUserStatusEvent>((event, emit) async {
+      if (!isGuest) {
+        if (sharedPreferences!.getString('user_status') == null) {
+          final getUserStatus = await homePageRepositoryImp.getUserStatusData();
+          getUserStatus.fold((onError) {
+            emit(FetchDataFauilerState(errorMessage: onError));
+          }, (data) {
+            sharedPreferences!.setString(
+              'user_status',
+              data.toString(),
+            );
+          });
+        }
       }
     });
     on<LoadHomePageDataEvent>((event, emit) {

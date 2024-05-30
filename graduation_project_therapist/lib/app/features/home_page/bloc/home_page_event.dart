@@ -8,3 +8,12 @@ class LoadHomePageDataEvent extends HomePageEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetUserInfoEvent extends HomePageEvent {
+  @override
+  List<Object?> get props => [];
+}
+class GetUserStatusEvent extends HomePageEvent {
+  @override
+  List<Object?> get props => [];
+}

@@ -6,7 +6,7 @@ import '../../../../../../main.dart';
 Widget otpWidget(BuildContext context, Function(String?)? onCompleted,
     {TextEditingController? pinCodeController}) {
   return SizedBox(
-    width: responsiveUtil.scaleWidth(300),
+    width: responsiveUtil.screenWidth*.95,
     child: PinCodeTextField(
       autoDisposeControllers: true,
       appContext: context,

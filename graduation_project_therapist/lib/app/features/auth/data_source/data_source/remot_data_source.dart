@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/model/register_model.dart';
@@ -11,6 +12,11 @@ abstract class AuthRemoteDataSource {
   Future<Response> register(UserInfo registerModel, Uint8List? imageBytes);
   Future<Response> login(String userEmail, String password);
   sendOTPCode(String userEmail, String otpToken);
+
+  Future<Response> forgetPasswordChangePasswordCode(
+      String newPassword, String otpCode);
+
+  Future<Response> sendEmailToGetOtp(String userEmail);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -85,6 +91,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     print('Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
+      final decodedResponse = jsonDecode(response.body);
+      sharedPreferences!.setString('token', decodedResponse['token']);
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {
       return http.Response(response.body, response.statusCode);
@@ -107,6 +115,58 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     print('login Status Code: ${response.statusCode}');
     print('login Response Body: $body');
     print('login Response Body: ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final decodedResponse = jsonDecode(response.body);
+      sharedPreferences!.setString('token', decodedResponse['token']);
+
+      return http.Response(response.body, response.statusCode);
+    } 
+    else if (response.statusCode != 500) {
+      return http.Response(response.body, response.statusCode);
+    } else {
+      return http.Response(response.body, response.statusCode);
+    }
+  }
+
+  @override
+  Future<http.Response> forgetPasswordChangePasswordCode(
+      String newPassword, String otpCode) async {
+    var url =
+        Uri.parse(ServerConfig.url + ServerConfig.passwordforgotChangePassword);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var body = jsonEncode({
+      'newPassword': newPassword.trim(),
+      'token': otpCode.trim(),
+    });
+    var response = await http.post(url, headers: headers, body: body);
+    print('changing password statuscode: ${response.statusCode}');
+    print('changing password Body: $body');
+    print('changing password local Body: ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return http.Response(response.body, response.statusCode);
+    } else if (response.statusCode != 500) {
+      return http.Response(response.body, response.statusCode);
+    } else {
+      return http.Response(response.body, response.statusCode);
+    }
+  }
+
+  @override
+  Future<http.Response> sendEmailToGetOtp(String userEmail) async {
+    var url = Uri.parse(ServerConfig.url + ServerConfig.sendOTP);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var body = jsonEncode({
+      'email': userEmail.trim(),
+    });
+    print('changing password sending email Body: $body');
+
+    var response = await http.post(url, headers: headers, body: body);
+    print('changing password sending email statuscode: ${response.statusCode}');
+    print('changing password sending email local Body: ${response.body}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {
