@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/repository/home_page_repository_imp.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:meta/meta.dart';
@@ -18,19 +19,23 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     });
     on<GetUserInfoEvent>((event, emit) async {
       if (!isGuest) {
-        if (sharedPreferences!.getString('user_profile') == null) {
-          final getUserData = await homePageRepositoryImp.getUserProfileData();
-          getUserData.fold((onError) {
-            emit(FetchDataFauilerState(errorMessage: onError));
-          }, (data) {
-            Map<String, dynamic> jsonUserInfo = data.toJson();
-            sharedPreferences!.setString(
-              'user_profile',
-              jsonEncode(jsonUserInfo),
-            );
-          });
-        }
+        // if (sharedPreferences!.getString('user_profile') == null) {
+        final getUserData = await homePageRepositoryImp.getUserProfileData();
+
+        getUserData.fold((onError) {
+          emit(FetchDataFauilerState(errorMessage: onError));
+        }, (data) {
+          Map<String, dynamic> jsonUserInfo = data.toJson();
+          sharedPreferences!
+              .setString('user_profile', jsonEncode(jsonUserInfo));
+
+          String userProfileJson =
+              sharedPreferences!.getString('user_profile') ?? "";
+          print(
+              'the user profile when I get it: ${jsonDecode(userProfileJson)}');
+        });
       }
+      // }
     });
     on<GetUserStatusEvent>((event, emit) async {
       if (!isGuest) {
@@ -41,7 +46,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           }, (data) {
             sharedPreferences!.setString(
               'user_status',
-              data.toString(),
+              userStatusToString(data),
             );
           });
         }

@@ -9,10 +9,10 @@ final class UserProfileInitial extends UserProfileState {
 }
 
 final class UserProfileGetData extends UserProfileState {
-  final UserProfileModel userProfileModel;
-  UserProfileGetData({required this.userProfileModel});
+  final PatientProfileModel patientProfileModel;
+  UserProfileGetData({required this.patientProfileModel});
   @override
-  List<Object?> get props => [userProfileModel];
+  List<Object?> get props => [patientProfileModel];
 }
 
 final class UserProfileLoadingState extends UserProfileState {

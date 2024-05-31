@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/build_hero_full_image_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -9,14 +10,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 Widget buildImageWithName(String name, BuildContext context) {
+  print('the name in the buildimagewith name widget: $name');
   Future<String?> getImagePathFromPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('user_profile')) return null;
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    UserData userData = UserData.fromJson(userJson);
-    return userData.profilePicture; // Replace 'imagePath' with your actual key
+    UserProfileModel userData = UserProfileModel.fromJson(userJson);
+    return userData.photo; // Replace 'imagePath' with your actual key
   }
 
   return Column(

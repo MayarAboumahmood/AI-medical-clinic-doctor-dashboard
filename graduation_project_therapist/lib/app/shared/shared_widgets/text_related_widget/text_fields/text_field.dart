@@ -13,6 +13,7 @@ Widget customTextField(
     Widget? suffixIcon,
     String? errorText,
     TextEditingController? controller,
+    double? borderRadius,
     String? Function(String?)? validator,
     Function(String?)? onChanged,
     Function(String?)? onSaved,
@@ -26,7 +27,6 @@ Widget customTextField(
     controller: controller,
     obscureText: isPassWordInVisible ?? false,
     decoration: InputDecoration(
-      hoverColor: customColors.secondaryText,
       suffixIcon: suffixIcon,
       prefix: prefix,
       errorText: errorText,
@@ -45,7 +45,7 @@ Widget customTextField(
           color: borderSideColor ?? customColors.secondaryBackGround,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(
+        borderRadius: BorderRadius.circular(borderRadius ??
             10), //if you need to update this value just send it as a parameter.
       ),
       focusedBorder: OutlineInputBorder(
@@ -53,21 +53,21 @@ Widget customTextField(
           color: customColors.secondaryBackGround,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(borderRadius ?? 10),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: customColors.error,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(borderRadius ?? 10),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: customColors.secondaryBackGround,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(borderRadius ?? 10),
       ),
       filled: true,
       fillColor: customColors.secondaryBackGround,
@@ -95,7 +95,6 @@ Widget editeProfileTextField(
     Function(String?)? onChanged,
     Function(String?)? onSaved}) {
   return TextFormField(
-    
     key: key,
     keyboardType: textInputType,
     controller: controller,

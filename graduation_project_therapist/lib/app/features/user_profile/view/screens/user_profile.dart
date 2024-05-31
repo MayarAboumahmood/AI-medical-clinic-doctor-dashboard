@@ -47,7 +47,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           if (state is UserProfileLoadingState) {
             return offerAndNewOpiningShimmer();
           } else if (state is UserProfileGetData) {
-            return userProfileSilverAppBar(state.userProfileModel);
+            return userProfileSilverAppBar(state.patientProfileModel);
           }
           return offerAndNewOpiningShimmer();
         },
@@ -55,7 +55,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  Widget userProfileSilverAppBar(UserProfileModel userProfileModel) {
+  Widget userProfileSilverAppBar(PatientProfileModel PatientProfileModel) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -66,19 +66,19 @@ class _UserProfilePageState extends State<UserProfilePage> {
           backgroundColor: customColors.secondaryBackGround,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            title: Text(userProfileModel.name,
+            title: Text(PatientProfileModel.name,
                 style: customTextStyle.headlineMedium
                     .copyWith(color: Colors.white)),
             background: getImageNetwork(
-                url:
-                    userProfileModel.image ?? 'https://via.placeholder.com/150',
+                url: PatientProfileModel.image ??
+                    'https://via.placeholder.com/150',
                 fit: BoxFit.cover,
                 width: responsiveUtil.screenWidth,
                 height: responsiveUtil.screenHeight * .25),
           ),
         ),
         SliverToBoxAdapter(
-          child: userProfileBody(userProfileModel, context),
+          child: userProfileBody(PatientProfileModel, context),
         ),
       ],
     );

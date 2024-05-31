@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/edite_profile_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -14,7 +14,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   late File image = File('');
   final imagePicker = ImagePicker();
   late Uint8List imageInBytes;
-  UserData? userData;
+  UserProfileModel? userData;
 
   ProfileBloc({
     required this.editProfileRepositoryImpl,
@@ -25,7 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           await editProfileRepositoryImpl.editProfile(event.editedData);
       getData.fold(
           (onError) => emit(ServerErrorRequest(statusRequest: onError)),
-          (data) => emit(SuccessEditRequest(name: event.editedData.firstName)));
+          (data) => emit(SuccessEditRequest(name: event.editedData.fullName)));
     });
     on<ResetPasswordEvent>((event, emit) async {
       emit(LoadingRequest());

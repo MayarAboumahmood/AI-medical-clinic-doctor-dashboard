@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/service/shared_p
 import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_flow_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/welcome_screen_widget.dart/language_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    return UserData.fromJson(userJson).firstname;
+    return UserProfileModel.fromJson(userJson).fullName;
   }
 
   Future<void> initializeUserData() async {
@@ -99,6 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (state is SuccessEditRequest) {
                 return buildImageWithName(state.name, context);
               }
+              
               return buildImageWithName(userName!, context);
             },
           ),

@@ -1,22 +1,24 @@
 class UserProfileModel {
   int id;
   String fullName;
-  String? dateOfBirth;
+  String dateOfBirth;
   bool gender;
   String photo;
   String phone;
   String status;
+  String? state;
   int userId;
 
   UserProfileModel({
     required this.id,
     required this.fullName,
-    this.dateOfBirth,
+    required this.dateOfBirth,
     required this.gender,
     required this.photo,
     required this.phone,
     required this.status,
     required this.userId,
+    this.state,
   });
 
   // From JSON constructor
@@ -24,12 +26,13 @@ class UserProfileModel {
     return UserProfileModel(
       id: json['id'] as int,
       fullName: json['fullName'] as String,
-      dateOfBirth: json['dateOfBirth'] as String?,
+      dateOfBirth: json['dateOfBirth'] ?? '2001-01-01',
       gender: json['gender'] as bool,
       photo: json['photo'] as String,
       phone: json['phone'].toString(), // Ensure phone is a String
       status: json['status'] as String,
       userId: json['userId'] as int,
+      state: json['state'] as String?,
     );
   }
 

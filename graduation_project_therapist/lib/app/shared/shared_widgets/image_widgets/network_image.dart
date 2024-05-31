@@ -12,7 +12,7 @@ Widget getImageNetwork({
   BoxFit fit = BoxFit.cover,
   bool needAErrorBackgroundColor = true,
 }) {
-  // return const SizedBox();
+  return const SizedBox();
   return Container(
     width: width,
     color: color,
@@ -50,7 +50,7 @@ Widget imageLoader({
   Color? color,
   BoxFit fit = BoxFit.cover,
 }) {
-  // return const SizedBox();
+  return const SizedBox();
 
   return CachedNetworkImage(
       width: width,

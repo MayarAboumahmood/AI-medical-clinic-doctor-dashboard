@@ -93,6 +93,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
       String accessToken = decodedResponse['data']['accessToken'];
+      sharedPreferences!.setBool('isRegisterCompleted', true);
       // Storing the access token in shared preferences
       sharedPreferences!.setString('token', accessToken);
       return http.Response(response.body, response.statusCode);
@@ -120,6 +121,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
       String accessToken = decodedResponse['data']['accessToken'];
+      sharedPreferences!.setBool('isRegisterCompleted', true);
       print('login Response Body token: $accessToken');
 
       sharedPreferences!.setString('token', accessToken);

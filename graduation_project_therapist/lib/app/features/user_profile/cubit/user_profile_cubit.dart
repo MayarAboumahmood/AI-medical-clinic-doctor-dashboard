@@ -7,12 +7,12 @@ part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
   UserProfileCubit() : super(UserProfileInitial());
-  UserProfileModel? userProfileModel;
+  PatientProfileModel? patientProfileModel;
   void getUserProfile(int requestID) {
     emit(UserProfileLoadingState());
-    userProfileModel = UserProfileModel.generateFakeUserProfile();
+    patientProfileModel = PatientProfileModel.generateFakeUserProfile();
     Future.delayed(const Duration(seconds: 1), () {
-      emit(UserProfileGetData(userProfileModel: userProfileModel!));
+      emit(UserProfileGetData(patientProfileModel: patientProfileModel!));
     });
   }
 }

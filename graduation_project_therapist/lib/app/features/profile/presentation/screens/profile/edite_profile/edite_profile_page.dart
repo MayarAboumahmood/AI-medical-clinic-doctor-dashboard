@@ -5,12 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/edit_profile_model.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/profile_model.dart';
+
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/widgets/pic_pichter_bottom_sheet_edit_profile.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/format_the_syrain_number.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
@@ -29,8 +31,8 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditeProfileState extends State<EditProfile> {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   DateTime dateTime = DateTime(2000, 1, 1);
   String? selectedGender;
   String? selectedState;
@@ -44,17 +46,44 @@ class _EditeProfileState extends State<EditProfile> {
     initializeUserData();
   }
 
-  Future<UserData?> getUserDataFromPrefs() async {
+  Future<UserProfileModel?> getUserDataFromPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('user_profile')) return null;
+    if (!prefs.containsKey('user_profile')) {
+      debugPrint("user profile key don't have data");
+      return null;
+    }
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    return UserData.fromJson(userJson);
+    return UserProfileModel.fromJson(userJson);
+  }
+
+  DateTime parseDate(String dateString) {
+    debugPrint('Received date string: $dateString');
+    if (dateString.contains('-')) {
+      DateFormat format = DateFormat("yyyy-MM-dd");
+      try {
+        DateTime dateTime = format.parse(dateString);
+        return dateTime;
+      } catch (e) {
+        debugPrint('Error parsing date: $e');
+        return DateTime.now();
+      }
+    } else if (dateString.contains('/')) {
+      DateFormat format = DateFormat("yyyy/MM/dd");
+      try {
+        DateTime dateTime = format.parse(dateString);
+        return dateTime;
+      } catch (e) {
+        debugPrint('Error parsing date: $e');
+        return DateTime.now();
+      }
+    }
+    return DateTime.now();
   }
 
   Future<void> initializeUserData() async {
-    UserData? userData = await getUserDataFromPrefs();
+    UserProfileModel? userData = await getUserDataFromPrefs();
     if (userData != null) {
       setState(() {
         if (!statesList.contains(userData.state)) {
@@ -65,33 +94,27 @@ class _EditeProfileState extends State<EditProfile> {
         if (!genderOptions.contains(userData.gender)) {
           selectedGender = 'male'.tr();
         } else {
-          selectedGender = userData.gender;
+          selectedGender = userData.gender ? "Male" : 'Female';
         }
-        firstNameController.text = userData.firstname;
-        lastNameController.text = userData.lastname;
-        String birthDateString = userData.birthDate; // "1999/10/10"
+        nameController.text = userData.fullName;
+        phoneNumberController.text = userData.phone;
+        String birthDateString = userData.dateOfBirth; // "1999/10/10"
         try {
-          if (birthDateString.contains('-')) {
-            DateFormat format = DateFormat("yyyy-MM-dd");
-            dateTime = format.parse(birthDateString);
-          } else if (birthDateString.contains('/')) {
-            DateFormat format = DateFormat("yyyy/MM/dd");
-            dateTime = format.parse(birthDateString);
-          }
+          dateTime = parseDate(birthDateString);
         } catch (e) {
           if (kDebugMode) {
             print('Error parsing date: $e');
           }
         }
-        imageURl = userData.profilePicture;
+        imageURl = userData.photo;
       });
     } else {
       // Handle the case where userData is null (e.g., set default values)
       setState(() {
-        firstNameController.text = 'first name';
-        lastNameController.text = 'last name';
+        nameController.text = 'first name';
         selectedGender = 'male';
         selectedState = 'Damascus';
+        phoneNumberController.text = '09...';
       });
     }
   }
@@ -157,22 +180,29 @@ class _EditeProfileState extends State<EditProfile> {
                       ),
                       editeInfoTextField(
                         context,
-                        'fist Name',
+                        'Your name',
                         Icons.person_outline,
-                        firstNameController.text,
-                        firstNameController,
-                        1,
+                        nameController.text,
+                        nameController,
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      editeInfoTextField(
-                        context,
-                        'last Name',
-                        Icons.person_outline,
-                        lastNameController.text,
-                        lastNameController,
-                        1,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: editeProfileTextField(
+                          context: context,
+                          label: 'phone number',
+                          textInputType: TextInputType.number,
+                          controller: phoneNumberController,
+                          validator: (value) {
+                            return ValidationFunctions.isValidSyrianPhoneNumber(
+                              formatSyrianPhoneNumberForMakeItStartWIth09(
+                                  value!),
+                            );
+                          },
+                          hintText: 'enter your updated phone number',
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -247,9 +277,11 @@ class _EditeProfileState extends State<EditProfile> {
               gender: selectedGender!,
               state: selectedState!,
               profilePic: BlocProvider.of<ProfileBloc>(context).image,
-              firstName: firstNameController.text,
-              lastName: lastNameController.text,
+              fullName: nameController.text,
               dateOfBirth: DateFormat('yyyy-MM-dd').format(dateTime),
+              phoneNumber: '',
+              latitude: '0',
+              longitude: '0',
             );
             BlocProvider.of<ProfileBloc>(context).add(
               EditProfileEvent(editedData: updatedProfileData),
@@ -416,38 +448,26 @@ class _EditeProfileState extends State<EditProfile> {
 
   @override
   void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
+    nameController.dispose();
+
+    phoneNumberController.dispose();
     super.dispose();
   }
 
   Padding editeInfoTextField(
-      BuildContext context,
-      String label,
-      IconData suffixIcon,
-      String hintText,
-      TextEditingController controller,
-      int textType) {
+    BuildContext context,
+    String label,
+    IconData suffixIcon,
+    String hintText,
+    TextEditingController controller,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: editeProfileTextField(
-          textInputType: textType == 1
-              ? TextInputType.name
-              : textType == 2
-                  ? TextInputType.phone
-                  : TextInputType.emailAddress,
+          textInputType: TextInputType.name,
           controller: controller,
           validator: (value) {
-            if (textType == 3) {
-              if (controller.text.isNotEmpty) {
-                return ValidationFunctions.isValidEmail(value);
-              }
-            } else if (textType == 2) {
-              return ValidationFunctions.validateSyrianPhoneNumber(value);
-            } else if (textType == 1) {
-              return ValidationFunctions.nameValidation(value);
-            }
-            return null;
+            return ValidationFunctions.nameValidation(value);
           },
           context: context,
           suffixIcon: Icon(suffixIcon, color: customColors.text2, size: 22),

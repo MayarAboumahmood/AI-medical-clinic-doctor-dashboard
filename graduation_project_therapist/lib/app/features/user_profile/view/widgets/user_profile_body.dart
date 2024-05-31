@@ -5,7 +5,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-Widget userProfileBody(UserProfileModel profile,BuildContext context) {
+Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [

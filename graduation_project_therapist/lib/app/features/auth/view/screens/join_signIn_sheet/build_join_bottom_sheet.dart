@@ -146,7 +146,7 @@ class _JoinWidgetState extends State<JoinWidget> {
   Padding emailTextField() {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
+      child: Row( 
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

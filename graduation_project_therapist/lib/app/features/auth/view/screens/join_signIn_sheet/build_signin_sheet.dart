@@ -217,7 +217,7 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
         children: [
           Expanded(
               child: customTextField(
-                  textInputType: TextInputType.phone,
+                  textInputType: TextInputType.emailAddress,
                   validator: (value) {
                     return ValidationFunctions.isValidEmail(value ?? '');
                   },

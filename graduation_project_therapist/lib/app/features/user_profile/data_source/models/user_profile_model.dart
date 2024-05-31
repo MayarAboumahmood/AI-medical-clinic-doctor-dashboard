@@ -1,6 +1,6 @@
 import 'dart:math';
 
-class UserProfileModel {
+class PatientProfileModel {
   final String name;
   final String? image; // Optional
   final DateTime dateOfBirth;
@@ -10,7 +10,7 @@ class UserProfileModel {
   final double? workHoursPerDay; // Optional
   final String? placeOfWork; // Optional
 
-  UserProfileModel({
+  PatientProfileModel({
     required this.name,
     this.image,
     required this.dateOfBirth,
@@ -21,10 +21,10 @@ class UserProfileModel {
     this.placeOfWork,
   });
 
-  // Factory constructor for creating a new UserProfileModelinstance from a map.
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
-    return UserProfileModel(
-      name: json['name'],
+  // Factory constructor for creating a new PatientProfileModelinstance from a map.
+  factory PatientProfileModel.fromJson(Map<String, dynamic> json) {
+    return PatientProfileModel(
+      name: json['fullName'],
       image: json['image'],
       dateOfBirth: DateTime.parse(json['dateOfBirth']),
       relationshipState: json['relationshipState'],
@@ -35,7 +35,7 @@ class UserProfileModel {
     );
   }
 
-  // Method to serialize UserProfileModelobject to JSON.
+  // Method to serialize PatientProfileModelobject to JSON.
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -49,7 +49,7 @@ class UserProfileModel {
     };
   }
 
-  static UserProfileModel generateFakeUserProfile() {
+  static PatientProfileModel generateFakeUserProfile() {
     final random = Random();
 
     // Helper function to generate a random date of birth
@@ -63,7 +63,7 @@ class UserProfileModel {
     }
 
     // Creating a random UserProfile
-    return UserProfileModel(
+    return PatientProfileModel(
       name:
           'Person ${random.nextInt(1000)}', // Randomly generated name identifier
       image: random.nextBool()
