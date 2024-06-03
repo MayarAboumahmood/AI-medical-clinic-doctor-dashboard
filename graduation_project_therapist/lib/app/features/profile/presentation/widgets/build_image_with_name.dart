@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/formate_name.dart';
 
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/build_hero_full_image_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
@@ -98,7 +99,7 @@ Widget buildImageWithName(String name, BuildContext context) {
         height: responsiveUtil.scaleHeight(5),
       ),
       Text(
-        name,
+        formatNameForBackend(name),
         style: customTextStyle.bodyLarge.copyWith(
           color: customColors.primary,
           fontSize: 20,

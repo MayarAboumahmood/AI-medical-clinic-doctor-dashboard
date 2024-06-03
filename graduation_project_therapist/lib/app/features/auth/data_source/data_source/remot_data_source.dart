@@ -51,7 +51,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     request.fields['password'] = registerModel.password.trim();
     request.fields['roleId'] = registerModel.roleId.toString();
     request.fields['dateOfBirth'] = isDateOFBirthExist
-        ? registerModel.dateOfBirth!.trim()
+        ? registerModel.dateOfBirth!
         : DateFormat('yyyy/MM/dd').format(DateTime(2001, 1, 1));
     request.fields['gender'] = registerModel.gender.toString();
 
@@ -66,9 +66,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     // Send the request
     final response = await request.send();
 
-    print('ssssssssssssssssssssssssssss : ${response.statusCode}');
     final responseBody = await response.stream.bytesToString();
-    print('ssssssssssssssssssssssssssss : $responseBody');
+
     if (response.statusCode == 201 || response.statusCode == 200) {
       return http.Response(responseBody, response.statusCode);
     } else if (response.statusCode != 500) {

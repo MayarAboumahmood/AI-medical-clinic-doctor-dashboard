@@ -22,7 +22,6 @@ class WelcomeScreen extends StatelessWidget {
 
   Widget _buildPageBody(BuildContext context) {
     return Stack(
-      // alignment: const AlignmentDirectional(0, 1),
       children: [
         buildPageView(context, controller),
         buildLogo(),
@@ -33,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               buildPageIndicator(controller),
               buildLanguageIcon(context),
-              // buildLogo(),
+
               buildButtons(context)
             ],
           )),

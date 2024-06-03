@@ -18,15 +18,13 @@ class EditProfileEvent extends ProfileEvent {
 class ResetPasswordEvent extends ProfileEvent {
   final String oldPassword;
   final String newPassword;
-  final String resetNewPassword;
 
   const ResetPasswordEvent({
     required this.oldPassword,
-    required this.resetNewPassword,
     required this.newPassword,
   });
   @override
-  List<Object?> get props => [oldPassword, newPassword, resetNewPassword];
+  List<Object?> get props => [oldPassword, newPassword];
 }
 
 class CanNotChangePassworEvent extends ProfileEvent {
@@ -50,7 +48,6 @@ class LoadingProfileEvent extends ProfileEvent {
   @override
   List<Object?> get props => [];
 }
-
 
 class DeleteAccountEvent extends ProfileEvent {
   const DeleteAccountEvent();

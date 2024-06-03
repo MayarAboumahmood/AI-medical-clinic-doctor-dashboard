@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project_therapist_dashboard/app/core/status_requests/staus_request.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/edit_profile_model.dart';
 
 abstract class EditProfileRepository {
-  Future<Either<StatusRequest, Unit>> editProfile(
+  Future<Either<String, String>> editProfile(
       EditProfileModel editProfileEntity);
-  Future<Either<StatusRequest, Unit>> resetPassword(
-      String old, String newPassword, String recheckNewPassword);
-  Future<Either<StatusRequest, int>> deleteAccount();
+  Future<Either<String , String>> resetPassword(
+      String old, String newPassword);
+  Future<Either<String,String>> deleteAccount();
 }

@@ -41,11 +41,10 @@ final class ValidationErrorRequest extends ProfileState {
 }
 
 final class ServerErrorRequest extends ProfileState {
-  final StatusRequest statusRequest;
+  final String errorMessage;
+  const ServerErrorRequest({required this.errorMessage});
   @override
-  List<Object> get props => [statusRequest];
-
-  const ServerErrorRequest({required this.statusRequest});
+  List<Object> get props => [errorMessage];
 }
 
 final class CanNotChangePassworState extends ProfileState {

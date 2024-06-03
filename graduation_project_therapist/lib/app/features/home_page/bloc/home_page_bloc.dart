@@ -19,23 +19,12 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     });
     on<GetUserInfoEvent>((event, emit) async {
       if (!isGuest) {
-        // if (sharedPreferences!.getString('user_profile') == null) {
-        final getUserData = await homePageRepositoryImp.getUserProfileData();
-
-        getUserData.fold((onError) {
-          emit(FetchDataFauilerState(errorMessage: onError));
-        }, (data) {
-          Map<String, dynamic> jsonUserInfo = data.toJson();
-          sharedPreferences!
-              .setString('user_profile', jsonEncode(jsonUserInfo));
-
-          String userProfileJson =
-              sharedPreferences!.getString('user_profile') ?? "";
-          print(
-              'the user profile when I get it: ${jsonDecode(userProfileJson)}');
-        });
+        if (event.shouldLoadTheUserInfo) {
+          await getUserData(emit);
+        } else if (sharedPreferences!.getString('user_profile') == null) {
+          await getUserData(emit);
+        }
       }
-      // }
     });
     on<GetUserStatusEvent>((event, emit) async {
       if (!isGuest) {
@@ -54,6 +43,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     });
     on<LoadHomePageDataEvent>((event, emit) {
       // TODO: implement sending request to get the home page data.
+    });
+  }
+
+  Future<void> getUserData(Emitter<HomePageState> emit) async {
+    final getUserData = await homePageRepositoryImp.getUserProfileData();
+
+    getUserData.fold((onError) {
+      emit(FetchDataFauilerState(errorMessage: onError));
+    }, (data) {
+      Map<String, dynamic> jsonUserInfo = data.toJson();
+      sharedPreferences!.setString('user_profile', jsonEncode(jsonUserInfo));
+
+      String userProfileJson =
+          sharedPreferences!.getString('user_profile') ?? "";
+      print('the user profile when I get it: ${jsonDecode(userProfileJson)}');
     });
   }
 }

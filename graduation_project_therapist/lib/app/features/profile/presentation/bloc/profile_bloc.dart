@@ -20,19 +20,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required this.editProfileRepositoryImpl,
   }) : super(ProfileInitial()) {
     on<EditProfileEvent>((event, emit) async {
+      print('save button is clicked in the bloc');
       emit(LoadingRequest());
       final getData =
           await editProfileRepositoryImpl.editProfile(event.editedData);
-      getData.fold(
-          (onError) => emit(ServerErrorRequest(statusRequest: onError)),
+      getData.fold((onError) => emit(ServerErrorRequest(errorMessage: onError)),
           (data) => emit(SuccessEditRequest(name: event.editedData.fullName)));
     });
+
     on<ResetPasswordEvent>((event, emit) async {
       emit(LoadingRequest());
       final getData = await editProfileRepositoryImpl.resetPassword(
-          event.oldPassword, event.newPassword, event.resetNewPassword);
-      getData.fold(
-          (onError) => emit(ServerErrorRequest(statusRequest: onError)),
+          event.oldPassword, event.newPassword);
+      getData.fold((onError) => emit(ServerErrorRequest(errorMessage: onError)),
           (data) => emit(const PasswordEditedState()));
     });
     on<CanNotChangePassworEvent>((event, emit) async {
@@ -47,8 +47,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final deleteAccountResponse =
           await editProfileRepositoryImpl.deleteAccount();
       deleteAccountResponse.fold(
-          (statusRequest) =>
-              emit(ServerErrorRequest(statusRequest: statusRequest)),
+          (error) => emit(ServerErrorRequest(errorMessage: error)),
           (r) => emit(const AccountDeletedState()));
     });
     on<SetPictureProfileEditeProfile>((event, emit) async {

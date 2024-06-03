@@ -32,7 +32,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _retypeNewPasswordController =
       TextEditingController();
-
+  bool isLoading = false;
   @override
   void initState() {
     BlocProvider.of<ProfileBloc>(context).add(const ChangePasswordInitEvent());
@@ -55,99 +55,72 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         BlocProvider.of<ProfileBloc>(context)
             .add(const ChangePasswordInitEvent());
       },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: customColors.primaryBackGround,
-          body: Form(
-            key: globalKey,
-            child: SingleChildScrollView(
-              child: Column(
-                  children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Align(
-                      alignment: isRTL(context)
-                          ? Alignment.topRight
-                          : Alignment.topLeft,
-                      child: Text('Change password'.tr(),
-                          style: customTextStyle.headlineLarge.copyWith(
-                              color: customColors.secondaryText,
-                              fontWeight: FontWeight.normal))),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    AppString.changePasswordTitle.tr(),
-                    style: customTextStyle.bodyMedium.copyWith(
-                        color: customColors.secondaryText,
-                        fontWeight: FontWeight.normal),
+      child: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is PasswordEditedState) {
+            Future.delayed(const Duration(milliseconds: 400), () {
+              navigationService.goBack();
+              customSnackBar('your password has been changed'.tr(), context,
+                  isFloating: true);
+            });
+          } else if (state is ServerErrorRequest) {
+            customSnackBar(state.errorMessage, context);
+          }
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: customColors.primaryBackGround,
+            body: Form(
+              key: globalKey,
+              child: SingleChildScrollView(
+                child: Column(
+                    children: [
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-                passwordTextField(context, 'Current Password',
-                    _currentPasswordController, _isOldPasswordWrong, 1),
-                passwordTextField(
-                    context, 'New Password', _newPasswordController, false, 2),
-                passwordTextField(context, 'Re-type new Password',
-                    _retypeNewPasswordController, false, 3),
-                const SizedBox(
-                  height: 350,
-                ),
-                BlocBuilder<ProfileBloc, ProfileState>(
-                    builder: (context, state) {
-                  if (state is LoadingRequest) {
-                    return GeneralButtonOptions(
-                      onPressed: () {},
-                      text: 'Save'.tr(),
-                      loading: true,
-                      options: ButtonOptions(
-                        width: 150,
-                        height: 45,
-                        color: customColors.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    );
-                  } else if (state is PasswordEditedState) {
-                    Future.delayed(const Duration(milliseconds: 400), () {
-                      navigationService.goBack();
-                      customSnackBar(
-                          'your password has been changed'.tr(), context,
-                          isFloating: true);
-                    });
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                        alignment: isRTL(context)
+                            ? Alignment.topRight
+                            : Alignment.topLeft,
+                        child: Text('Change password'.tr(),
+                            style: customTextStyle.headlineLarge.copyWith(
+                                color: customColors.secondaryText,
+                                fontWeight: FontWeight.normal))),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      AppString.changePasswordTitle.tr(),
+                      style: customTextStyle.bodyMedium.copyWith(
+                          color: customColors.secondaryText,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                  passwordTextField(context, 'Current Password',
+                      _currentPasswordController, _isOldPasswordWrong, 1),
+                  passwordTextField(context, 'New Password',
+                      _newPasswordController, false, 2),
+                  passwordTextField(context, 'Re-type new Password',
+                      _retypeNewPasswordController, false, 3),
+                  const SizedBox(
+                    height: 350,
+                  ),
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                      builder: (context, state) {
+                    isLoading = state is LoadingRequest;
+                    print('changing pass state: $state');
 
-                    return saveButton(context, true);
-                  } else if (state is ServerErrorRequest) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (state.statusRequest.name.toString() ==
-                          'oldPasswordIsWrong') {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          setState(() {
-                            _isOldPasswordWrong =
-                                true; // Set the flag to true to show the error
-                          });
-                        });
-                      } else if (state.statusRequest.name.toString() ==
-                          'validationError') {
-                        Future.delayed(const Duration(milliseconds: 400), () {
-                          customSnackBar(
-                              'Error Chaging password, there is a validation error'
-                                  .tr(),
-                              context);
-                        });
-                      }
-                    });
-                  }
-                  return saveButton(context, false);
-                  // return Text('ddd');
-                }),
-                const SizedBox(
-                  height: 30,
-                )
-              ].divide(const SizedBox(
-                height: 10,
-              ))),
+                    return saveButton(context);
+                  }),
+                  const SizedBox(
+                    height: 30,
+                  )
+                ].divide(const SizedBox(
+                  height: 10,
+                ))),
+              ),
             ),
           ),
         ),
@@ -155,23 +128,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
-  GeneralButtonOptions saveButton(BuildContext context, bool isLoading) {
+  GeneralButtonOptions saveButton(BuildContext context) {
     return GeneralButtonOptions(
         onPressed: () {
           FormState? formState = globalKey.currentState;
-
           isLoading
               ? () {}
               : {
                   if (formState!.validate())
                     {
                       formState.save(),
-                      BlocProvider.of<ProfileBloc>(context).add(
-                          ResetPasswordEvent(
-                              newPassword: _newPasswordController.text,
-                              oldPassword: _currentPasswordController.text,
-                              resetNewPassword:
-                                  _retypeNewPasswordController.text))
+                      BlocProvider.of<ProfileBloc>(context)
+                          .add(ResetPasswordEvent(
+                        newPassword: _newPasswordController.text,
+                        oldPassword: _currentPasswordController.text,
+                      ))
                     }
                 };
         },
@@ -206,48 +177,49 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             if (type == 3 /*'Re-type new Password'*/) {
               return ValidationFunctions.isNewPasswordEqualreType(
                   value!, _newPasswordController.text);
-            } else if (isError && type == 1 /*'Current Password'*/) {
+            } else if (isError && type == 1) {
               errorMessage = 'The old password is not correct'.tr();
               return null;
             }
 
             return null;
           },
+          textInputType: TextInputType.visiblePassword,
           errorText: errorMessage,
           controller: controller,
           context: context,
-          isPassWordInVisible: true,
-          //  type == 1
-          //     ? passwordSecur1
-          //     : type == 2
-          //         ? passwordSecur2
-          //         : passwordSecur3,
-          // suffixIcon: GestureDetector(
-          //   onTap: () {
-          //     setState(() {
-          //       type == 1
-          //           ? passwordSecur1 = !passwordSecur1
-          //           : type == 2
-          //               ? passwordSecur2 = !passwordSecur2
-          //               : passwordSecur3 = !passwordSecur3;
-          //     });
-          //   },
-          //   child: Icon(
-          //     type == 1
-          //         ? passwordSecur1
-          //             ? Icons.visibility_off_outlined
-          //             : Icons.visibility_outlined
-          //         : type == 2
-          //             ? passwordSecur2
-          //                 ? Icons.visibility_off_outlined
-          //                 : Icons.visibility_outlined
-          //             : passwordSecur3
-          //                 ? Icons.visibility_off_outlined
-          //                 : Icons.visibility_outlined,
-          //     color: customColors.secondaryText,
-          //     size: 18,
-          //   ),
-          // ),
+          isPassWordInVisible: type == 1
+              ? passwordSecur1
+              : type == 2
+                  ? passwordSecur2
+                  : passwordSecur3,
+          suffixIcon: GestureDetector(
+            onTap: () {
+              print('changing the sucure: $passwordSecur1');
+              setState(() {
+                type == 1
+                    ? passwordSecur1 = !passwordSecur1
+                    : type == 2
+                        ? passwordSecur2 = !passwordSecur2
+                        : passwordSecur3 = !passwordSecur3;
+              });
+            },
+            child: Icon(
+              type == 1
+                  ? passwordSecur1
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined
+                  : type == 2
+                      ? passwordSecur2
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined
+                      : passwordSecur3
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+              color: customColors.secondaryText,
+              size: 18,
+            ),
+          ),
           borderSideColor:
               isError && label == 'Current Password' ? Colors.red : null,
           label: label.tr()),

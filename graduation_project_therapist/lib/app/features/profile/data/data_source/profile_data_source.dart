@@ -1,21 +1,20 @@
-import 'dart:convert';
-
 import 'package:graduation_project_therapist_dashboard/app/core/injection/app_injection.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
-import 'package:flutter/foundation.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/formate_name.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/gender_for_backend_functions.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:graduation_project_therapist_dashboard/app/core/service/shared_preferences.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/edit_profile_model.dart';
-import 'package:graduation_project_therapist_dashboard/main.dart';
+import 'package:http/http.dart';
 
 abstract class ProfileDataSource {
-  Future<int> editProfile(EditProfileModel editProfileModel);
-  Future<int> deleteAccount();
-  Future<int> resetPassword(
-      String old, String newPassword, String recheckNewPassword);
+  Future<Response> editProfile(EditProfileModel editProfileModel);
+  Future<Response> deleteAccount();
+  Future<Response> resetPassword(
+    String old,
+    String newPassword,
+  );
 }
 
 class ProfileDataSourceImpl implements ProfileDataSource {
@@ -25,15 +24,16 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   });
 
   @override
-  Future<int> editProfile(EditProfileModel editProfileModel) async {
+  Future<Response> editProfile(EditProfileModel editProfileModel) async {
     String token = await sl<PrefService>().readString('token');
     final headers = {'Authorization': token};
 
     var uri = Uri.parse(ServerConfig.baseURL + ServerConfig.editProfile);
     var request = http.MultipartRequest('POST', uri)..headers.addAll(headers);
 
-    request.fields['fullName'] = editProfileModel.fullName;
-    request.fields['state'] = editProfileModel.state;
+    request.fields['fullName'] =
+        formatNameForBackend(editProfileModel.fullName);
+    // request.fields['state'] = editProfileModel.state;
     request.fields['phone'] = editProfileModel.phoneNumber;
     request.fields['gender'] =
         getGenderIntFromString(editProfileModel.gender).toString();
@@ -47,56 +47,44 @@ class ProfileDataSourceImpl implements ProfileDataSource {
       ));
     }
 
-    try {
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    print('editing the profile: ${response.statusCode}');
+    print('editing the profile: ${response.body}');
 
-      if (response.statusCode == 200) {
-        Map<String, dynamic> dataJson = json.decode(response.body);
-        final userData = UserProfileModel.fromJson(dataJson['data']);
-
-        sharedPreferences!
-            .setString('user_profile', json.encode(userData.toJson()));
-
-        return 200;
-      }
-      return response.statusCode;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error in editProfile: $e');
-      }
-      return 500; // Internal server error code
-    }
+    return response;
   }
 
   @override
-  Future<int> resetPassword(
-      String old, String newPassword, String recheckNewPassword) async {
+  Future<Response> resetPassword(
+    String old,
+    String newPassword,
+  ) async {
     String token = await sl<PrefService>().readString('token');
-    final headers = {'Authorization': 'Bearer $token'};
+    final headers = {'Authorization': token};
 
     final body = {
-      "oldpassword": old,
-      "newpassword": newPassword,
-      "c_newpassword": recheckNewPassword,
+      "oldPassword": old,
+      "newPassword": newPassword,
     };
 
     final response = await client.post(
         Uri.parse(ServerConfig.baseURL + ServerConfig.resetPassword),
         body: body,
         headers: headers);
-
-    return response.statusCode;
+    print('changing the password data source: ${response.statusCode}');
+    print('changing the password data source: ${response.body}');
+    return response;
   }
 
   @override
-  Future<int> deleteAccount() async {
+  Future<Response> deleteAccount() async {
     String token = await sl<PrefService>().readString('token');
-    final headers = {'Authorization': 'Bearer $token'};
+    final headers = {'Authorization': token};
 
-    final response = await client.post(
+    final response = await client.delete(
         Uri.parse(ServerConfig.baseURL + ServerConfig.deleteAccountURL),
         headers: headers);
-    return response.statusCode;
+    return response;
   }
 }

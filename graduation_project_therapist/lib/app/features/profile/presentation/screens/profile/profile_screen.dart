@@ -17,7 +17,6 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/pres
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/widgets/edit_profile_widgets/location_notification_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_data_event.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
@@ -77,9 +76,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Future.delayed(const Duration(milliseconds: 400), () {
             logOut();
           });
+          customSnackBar('Your account was deleted successfully.', context);
         } else if (state is ServerErrorRequest) {
-          customSnackBar(getMessageFromStatus(state.statusRequest), context,
-              isFloating: true);
+          customSnackBar(state.errorMessage, context, isFloating: true);
         }
       },
       child: profileBody(context),
@@ -99,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (state is SuccessEditRequest) {
                 return buildImageWithName(state.name, context);
               }
-              
+
               return buildImageWithName(userName!, context);
             },
           ),

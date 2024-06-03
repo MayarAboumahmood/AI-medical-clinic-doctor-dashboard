@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/model/edit_profile_model.dart';
 
@@ -37,8 +38,8 @@ class _EditeProfileState extends State<EditProfile> {
   String? selectedGender;
   String? selectedState;
   String? imageURl;
-  bool isClickedSave = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -82,6 +83,13 @@ class _EditeProfileState extends State<EditProfile> {
     return DateTime.now();
   }
 
+  getGenderString(bool genderBoolean) {
+    if (genderBoolean) {
+      return 'male'.tr();
+    }
+    return 'female'.tr();
+  }
+
   Future<void> initializeUserData() async {
     UserProfileModel? userData = await getUserDataFromPrefs();
     if (userData != null) {
@@ -91,13 +99,14 @@ class _EditeProfileState extends State<EditProfile> {
         } else {
           selectedState = userData.state;
         }
-        if (!genderOptions.contains(userData.gender)) {
+        if (!genderOptions.contains(getGenderString(userData.gender))) {
           selectedGender = 'male'.tr();
         } else {
-          selectedGender = userData.gender ? "Male" : 'Female';
+          selectedGender = getGenderString(userData.gender);
         }
         nameController.text = userData.fullName;
-        phoneNumberController.text = userData.phone;
+        phoneNumberController.text =
+            formatSyrianPhoneNumberForMakeItStartWIth09(userData.phone);
         String birthDateString = userData.dateOfBirth; // "1999/10/10"
         try {
           dateTime = parseDate(birthDateString);
@@ -122,26 +131,25 @@ class _EditeProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileBloc, ProfileState>(listener: (context, state) {
-      if (state is! LoadingRequest) {
-        isClickedSave = false;
-      }
       if (state is SuccessEditRequest) {
         customSnackBar(
           'Your profile has been updated',
           context,
           isFloating: true,
         );
-
+        context
+            .read<HomePageBloc>()
+            .add(GetUserInfoEvent(shouldLoadTheUserInfo: true));
         navigationService.goBack();
-      } else if (state is ValidationErrorRequest) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Check your inputs".tr()),
-          ),
+      } else if (state is ServerErrorRequest) {
+        customSnackBar(
+          state.errorMessage,
+          context,
+          isFloating: true,
         );
       }
     }, builder: (context, state) {
-      // final isLoading = state is LoadingRequest;
+      isLoading = state is LoadingRequest;
       return Scaffold(
         backgroundColor: customColors.primaryBackGround,
         body: Form(
@@ -268,10 +276,6 @@ class _EditeProfileState extends State<EditProfile> {
         saveButton(context, 'Save changes', () {
           FormState? formState = formKey.currentState;
           if (formState!.validate()) {
-            // context.read<ShowProductsBloc>().userState = selectedState;
-            setState(() {
-              isClickedSave = true;
-            });
             formState.save();
             final updatedProfileData = EditProfileModel(
               gender: selectedGender!,
@@ -279,7 +283,8 @@ class _EditeProfileState extends State<EditProfile> {
               profilePic: BlocProvider.of<ProfileBloc>(context).image,
               fullName: nameController.text,
               dateOfBirth: DateFormat('yyyy-MM-dd').format(dateTime),
-              phoneNumber: '',
+              phoneNumber: formatSyrianPhoneNumberForMakeItStartWIth09(
+                  phoneNumberController.text),
               latitude: '0',
               longitude: '0',
             );
@@ -287,7 +292,7 @@ class _EditeProfileState extends State<EditProfile> {
               EditProfileEvent(editedData: updatedProfileData),
             );
           }
-        }, isClickedSave),
+        }, isLoading),
       ],
     );
   }

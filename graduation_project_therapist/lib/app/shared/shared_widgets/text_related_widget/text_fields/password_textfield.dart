@@ -30,7 +30,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           Expanded(
               child: customTextField(
                   isPassWordInVisible: passwordSecur,
-                  textInputType: TextInputType.text,
+                  textInputType: TextInputType.visiblePassword,
                   suffixIcon: IconButton(
                     icon: Icon(passwordSecur
                         ? Icons.visibility_off_outlined

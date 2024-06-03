@@ -9,7 +9,7 @@ class FullScreenImagePage extends StatelessWidget {
       {super.key, required this.imageName, required this.heroTag});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(

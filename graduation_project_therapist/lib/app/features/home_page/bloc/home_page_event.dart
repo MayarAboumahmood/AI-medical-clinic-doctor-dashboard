@@ -10,9 +10,12 @@ class LoadHomePageDataEvent extends HomePageEvent {
 }
 
 class GetUserInfoEvent extends HomePageEvent {
+  final bool shouldLoadTheUserInfo;
+  GetUserInfoEvent({this.shouldLoadTheUserInfo = false});
   @override
   List<Object?> get props => [];
 }
+
 class GetUserStatusEvent extends HomePageEvent {
   @override
   List<Object?> get props => [];

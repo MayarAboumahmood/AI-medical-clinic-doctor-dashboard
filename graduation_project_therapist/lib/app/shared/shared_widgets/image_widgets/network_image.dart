@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -12,13 +13,13 @@ Widget getImageNetwork({
   BoxFit fit = BoxFit.cover,
   bool needAErrorBackgroundColor = true,
 }) {
-  return const SizedBox();
+  // return const SizedBox();
   return Container(
     width: width,
     color: color,
     height: height,
     child: Image.network(
-      url,
+      '${ServerConfig.baseURL}storage/spec_photos/20240603T093530860Z453341profile_image',
       color: imageColor,
       alignment: Alignment.center,
       fit: fit,
@@ -37,6 +38,9 @@ Widget getImageNetwork({
       },
       errorBuilder:
           (BuildContext context, Object error, StackTrace? stackTrace) {
+        print(
+            'sssssssssssssssssssssss: ${ServerConfig.baseURL}storage/spec_photos/20240603T093530860Z453341profile_image');
+        print('the error while opening the image: $error');
         return buildErrorBody(needAErrorBackgroundColor, width, height);
       },
     ),
@@ -50,7 +54,7 @@ Widget imageLoader({
   Color? color,
   BoxFit fit = BoxFit.cover,
 }) {
-  return const SizedBox();
+  // return const SizedBox();
 
   return CachedNetworkImage(
       width: width,
@@ -60,8 +64,9 @@ Widget imageLoader({
       imageUrl: url,
       progressIndicatorBuilder: (context, url, downloadProgress) =>
           buildLoadingShimmer(width, height),
-      errorWidget: (context, url, error) =>
-          buildErrorBody(true, width, height));
+      errorWidget: (context, url, error) {
+        return buildErrorBody(true, width, height);
+      });
 }
 
 Shimmer buildLoadingShimmer(double? width, double? height) {
