@@ -29,7 +29,7 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
       }
     } catch (e) {
       debugPrint('error in repo editing profile: ${e.toString()}');
-      return Left('Server Error ${e.toString()}');
+      return const Left('Server Error');
     }
   }
 

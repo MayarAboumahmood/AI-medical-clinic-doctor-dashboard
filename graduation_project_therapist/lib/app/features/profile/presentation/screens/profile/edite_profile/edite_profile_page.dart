@@ -20,6 +20,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/select_state_drop_down.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/selected_gender_drop_down.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,7 +96,7 @@ class _EditeProfileState extends State<EditProfile> {
     UserProfileModel? userData = await getUserDataFromPrefs();
     if (userData != null) {
       setState(() {
-        if (!statesList.contains(userData.state)) {
+        if (!citiesList.contains(userData.state)) {
           selectedState = 'Damascus'.tr();
         } else {
           selectedState = userData.state;
@@ -219,11 +221,22 @@ class _EditeProfileState extends State<EditProfile> {
                       const SizedBox(
                         height: 10,
                       ),
-                      selectGenderDropDown(),
+                      selectGenderDropDown(
+                        selectedGender,
+                        (String? newValue) {
+                          setState(() {
+                            selectedGender = newValue;
+                          });
+                        },
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
-                      selectStateDropDown(),
+                      selectCityDropDown(selectedState, (String? newValue) {
+                        setState(() {
+                          selectedState = newValue;
+                        });
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -350,101 +363,6 @@ class _EditeProfileState extends State<EditProfile> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget selectGenderDropDown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: customColors.secondaryBackGround)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: DropdownButtonFormField<String>(
-            value: selectedGender,
-            decoration: InputDecoration(
-              hintStyle: customTextStyle.bodyMedium.copyWith(
-                  color: customColors.primaryText,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12),
-              labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: customColors.primary,
-                    fontSize: 12,
-                  ),
-              labelText: 'Gender:'.tr(),
-              border: InputBorder.none,
-            ),
-            dropdownColor: customColors.primaryBackGround,
-            items: genderOptions.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value.tr(),
-                  style: customTextStyle.bodySmall
-                      .copyWith(color: customColors.primaryText),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedGender = newValue;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding selectStateDropDown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: customColors.secondaryBackGround)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: DropdownButtonFormField<String>(
-            value: selectedState,
-            decoration: InputDecoration(
-              hintText: 'State'.tr(),
-              hintStyle: customTextStyle.bodyMedium.copyWith(
-                  color: customColors.primaryText,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12),
-              labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: customColors.primary,
-                    fontSize: 12,
-                  ),
-              labelText: 'State:'.tr(),
-              border: InputBorder.none,
-            ),
-            dropdownColor: customColors.primaryBackGround,
-            items: statesList.map<DropdownMenuItem<String>>((String state) {
-              return DropdownMenuItem<String>(
-                value: state,
-                child: Text(
-                  state.tr(),
-                  style: customTextStyle.bodySmall
-                      .copyWith(color: customColors.primaryText),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedState = newValue;
-              });
-            },
           ),
         ),
       ),
@@ -622,16 +540,3 @@ GestureDetector cancelButtons(
     ),
   );
 }
-
-List<String> statesList = [
-  'Damascus'.tr(),
-  'Homs'.tr(),
-  'Latakia'.tr(),
-  'Aleppo'.tr(),
-  'Tartus'.tr(),
-  'As-suwayda'.tr(),
-]; // Add your states here
-List<String> genderOptions = [
-  'male'.tr(),
-  'female'.tr()
-]; // List of gender options

@@ -18,6 +18,8 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/data
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/repository_imp/edit_profile_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/r_d_c_data_sorce.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/repo/registration_data_complete_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/theme_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
@@ -45,6 +47,8 @@ Future<void> init() async {
       () => NotificationRepositoryImplementation(sl()));
   sl.registerLazySingleton<EditProfileRepository>(
       () => EditProfileRepositoryImpl(sl()));
+  sl.registerLazySingleton<RegistrationDataCompleteRepoIpm>(
+      () => RegistrationDataCompleteRepoIpm(sl()));
 
 // Datasources
 
@@ -56,6 +60,8 @@ Future<void> init() async {
       () => NotificationDataSourceImp(client: http.Client()));
   sl.registerLazySingleton<ProfileDataSource>(
       () => ProfileDataSourceImpl(client: http.Client()));
+  sl.registerLazySingleton<RegistrationDataCompleteRemoteDataSource>(
+      () => RegistrationDataCompleteRemoteDataSourceImp(client: http.Client()));
 
 // Bloc
   sl.registerFactory(() => SignInCubit(authRemoteDataSource: sl()));
@@ -64,7 +70,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => HomePageBloc(homePageRepositoryImp: sl()));
   sl.registerFactory(() => PatientRequestsCubit());
   sl.registerFactory(() => PatientReservationsCubit());
-  sl.registerFactory(() => RegistrationDataCompleteCubit());
+  sl.registerFactory(() =>
+      RegistrationDataCompleteCubit(registrationDataCompleteRepoIpm: sl()));
   sl.registerFactory(() => ProfileBloc(editProfileRepositoryImpl: sl()));
   sl.registerLazySingleton(() => LanguageBloc());
   sl.registerFactory(() => GetUserDataBloc());

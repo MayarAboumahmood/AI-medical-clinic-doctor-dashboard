@@ -7,6 +7,7 @@ class ServerConfig {
   static const String baseURLForSearch = '$url/api/';
   static const String images = '$url/';
   static const String register = 'specs/register';
+  static const String completeRegister = 'specs/clinicRegistrationRequest';
   static const String login = 'specs/login';
   static const String otpVerify = 'otp/verify';
   static const String sendOTP = 'otp/sendOTP';

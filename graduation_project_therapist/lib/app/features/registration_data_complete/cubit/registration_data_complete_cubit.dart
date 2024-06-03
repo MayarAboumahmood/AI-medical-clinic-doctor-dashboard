@@ -1,20 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/repo/registration_data_complete_repo.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meta/meta.dart';
 
 part 'registration_data_complete_state.dart';
 
 class RegistrationDataCompleteCubit
     extends Cubit<RegistrationDataCompleteState> {
-  RegistrationDataCompleteCubit() : super(RegistrationDataCompleteInitial());
-
+  RegistrationDataCompleteRepoIpm registrationDataCompleteRepoIpm;
+  RegistrationDataCompleteCubit({required this.registrationDataCompleteRepoIpm})
+      : super(RegistrationDataCompleteInitial());
+  String? selectedState;
   List<String> selectedMedicalSpecialty = [];
   String studiesInfo = '';
-  String locationInfo = '';
+  String? locationInfo = '';
   String specialtyInfo = '';
-  List<String> certificationImages = []; // List to store image paths
+  String? clinicName = '';
+  List<Uint8List> certificationImages = []; // List to store image paths
   LatLng? userLatLng;
+
   void emitInitState() {
     emit(RegistrationDataCompleteInitial());
   }
@@ -23,7 +29,11 @@ class RegistrationDataCompleteCubit
     userLatLng = newLating;
   }
 
-  void addCertificationImage(String imagePath) {
+  void updateClinicName(String? newClinicName) {
+    clinicName = newClinicName;
+  }
+
+  void addCertificationImage(Uint8List imagePath) {
     certificationImages.add(imagePath);
 
     emit(RegistrationDataCompleteImagesUpdated(
@@ -47,9 +57,21 @@ class RegistrationDataCompleteCubit
     locationInfo = updatedInfo;
   }
 
-  void submitteUserData() {
-    //TODO: send the request.
-    emit(RegistrationDataCompleteDoneSuccseflyState());
+  void submitteUserData() async {
+    emit(RegistrationDataCompleteLoadingState());
+    CompleteRegisterModel completeRegisterModel = CompleteRegisterModel(
+        selectedMedicalSpecialty: selectedMedicalSpecialty,
+        studiesInfo: studiesInfo,
+        specialtyInfo: specialtyInfo,
+        certificationImages: certificationImages);
+
+    final response = await registrationDataCompleteRepoIpm
+        .completeRegister(completeRegisterModel);
+
+    response.fold(
+        (error) =>
+            emit(RegistrationDataCompleteFailureState(errorMessage: error)),
+        (data) => emit(RegistrationDataCompleteDoneSuccseflyState()));
   }
 
   void gettingUserLocation() {

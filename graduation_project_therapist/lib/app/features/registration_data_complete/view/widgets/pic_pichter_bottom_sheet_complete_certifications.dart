@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +12,7 @@ Widget buildimageSourcesBottomSheetCompleteCertifications(
     BuildContext context) {
   return Container(
     color: customColors.secondaryBackGround,
-    height: responsiveUtil.screenHeight *.35,
+    height: responsiveUtil.screenHeight * .35,
     child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
@@ -73,8 +75,10 @@ Widget choosePhotoSource(
 Future<void> _selectImage(BuildContext context, ImageSource imageSource) async {
   final pickedFile = await ImagePicker().pickImage(source: imageSource);
   if (pickedFile != null) {
+    final Uint8List imageBytes = await pickedFile.readAsBytes();
+
     context
         .read<RegistrationDataCompleteCubit>()
-        .addCertificationImage(pickedFile.path);
+        .addCertificationImage(imageBytes);
   }
 }

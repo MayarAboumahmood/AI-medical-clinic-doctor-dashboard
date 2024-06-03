@@ -6,7 +6,9 @@ import 'package:graduation_project_therapist_dashboard/app/core/constants/app_ro
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/navigat_button.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/select_state_drop_down.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
@@ -15,9 +17,14 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-class CompleteDataPage extends StatelessWidget {
+class CompleteDataPage extends StatefulWidget {
   const CompleteDataPage({super.key});
 
+  @override
+  State<CompleteDataPage> createState() => _CompleteDataPageState();
+}
+
+class _CompleteDataPageState extends State<CompleteDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +39,9 @@ class CompleteDataPage extends StatelessWidget {
   }
 
   Widget buildCompleteYourDataBody(BuildContext context) {
+    RegistrationDataCompleteCubit registrationDataCompleteCubit =
+        context.read<RegistrationDataCompleteCubit>();
+
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: responsiveUtil.screenHeight * .04,
@@ -62,7 +72,14 @@ class CompleteDataPage extends StatelessWidget {
             key: formKey,
             child: Column(
               children: [
+                selectCityDropDown(registrationDataCompleteCubit.selectedState,
+                    (String? newValue) {
+                  setState(() {
+                    registrationDataCompleteCubit.selectedState = newValue;
+                  });
+                }),
                 locationInfoTextField(context),
+                clinicNameTextField(context),
                 studiesInfoTextField(context),
                 specializationInfoTextField(context),
                 const SizedBox(
@@ -97,7 +114,7 @@ class CompleteDataPage extends StatelessWidget {
         'Confirm',
         style: customTextStyle.bodyMedium.copyWith(color: customColors.primary),
       ),
-      items: medicalSpecialtyList.map((e) => MultiSelectItem(e, e)).toList(),
+      items: medicalSpecialties.map((e) => MultiSelectItem(e, e)).toList(),
       listType: MultiSelectListType.LIST,
       backgroundColor: customColors.primaryBackGround,
       title: Text(
@@ -173,6 +190,31 @@ class CompleteDataPage extends StatelessWidget {
     );
   }
 
+  Padding clinicNameTextField(BuildContext context) {
+    RegistrationDataCompleteCubit registrationDataCompleteCubit =
+        context.read<RegistrationDataCompleteCubit>();
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              child: customTextField(
+                  textInputType: TextInputType.text,
+                  validator: (value) {
+                    return ValidationFunctions.informationValidation(value!);
+                  },
+                  context: context,
+                  onSaved: (value) {
+                    registrationDataCompleteCubit.updateClinicName(value);
+                  },
+                  label: "Clinic name".tr()))
+        ],
+      ),
+    );
+  }
+
   Padding studiesInfoTextField(BuildContext context) {
     RegistrationDataCompleteCubit registrationDataCompleteCubit =
         context.read<RegistrationDataCompleteCubit>();
@@ -237,10 +279,3 @@ class CompleteDataPage extends StatelessWidget {
     );
   }
 }
-
-List<String> medicalSpecialtyList = [
-  'doctor one',
-  'doctor two',
-  'therapist one',
-  '...'
-];

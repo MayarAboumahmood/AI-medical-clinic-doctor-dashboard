@@ -69,8 +69,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final responseBody = await response.stream.bytesToString();
 
     if (response.statusCode == 201 || response.statusCode == 200) {
+      sharedPreferences!.setInt('doctorOrTherapist', registerModel.roleId);
       return http.Response(responseBody, response.statusCode);
-    } else if (response.statusCode != 500) {
+    }   else if (response.statusCode != 500) {
       return http.Response(responseBody, response.statusCode);
     } else {
       return http.Response('ServerError', response.statusCode);
@@ -87,8 +88,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'token': otpToken,
     });
     var response = await http.post(url, headers: headers, body: body);
-    print('Status Code: ${response.statusCode}');
-    print('Response Body: ${response.body}');
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
       String accessToken = decodedResponse['data']['accessToken'];

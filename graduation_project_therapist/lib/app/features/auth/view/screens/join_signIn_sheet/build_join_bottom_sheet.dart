@@ -12,6 +12,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/cancel_button.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/selected_gender_drop_down.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -119,7 +120,13 @@ class _JoinWidgetState extends State<JoinWidget> {
           const SizedBox(
             height: 15,
           ),
-          selectGenderDropDown(),
+          selectGenderDropDown(
+            context.read<RegisterCubit>().getSelectedGender(),
+            (String? newValue) {
+              setState(() {});
+              context.read<RegisterCubit>().setGender(newValue!);
+            },
+          ),
           byJoiningOurTimeTextWidget(),
           buildTermPrivacy(isTermsAccepted, toggleTermsCheckbox, context),
           buildJoinButton(
@@ -146,7 +153,7 @@ class _JoinWidgetState extends State<JoinWidget> {
   Padding emailTextField() {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row( 
+      child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -349,57 +356,57 @@ class _JoinWidgetState extends State<JoinWidget> {
     );
   }
 
-  Padding selectGenderDropDown() {
-    RegisterCubit registerCubit = context.read<RegisterCubit>();
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: customColors.secondaryBackGround)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: DropdownButtonFormField<String>(
-            validator: (value) {
-              return ValidationFunctions.dropDownValidation(value);
-            },
-            value: registerCubit.getSelectedGender(),
-            decoration: InputDecoration(
-              hintStyle: customTextStyle.bodyMedium.copyWith(
-                  color: customColors.primaryText,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12),
-              labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: customColors.primary,
-                    fontSize: 12,
-                  ),
-              labelText: 'Gender:'.tr(),
-              border: InputBorder.none,
-            ),
-            dropdownColor: customColors.primaryBackGround,
-            items: genderList.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value.tr(),
-                  style: customTextStyle.bodySmall
-                      .copyWith(color: customColors.primaryText),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {});
-              registerCubit.setGender(newValue!);
-            },
-          ),
-        ),
-      ),
-    );
-  }
+  // Padding selectGenderDropDown() {
+  //   RegisterCubit registerCubit = context.read<RegisterCubit>();
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(
+  //       horizontal: 5,
+  //     ),
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(20),
+  //           border: Border.all(color: customColors.secondaryBackGround)),
+  //       child: Padding(
+  //         padding: const EdgeInsets.symmetric(
+  //           horizontal: 10,
+  //         ),
+  //         child: DropdownButtonFormField<String>(
+  //           validator: (value) {
+  //             return ValidationFunctions.dropDownValidation(value);
+  //           },
+  //           value: registerCubit.getSelectedGender(),
+  //           decoration: InputDecoration(
+  //             hintStyle: customTextStyle.bodyMedium.copyWith(
+  //                 color: customColors.primaryText,
+  //                 fontWeight: FontWeight.w400,
+  //                 fontSize: 12),
+  //             labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+  //                   color: customColors.primary,
+  //                   fontSize: 12,
+  //                 ),
+  //             labelText: 'Gender:'.tr(),
+  //             border: InputBorder.none,
+  //           ),
+  //           dropdownColor: customColors.primaryBackGround,
+  //           items: genderList.map<DropdownMenuItem<String>>((String value) {
+  //             return DropdownMenuItem<String>(
+  //               value: value,
+  //               child: Text(
+  //                 value.tr(),
+  //                 style: customTextStyle.bodySmall
+  //                     .copyWith(color: customColors.primaryText),
+  //               ),
+  //             );
+  //           }).toList(),
+  //           onChanged: (String? newValue) {
+  //             setState(() {});
+  //             registerCubit.setGender(newValue!);
+  //           },
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   List<String> specialtyList = ['Doctor'.tr(), 'Therapist'.tr()];
   List<String> genderList = ['Female'.tr(), 'Male'.tr()];

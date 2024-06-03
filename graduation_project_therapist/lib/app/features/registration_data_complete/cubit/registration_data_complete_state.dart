@@ -14,8 +14,8 @@ final class RegistrationDataCompleteLoadingState
   @override
   List<Object?> get props => [];
 }
-final class GettingUserLocationState
-    extends RegistrationDataCompleteState {
+
+final class GettingUserLocationState extends RegistrationDataCompleteState {
   @override
   List<Object?> get props => [];
 }
@@ -26,11 +26,20 @@ final class RegistrationDataCompleteDoneSuccseflyState
   List<Object?> get props => [];
 }
 
+final class RegistrationDataCompleteFailureState
+    extends RegistrationDataCompleteState {
+  final String errorMessage;
+  RegistrationDataCompleteFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
 final class RegistrationDataCompleteImagesUpdated
     extends RegistrationDataCompleteState {
-  final List<String> certificationImages;
-  final DateTime dateTime ;
-  RegistrationDataCompleteImagesUpdated({required this.certificationImages,required this.dateTime});
+  final List<Uint8List> certificationImages;
+  final DateTime dateTime;
+  RegistrationDataCompleteImagesUpdated(
+      {required this.certificationImages, required this.dateTime});
   @override
   List<Object?> get props => [certificationImages, dateTime];
 }

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
@@ -25,6 +24,8 @@ class CompleteCertificationsPage extends StatelessWidget {
           customSnackBar(
               'we recived your requiest, we will let you know the result soon',
               context);
+        } else if (state is RegistrationDataCompleteFailureState) {
+          customSnackBar(state.errorMessage, context);
         }
       },
       child: Scaffold(
@@ -118,7 +119,7 @@ class CompleteCertificationsPage extends StatelessWidget {
     return BlocBuilder<RegistrationDataCompleteCubit,
         RegistrationDataCompleteState>(
       builder: (context, state) {
-        List<String> certificationImages = [];
+        List<Uint8List> certificationImages = [];
         if (state is RegistrationDataCompleteImagesUpdated) {
           certificationImages = state.certificationImages;
         }
@@ -136,7 +137,7 @@ class CompleteCertificationsPage extends StatelessWidget {
     );
   }
 
-  SizedBox listviewOfImages(List<String> certificationImages) {
+  SizedBox listviewOfImages(List<Uint8List> certificationImages) {
     return SizedBox(
       height: responsiveUtil.screenHeight * .2,
       child: ListView.builder(
@@ -146,7 +147,7 @@ class CompleteCertificationsPage extends StatelessWidget {
           final imagePath = certificationImages[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.file(File(imagePath), width: 100, height: 100),
+            child: Image.memory(imagePath, width: 100, height: 100),
           );
         },
       ),
