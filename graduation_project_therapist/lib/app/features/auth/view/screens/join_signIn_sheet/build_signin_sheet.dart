@@ -27,7 +27,6 @@ class _SignInWidgetState extends State<SignInWidget> {
     SignInCubit signInCubit = context.read<SignInCubit>();
 
     return BlocConsumer<SignInCubit, SignInState>(listener: (context, state) {
-      print('sssssssssssssssssss: State $state in sign in');
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);

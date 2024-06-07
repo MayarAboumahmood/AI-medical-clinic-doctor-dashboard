@@ -221,13 +221,16 @@ class _EditeProfileState extends State<EditProfile> {
                       const SizedBox(
                         height: 10,
                       ),
-                      selectGenderDropDown(
-                        selectedGender,
-                        (String? newValue) {
-                          setState(() {
-                            selectedGender = newValue;
-                          });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: selectGenderDropDown(
+                          selectedGender,
+                          (String? newValue) {
+                            setState(() {
+                              selectedGender = newValue;
+                            });
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -293,6 +296,7 @@ class _EditeProfileState extends State<EditProfile> {
             final updatedProfileData = EditProfileModel(
               gender: selectedGender!,
               state: selectedState!,
+              imageName: context.read<ProfileBloc>().imageName,
               profilePic: BlocProvider.of<ProfileBloc>(context).image,
               fullName: nameController.text,
               dateOfBirth: DateFormat('yyyy-MM-dd').format(dateTime),
@@ -430,7 +434,13 @@ Widget buildImageAndChangeButton(String? imageURL) {
                 shape: BoxShape.circle,
               ),
               child: imageFile != null
-                  ? Image.file(imageFile)
+                  ? kIsWeb
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundImage: MemoryImage(
+                              context.read<ProfileBloc>().imageInBytes),
+                        )
+                      : Image.file(imageFile)
                   : imageURL != null
                       ? imageLoader(
                           url: imageURL,

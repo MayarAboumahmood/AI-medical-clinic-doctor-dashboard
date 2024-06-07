@@ -321,14 +321,14 @@ class _JoinWidgetState extends State<JoinWidget> {
             validator: (value) {
               return ValidationFunctions.dropDownValidation(value);
             },
-            value: registerCubit.getRoleID(),
+            value: registerCubit.getRoleByID(),
             decoration: InputDecoration(
               hintStyle: customTextStyle.bodyMedium.copyWith(
                   color: customColors.primaryText,
                   fontWeight: FontWeight.w400,
                   fontSize: 12),
               labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: customColors.primary,
+                      color: customColors.primary,
                     fontSize: 12,
                   ),
               labelText: 'Specialty:'.tr(),
@@ -356,58 +356,5 @@ class _JoinWidgetState extends State<JoinWidget> {
     );
   }
 
-  // Padding selectGenderDropDown() {
-  //   RegisterCubit registerCubit = context.read<RegisterCubit>();
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(
-  //       horizontal: 5,
-  //     ),
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(20),
-  //           border: Border.all(color: customColors.secondaryBackGround)),
-  //       child: Padding(
-  //         padding: const EdgeInsets.symmetric(
-  //           horizontal: 10,
-  //         ),
-  //         child: DropdownButtonFormField<String>(
-  //           validator: (value) {
-  //             return ValidationFunctions.dropDownValidation(value);
-  //           },
-  //           value: registerCubit.getSelectedGender(),
-  //           decoration: InputDecoration(
-  //             hintStyle: customTextStyle.bodyMedium.copyWith(
-  //                 color: customColors.primaryText,
-  //                 fontWeight: FontWeight.w400,
-  //                 fontSize: 12),
-  //             labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-  //                   color: customColors.primary,
-  //                   fontSize: 12,
-  //                 ),
-  //             labelText: 'Gender:'.tr(),
-  //             border: InputBorder.none,
-  //           ),
-  //           dropdownColor: customColors.primaryBackGround,
-  //           items: genderList.map<DropdownMenuItem<String>>((String value) {
-  //             return DropdownMenuItem<String>(
-  //               value: value,
-  //               child: Text(
-  //                 value.tr(),
-  //                 style: customTextStyle.bodySmall
-  //                     .copyWith(color: customColors.primaryText),
-  //               ),
-  //             );
-  //           }).toList(),
-  //           onChanged: (String? newValue) {
-  //             setState(() {});
-  //             registerCubit.setGender(newValue!);
-  //           },
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   List<String> specialtyList = ['Doctor'.tr(), 'Therapist'.tr()];
-  List<String> genderList = ['Female'.tr(), 'Male'.tr()];
 }

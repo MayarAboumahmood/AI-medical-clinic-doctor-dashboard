@@ -110,8 +110,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   BlocBuilder<ProfileBloc, ProfileState>(
                       builder: (context, state) {
                     isLoading = state is LoadingRequest;
-                    print('changing pass state: $state');
-
+                    
                     return saveButton(context);
                   }),
                   const SizedBox(
@@ -195,7 +194,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   : passwordSecur3,
           suffixIcon: GestureDetector(
             onTap: () {
-              print('changing the sucure: $passwordSecur1');
+           
               setState(() {
                 type == 1
                     ? passwordSecur1 = !passwordSecur1

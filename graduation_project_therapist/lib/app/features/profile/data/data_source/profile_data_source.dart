@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/injection/app_injection.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/formate_name.dart';
@@ -34,19 +35,32 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     request.fields['fullName'] =
         formatNameForBackend(editProfileModel.fullName);
     // request.fields['state'] = editProfileModel.state;
+
     request.fields['phone'] = editProfileModel.phoneNumber;
     request.fields['gender'] =
         getGenderIntFromString(editProfileModel.gender).toString();
     request.fields['dateOfBirth'] = editProfileModel.dateOfBirth;
-
-    if (editProfileModel.profilePic != null &&
-        await editProfileModel.profilePic!.exists()) {
-      request.files.add(await http.MultipartFile.fromPath(
-        'photo',
-        editProfileModel.profilePic!.path,
-      ));
+    if (kIsWeb) {
+      if (editProfileModel.profilePic != null) {
+        print("it's web mother fucker");
+        Uint8List imageBytes = await editProfileModel.profilePic!.readAsBytes();
+        request.files.add(http.MultipartFile.fromBytes(
+          'photo',
+          imageBytes,
+          filename: editProfileModel.imageName,
+        ));
+      }
+    } else {
+      if (editProfileModel.profilePic != null &&
+          await editProfileModel.profilePic!.exists()) {
+        print(
+            "it's not web mother fucker: ${editProfileModel.profilePic!.path}");
+        request.files.add(await http.MultipartFile.fromPath(
+          'photo',
+          editProfileModel.profilePic!.path,
+        ));
+      }
     }
-
     final streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
     print('editing the profile: ${response.statusCode}');

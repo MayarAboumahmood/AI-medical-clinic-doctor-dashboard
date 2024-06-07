@@ -28,16 +28,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     });
     on<GetUserStatusEvent>((event, emit) async {
       if (!isGuest) {
-        if (sharedPreferences!.getString('user_status') == null) {
+        if (sharedPreferences!.getString('user_status') !=
+            UserStatusEnum.verified.name) {
           final getUserStatus = await homePageRepositoryImp.getUserStatusData();
           getUserStatus.fold((onError) {
             emit(FetchDataFauilerState(errorMessage: onError));
           }, (data) {
+            userStatus = data;
             sharedPreferences!.setString(
               'user_status',
               userStatusToString(data),
             );
           });
+        } else {
+          userStatus = UserStatusEnum.verified;
         }
       }
     });
@@ -54,10 +58,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }, (data) {
       Map<String, dynamic> jsonUserInfo = data.toJson();
       sharedPreferences!.setString('user_profile', jsonEncode(jsonUserInfo));
-
-      String userProfileJson =
-          sharedPreferences!.getString('user_profile') ?? "";
-      print('the user profile when I get it: ${jsonDecode(userProfileJson)}');
     });
   }
 }

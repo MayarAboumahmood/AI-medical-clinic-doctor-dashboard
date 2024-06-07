@@ -83,6 +83,7 @@ class MessageCard extends StatelessWidget {
                     ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: getImageNetwork(
+                          fromBackEnd: false,
                           url: imageData!.toString(),
                           width: responsiveUtil.screenWidth * .4,
                           height: responsiveUtil.screenWidth * .4,
@@ -102,7 +103,7 @@ class MessageCard extends StatelessWidget {
 }
 
 String formatTime(String timeString) {
-  print('error: time : $timeString');
+  
   try {
     DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime = inputFormat.parse(timeString);

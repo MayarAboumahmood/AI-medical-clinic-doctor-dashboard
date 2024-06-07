@@ -16,6 +16,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/bottom_navig
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
@@ -46,8 +47,10 @@ SharedPreferences? sharedPreferences;
 UserProfileModel? userData;
 late Timer timer;
 bool isGuest = false;
+UserStatusEnum userStatus = UserStatusEnum.unverified;
 LocationData? globalUserLocation;
 bool comingFromRegisterOrLogin = false;
+
 void startTimerToRemoveSplashScreen() {
   timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
     if (t.tick == 2) {
@@ -74,14 +77,15 @@ void main() async {
   // Pushy.setNotificationIcon('@mipmap/launcher_icon');
 
 // Listen for push notifications received
-  // Pushy.setNotificationListenerg(backgroundNotificationListener);
+  // Pushy.setNotificationListener(backgroundNotificationListener);
   // Pushy.setNotificationClickListener((data) {});
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await EasyLocalization.ensureInitialized();
 
   navigationService = sl.get<NavigationService>();
   sharedPreferences = await SharedPreferences.getInstance();
-
+  userStatus = userStatusFromString(
+      sharedPreferences!.getString('user_status') ?? 'unverified');
   if (sharedPreferences?.getString('isDarkMode') == null) {
     sharedPreferences?.setString('isDarkMode', 'true');
   }

@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 Widget buildImageWithName(String name, BuildContext context) {
-  print('the name in the buildimagewith name widget: $name');
+  
   Future<String?> getImagePathFromPrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('user_profile')) return null;

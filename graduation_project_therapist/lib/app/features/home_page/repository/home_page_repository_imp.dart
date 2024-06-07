@@ -17,8 +17,7 @@ class HomePageRepositoryImp {
     if (response.statusCode == 200) {
       final UserProfileModel userProfileModel =
           UserProfileModel.fromJson(decodedResponse['data']);
-      print(
-          'the user profile when I get it: in the repo: ${userProfileModel.fullName}');
+
       return right(userProfileModel);
     } else if (response.statusCode == 500) {
       if (decodedResponse['error'] == 'jwt expired') {

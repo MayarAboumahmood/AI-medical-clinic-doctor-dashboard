@@ -15,6 +15,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final imagePicker = ImagePicker();
   late Uint8List imageInBytes;
   UserProfileModel? userData;
+  String? imageName;
 
   ProfileBloc({
     required this.editProfileRepositoryImpl,
@@ -56,6 +57,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (pickedImage != null) {
         image = File(pickedImage.path);
         imageInBytes = await pickedImage.readAsBytes();
+        imageName = pickedImage.name;
         emit(SelectEditProfilePicture(image));
       }
     });

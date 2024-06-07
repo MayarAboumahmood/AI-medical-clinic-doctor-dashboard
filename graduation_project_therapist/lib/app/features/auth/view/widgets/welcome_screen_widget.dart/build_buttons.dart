@@ -73,12 +73,10 @@ Widget buildButtons(BuildContext context) {
 }
 
 Widget _buildContinueAsGuest(BuildContext context) {
-  return // Generated code for this Row Widget...
-      InkWell(
+  return InkWell(
     onTap: () async {
-      //TODO: make is guest ture here.
       navigationService.navigateTo(bottomNavigationBar);
-      // isGuest = true;
+      isGuest = true;
     },
     splashColor: Colors.transparent,
     focusColor: Colors.transparent,

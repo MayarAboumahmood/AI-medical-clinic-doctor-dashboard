@@ -12,7 +12,7 @@ class RegistrationDataCompleteCubit
   RegistrationDataCompleteRepoIpm registrationDataCompleteRepoIpm;
   RegistrationDataCompleteCubit({required this.registrationDataCompleteRepoIpm})
       : super(RegistrationDataCompleteInitial());
-  String? selectedState;
+  String? selectedCity;
   List<String> selectedMedicalSpecialty = [];
   String studiesInfo = '';
   String? locationInfo = '';
@@ -62,7 +62,11 @@ class RegistrationDataCompleteCubit
     CompleteRegisterModel completeRegisterModel = CompleteRegisterModel(
         selectedMedicalSpecialty: selectedMedicalSpecialty,
         studiesInfo: studiesInfo,
+        locationInfo: locationInfo,
+        clinicName: clinicName,
         specialtyInfo: specialtyInfo,
+        selectedCity: selectedCity,
+        userLatLng: userLatLng,
         certificationImages: certificationImages);
 
     final response = await registrationDataCompleteRepoIpm

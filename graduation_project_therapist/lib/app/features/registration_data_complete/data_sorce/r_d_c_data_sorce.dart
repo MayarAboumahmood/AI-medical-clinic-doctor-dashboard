@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/select_state_drop_down.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -40,9 +41,7 @@ class RegistrationDataCompleteRemoteDataSourceImp
         'Authorization': token
       },
     );
-    bool isDoctor = sharedPreferences!.getInt('doctorOrTherapist') ==
-        1; //TODO find another way to check if it's doctor or not because if he delete the app it will gone.
-
+    bool isDoctor = sharedPreferences!.getString('doctorOrTherapist') == '1';
     if (completeRegisterModel.userLatLng != null && isDoctor) {
       request.fields['latitude'] =
           completeRegisterModel.userLatLng!.latitude.toString();
@@ -67,7 +66,7 @@ class RegistrationDataCompleteRemoteDataSourceImp
     for (Uint8List? imageBytes in completeRegisterModel.certificationImages) {
       if (imageBytes != null) {
         request.files.add(
-          http.MultipartFile.fromBytes('photo', imageBytes,
+          http.MultipartFile.fromBytes('doc', imageBytes,
               filename: 'doc', contentType: MediaType('image', 'jpeg')),
         );
       }
@@ -77,11 +76,13 @@ class RegistrationDataCompleteRemoteDataSourceImp
     final response = await request.send();
 
     final responseBody = await response.stream.bytesToString();
+    debugPrint('error in datasource data complete: $responseBody');
+    debugPrint('error in datasource data complete: ${response.statusCode}');
 
     if (response.statusCode != 500) {
       return http.Response(responseBody, response.statusCode);
     } else {
-      return http.Response('ServerError', response.statusCode);
+      return http.Response('Server Error', response.statusCode);
     }
   }
 }

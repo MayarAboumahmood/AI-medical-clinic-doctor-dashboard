@@ -33,6 +33,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
       },
       child: Scaffold(
         backgroundColor: customColors.primaryBackGround,
+        body: Center(
+            child: Text(
+          userStatus.name,
+          style: customTextStyle.bodyMedium,
+        )),
       ),
     );
   }

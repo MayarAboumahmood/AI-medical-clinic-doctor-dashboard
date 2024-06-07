@@ -20,6 +20,8 @@ class RegisterCubit extends Cubit<RegisterState> {
   TextEditingController otpCodeController = TextEditingController();
 
   DateTime selectedDay = DateTime(2001, 1, 1);
+  String? imageName;
+  Uint8List? selectedImage;
 
   UserInfo userInfo = UserInfo(
       dateOfBirth: '',
@@ -38,7 +40,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     otpCodeController.dispose();
   }
 
-  Uint8List? selectedImage;
   void setGender(String gender) {
     if (gender == 'male'.tr() || gender == 'Male'.tr()) {
       userInfo.gender = 1;
@@ -57,13 +58,13 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   String getSelectedGender() {
     if (userInfo.gender == 1) {
-      return 'Male'.tr();
+      return 'male'.tr();
     } else {
-      return 'Female'.tr();
+      return 'female'.tr();
     }
   }
 
-  String getRoleID() {
+  String getRoleByID() {
     if (userInfo.roleId == 1) {
       return 'Doctor'.tr();
     } else {
@@ -91,7 +92,8 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  void setImage(Uint8List imageBytes) {
+  void setImage(Uint8List imageBytes, String newImageName) {
+    imageName = newImageName;
     selectedImage = imageBytes;
     emit(RegisterProfilePictureUpdated(imageBytes: imageBytes));
   }
@@ -100,16 +102,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterLoadingState());
     userInfo = userInfo.copyWith(password: passwordtextgController.text);
     try {
-      final response =
-          await authRemoteDataSource.register(userInfo, selectedImage);
+      final response = await authRemoteDataSource.register(
+          userInfo, selectedImage, imageName);
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         emit(RegisterSuccessRequestWithoutOTP());
       } else {
         final error = responseBody['error'] ?? 'Server Error'.tr();
-
-        print('ssssssssssssssssssss: in the cubit:${responseBody['error']}');
         emit(RegisterFailureState(
             statusRequest: StatusRequest.serverError, errorMessage: error));
       }

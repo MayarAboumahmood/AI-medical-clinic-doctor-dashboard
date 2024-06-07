@@ -8,7 +8,7 @@ Widget selectGenderDropDown(
     {bool shouldActiviteValidation = false}) {
   return Padding(
     padding: const EdgeInsets.symmetric(
-      horizontal: 20,
+      horizontal: 5,
     ),
     child: Container(
       decoration: BoxDecoration(

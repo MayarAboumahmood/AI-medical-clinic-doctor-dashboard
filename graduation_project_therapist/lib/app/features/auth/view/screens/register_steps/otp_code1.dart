@@ -67,10 +67,8 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
         listener: (context, state) {
           if (state is RegisterOTPSendSuccessRequest) {
             navigationService.navigationOfAllPagesToName(
-                context, welcomeScreen);
-            customSnackBar(
-                'You registerd successfully, Now you can login using your account',
-                context);
+                context, bottomNavigationBar);
+            customSnackBar('You registerd successfully', context);
           } else if (state is RegisterValidationErrorRequest) {
             customSnackBar('Check your inputs', context);
           } else if (state is RegisterServerErrorRequest) {

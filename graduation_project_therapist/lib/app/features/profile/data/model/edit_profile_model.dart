@@ -3,7 +3,7 @@ import 'dart:io';
 class EditProfileModel {
   final String dateOfBirth;
   final String fullName;
-
+  final String? imageName;
   final String gender;
   final File? profilePic;
   final String state;
@@ -13,6 +13,7 @@ class EditProfileModel {
 
   const EditProfileModel({
     required this.dateOfBirth,
+    required this.imageName,
     required this.gender,
     required this.profilePic,
     required this.state,
@@ -32,6 +33,7 @@ class EditProfileModel {
       state: json['state'] ?? '',
       phoneNumber: json['phone'] ?? '',
       fullName: json['fullName'],
+      imageName: null,
     );
   }
 }

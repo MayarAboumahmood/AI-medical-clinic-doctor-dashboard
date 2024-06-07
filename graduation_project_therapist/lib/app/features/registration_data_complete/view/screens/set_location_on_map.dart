@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/location_service.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:latlong2/latlong.dart';
@@ -124,7 +125,13 @@ class MapPageState extends State<SelectLocationMapPage> {
             floatingActionSingleButtom(
               Icons.assistant_navigation,
               () {
-                navigationService.navigateTo(completeCertificationsPage);
+                if (registrationDataCompleteCubit.userLatLng != null) {
+                  navigationService.navigateTo(completeCertificationsPage);
+                } else {
+                  customSnackBar(
+                      'You should select your clinic location', context,
+                      isFloating: true);
+                }
               },
             ),
             const SizedBox(

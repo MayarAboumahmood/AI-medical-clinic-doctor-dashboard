@@ -37,7 +37,7 @@ class UserInfo {
   }
 
   // To JSON method
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'email': userEmail,
       'password': password,

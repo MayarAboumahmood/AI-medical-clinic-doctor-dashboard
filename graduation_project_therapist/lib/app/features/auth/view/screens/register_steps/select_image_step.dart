@@ -135,7 +135,7 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
     final XFile? image = await picker.pickImage(source: source);
     if (image != null) {
       final Uint8List imageBytes = await image.readAsBytes();
-      registerCubit.setImage(imageBytes);
+      registerCubit.setImage(imageBytes, image.name);
     }
   }
 

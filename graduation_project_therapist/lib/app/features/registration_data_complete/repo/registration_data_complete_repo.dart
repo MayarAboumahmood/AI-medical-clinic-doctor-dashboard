@@ -19,7 +19,6 @@ class RegistrationDataCompleteRepoIpm {
       final Response response = await registrationDataCompleteRemoteDataSource
           .completeRegister(completeRegisterModel);
       final decodedResponse = jsonDecode(response.body);
-      debugPrint('error in repo editing profile: ${response.body}');
 
       if (response.statusCode == 200) {
         return const Right('register completed');
@@ -29,7 +28,7 @@ class RegistrationDataCompleteRepoIpm {
         return const Left('Server Error');
       }
     } catch (e) {
-      debugPrint('error in repo editing profile: ${e.toString()}');
+      debugPrint('error in repo data complete: ${e.toString()}');
       return const Left('Server Error');
     }
   }

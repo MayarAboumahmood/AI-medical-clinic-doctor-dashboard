@@ -12,14 +12,19 @@ Widget getImageNetwork({
   Color? imageColor,
   BoxFit fit = BoxFit.cover,
   bool needAErrorBackgroundColor = true,
+  bool fromBackEnd = true,
 }) {
   // return const SizedBox();
+  if (fromBackEnd) {
+    url = ServerConfig.imageUrl + url;
+  }
+  
   return Container(
     width: width,
     color: color,
     height: height,
     child: Image.network(
-      '${ServerConfig.baseURL}storage/spec_photos/20240603T093530860Z453341profile_image',
+      url,
       color: imageColor,
       alignment: Alignment.center,
       fit: fit,
@@ -38,8 +43,6 @@ Widget getImageNetwork({
       },
       errorBuilder:
           (BuildContext context, Object error, StackTrace? stackTrace) {
-        print(
-            'sssssssssssssssssssssss: ${ServerConfig.baseURL}storage/spec_photos/20240603T093530860Z453341profile_image');
         print('the error while opening the image: $error');
         return buildErrorBody(needAErrorBackgroundColor, width, height);
       },
@@ -53,8 +56,12 @@ Widget imageLoader({
   required double? height,
   Color? color,
   BoxFit fit = BoxFit.cover,
+  bool fromBackEnd = true,
 }) {
   // return const SizedBox();
+  if (fromBackEnd) {
+    url = ServerConfig.imageUrl + url;
+  }
 
   return CachedNetworkImage(
       width: width,

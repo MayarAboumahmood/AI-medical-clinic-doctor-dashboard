@@ -209,6 +209,9 @@ void logOut() async {
   await sl<PrefService>().remove('token');
   await sl<PrefService>().remove('user_profile');
   await sl<PrefService>().remove('isRegisterCompleted');
+  await sl<PrefService>().remove('doctorOrTherapist');
+  await sl<PrefService>().remove('user_status');
+  await sl<PrefService>().remove('AlreadyAsked');
 }
 
 void logOutClearBloc(BuildContext context) async {

@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Padding selectCityDropDown(
-    String? selectedCity, void Function(String?)? onChanged) {
+    String? selectedCity, void Function(String?)? onChanged,
+    {bool shouldActiviteValidation = false}) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
+    padding: const EdgeInsets.symmetric(horizontal: 5),
     child: Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -13,6 +15,12 @@ Padding selectCityDropDown(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: DropdownButtonFormField<String>(
+            validator: (value) {
+              if (!shouldActiviteValidation) {
+                return null;
+              }
+              return ValidationFunctions.dropDownValidation(value);
+            },
             value: selectedCity,
             decoration: InputDecoration(
               hintText: 'City'.tr(),
@@ -104,6 +112,7 @@ int getCityId(String cityName) {
       return -1; // Return -1 if city not found
   }
 }
+
 String getCityName(int cityId) {
   switch (cityId) {
     case 1:

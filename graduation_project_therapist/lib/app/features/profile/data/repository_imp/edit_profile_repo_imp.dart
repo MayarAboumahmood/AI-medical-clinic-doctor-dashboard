@@ -18,7 +18,6 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
       final Response response =
           await profileDataSource.editProfile(editProfileModel);
       final decodedResponse = jsonDecode(response.body);
-      debugPrint('error in repo editing profile: ${response.body}');
 
       if (response.statusCode == 200) {
         return const Right('profile edited');

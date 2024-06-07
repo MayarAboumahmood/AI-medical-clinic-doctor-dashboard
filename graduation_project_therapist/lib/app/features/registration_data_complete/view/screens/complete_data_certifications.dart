@@ -23,7 +23,8 @@ class CompleteCertificationsPage extends StatelessWidget {
               context, bottomNavigationBar);
           customSnackBar(
               'we recived your requiest, we will let you know the result soon',
-              context);
+              context,
+              isFloating: true);
         } else if (state is RegistrationDataCompleteFailureState) {
           customSnackBar(state.errorMessage, context);
         }

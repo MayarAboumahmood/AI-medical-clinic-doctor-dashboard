@@ -39,6 +39,7 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
   }
 
   Widget buildCompleteYourDataBody(BuildContext context) {
+    bool isDoctor = sharedPreferences!.getString('doctorOrTherapist') == '1';
     RegistrationDataCompleteCubit registrationDataCompleteCubit =
         context.read<RegistrationDataCompleteCubit>();
 
@@ -72,14 +73,17 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
             key: formKey,
             child: Column(
               children: [
-                selectCityDropDown(registrationDataCompleteCubit.selectedState,
-                    (String? newValue) {
-                  setState(() {
-                    registrationDataCompleteCubit.selectedState = newValue;
-                  });
-                }),
-                locationInfoTextField(context),
-                clinicNameTextField(context),
+                isDoctor
+                    ? selectCityDropDown(
+                        registrationDataCompleteCubit.selectedCity,
+                        (String? newValue) {
+                        setState(() {
+                          registrationDataCompleteCubit.selectedCity = newValue;
+                        });
+                      }, shouldActiviteValidation: true)
+                    : const SizedBox(),
+                isDoctor ? locationInfoTextField(context) : const SizedBox(),
+                isDoctor ? clinicNameTextField(context) : const SizedBox(),
                 studiesInfoTextField(context),
                 specializationInfoTextField(context),
                 const SizedBox(
@@ -90,7 +94,10 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                   FormState? formdata = formKey.currentState;
                   if (formdata!.validate()) {
                     formdata.save();
-                    navigationService.navigateTo(selectLocationMapPage);
+                    isDoctor
+                        ? navigationService.navigateTo(selectLocationMapPage)
+                        : navigationService
+                            .navigateTo(completeCertificationsPage);
                   }
                 }, AppString.continueButton.tr(), false),
                 const SizedBox(
@@ -105,6 +112,8 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
   }
 
   MultiSelectDialogField<String> multiSelectedSpeciality(BuildContext context) {
+    What.apple.value;
+
     RegistrationDataCompleteCubit registrationDataCompleteCubit =
         context.read<RegistrationDataCompleteCubit>();
     return MultiSelectDialogField(
