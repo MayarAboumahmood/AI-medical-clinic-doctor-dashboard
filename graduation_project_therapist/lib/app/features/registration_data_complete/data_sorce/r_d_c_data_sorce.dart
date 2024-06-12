@@ -41,7 +41,6 @@ class RegistrationDataCompleteRemoteDataSourceImp
         'Authorization': token
       },
     );
-    bool isDoctor = sharedPreferences!.getString('doctorOrTherapist') == '1';
     if (completeRegisterModel.userLatLng != null && isDoctor) {
       request.fields['latitude'] =
           completeRegisterModel.userLatLng!.latitude.toString();

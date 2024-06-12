@@ -17,6 +17,14 @@ class SignInCubit extends Cubit<SignInState> {
   String userEmail = '';
   String otpCode = '';
 
+  void clearSignInCubit() {
+    userEmail = '';
+    otpCode = '';
+    Future.delayed(const Duration(seconds: 1), () {
+      passwordtextgController.dispose();
+    });
+  }
+
   void setUserEmail(updatedUserEmail) {
     userEmail = updatedUserEmail;
   }

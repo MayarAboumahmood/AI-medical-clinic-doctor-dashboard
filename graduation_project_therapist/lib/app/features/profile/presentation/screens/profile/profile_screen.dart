@@ -138,6 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       showChangeLangeuageDrowpDownDialog(context);
                     }),
+                isDoctor ? doctorColumn() : const SizedBox(),
                 profilePageDivider(),
                 accountChoiceWidget(
                     title: "Help center".tr(),
@@ -177,6 +178,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Column doctorColumn() {
+    return Column(
+      children: [
+        profilePageDivider(),
+        SizedBox(
+          height: responsiveUtil.scaleHeight(13),
+        ),
+        accountChoiceWidget(
+            title: "All Therapists".tr(),
+            icon: Icons.person_pin_rounded,
+            onTap: () {
+              navigationService.navigateTo(getAllTherapistPage);
+            }),
+      ],
+    );
+  }
+  Column therapistColumn() {
+    return Column(
+      children: [
+        profilePageDivider(),
+        SizedBox(
+          height: responsiveUtil.scaleHeight(13),
+        ),
+        accountChoiceWidget(
+            title: "All Therapists".tr(),
+            icon: Icons.person_pin_rounded,
+            onTap: () {
+              navigationService.navigateTo(getAllTherapistPage);
+            }),
+      ],
     );
   }
 }

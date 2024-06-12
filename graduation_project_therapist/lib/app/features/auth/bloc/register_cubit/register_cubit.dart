@@ -23,6 +23,27 @@ class RegisterCubit extends Cubit<RegisterState> {
   String? imageName;
   Uint8List? selectedImage;
 
+  void clearRegisterCubit() {
+    selectedDay = DateTime(2001, 1, 1);
+    imageName = null;
+    selectedImage = null;
+    userInfo = UserInfo(
+        dateOfBirth: '',
+        firstName: '',
+        lastName: '',
+        password: '',
+        phoneNumber: '',
+        userEmail: '',
+        gender: 1,
+        photo: '',
+        roleId: 1);
+    Future.delayed(const Duration(seconds: 1), () {
+      passwordtextgController.dispose();
+      retypePasswordtextController.dispose();
+      otpCodeController.dispose();
+    });
+  }
+
   UserInfo userInfo = UserInfo(
       dateOfBirth: '',
       firstName: '',
@@ -33,12 +54,6 @@ class RegisterCubit extends Cubit<RegisterState> {
       gender: 1,
       photo: '',
       roleId: 1);
-
-  void closeRegisterCubit() {
-    passwordtextgController.dispose();
-    retypePasswordtextController.dispose();
-    otpCodeController.dispose();
-  }
 
   void setGender(String gender) {
     if (gender == 'male'.tr() || gender == 'Male'.tr()) {

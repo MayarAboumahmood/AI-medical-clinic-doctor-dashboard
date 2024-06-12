@@ -35,6 +35,12 @@ class _JoinWidgetState extends State<JoinWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    context.read<RegisterCubit>().clearRegisterCubit();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return buildRegisterBlocConsumer();
   }
@@ -328,7 +334,7 @@ class _JoinWidgetState extends State<JoinWidget> {
                   fontWeight: FontWeight.w400,
                   fontSize: 12),
               labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: customColors.primary,
+                    color: customColors.primary,
                     fontSize: 12,
                   ),
               labelText: 'Specialty:'.tr(),

@@ -1,8 +1,8 @@
 class ServerConfig {
-  static const String url = "http://127.0.0.1:3000/";
+  // static const String url = "http://127.0.0.1:3000/";
   static const String imageUrl = '${url}storage/';
-  // static const String url =
-  //     "http://192.168.207.5:3000/"; //for mobile with ip config.
+  static const String url =
+      "http://192.168.100.21:3000/"; //for mobile with ip config.
 
   static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';
@@ -21,5 +21,7 @@ class ServerConfig {
   static const String deleteAccountURL = 'specs/delete';
   static const String getAllNotificationURL = 'get_notifications';
   static const String getAllTherapists = 'specs/';
-  
+  static const String getMyTherapists = 'specs/'; //Todo:
+  static const String assignTherapist = 'specs/employmentRequests/send';
+  static const String removeTherapist = 'specs/employmentRequests/send'; //Todo:
 }

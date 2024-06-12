@@ -39,7 +39,6 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
   }
 
   Widget buildCompleteYourDataBody(BuildContext context) {
-    bool isDoctor = sharedPreferences!.getString('doctorOrTherapist') == '1';
     RegistrationDataCompleteCubit registrationDataCompleteCubit =
         context.read<RegistrationDataCompleteCubit>();
 
@@ -85,7 +84,7 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                 isDoctor ? locationInfoTextField(context) : const SizedBox(),
                 isDoctor ? clinicNameTextField(context) : const SizedBox(),
                 studiesInfoTextField(context),
-                specializationInfoTextField(context),
+                // specializationInfoTextField(context),
                 const SizedBox(
                   height: 10,
                 ),

@@ -4,7 +4,9 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import '../../../main.dart';
 
 PreferredSize appBarPushingScreens(String title,
-    {bool isFromScaffold = false}) {
+    {bool isFromScaffold = false,
+    bool showSearchIcon = false,
+    VoidCallback? onSearchIconPressed}) {
   double sizeOnheight = isFromScaffold ? 0 : 100;
   return PreferredSize(
     preferredSize: Size.fromHeight(
@@ -24,77 +26,68 @@ PreferredSize appBarPushingScreens(String title,
         backgroundColor: customColors.primaryBackGround,
         title: AnimationAppBarTitle(title: title),
         centerTitle: true,
+        actions: showSearchIcon
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: onSearchIconPressed,
+                ),
+              ]
+            : null,
       ),
     ),
   );
 }
 
-PreferredSize appBarPushingScreensWithSearch(
-    String title, BuildContext context) {
+PreferredSizeWidget appBarPushingScreensForSearch(
+  String title, {
+  bool isFromScaffold = false,
+  bool isSearching = false,
+  TextEditingController? searchController,
+  VoidCallback? onSearchIconPressed,
+  VoidCallback? onSearchCanceled,
+  void Function(String)? onSearchChange,
+}) {
+  double sizeOnHeight = isFromScaffold ? 0 : 100;
   return PreferredSize(
-    preferredSize: const Size.fromHeight(
-        kToolbarHeight + 100), // Adjust the height as needed
-
-    child: Column(
-      children: [
-        Container(
-          decoration: const BoxDecoration(boxShadow: [
-            BoxShadow(
-                color: Colors.black38, offset: Offset(0, 2.0), blurRadius: 4.0)
-          ]),
-          child: AppBar(
-            surfaceTintColor: customColors.primaryBackGround,
-            backgroundColor: customColors.primaryBackGround,
-            title: Text(
-              title.tr(),
-              style: customTextStyle.bodyMedium.copyWith(
-                  color: customColors.primaryText,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-            leading: GestureDetector(
-                onTap: () {
-                  navigationService.goBack();
-                },
-                child: Icon(
-                  Icons.arrow_back_outlined,
-                  color: customColors.primaryText,
-                  size: 30,
-                )),
-          ),
+    preferredSize: Size.fromHeight(kToolbarHeight + sizeOnHeight),
+    child: Container(
+      decoration: const BoxDecoration(boxShadow: [
+        BoxShadow(
+            color: Colors.black38, offset: Offset(0, 2.0), blurRadius: 4.0)
+      ]),
+      child: AppBar(
+        surfaceTintColor: customColors.primaryBackGround,
+        automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(
+          color: customColors.text2,
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          height: 70,
-          child: TextField(
-            cursorColor: customColors.secondaryText,
-            decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: customColors
-                        .primaryBackGround, // Same color as border to prevent color change on focus
-                  ),
+        backgroundColor: customColors.primaryBackGround,
+        title: isSearching
+            ? TextField(
+                onChanged: onSearchChange,
+                decoration: InputDecoration(
+                  hintText: 'Search...'.tr(),
+                  hintStyle: customTextStyle.bodyMedium,
+                  border: InputBorder.none,
                 ),
-                filled: true,
-                fillColor: customColors.secondaryBackGround,
-                hintText: 'Search...'.tr(),
-                hintStyle: customTextStyle.bodyMedium
-                    .copyWith(color: customColors.secondaryText),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: customColors.secondaryText,
+                style: customTextStyle.bodyMedium)
+            : AnimationAppBarTitle(title: title),
+        centerTitle: true,
+        actions: isSearching
+            ? [
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: onSearchCanceled,
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                )),
-          ),
-        )
-      ],
+              ]
+            : [
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: onSearchIconPressed,
+                ),
+              ],
+      ),
     ),
   );
 }

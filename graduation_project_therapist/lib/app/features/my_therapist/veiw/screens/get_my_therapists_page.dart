@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/data_source/models/get_therapists_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/widgets/all_therapist_card.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-class GetAllTherapistPage extends StatefulWidget {
-  const GetAllTherapistPage({super.key});
+class GetMyTherapistPage extends StatefulWidget {
+  const GetMyTherapistPage({super.key});
 
   @override
-  State<GetAllTherapistPage> createState() => _GetAllTherapistPageState();
+  State<GetMyTherapistPage> createState() => _GetMyTherapistPageState();
 }
 
-class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
+class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
-  @override 
+  @override
   Widget build(BuildContext context) {
-    GetAllTherapistCubit getAllTherapistCubit =
-        context.read<GetAllTherapistCubit>();
-    getAllTherapistCubit.getAllTherapist();
+    GetMyTherapistCubit getAllTherapistCubit =
+        context.read<GetMyTherapistCubit>();
+    getAllTherapistCubit.getMyTherapist();
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: customColors.primary,
-          onPressed: () {
-            navigationService.navigateTo(getMyTherapistPage);
-          },
+          onPressed: () {},
           label: Text(
             'My Therapist',
             style: customTextStyle.bodyMedium,
@@ -57,46 +54,46 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
           });
         },
       ),
-      body: BlocConsumer<GetAllTherapistCubit, GetAllTherapistState>(
+      body: BlocConsumer<GetMyTherapistCubit, GetMyTherapistState>(
         listener: (context, state) {
-          if (state is AllTherapistErrorState) {
+          if (state is MyTherapistErrorState) {
             print('the state is: $state');
             customSnackBar(state.errorMessage, context);
-          } else if (state is AssignTherapistSuccessfullyState) {
+          } else if (state is TherapistRemovedSuccessfullyState) {
             customSnackBar(
-                'The Therapist has been assigned Successfully', context);
+                'The Therapist has been removed Successfully', context);
           }
         },
         builder: (context, state) {
-          if (state is AllTherapistLoadingState) {
+          if (state is MyTherapistLoadingState) {
             return mediumSizeCardShimmer();
-          } else if (state is AllTherapistLoadedState) {
-            return allTherapistListBody(context);
-          } else if (state is SearchOnAllTherapistState) {
-            return allTherapistListBody(context);
+          } else if (state is MyTherapistLoadedState) {
+            return myTherapistListBody(context);
+          } else if (state is SearchOnMyTherapistState) {
+            return myTherapistListBody(context);
           }
-          return allTherapistListBody(context);
+          return myTherapistListBody(context);
         },
       ),
     );
   }
 
-  SingleChildScrollView allTherapistListBody(
+  SingleChildScrollView myTherapistListBody(
     BuildContext context,
   ) {
-    GetAllTherapistCubit getAllTherapistCubit =
-        context.read<GetAllTherapistCubit>();
+    GetMyTherapistCubit getMyTherapistCubit =
+        context.read<GetMyTherapistCubit>();
     List<GetTherapistModel> getTherapistModels =
-        _isSearching && getAllTherapistCubit.state is SearchOnAllTherapistState
-            ? getAllTherapistCubit.searchedTherapistModels
-            : getAllTherapistCubit.getTherapistModels;
+        _isSearching && getMyTherapistCubit.state is SearchOnMyTherapistState
+            ? getMyTherapistCubit.searchedTherapistModels
+            : getMyTherapistCubit.getTherapistModels;
 
     return SingleChildScrollView(
       child: Column(children: [
         ...List.generate(
             getTherapistModels.length,
             (index) =>
-                allTherapistCard(context, getTherapistModels[index], true)),
+                allTherapistCard(context, getTherapistModels[index], false)),
         const SizedBox(
           height: 50,
         ),

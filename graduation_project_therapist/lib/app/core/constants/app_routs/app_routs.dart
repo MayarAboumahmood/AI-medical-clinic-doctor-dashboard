@@ -8,6 +8,8 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_all_therapists_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/veiw/screens/get_my_therapists_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
@@ -36,6 +38,8 @@ const String chatPage = '/ChatPage';
 const String forgetPasswordOTP = '/ForgetPasswordOTP';
 const String forgetPasswordResetPassword = '/ForgetPasswordResetPassword';
 const String forgetPasswordEmail = '/ForgetPasswordEmail';
+const String getAllTherapistPage = '/GetAllTherapistPage';
+const String getMyTherapistPage = '/GetMyTherapistPage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -56,4 +60,6 @@ final Map<String, WidgetBuilder> routes = {
   forgetPasswordOTP: (context) => const ForgetPasswordOTP(),
   forgetPasswordResetPassword: (context) => const ForgetPasswordResetPassword(),
   forgetPasswordEmail: (context) => const ForgetPasswordEmail(),
+  getAllTherapistPage: (context) => const GetAllTherapistPage(),
+  getMyTherapistPage: (context) => const GetMyTherapistPage(),
 };

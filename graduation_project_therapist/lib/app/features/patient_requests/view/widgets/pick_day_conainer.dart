@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -15,13 +13,12 @@ class PickDayContainer extends StatefulWidget {
 
 class _PickDayContainerState extends State<PickDayContainer> {
   late DateTime selectedDay;
-  late PatientRequestsCubit patientRequestsCubit;
+
   late String selectedDayString;
   @override
   initState() {
-    patientRequestsCubit = context.read<PatientRequestsCubit>();
     super.initState();
-    selectedDay = DateTime(2001,1,1);
+    selectedDay = DateTime(2001, 1, 1);
     selectedDayString = DateFormat('yyyy/MM/dd').format(selectedDay);
   }
 

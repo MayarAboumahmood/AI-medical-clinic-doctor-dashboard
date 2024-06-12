@@ -27,6 +27,13 @@ class BottomNavigationWidget extends StatefulWidget {
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentPage = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    isDoctor = sharedPreferences!.getString('doctorOrTherapist') == '1';
+    print('is doctor: $isDoctor');
+  }
+
   bool firstTime = true;
   @override
   void didChangeDependencies() {

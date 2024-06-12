@@ -14,6 +14,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
@@ -47,6 +48,7 @@ SharedPreferences? sharedPreferences;
 UserProfileModel? userData;
 late Timer timer;
 bool isGuest = false;
+late bool isDoctor;
 UserStatusEnum userStatus = UserStatusEnum.unverified;
 LocationData? globalUserLocation;
 bool comingFromRegisterOrLogin = false;
@@ -131,6 +133,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => di.sl<ThemeBloc>()),
+          BlocProvider(create: (_) => di.sl<GetAllTherapistCubit>()),
           BlocProvider(create: (_) => di.sl<LanguageBloc>()),
           BlocProvider(create: (_) => di.sl<RegistrationDataCompleteCubit>()),
           BlocProvider(create: (_) => di.sl<UserProfileCubit>()),

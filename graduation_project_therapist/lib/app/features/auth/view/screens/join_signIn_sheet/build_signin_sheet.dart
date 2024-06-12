@@ -23,6 +23,12 @@ class SignInWidget extends StatefulWidget {
 class _SignInWidgetState extends State<SignInWidget> {
   String? errorMessage; // Variable to hold the error message
   @override
+  void dispose() {
+    super.dispose();
+    context.read<SignInCubit>().clearSignInCubit();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SignInCubit signInCubit = context.read<SignInCubit>();
 

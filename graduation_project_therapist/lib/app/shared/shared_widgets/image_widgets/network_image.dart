@@ -18,7 +18,7 @@ Widget getImageNetwork({
   if (fromBackEnd) {
     url = ServerConfig.imageUrl + url;
   }
-  
+
   return Container(
     width: width,
     color: color,
@@ -36,8 +36,11 @@ Widget getImageNetwork({
         }
         if (loadingProgress.cumulativeBytesLoaded <
             loadingProgress.expectedTotalBytes!) {
-          return buildLoadingShimmer(width ?? double.infinity,
-              height ?? double.infinity); // Show shimmer when image is loading
+          return buildLoadingShimmer(
+              width ?? responsiveUtil.screenWidth,
+              height ??
+                  responsiveUtil
+                      .screenHeight); // Show shimmer when image is loading
         }
         return child; // Image has finished loading
       },
