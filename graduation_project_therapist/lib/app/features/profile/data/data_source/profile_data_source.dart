@@ -36,6 +36,8 @@ class ProfileDataSourceImpl implements ProfileDataSource {
         formatNameForBackend(editProfileModel.fullName);
     // request.fields['state'] = editProfileModel.state;
 
+    request.fields['studyInfo'] = editProfileModel.studyInfo;
+    request.fields['specInfo'] = editProfileModel.specInfo;
     request.fields['phone'] = editProfileModel.phoneNumber;
     request.fields['gender'] =
         getGenderIntFromString(editProfileModel.gender).toString();

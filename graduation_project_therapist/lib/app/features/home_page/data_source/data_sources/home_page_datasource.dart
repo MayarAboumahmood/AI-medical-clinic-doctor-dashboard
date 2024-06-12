@@ -17,6 +17,8 @@ class HomePageDataSource {
       headers: headers,
     );
 
+    print('getint user profile body datasource: ${response.body}');
+    print('getint user profile statuscode datasource: ${response.statusCode}');
     return response;
   }
 
@@ -29,6 +31,9 @@ class HomePageDataSource {
       url,
       headers: headers,
     );
+    print('getint user status body datasource: ${response.body}');
+    print('getint user status statuscode datasource: ${response.statusCode}');
+
     return response;
   }
 }

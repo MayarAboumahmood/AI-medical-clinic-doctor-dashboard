@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
@@ -46,7 +47,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         registerModel.dateOfBirth?.trim() != '';
     // Add text fields
     request.fields['fullName'] =
-        '${registerModel.firstName} ${registerModel.lastName}';
+        '${registerModel.firstName.trim()} ${registerModel.lastName.trim()}';
     request.fields['email'] = registerModel.userEmail.trim();
     request.fields['phone'] = registerModel.phoneNumber.trim();
     request.fields['password'] = registerModel.password.trim();
@@ -69,7 +70,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await request.send();
 
     final responseBody = await response.stream.bytesToString();
-
+    debugPrint('in the register datasource: $responseBody');
+    debugPrint('in the register datasource: ${response.statusCode}');
+    debugPrint(
+        'in the register datasource: ${registerModel.firstName.trim()} ${registerModel.lastName.trim()}');
     if (response.statusCode == 201 || response.statusCode == 200) {
       sharedPreferences!
           .setString('doctorOrTherapist', registerModel.roleId.toString());
@@ -166,10 +170,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var body = jsonEncode({
       'email': userEmail.trim(),
     });
-    
-    
+
     var response = await http.post(url, headers: headers, body: body);
-    
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       return http.Response(response.body, response.statusCode);
     } else if (response.statusCode != 500) {

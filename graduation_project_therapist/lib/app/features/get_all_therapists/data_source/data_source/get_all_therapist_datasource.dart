@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,8 @@ class GetAllTherapistDataSource {
       url,
       headers: headers,
     );
+    debugPrint('geting all therapist datasource: ${response.body}');
+    debugPrint('geting all therapist datasource: ${response.statusCode}');
     return response;
   }
 

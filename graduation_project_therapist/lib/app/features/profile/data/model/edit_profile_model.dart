@@ -10,6 +10,8 @@ class EditProfileModel {
   final String phoneNumber;
   final String longitude;
   final String latitude;
+  final String studyInfo;
+  final String specInfo;
 
   const EditProfileModel({
     required this.dateOfBirth,
@@ -21,6 +23,8 @@ class EditProfileModel {
     required this.phoneNumber,
     required this.longitude,
     required this.latitude,
+    required this.studyInfo,
+    required this.specInfo,
   });
   //need to recheck after ahmed edit it with the right form of data.
   factory EditProfileModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +37,8 @@ class EditProfileModel {
       state: json['state'] ?? '',
       phoneNumber: json['phone'] ?? '',
       fullName: json['fullName'],
+      studyInfo: json['studyInfo'],
+      specInfo: json['specInfo'],
       imageName: null,
     );
   }

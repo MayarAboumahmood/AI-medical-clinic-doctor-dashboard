@@ -18,7 +18,7 @@ ScaffoldFeatureController customSnackBar(String title, BuildContext context,
 }
 
 String endUserSession(BuildContext context, String title) {
-  if (title == 'jwt expired') {
+  if (title == 'jwt expired' || title == 'User not found') {
     navigationService.navigationOfAllPagesToName(context, welcomeScreen);
     sharedPreferences!.remove('token');
     sharedPreferences!.remove('user_profile');

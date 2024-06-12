@@ -83,8 +83,6 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                     : const SizedBox(),
                 isDoctor ? locationInfoTextField(context) : const SizedBox(),
                 isDoctor ? clinicNameTextField(context) : const SizedBox(),
-                studiesInfoTextField(context),
-                // specializationInfoTextField(context),
                 const SizedBox(
                   height: 10,
                 ),
@@ -218,58 +216,6 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                     registrationDataCompleteCubit.updateClinicName(value);
                   },
                   label: "Clinic name".tr()))
-        ],
-      ),
-    );
-  }
-
-  Padding studiesInfoTextField(BuildContext context) {
-    RegistrationDataCompleteCubit registrationDataCompleteCubit =
-        context.read<RegistrationDataCompleteCubit>();
-
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              child: customTextField(
-                  textInputType: TextInputType.text,
-                  validator: (value) {
-                    return ValidationFunctions.informationValidation(value!);
-                  },
-                  context: context,
-                  onSaved: (value) {
-                    registrationDataCompleteCubit.updateStudiesInfo(value);
-                  },
-                  label: "Studies Information".tr()))
-        ],
-      ),
-    );
-  }
-
-  Padding specializationInfoTextField(BuildContext context) {
-    RegistrationDataCompleteCubit registrationDataCompleteCubit =
-        context.read<RegistrationDataCompleteCubit>();
-
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              child: customTextField(
-                  textInputType: TextInputType.text,
-                  validator: (value) {
-                    return ValidationFunctions.informationValidation(value!);
-                  },
-                  context: context,
-                  onSaved: (value) {
-                    registrationDataCompleteCubit.updateSpecialtyInfo(value);
-                  },
-                  label: "Specialization Information".tr()))
         ],
       ),
     );

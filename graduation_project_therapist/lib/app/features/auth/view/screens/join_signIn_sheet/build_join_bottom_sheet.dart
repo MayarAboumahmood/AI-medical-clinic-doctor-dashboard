@@ -26,7 +26,7 @@ class JoinWidget extends StatefulWidget {
 class _JoinWidgetState extends State<JoinWidget> {
   String? errorMessage;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  late RegisterCubit registerCubit;
   bool isTermsAccepted = false;
   void toggleTermsCheckbox() {
     setState(() {
@@ -35,9 +35,15 @@ class _JoinWidgetState extends State<JoinWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    registerCubit = context.read<RegisterCubit>();
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    context.read<RegisterCubit>().clearRegisterCubit();
+    registerCubit.clearRegisterCubit();
   }
 
   @override
@@ -127,10 +133,10 @@ class _JoinWidgetState extends State<JoinWidget> {
             height: 15,
           ),
           selectGenderDropDown(
-            context.read<RegisterCubit>().getSelectedGender(),
+            registerCubit.getSelectedGender(),
             (String? newValue) {
               setState(() {});
-              context.read<RegisterCubit>().setGender(newValue!);
+              registerCubit.setGender(newValue!);
             },
           ),
           byJoiningOurTimeTextWidget(),
@@ -197,7 +203,7 @@ class _JoinWidgetState extends State<JoinWidget> {
                   },
                   context: context,
                   onSaved: (value) {
-                    context.read<RegisterCubit>().updateUserInfo(
+                    registerCubit.updateUserInfo(
                         phoneNumber:
                             formatSyrianPhoneNumberForMakeItStartWIth09(
                                 value ?? ''));
@@ -310,7 +316,6 @@ class _JoinWidgetState extends State<JoinWidget> {
   }
 
   Padding selectSpecialtyDropDown() {
-    RegisterCubit registerCubit = context.read<RegisterCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5,

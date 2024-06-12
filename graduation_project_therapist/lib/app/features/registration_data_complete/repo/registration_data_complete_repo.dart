@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/r_d_c_data_sorce.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:http/http.dart';
 
 class RegistrationDataCompleteRepoIpm {
@@ -21,6 +22,7 @@ class RegistrationDataCompleteRepoIpm {
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        sharedPreferences!.remove('user_status');
         return const Right('register completed');
       } else if (response.statusCode != 500) {
         return Left(decodedResponse['error']);

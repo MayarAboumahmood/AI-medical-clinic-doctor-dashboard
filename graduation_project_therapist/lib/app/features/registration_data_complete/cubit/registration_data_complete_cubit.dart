@@ -14,9 +14,7 @@ class RegistrationDataCompleteCubit
       : super(RegistrationDataCompleteInitial());
   String? selectedCity;
   List<String> selectedMedicalSpecialty = [];
-  String studiesInfo = '';
   String? locationInfo = '';
-  String specialtyInfo = '';
   String? clinicName = '';
   List<Uint8List> certificationImages = []; // List to store image paths
   LatLng? userLatLng;
@@ -45,14 +43,6 @@ class RegistrationDataCompleteCubit
     selectedMedicalSpecialty.addAll(values);
   }
 
-  void updateStudiesInfo(updatedInfo) {
-    studiesInfo = updatedInfo;
-  }
-
-  void updateSpecialtyInfo(updatedInfo) {
-    specialtyInfo = updatedInfo;
-  }
-
   void updateLocationInfo(updatedInfo) {
     locationInfo = updatedInfo;
   }
@@ -61,10 +51,8 @@ class RegistrationDataCompleteCubit
     emit(RegistrationDataCompleteLoadingState());
     CompleteRegisterModel completeRegisterModel = CompleteRegisterModel(
         selectedMedicalSpecialty: selectedMedicalSpecialty,
-        studiesInfo: studiesInfo,
         locationInfo: locationInfo,
         clinicName: clinicName,
-        specialtyInfo: specialtyInfo,
         selectedCity: selectedCity,
         userLatLng: userLatLng,
         certificationImages: certificationImages);

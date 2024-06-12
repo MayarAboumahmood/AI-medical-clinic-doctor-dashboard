@@ -8,6 +8,8 @@ class UserProfileModel {
   String status;
   String? state;
   int userId;
+  String? studyInfo;
+  String? specInfo;
 
   UserProfileModel({
     required this.id,
@@ -18,6 +20,8 @@ class UserProfileModel {
     required this.phone,
     required this.status,
     required this.userId,
+    required this.specInfo,
+    required this.studyInfo,
     this.state,
   });
 
@@ -33,6 +37,8 @@ class UserProfileModel {
       status: json['status'] as String,
       userId: json['userId'] as int,
       state: json['state'] as String?,
+      studyInfo: json['studyInfo'] as String?,
+      specInfo: json['specInfo'] as String?,
     );
   }
 
@@ -47,6 +53,8 @@ class UserProfileModel {
       'phone': phone,
       'status': status,
       'userId': userId,
+      'studyInfo': studyInfo,
+      'specInfo': specInfo,
     };
   }
 
@@ -58,6 +66,8 @@ class UserProfileModel {
     String? photo,
     String? phone,
     String? status,
+    String? studyInfo,
+    String? specInfo,
     int? userId,
   }) {
     return UserProfileModel(
@@ -69,6 +79,8 @@ class UserProfileModel {
       phone: phone ?? this.phone,
       status: status ?? this.status,
       userId: userId ?? this.userId,
+      studyInfo: studyInfo ?? this.studyInfo,
+      specInfo: specInfo ?? this.specInfo,
     );
   }
 }

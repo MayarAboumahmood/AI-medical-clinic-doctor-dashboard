@@ -5,9 +5,7 @@ import 'package:latlong2/latlong.dart';
 class CompleteRegisterModel {
   String? selectedCity;
   List<String> selectedMedicalSpecialty;
-  String studiesInfo;
   String? locationInfo;
-  String specialtyInfo;
   List<Uint8List?> certificationImages;
   LatLng? userLatLng;
   String? clinicName;
@@ -15,9 +13,7 @@ class CompleteRegisterModel {
   CompleteRegisterModel({
     this.selectedCity,
     required this.selectedMedicalSpecialty,
-    required this.studiesInfo,
     this.locationInfo,
-    required this.specialtyInfo,
     required this.certificationImages,
     this.userLatLng,
     this.clinicName,
@@ -28,9 +24,7 @@ class CompleteRegisterModel {
     return {
       'cityId': selectedCity,
       'selectedMedicalSpecialty': selectedMedicalSpecialty,
-      'studiesInfo': studiesInfo,
       'locationInfo': locationInfo,
-      'specialtyInfo': specialtyInfo,
       'certificationImages': certificationImages,
       'clinicName': clinicName,
       'userLatLng': userLatLng != null

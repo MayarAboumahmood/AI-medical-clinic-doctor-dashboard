@@ -35,6 +35,8 @@ class EditProfile extends StatefulWidget {
 
 class _EditeProfileState extends State<EditProfile> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController specInfoController = TextEditingController();
+  final TextEditingController studyInfoController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   DateTime dateTime = DateTime(2000, 1, 1);
   String? selectedGender;
@@ -107,6 +109,8 @@ class _EditeProfileState extends State<EditProfile> {
           selectedGender = getGenderString(userData.gender);
         }
         nameController.text = userData.fullName;
+        studyInfoController.text = userData.studyInfo ?? '';
+        specInfoController.text = userData.specInfo ?? '';
         phoneNumberController.text =
             formatSyrianPhoneNumberForMakeItStartWIth09(userData.phone);
         String birthDateString = userData.dateOfBirth; // "1999/10/10"
@@ -122,10 +126,12 @@ class _EditeProfileState extends State<EditProfile> {
     } else {
       // Handle the case where userData is null (e.g., set default values)
       setState(() {
-        nameController.text = 'first name';
-        selectedGender = 'male';
-        selectedState = 'Damascus';
-        phoneNumberController.text = '09...';
+        nameController.text = 'first name'.tr();
+        studyInfoController.text = 'Your study info'.tr();
+        specInfoController.text = 'Your Spec info'.tr();
+        selectedGender = 'male'.tr();
+        selectedState = 'Damascus'.tr();
+        phoneNumberController.text = '09...'.tr();
       });
     }
   }
@@ -194,6 +200,28 @@ class _EditeProfileState extends State<EditProfile> {
                         Icons.person_outline,
                         nameController.text,
                         nameController,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      editeInfoTextField(
+                        context,
+                        'Studies information',
+                        Icons.person_outline,
+                        studyInfoController.text,
+                        studyInfoController,
+                        isName: false,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      editeInfoTextField(
+                        context,
+                        'Specialization information',
+                        Icons.person_outline,
+                        specInfoController.text,
+                        specInfoController,
+                        isName: false,
                       ),
                       const SizedBox(
                         height: 10,
@@ -304,6 +332,8 @@ class _EditeProfileState extends State<EditProfile> {
                   phoneNumberController.text),
               latitude: '0',
               longitude: '0',
+              specInfo: specInfoController.text,
+              studyInfo: studyInfoController.text,
             );
             BlocProvider.of<ProfileBloc>(context).add(
               EditProfileEvent(editedData: updatedProfileData),
@@ -376,25 +406,24 @@ class _EditeProfileState extends State<EditProfile> {
   @override
   void dispose() {
     nameController.dispose();
-
+    specInfoController.dispose();
+    studyInfoController.dispose();
     phoneNumberController.dispose();
     super.dispose();
   }
 
-  Padding editeInfoTextField(
-    BuildContext context,
-    String label,
-    IconData suffixIcon,
-    String hintText,
-    TextEditingController controller,
-  ) {
+  Padding editeInfoTextField(BuildContext context, String label,
+      IconData suffixIcon, String hintText, TextEditingController controller,
+      {bool isName = true}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: editeProfileTextField(
           textInputType: TextInputType.name,
           controller: controller,
           validator: (value) {
-            return ValidationFunctions.nameValidation(value);
+            return isName
+                ? ValidationFunctions.nameValidation(value)
+                : ValidationFunctions.informationValidation(value);
           },
           context: context,
           suffixIcon: Icon(suffixIcon, color: customColors.text2, size: 22),
