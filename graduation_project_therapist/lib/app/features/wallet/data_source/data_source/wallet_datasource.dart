@@ -8,31 +8,53 @@ class WalletDataSource {
   http.Client client;
   WalletDataSource({required this.client});
 
-  Future<Response> getHistory() async {
+  Future<Response> getTransactionHistory() async {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url + ServerConfig.getHistory);
-    var headers = {'Content-Type': 'application/json', 'Authorization': token};
+    var headers = {'Authorization': token};
 
     var response = await http.get(
       url,
       headers: headers,
     );
+    debugPrint(
+        'get transaction history in the data source: ${response.statusCode}');
+    debugPrint('get transaction history in the data source: ${response.body}');
     return response;
   }
 
-  removeTherapist(int therapistId) async {
+  Future<Response> makeRequestToGetMoney(String amountOfMoney) async {
+    debugPrint('makeRequestToGetMoney in the data source: first');
+
     String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.assignTherapist);
+    var url =
+        Uri.parse(ServerConfig.url + ServerConfig.makeRequestToGetMoneyUri);
     var headers = {'Authorization': token};
 
     var response = await http.post(
       url,
-      body: {'userId': therapistId.toString()},
+      body: {'amount': amountOfMoney},
       headers: headers,
     );
+    debugPrint(
+        'makeRequestToGetMoney in the data source: ${response.statusCode}');
+    debugPrint(' makeRequestToGetMoney in the data source: ${response.body}');
 
-    debugPrint('geting my therapist datasource: ${response.body}');
-    debugPrint('geting my therapist datasource: ${response.statusCode}');
+    return response;
+  }
+
+  Future<Response> getAvailableFunds() async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.getAvailableFundsuri);
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      headers: headers,
+    );
+    debugPrint(' getAvailableFunds the data source: ${response.statusCode}');
+    debugPrint(' getAvailableFunds in the data source: ${response.body}');
+
     return response;
   }
 }

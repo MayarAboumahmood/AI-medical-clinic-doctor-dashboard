@@ -26,6 +26,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/wallet/cubit/wallet_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/language_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
@@ -153,6 +154,9 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (_) => di.sl<GetMyTherapistCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.sl<WalletCubit>(),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeData>(builder: (context, theme) {

@@ -9,9 +9,10 @@ class WalletRepositoryImp {
   final WalletDataSource _walletDataSource;
 
   WalletRepositoryImp(this._walletDataSource);
-  Future<Either<String, List<WalletHistoryModel>>> getMyTherapist() async {
+  Future<Either<String, List<WalletHistoryModel>>>
+      getTransactionHistory() async {
     try {
-      final response = await _walletDataSource.getHistory();
+      final response = await _walletDataSource.getTransactionHistory();
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -28,7 +29,51 @@ class WalletRepositoryImp {
         return left(decodedResponse['error']);
       }
     } catch (e) {
-      debugPrint('error in get all therapist repo: $e');
+      debugPrint('error in get Transaction History repo: $e');
+      return left('Server Error');
+    }
+  }
+
+  Future<Either<String, String>> makeRequestToGetMoney(
+      String amountOfMoney) async {
+    try {
+      final response =
+          await _walletDataSource.makeRequestToGetMoney(amountOfMoney);
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return right('done');
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get make request to get money repo: $e');
+      return left('Server Error');
+    }
+  }
+
+  Future<Either<String, String>> getAvailableFunds() async {
+    try {
+      final response = await _walletDataSource.getAvailableFunds();
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return right(decodedResponse['data']['availaleFund']);
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get Available Funds repo: $e');
       return left('Server Error');
     }
   }
