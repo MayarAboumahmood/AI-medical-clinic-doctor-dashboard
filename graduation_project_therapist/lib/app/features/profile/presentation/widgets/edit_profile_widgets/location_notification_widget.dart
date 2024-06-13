@@ -28,19 +28,43 @@ Widget accountAndThemeWidgetForEditProfile(BuildContext context) {
         jumpToIndexZero(bottomNavigationWidgetBloc);
       }
     });
-    return SizedBox(
-      width: double.infinity,
+    return Container(
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 70,
+              color: const Color(0xFC000000),
+              offset: Offset(0, responsiveUtil.screenHeight / 1.1),
+              spreadRadius: 100,
+            )
+          ],
+          color: customColors.primaryBackGround,
+          border: Border.all(color: customColors.secondaryBackGround),
+          borderRadius: BorderRadius.circular(12)),
+      width: responsiveUtil.screenWidth,
       height: 50,
+      padding: responsiveUtil.padding(0, 15, 0, 15),
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text(
-              "Account".tr(),
-              style: customTextStyle.titleSmall.copyWith(
-                  color: customColors.text2, fontWeight: FontWeight.normal),
+            SizedBox(
+              width: responsiveUtil.scaleWidth(5),
             ),
+            Icon(
+              Icons.nightlight_outlined,
+              color: customColors.secondaryText,
+              size: 24,
+            ),
+            SizedBox(
+              width: responsiveUtil.scaleWidth(5),
+            ),
+            Text("Theme".tr(), style: customTextStyle.bodySmall),
+            const Spacer(),
             themeSwitcher(controller, isDarkMode, context),
+            SizedBox(
+              width: responsiveUtil.scaleWidth(5),
+            ),
           ]),
     );
   });

@@ -47,6 +47,8 @@ class AppString {
   static String validatStrongPassword =
       "Number and character required in password.";
   static String validationEmail = "The input is not email";
+  static String validationAmountOfMoney =
+      "Please enter a valid amount of money.";
   //validation error
   static String validationName = "The name should be at least 3 digits";
   static String validationInfo = "You must enter more detailed information";
@@ -111,4 +113,10 @@ class AppString {
       'By using the "Tables" app, you acknowledge and agree to comply with these terms.';
   static String signUpBooking =
       "Sign up for special deals, events and other updates from restaurant's name.";
+  static String moneyDescriptionForUser3 =
+      "3-Ensure you have the full amount available before proceeding.";
+  static String moneyDescriptionForUser2 =
+      "2-An administrator will contact you shortly to arrange the transfer.";
+  static String moneyDescriptionForUser1 =
+      "1-Enter the amount in Syrian Pounds.";
 }

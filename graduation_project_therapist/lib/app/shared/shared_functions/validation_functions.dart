@@ -47,6 +47,19 @@ class ValidationFunctions {
     return null;
   }
 
+  static String? isValidAmountOfMoney(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppString.validationAmountOfMoney.tr();
+    }
+
+    final amount = double.tryParse(value);
+    if (amount == null || amount <= 0) {
+      return AppString.validationAmountOfMoney.tr();
+    }
+
+    return null;
+  }
+
   static String? isStrongPassword(String input) {
     final RegExp regex = RegExp(
       r'^(?=.*[A-Za-z])(?=.*\d).{8,}$',

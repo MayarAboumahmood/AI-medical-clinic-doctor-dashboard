@@ -17,6 +17,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/registration
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/registeration_data_complete_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/set_location_on_map.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/screens/user_profile.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/wallet/view/screens/wallet_page.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 // Define route names
@@ -40,6 +41,7 @@ const String forgetPasswordResetPassword = '/ForgetPasswordResetPassword';
 const String forgetPasswordEmail = '/ForgetPasswordEmail';
 const String getAllTherapistPage = '/GetAllTherapistPage';
 const String getMyTherapistPage = '/GetMyTherapistPage';
+const String walletPage = '/WalletPage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -62,4 +64,5 @@ final Map<String, WidgetBuilder> routes = {
   forgetPasswordEmail: (context) => const ForgetPasswordEmail(),
   getAllTherapistPage: (context) => const GetAllTherapistPage(),
   getMyTherapistPage: (context) => const GetMyTherapistPage(),
+  walletPage: (context) => const WalletPage(),
 };

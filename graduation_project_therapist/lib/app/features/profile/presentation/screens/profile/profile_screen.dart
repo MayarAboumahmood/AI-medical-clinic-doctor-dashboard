@@ -18,7 +18,6 @@ import 'package:graduation_project_therapist_dashboard/app/features/profile/pres
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_data_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/terms_of_use_bottom_sheet.dart';
@@ -89,9 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          appBarPushingScreens('Profile'),
-          const SizedBox(
-            height: 25,
+          SizedBox(
+            height: responsiveUtil.screenHeight * .1,
           ),
           BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
@@ -103,17 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           SizedBox(
-            height: responsiveUtil.scaleHeight(20),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: accountAndThemeWidgetForEditProfile(context),
-            ),
-          ),
-          SizedBox(
-            height: responsiveUtil.scaleHeight(20),
+            height: responsiveUtil.scaleHeight(50),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -126,6 +114,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       navigationService.navigateTo('/notification');
                     }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: accountAndThemeWidgetForEditProfile(context),
+                  ),
+                ),
                 accountChoiceWidget(
                     title: "Change password".tr(),
                     icon: Icons.password,
@@ -139,6 +134,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       showChangeLangeuageDrowpDownDialog(context);
                     }),
                 isDoctor ? doctorColumn() : const SizedBox(),
+                accountChoiceWidget(
+                    title: "Wallet".tr(),
+                    icon: Icons.account_balance_wallet_outlined,
+                    onTap: () {
+                      navigationService.navigateTo(walletPage);
+                    }),
                 profilePageDivider(),
                 accountChoiceWidget(
                     title: "Help center".tr(),
@@ -154,6 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }),
                 profilePageDivider(),
                 accountChoiceWidget(
+                    isLogout: true,
                     title: "Delete your account".tr(),
                     icon: Icons.delete_outline_outlined,
                     onTap: () {
@@ -169,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context, logOutBottomSheet(context));
                     }),
                 const SizedBox(
-                  height: 85,
+                  height: 45,
                 )
               ].divide(SizedBox(
                 height: responsiveUtil.scaleHeight(13),
@@ -194,9 +196,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onTap: () {
               navigationService.navigateTo(getAllTherapistPage);
             }),
+        SizedBox(
+          height: responsiveUtil.scaleHeight(13),
+        ),
+        accountChoiceWidget(
+            title: "My Therapists".tr(),
+            icon: Icons.person_pin_rounded,
+            onTap: () {
+              navigationService.navigateTo(getMyTherapistPage);
+            }),
       ],
     );
   }
+
   Column therapistColumn() {
     return Column(
       children: [

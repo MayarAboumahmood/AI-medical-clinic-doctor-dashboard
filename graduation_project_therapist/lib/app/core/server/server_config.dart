@@ -24,4 +24,5 @@ class ServerConfig {
   static const String getMyTherapists = 'specs/'; //Todo:
   static const String assignTherapist = 'specs/employmentRequests/send';
   static const String removeTherapist = 'specs/employmentRequests/send'; //Todo:
+  static const String getHistory = 'specs/clinic/withdraw';
 }

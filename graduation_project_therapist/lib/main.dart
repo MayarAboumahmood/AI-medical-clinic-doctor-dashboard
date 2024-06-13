@@ -14,10 +14,12 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/design_hider/screens/welcompage_designhider.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
@@ -146,7 +148,12 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => di.sl<PatientReservationsCubit>()),
           BlocProvider(create: (_) => di.sl<BottomNavigationWidgetBloc>()),
           BlocProvider(create: (_) => di.sl<HomePageBloc>()),
-          BlocProvider(create: (_) => di.sl<ChatBloc>()),
+          BlocProvider(
+            create: (_) => di.sl<ChatBloc>(),
+          ),
+          BlocProvider(
+            create: (_) => di.sl<GetMyTherapistCubit>(),
+          ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeData>(builder: (context, theme) {
           return MaterialApp(
@@ -186,7 +193,9 @@ class InitializerWidget extends StatelessWidget {
           return const BottomNavigationWidget();
         }
       }
-      return WelcomeScreen();
+      return const DesignHidderRegisterPage();
+
+      // return WelcomeScreen();
     });
   }
 }

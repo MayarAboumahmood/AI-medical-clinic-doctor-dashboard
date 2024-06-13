@@ -6,6 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/my_therapist
 import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -26,16 +27,9 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
         context.read<GetMyTherapistCubit>();
     getAllTherapistCubit.getMyTherapist();
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: customColors.primary,
-          onPressed: () {},
-          label: Text(
-            'My Therapist',
-            style: customTextStyle.bodyMedium,
-          )),
       backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreensForSearch(
-        'All Therapist',
+        'My Therapist',
         isFromScaffold: true,
         isSearching: _isSearching,
         searchController: _searchController,
@@ -78,7 +72,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
     );
   }
 
-  SingleChildScrollView myTherapistListBody(
+  Widget myTherapistListBody(
     BuildContext context,
   ) {
     GetMyTherapistCubit getMyTherapistCubit =
@@ -88,16 +82,23 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
             ? getMyTherapistCubit.searchedTherapistModels
             : getMyTherapistCubit.getTherapistModels;
 
-    return SingleChildScrollView(
-      child: Column(children: [
-        ...List.generate(
-            getTherapistModels.length,
-            (index) =>
-                allTherapistCard(context, getTherapistModels[index], false)),
-        const SizedBox(
-          height: 50,
-        ),
-      ]),
-    );
+    return getTherapistModels.isEmpty
+        ? Center(
+            child: buildNoElementInPage(
+              'No Therapist in the platform yet.',
+              Icons.hourglass_empty_rounded,
+            ),
+          )
+        : SingleChildScrollView(
+            child: Column(children: [
+              ...List.generate(
+                  getTherapistModels.length,
+                  (index) => allTherapistCard(
+                      context, getTherapistModels[index], false)),
+              const SizedBox(
+                height: 50,
+              ),
+            ]),
+          );
   }
 }
