@@ -114,6 +114,7 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
   void initState() {
     super.initState();
     signInCubit = context.read<SignInCubit>();
+    signInCubit.passwordtextgController = TextEditingController();
   }
 
   @override

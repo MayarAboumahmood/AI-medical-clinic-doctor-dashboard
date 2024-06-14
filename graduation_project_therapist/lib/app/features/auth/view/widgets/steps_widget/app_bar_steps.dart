@@ -40,15 +40,15 @@ Widget buildAppBar(double percent) {
 }
 
 bool ifThereActionInAppBar(int pageNumber) {
-  switch (pageNumber) {
-    case 1 || 2 || 4:
       return false;
+  // switch (pageNumber) {
+  //   case 1 || 2 || 4:
 
-    case 3 || 5 || 7:
-      return true;
-    default:
-      return false;
-  }
+  //   case 3 || 5 || 7:
+  //     return true;
+  //   default:
+  //     return false;
+  // }
 }
 
 AppBar buildAppBarWithLineIndicatorincenter(

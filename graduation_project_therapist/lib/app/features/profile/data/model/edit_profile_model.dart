@@ -27,7 +27,7 @@ class EditProfileModel {
     required this.specInfo,
   });
   //need to recheck after ahmed edit it with the right form of data.
-  factory EditProfileModel.fromJson(Map<String, dynamic> json) {
+  factory EditProfileModel.fromMap(Map<String, dynamic> json) {
     return EditProfileModel(
       dateOfBirth: json['dateOfBirth'],
       gender: json['gender'],

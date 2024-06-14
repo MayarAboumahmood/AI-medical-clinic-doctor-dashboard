@@ -32,7 +32,9 @@ class GetMyTherapistCubit extends Cubit<GetMyTherapistState> {
     getData.fold((error) {
       emit(MyTherapistErrorState(errorMessage: error));
     }, (data) {
-      emit(TherapistRemovedSuccessfullyState());
+      getTherapistModels
+          .removeWhere((therapist) => therapist.id == therapistId);
+      emit(TherapistRemovedSuccessfullyState(dateTime: DateTime.now()));
     });
   }
 

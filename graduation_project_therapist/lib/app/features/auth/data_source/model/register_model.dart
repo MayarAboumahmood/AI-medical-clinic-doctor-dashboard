@@ -22,7 +22,7 @@ class UserInfo {
   });
 
   // From JSON constructor
-  factory UserInfo.fromJson(Map<String, dynamic> json) {
+  factory UserInfo.fromMap(Map<String, dynamic> json) {
     return UserInfo(
       userEmail: json['email'] as String,
       password: json['password'] as String,

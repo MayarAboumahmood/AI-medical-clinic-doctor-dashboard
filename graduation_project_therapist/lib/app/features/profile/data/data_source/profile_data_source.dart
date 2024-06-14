@@ -43,15 +43,15 @@ class ProfileDataSourceImpl implements ProfileDataSource {
         getGenderIntFromString(editProfileModel.gender).toString();
     request.fields['dateOfBirth'] = editProfileModel.dateOfBirth;
     if (kIsWeb) {
-      if (editProfileModel.profilePic != null) {
-        print("it's web mother fucker");
-        Uint8List imageBytes = await editProfileModel.profilePic!.readAsBytes();
-        request.files.add(http.MultipartFile.fromBytes(
-          'photo',
-          imageBytes,
-          filename: editProfileModel.imageName,
-        ));
-      }
+      // if (editProfileModel.profilePic != null) {
+      //   print("it's web mother fucker");
+      //   Uint8List imageBytes = await editProfileModel.profilePic!.readAsBytes();
+      //   request.files.add(http.MultipartFile.fromBytes(
+      //     'photo',
+      //     imageBytes,
+      //     filename: editProfileModel.imageName,
+      //   ));
+      // }
     } else {
       if (editProfileModel.profilePic != null &&
           await editProfileModel.profilePic!.exists()) {

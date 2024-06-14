@@ -23,8 +23,7 @@ class NotificationRepositoryImplementation implements NotificationRepository {
         (statusRequest) => Left(getStatusFromCode(statusRequest)),
         (allNotificationsAsJson) {
           List<NotificationModel> allNotifications = allNotificationsAsJson
-              .map<NotificationModel>(
-                  (json) => NotificationModel.fromJson(json))
+              .map<NotificationModel>((json) => NotificationModel.fromMap(json))
               .toList();
           return Right(allNotifications);
         },

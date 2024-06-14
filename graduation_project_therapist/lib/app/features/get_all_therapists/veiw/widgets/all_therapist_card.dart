@@ -7,6 +7,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/get_all_ther
 import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Widget allTherapistCard(BuildContext context,
@@ -28,8 +29,9 @@ Widget allTherapistCard(BuildContext context,
         children: [
           buildTherapistNameAndImage(getTherapistModel),
           const SizedBox(height: 16),
-          // expandedDescription(context, getTherapistModel.specialistProfile.,
-          //     backGroundColor: Colors.transparent),
+          expandedDescription(
+              context, getTherapistModel.specialistProfile.specInfo,
+              backGroundColor: Colors.transparent),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -51,7 +53,6 @@ Widget allTherapistCard(BuildContext context,
                       },
                       loading: isLoading,
                       options: ButtonOptions(
-                          width: responsiveUtil.screenWidth * .15,
                           color: customColors.primary,
                           textStyle: customTextStyle.bodyMedium
                               .copyWith(color: Colors.white)));

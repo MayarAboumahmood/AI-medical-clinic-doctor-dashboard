@@ -22,7 +22,7 @@ class PatientProfileModel {
   });
 
   // Factory constructor for creating a new PatientProfileModelinstance from a map.
-  factory PatientProfileModel.fromJson(Map<String, dynamic> json) {
+  factory PatientProfileModel.fromMap(Map<String, dynamic> json) {
     return PatientProfileModel(
       name: json['fullName'],
       image: json['image'],

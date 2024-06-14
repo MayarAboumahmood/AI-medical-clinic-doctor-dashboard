@@ -26,8 +26,10 @@ final class RemoveTherapistLoadingState extends GetMyTherapistState {
 }
 
 final class TherapistRemovedSuccessfullyState extends GetMyTherapistState {
+  final DateTime dateTime;
+  TherapistRemovedSuccessfullyState({required this.dateTime});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [dateTime];
 }
 
 final class MyTherapistErrorState extends GetMyTherapistState {

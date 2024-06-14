@@ -18,7 +18,7 @@ Widget buildImageWithName(String name, BuildContext context) {
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    UserProfileModel userData = UserProfileModel.fromJson(userJson);
+    UserProfileModel userData = UserProfileModel.fromMap(userJson);
     return userData.photo; // Replace 'imagePath' with your actual key
   }
 

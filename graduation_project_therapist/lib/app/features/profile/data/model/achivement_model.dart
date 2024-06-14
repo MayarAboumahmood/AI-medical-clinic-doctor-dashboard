@@ -10,10 +10,10 @@ class AchivementApiResponse extends Equatable {
   const AchivementApiResponse(
       {required this.success, required this.data, required this.message});
 
-  factory AchivementApiResponse.fromJson(Map<String, dynamic> json) {
+  factory AchivementApiResponse.fromMap(Map<String, dynamic> json) {
     return AchivementApiResponse(
       success: json['success'],
-      data: Data.fromJson(json['data']),
+      data: Data.fromMap(json['data']),
       message: json['message'],
     );
   }
@@ -28,12 +28,11 @@ class Data extends Equatable {
 
   const Data({required this.coupons, required this.achievments});
 
-  factory Data.fromJson(Map<String, dynamic> json) {
+  factory Data.fromMap(Map<String, dynamic> json) {
     return Data(
-      coupons:
-          (json['Coupons'] as List).map((i) => Coupon.fromJson(i)).toList(),
+      coupons: (json['Coupons'] as List).map((i) => Coupon.fromMap(i)).toList(),
       achievments: (json['Achievments'] as List)
-          .map((i) => Achievement.fromJson(i))
+          .map((i) => Achievement.fromMap(i))
           .toList(),
     );
   }
@@ -64,7 +63,7 @@ class Coupon extends Equatable {
       required this.image,
       required this.type});
 
-  factory Coupon.fromJson(Map<String, dynamic> json) {
+  factory Coupon.fromMap(Map<String, dynamic> json) {
     return Coupon(
       id: json['id'],
       description: json['description'],
@@ -82,36 +81,35 @@ class Coupon extends Equatable {
   List<Object?> get props =>
       [id, description, code, discount, limit, startDate, endDate, image, type];
 
-Coupon generateRandomCoupon() {
-  final random = Random();
-  int id = random.nextInt(1000);
-  String description = "Coupon Description ${random.nextInt(100)}";
-  String code = "CODE${random.nextInt(1000)}";
-  String discount = "${random.nextInt(100)}%";
-  String limit = "${random.nextInt(50)} uses";
-  String startDate = "2023-01-${random.nextInt(28) + 1}";
-  String endDate = "2023-12-${random.nextInt(28) + 1}";
-  String image = "https://example.com/image${random.nextInt(10)}.png";
-  String type = random.nextBool() ? "Fixed" : "Percentage";
+  Coupon generateRandomCoupon() {
+    final random = Random();
+    int id = random.nextInt(1000);
+    String description = "Coupon Description ${random.nextInt(100)}";
+    String code = "CODE${random.nextInt(1000)}";
+    String discount = "${random.nextInt(100)}%";
+    String limit = "${random.nextInt(50)} uses";
+    String startDate = "2023-01-${random.nextInt(28) + 1}";
+    String endDate = "2023-12-${random.nextInt(28) + 1}";
+    String image = "https://example.com/image${random.nextInt(10)}.png";
+    String type = random.nextBool() ? "Fixed" : "Percentage";
 
-  return Coupon(
-    id: id,
-    description: description,
-    code: code,
-    discount: discount,
-    limit: limit,
-    startDate: startDate,
-    endDate: endDate,
-    image: image,
-    type: type,
-  );
-}
-
+    return Coupon(
+      id: id,
+      description: description,
+      code: code,
+      discount: discount,
+      limit: limit,
+      startDate: startDate,
+      endDate: endDate,
+      image: image,
+      type: type,
+    );
+  }
 }
 
 class Achievement extends Equatable {
   final int id;
-final   String discount;
+  final String discount;
   final String title;
   final String description;
   final String coupons;
@@ -127,7 +125,7 @@ final   String discount;
       required this.description,
       required this.coupons});
 
-  factory Achievement.fromJson(Map<String, dynamic> json) {
+  factory Achievement.fromMap(Map<String, dynamic> json) {
     return Achievement(
       id: json['id'],
       discount: json['discount'],
@@ -140,5 +138,6 @@ final   String discount;
   }
 
   @override
-  List<Object?> get props => [id, discount, title, description, coupons,target,userCount];
+  List<Object?> get props =>
+      [id, discount, title, description, coupons, target, userCount];
 }

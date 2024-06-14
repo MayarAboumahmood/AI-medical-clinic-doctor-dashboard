@@ -14,7 +14,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/design_hider/screens/welcompage_designhider.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/cubit/doctor_employment_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
@@ -158,6 +158,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (_) => di.sl<WalletCubit>(),
           ),
+          BlocProvider(
+            create: (_) => di.sl<DoctorEmploymentRequestsCubit>(),
+          ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeData>(builder: (context, theme) {
           return MaterialApp(
@@ -197,9 +200,9 @@ class InitializerWidget extends StatelessWidget {
           return const BottomNavigationWidget();
         }
       }
-      return const DesignHidderRegisterPage();
+      // return const DesignHidderRegisterPage();
 
-      // return WelcomeScreen();
+      return WelcomeScreen();
     });
   }
 }

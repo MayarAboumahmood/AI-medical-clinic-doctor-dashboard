@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    return UserProfileModel.fromJson(userJson).fullName;
+    return UserProfileModel.fromMap(userJson).fullName;
   }
 
   Future<void> initializeUserData() async {
@@ -133,7 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       showChangeLangeuageDrowpDownDialog(context);
                     }),
-                isDoctor ? doctorColumn() : const SizedBox(),
+                profilePageDivider(),
+                isDoctor ? doctorColumn() : therapistColumn(),
                 accountChoiceWidget(
                     title: "Wallet".tr(),
                     icon: Icons.account_balance_wallet_outlined,
@@ -186,10 +187,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Column doctorColumn() {
     return Column(
       children: [
-        profilePageDivider(),
-        SizedBox(
-          height: responsiveUtil.scaleHeight(13),
-        ),
         accountChoiceWidget(
             title: "All Therapists".tr(),
             icon: Icons.person_pin_rounded,
@@ -212,15 +209,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Column therapistColumn() {
     return Column(
       children: [
-        profilePageDivider(),
-        SizedBox(
-          height: responsiveUtil.scaleHeight(13),
-        ),
         accountChoiceWidget(
-            title: "All Therapists".tr(),
+            title: "Doctor employment requets".tr(),
             icon: Icons.person_pin_rounded,
             onTap: () {
-              navigationService.navigateTo(getAllTherapistPage);
+              navigationService.navigateTo(doctorEmploymentRequestsPage);
             }),
       ],
     );

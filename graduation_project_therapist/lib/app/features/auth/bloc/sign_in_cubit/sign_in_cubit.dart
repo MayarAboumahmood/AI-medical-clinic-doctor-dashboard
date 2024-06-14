@@ -13,7 +13,7 @@ class SignInCubit extends Cubit<SignInState> {
   final AuthRemoteDataSource authRemoteDataSource;
   SignInCubit({required this.authRemoteDataSource}) : super(SignInInitial());
 
-  TextEditingController passwordtextgController = TextEditingController();
+  late TextEditingController passwordtextgController ;
   String userEmail = '';
   String otpCode = '';
 

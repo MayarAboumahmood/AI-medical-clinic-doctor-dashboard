@@ -1,4 +1,4 @@
-class  GetTherapistModel {
+class GetTherapistModel {
   int id;
   SpecialistProfile specialistProfile;
   dynamic employee;
@@ -32,7 +32,8 @@ class  GetTherapistModel {
   factory GetTherapistModel.fromMap(Map<String, dynamic> map) {
     return GetTherapistModel(
       id: map['id'] as int,
-      specialistProfile: SpecialistProfile.fromMap(map['__specialistProfile__'] as Map<String, dynamic>),
+      specialistProfile: SpecialistProfile.fromMap(
+          map['specialistProfile'] as Map<String, dynamic>),
       employee: map['employee'],
     );
   }
@@ -42,22 +43,26 @@ class SpecialistProfile {
   int id;
   String fullName;
   String photo;
+  String specInfo;
 
   SpecialistProfile({
     required this.id,
     required this.fullName,
     required this.photo,
+    required this.specInfo,
   });
 
   SpecialistProfile copyWith({
     int? id,
     String? fullName,
     String? photo,
+    String? specInfo,
   }) {
     return SpecialistProfile(
       id: id ?? this.id,
       fullName: fullName ?? this.fullName,
       photo: photo ?? this.photo,
+      specInfo: specInfo ?? this.specInfo,
     );
   }
 
@@ -66,14 +71,16 @@ class SpecialistProfile {
       'id': id,
       'fullName': fullName,
       'photo': photo,
+      'specInfo': specInfo,
     };
   }
 
   factory SpecialistProfile.fromMap(Map<String, dynamic> map) {
     return SpecialistProfile(
       id: map['id'] as int,
-      fullName: map['fullName'] as String,
-      photo: map['photo'] as String,
+      fullName: map['fullName'] ??'',
+      photo: map['photo'] ??'',
+      specInfo: map['specInfo'] ??'',
     );
   }
 }

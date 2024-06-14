@@ -65,6 +65,8 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
             return myTherapistListBody(context);
           } else if (state is SearchOnMyTherapistState) {
             return myTherapistListBody(context);
+          } else if (state is TherapistRemovedSuccessfullyState) {
+            return myTherapistListBody(context);
           }
           return myTherapistListBody(context);
         },

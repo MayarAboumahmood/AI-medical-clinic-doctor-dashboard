@@ -26,7 +26,7 @@ class UserProfileModel {
   });
 
   // From JSON constructor
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+  factory UserProfileModel.fromMap(Map<String, dynamic> json) {
     return UserProfileModel(
       id: json['id'] as int,
       fullName: json['fullName'] as String,

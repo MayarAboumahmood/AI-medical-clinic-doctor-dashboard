@@ -24,7 +24,7 @@ class NotificationModel {
     required this.updatedAt,
   });
 
-  factory NotificationModel.fromJson(Map<String, dynamic> rowJson) {
+  factory NotificationModel.fromMap(Map<String, dynamic> rowJson) {
     Map<String, dynamic> json = removeDuplicateKeysAr(rowJson);
 
     return NotificationModel(

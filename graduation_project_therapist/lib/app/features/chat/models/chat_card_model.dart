@@ -6,7 +6,7 @@ class ChatCardModel {
   ChatCardModel({required this.name, required this.image});
 
   // Factory constructor for creating an instance from a JSON map
-  factory ChatCardModel.fromJson(Map<String, dynamic> json) {
+  factory ChatCardModel.fromMap(Map<String, dynamic> json) {
     return ChatCardModel(
       name: json['name'],
       image: json['image'],

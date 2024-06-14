@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PatientRequestModel {
   String userName;
   String userInfo;
@@ -29,27 +27,4 @@ class PatientRequestModel {
       id: map['id'] as int,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory PatientRequestModel.fromJson(String source) =>
-      PatientRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() =>
-      'PatientRequestModel(userName: $userName, userInfo: $userInfo, userImage: $userImage, id: $id)';
-
-  @override
-  bool operator ==(covariant PatientRequestModel other) {
-    if (identical(this, other)) return true;
-
-    return other.userName == userName &&
-        other.userInfo == userInfo &&
-        other.id == id &&
-        other.userImage == userImage;
-  }
-
-  @override
-  int get hashCode =>
-      userName.hashCode ^ userInfo.hashCode ^ userImage.hashCode ^ id.hashCode;
 }

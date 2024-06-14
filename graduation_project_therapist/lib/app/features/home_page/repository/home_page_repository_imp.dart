@@ -16,7 +16,7 @@ class HomePageRepositoryImp {
 
     if (response.statusCode == 200) {
       final UserProfileModel userProfileModel =
-          UserProfileModel.fromJson(decodedResponse['data']);
+          UserProfileModel.fromMap(decodedResponse['data']);
 
       return right(userProfileModel);
     } else if (response.statusCode == 500) {

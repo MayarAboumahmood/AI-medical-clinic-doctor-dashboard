@@ -60,7 +60,7 @@ class _EditeProfileState extends State<EditProfile> {
 
     String userProfileString = prefs.getString('user_profile')!;
     Map<String, dynamic> userJson = json.decode(userProfileString);
-    return UserProfileModel.fromJson(userJson);
+    return UserProfileModel.fromMap(userJson);
   }
 
   DateTime parseDate(String dateString) {
@@ -250,7 +250,7 @@ class _EditeProfileState extends State<EditProfile> {
                         height: 10,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: selectGenderDropDown(
                           selectedGender,
                           (String? newValue) {
@@ -263,11 +263,15 @@ class _EditeProfileState extends State<EditProfile> {
                       const SizedBox(
                         height: 10,
                       ),
-                      selectCityDropDown(selectedState, (String? newValue) {
-                        setState(() {
-                          selectedState = newValue;
-                        });
-                      }),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: selectCityDropDown(selectedState,
+                            (String? newValue) {
+                          setState(() {
+                            selectedState = newValue;
+                          });
+                        }),
+                      ),
                       const SizedBox(
                         height: 10,
                       ),

@@ -3,9 +3,9 @@
 
 //   UserProfileResponse({this.data});
 
-//   factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
+//   factory UserProfileResponse.fromMap(Map<String, dynamic> json) {
 //     return UserProfileResponse(
-//       data: json['data'] != null ? UserData.fromJson(json['data']) : null,
+//       data: json['data'] != null ? UserData.fromMap(json['data']) : null,
 //     );
 //   }
 // }
@@ -33,7 +33,7 @@
 //     required this.birthDate,
 //   });
 
-//   factory UserData.fromJson(Map<String, dynamic> json) {
+//   factory UserData.fromMap(Map<String, dynamic> json) {
 //     return UserData(
 //       id: json['id'],
 //       firstname: json['firstname'] ?? 'name',

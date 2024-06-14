@@ -11,7 +11,7 @@ class PatientReservationModel {
     required this.prefNote,
     required this.date,
   });
-  factory PatientReservationModel.fromJson(Map<String, dynamic> json) {
+  factory PatientReservationModel.fromMap(Map<String, dynamic> json) {
     return PatientReservationModel(
       userName: json['name'],
       userImage: json['image'],
@@ -21,7 +21,6 @@ class PatientReservationModel {
     );
   }
 }
-
 
 //TODO: delelte this list
 List<PatientReservationModel> fakeReservations = [
