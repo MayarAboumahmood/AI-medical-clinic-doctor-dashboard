@@ -48,7 +48,7 @@ class WalletDataSource {
     var url = Uri.parse(ServerConfig.url + ServerConfig.getAvailableFundsuri);
     var headers = {'Authorization': token};
 
-    var response = await http.post(
+    var response = await http.get(
       url,
       headers: headers,
     );

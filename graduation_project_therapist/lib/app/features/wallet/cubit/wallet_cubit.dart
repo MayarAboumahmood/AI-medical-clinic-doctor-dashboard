@@ -20,13 +20,15 @@ class WalletCubit extends Cubit<WalletState> {
             emit(WalletGetHistoryErrorState(errorMessage: errorMessage)),
         (transactionHistory) {
       this.transactionHistory = transactionHistory;
+      print('get data in the cubit: ${transactionHistory.length}');
       emit(WalletGetHistorySuccessfullyState());
     });
   }
 
   void makeRequestToGetMoney() async {
     emit(WalletRequestToGetMoneyLoadingState());
-    final getData = await walletRepositoryImp.makeRequestToGetMoney(amountTextController.text);
+    final getData = await walletRepositoryImp
+        .makeRequestToGetMoney(amountTextController.text);
     getData.fold(
         (errorMessage) =>
             emit(WalletRequestToGetMoneyErrorState(errorMessage: errorMessage)),

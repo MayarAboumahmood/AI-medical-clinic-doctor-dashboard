@@ -63,7 +63,7 @@ class WalletRepositoryImp {
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return right(decodedResponse['data']['availaleFund']);
+        return right((decodedResponse['data']['balance']).toString());
       } else if (response.statusCode == 500) {
         if (decodedResponse['error'] == 'jwt expired') {
           return left('jwt expired');

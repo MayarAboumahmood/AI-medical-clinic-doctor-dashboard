@@ -18,8 +18,8 @@ class DoctorEmploymentRequestModel {
       id: json['id'],
       date: json['date'],
       status: json['status'],
-      clinicName: json['clinicName'],
-      doctorName: json['doctorName'],
+      clinicName: json['clinicName'] ?? '',
+      doctorName: json['doctorName'] ?? '',
     );
   }
 

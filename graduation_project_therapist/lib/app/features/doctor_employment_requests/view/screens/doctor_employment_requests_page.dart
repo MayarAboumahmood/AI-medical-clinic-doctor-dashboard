@@ -27,7 +27,7 @@ class _DoctorEmploymentRequestsPageState
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreens(
-        'Doctor Employment requests',
+        'Employment requests',
         isFromScaffold: true,
       ),
       body: BlocConsumer<DoctorEmploymentRequestsCubit,

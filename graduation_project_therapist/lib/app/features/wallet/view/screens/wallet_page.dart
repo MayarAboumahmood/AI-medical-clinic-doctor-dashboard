@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/cubit/wallet_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/wallet/view/widgets/transaction_history_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+enum HistoryLoadingStatuEbum { error, loading, data }
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -19,6 +24,8 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  String availableFunds = 'Loading...'.tr();
+
   late WalletCubit walletCubit;
   @override
   void dispose() {
@@ -31,12 +38,14 @@ class _WalletPageState extends State<WalletPage> {
     super.initState();
     walletCubit = context.read<WalletCubit>();
     walletCubit.amountTextController = TextEditingController();
+    walletCubit.getAvailableFunds();
+    Future.delayed(const Duration(milliseconds: 10), () {
+      walletCubit.getTransactionHistory();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    walletCubit.getTransactionHistory();
-    walletCubit.getAvailableFunds();
     return BlocListener<WalletCubit, WalletState>(
       listener: (context, state) {
         if (state is WalletRequestToGetMoneyErrorState) {
@@ -44,7 +53,9 @@ class _WalletPageState extends State<WalletPage> {
         } else if (state is WalletGetHistoryErrorState) {
           customSnackBar(state.errorMessage, context);
         } else if (state is WalletRequestToGetMoneySuccessfullyState) {
+          walletCubit.getTransactionHistory();
           walletCubit.amountTextController.clear();
+
           customSnackBar(
               'We have received your request. An administrator will contact you shortly.',
               context);
@@ -65,7 +76,6 @@ class _WalletPageState extends State<WalletPage> {
               const SizedBox(height: 20),
               BlocBuilder<WalletCubit, WalletState>(
                 builder: (context, state) {
-                  String availableFunds = 'Loading...'.tr();
                   if (state is WalletGetAvailableFundsLoadingState) {
                     availableFunds = 'Loading...'.tr();
                   } else if (state is WalletAvailableFundsSuccessfullyState) {
@@ -97,19 +107,50 @@ class _WalletPageState extends State<WalletPage> {
                   customDivider(),
                 ],
               ),
-              Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(children: [
-                ...List.generate(
-                    45,
-                    (index) =>
-                        Text('whatejklf ', style: customTextStyle.bodyMedium))
-              ])))
+              BlocBuilder<WalletCubit, WalletState>(
+                builder: (context, state) {
+                  if (state is WalletGetHistorySuccessfullyState) {
+                    return historyList(HistoryLoadingStatuEbum.data);
+                  } else if (state is WalletGetHistoryErrorState) {
+                    return historyList(HistoryLoadingStatuEbum.error);
+                  } else if (state is WalletGetHistoryLoadingState) {
+                    return historyList(HistoryLoadingStatuEbum.loading);
+                  }
+
+                  return historyList(HistoryLoadingStatuEbum.data);
+                },
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget historyList(HistoryLoadingStatuEbum historyLoadingStatuEbum) {
+    WalletCubit walletCubit = context.read<WalletCubit>();
+
+    if (historyLoadingStatuEbum == HistoryLoadingStatuEbum.loading) {
+      return Expanded(child: smallSizeCardShimmer());
+    } else if (historyLoadingStatuEbum == HistoryLoadingStatuEbum.data) {
+      return walletCubit.transactionHistory.isEmpty
+          ? buildNoElementInPage(
+              'No money transaction has been made yet.',
+              Icons.hourglass_empty_rounded,
+            )
+          : Expanded(
+              child: SingleChildScrollView(
+                  child: Column(children: [
+              ...List.generate(
+                  walletCubit.transactionHistory.length,
+                  (index) => transactionHistoryCard(
+                      context, walletCubit.transactionHistory[index]))
+            ])));
+    } else {
+      return Expanded(
+          child: Text('Opps, Something wrong!'.tr(),
+              style: customTextStyle.bodyMedium));
+    }
   }
 
   Divider customDivider() {
@@ -149,6 +190,7 @@ class _WalletPageState extends State<WalletPage> {
           BlocBuilder<WalletCubit, WalletState>(
             builder: (context, state) {
               bool isLoading = state is WalletRequestToGetMoneyLoadingState;
+
               return GeneralButtonOptions(
                 onPressed: () {
                   FormState? formdata = formKey.currentState;

@@ -27,6 +27,9 @@ class DesignHidderRegisterPage extends StatelessWidget {
             return Center(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: responsiveUtil.screenHeight * .1,
+                  ),
                   GestureDetector(
                     onTap: () {
                       signInCubit.userEmail = 'mab026550@gmail.com';

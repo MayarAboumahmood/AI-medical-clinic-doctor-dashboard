@@ -92,6 +92,34 @@ Widget mediumSizeCardShimmer() {
   );
 }
 
+Widget smallSizeCardShimmer() {
+  return Column(
+    children: [
+      Expanded(
+        child: Shimmer.fromColors(
+            baseColor: customColors.secondaryBackGround,
+            highlightColor: customColors.primaryBackGround,
+            child: SingleChildScrollView(
+              child: Column(
+                children: List.generate(6, (index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                    ),
+
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8)),
+                    height: 100, // Adjust based on your content
+                  );
+                }),
+              ),
+            )),
+      ),
+    ],
+  );
+}
+
 Widget imageWithNameShimmer() {
   return SizedBox(
     width: double.infinity,

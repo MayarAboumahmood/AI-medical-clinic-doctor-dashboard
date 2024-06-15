@@ -40,7 +40,7 @@ class GetAllTherapistDataSource {
 
   Future<Response> getMyTherapist() async {
     String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.getAllTherapists);
+    var url = Uri.parse(ServerConfig.url + ServerConfig.getMyTherapists);
     var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(

@@ -18,6 +18,7 @@ class DoctoreEmploymentRequestRepositoryImp {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = decodedResponse['data'];
+
         final List<DoctorEmploymentRequestModel> doctorEmploymentRequestModels =
             data
                 .map((item) => DoctorEmploymentRequestModel.fromMap(item))
