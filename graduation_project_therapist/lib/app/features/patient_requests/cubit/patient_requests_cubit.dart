@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:graduation_project_therapist_dashboard/app/core/status_requests/staus_request.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/repo/patient_requests_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'patient_requests_state.dart';
 
 class PatientRequestsCubit extends Cubit<PatientRequestsState> {
-  PatientRequestsCubit() : super(PatientRequestsInitial());
+  PatientRequestsCubit({required this.patientRequestsRepositoryImp})
+      : super(PatientRequestsInitial());
+  final PatientRequestsRepositoryImp patientRequestsRepositoryImp;
   String? selectedTime;
   String? selectedDay;
 
@@ -41,28 +43,38 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     selectedDay = newSelectedDay;
   }
 
-  void approveOnPatientRequest(int requestID) {
-    // if (response.statusCode == 200) {
-    cachedUserRequests.removeWhere((item) => item.id == requestID);
-    // }
-    //TODO send the date to the backend.
-    emit(PatientRequestApprovedSuccessfullyState());
+  void acceptPatientRequest(int requestID) async {
+    emit(PatientRequestAcceptLoadingState());
+    final getData = await patientRequestsRepositoryImp.acceptPatientRequest(
+        requestID, selectedDay ?? '', selectedTime ?? '');
+    getData.fold(
+        (errorMessage) =>
+            emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
+      cachedUserRequests.removeWhere((item) => item.id == requestID);
+      emit(PatientRequestApprovedSuccessfullyState());
+    });
   }
 
-  void rejectOnPatientRequest(int requestID) {
-    // if (response.statusCode == 200) {
-    cachedUserRequests.removeWhere((item) => item.id == requestID);
-    // }
-    //TODO send the date to the backend.
-    emit(PatientRequestRejectedSuccessfullyState());
+  void rejectPatientRequest(int requestID) async {
+    emit(PatientRequestRejectLoadingState());
+    final getData =
+        await patientRequestsRepositoryImp.rejectPatientRequest(requestID);
+    getData.fold(
+        (errorMessage) =>
+            emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
+      cachedUserRequests.removeWhere((item) => item.id == requestID);
+      emit(PatientRequestRejectedSuccessfullyState(dateTime: DateTime.now()));
+    });
   }
 
-  void getPatientRequests() {
+  void getPatientRequests() async {
     emit(PatientRequestLoadingState());
-
-    Future.delayed(const Duration(seconds: 1), () {
-      emit(PatientRequestDataLoadedState(
-          patientRequestModels: cachedUserRequests));
+    final getData = await patientRequestsRepositoryImp.getPatientRequests();
+    getData.fold(
+        (errorMessage) =>
+            emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
+      cachedUserRequests = data;
+      emit(PatientRequestDataLoadedState(patientRequestModels: data));
     });
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/patient_request_card.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
@@ -33,8 +32,7 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
     return BlocListener<PatientRequestsCubit, PatientRequestsState>(
       listener: (context, state) {
         if (state is PatientRequestErrorState) {
-          String errorMessage = getMessageFromStatus(state.statusRequest);
-          customSnackBar(errorMessage, context);
+          customSnackBar(state.errorMessage, context);
         } else if (state is PatientRequestRejectedSuccessfullyState ||
             state is PatientRequestApprovedSuccessfullyState) {
           customSnackBar('session rejected Successfully', context);

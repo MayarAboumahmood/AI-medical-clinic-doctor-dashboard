@@ -18,6 +18,8 @@ import 'package:graduation_project_therapist_dashboard/app/features/notification
 import 'package:graduation_project_therapist_dashboard/app/features/notification/data/repository_imp/get_notification_data_repo_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/notification/presentaion/bloc/notification_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/data_source/patient_requests_datasource.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/repo/patient_requests_repository.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/data_source/profile_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/data/edite_profile_repo.dart';
@@ -53,7 +55,7 @@ Future<void> init() async {
   sl.registerLazySingleton<GetAllTherapistRepositoryImp>(
       () => GetAllTherapistRepositoryImp(sl()));
   // sl.registerLazySingleton<GetMyTherapistRepositoryImp>(
-      // () => GetMyTherapistRepositoryImp(sl()));
+  // () => GetMyTherapistRepositoryImp(sl()));
   sl.registerLazySingleton<HomePageRepositoryImp>(
       () => HomePageRepositoryImp(sl()));
   sl.registerLazySingleton<WalletRepositoryImp>(
@@ -66,6 +68,8 @@ Future<void> init() async {
       () => RegistrationDataCompleteRepoIpm(sl()));
   sl.registerLazySingleton<DoctoreEmploymentRequestRepositoryImp>(
       () => DoctoreEmploymentRequestRepositoryImp(sl()));
+  sl.registerLazySingleton<PatientRequestsRepositoryImp>(
+      () => PatientRequestsRepositoryImp(sl()));
 
 // Datasources
 
@@ -87,6 +91,8 @@ Future<void> init() async {
       () => ProfileDataSourceImpl(client: http.Client()));
   sl.registerLazySingleton<RegistrationDataCompleteRemoteDataSource>(
       () => RegistrationDataCompleteRemoteDataSourceImp(client: http.Client()));
+  sl.registerLazySingleton<PatientRequestsDataSource>(
+      () => PatientRequestsDataSource(client: http.Client()));
 
 // Bloc
   sl.registerFactory(() => SignInCubit(authRemoteDataSource: sl()));
@@ -100,7 +106,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => HomePageBloc(homePageRepositoryImp: sl()));
   sl.registerLazySingleton(() => DoctorEmploymentRequestsCubit(
       doctoreEmploymentRequestRepositoryImp: sl()));
-  sl.registerFactory(() => PatientRequestsCubit());
+  sl.registerFactory(
+      () => PatientRequestsCubit(patientRequestsRepositoryImp: sl()));
   sl.registerFactory(() => PatientReservationsCubit());
   sl.registerFactory(() =>
       RegistrationDataCompleteCubit(registrationDataCompleteRepoIpm: sl()));

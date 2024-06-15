@@ -99,7 +99,7 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
       ),
       onPressed: () async {
         navigationService.goBack();
-        patientRequestsCubit.approveOnPatientRequest(widget.requestID);
+        patientRequestsCubit.acceptPatientRequest(widget.requestID);
       },
     );
   }

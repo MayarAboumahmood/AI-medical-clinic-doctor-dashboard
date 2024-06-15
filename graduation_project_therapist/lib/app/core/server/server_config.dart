@@ -34,9 +34,7 @@ class ServerConfig {
   static const String getAppointmentsuri = 'appointment/clinic';
   static const String cancelAppointment =
       'appointment/cancellation/'; //here the id.
-  static const String getAppointmentrequest = 'appointment/request/clinic';
-  static const String acceptAppointmentrequest =
-      'appointment/request/1/set-date'; //TOdo just edit the id
-  static const String rejectAppointmentrequest =
-      'appointment/request/1/reject'; //TOdo just edit the id
+  static const String getPatientrequestUri = 'appointment/request/clinic';
+  static const String acceptPatientrequest = 'appointment/request/';
+  static const String rejectPatientrequest = 'appointment/request/';
 }

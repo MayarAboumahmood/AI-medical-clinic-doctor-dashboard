@@ -126,7 +126,7 @@ Widget buildRejectPatientRequestBottomSheet(
                     MaterialStateProperty.all(customColors.primary),
               ),
               onPressed: () {
-                patientRequestsCubit.rejectOnPatientRequest(requestID);
+                patientRequestsCubit.rejectPatientRequest(requestID);
                 navigationService.goBack();
               },
               child: Text(

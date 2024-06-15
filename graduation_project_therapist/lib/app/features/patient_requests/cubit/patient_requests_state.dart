@@ -12,23 +12,34 @@ final class PatientRequestLoadingState extends PatientRequestsState {
   @override
   List<Object?> get props => [];
 }
+final class PatientRequestRejectLoadingState extends PatientRequestsState {
+  @override
+  List<Object?> get props => [];
+}
+final class PatientRequestAcceptLoadingState extends PatientRequestsState {
+  @override
+  List<Object?> get props => [];
+}
 
 final class PatientRequestApprovedSuccessfullyState
     extends PatientRequestsState {
   @override
   List<Object?> get props => [];
 }
+
 final class PatientRequestRejectedSuccessfullyState
     extends PatientRequestsState {
+  final DateTime dateTime;
+  PatientRequestRejectedSuccessfullyState({required this.dateTime});
   @override
   List<Object?> get props => [];
 }
 
 final class PatientRequestErrorState extends PatientRequestsState {
-  final StatusRequest statusRequest;
-  PatientRequestErrorState({required this.statusRequest});
+  final String errorMessage;
+  PatientRequestErrorState({required this.errorMessage});
   @override
-  List<Object?> get props => [statusRequest];
+  List<Object?> get props => [errorMessage];
 }
 
 final class PatientRequestDataLoadedState extends PatientRequestsState {
