@@ -12,8 +12,8 @@ class DoctoreEmploymentRequestRepositoryImp {
   Future<Either<String, List<DoctorEmploymentRequestModel>>>
       getAllDoctorEmploymentRequests() async {
     try {
-      final response = await _doctorEmploymentDataSource
-          .getAllDoctorEmploymentRequests();
+      final response =
+          await _doctorEmploymentDataSource.getAllDoctorEmploymentRequests();
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -32,16 +32,16 @@ class DoctoreEmploymentRequestRepositoryImp {
         return left(decodedResponse['error']);
       }
     } catch (e) {
-      debugPrint('error in get all therapist repo: $e');
+      debugPrint('error in get all doctor employment request repo: $e');
       return left('Server Error');
     }
   }
 
   Future<Either<String, String>> approveDoctorEmploymentRequest(
-      int requestId,bool status) async {
+      int requestId, bool status) async {
     try {
       final response = await _doctorEmploymentDataSource
-          .approveDoctorEmploymentRequest(requestId,status);
+          .approveDoctorEmploymentRequest(requestId, status);
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
@@ -55,7 +55,7 @@ class DoctoreEmploymentRequestRepositoryImp {
         return left(decodedResponse['error']);
       }
     } catch (e) {
-      debugPrint('error in get all therapist repo: $e');
+      debugPrint('error in get all doctor employment request repo: $e');
       return left('Server Error');
     }
   }

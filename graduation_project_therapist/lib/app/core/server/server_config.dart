@@ -23,10 +23,12 @@ class ServerConfig {
   static const String getAllTherapists = 'specs/';
   static const String getMyTherapists = 'specs/'; //Todo:
   static const String assignTherapist = 'specs/employmentRequests/send';
-  static const String removeTherapist = 'specs/employmentRequests/send'; //Todo:
+  static const String removeTherapist = 'specs/clinic/employees/';
   static const String getHistory = 'specs/clinic/withdraw';
   static const String makeRequestToGetMoneyUri = 'specs/clinic/withdraw';
-  static const String getAvailableFundsuri = 'specs/clinic/withdraw'; //Todo
-  static const String getAllDoctorEmploymentRequests = 'specs/employmentRequests';
-  static const String approveDoctorEmploymentRequestsuri = 'specs/employmentRequests';
+  static const String getAvailableFundsuri = 'specs/wallet/balance';
+  static const String getAllDoctorEmploymentRequests =
+      'specs/employmentRequests';
+  static const String approveDoctorEmploymentRequestsuri =
+      'specs/employmentRequests';
 }

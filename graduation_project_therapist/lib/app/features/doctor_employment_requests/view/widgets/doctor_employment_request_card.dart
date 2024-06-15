@@ -25,7 +25,7 @@ Widget doctorEmploymentCard(BuildContext context,
           buildDoctorRequestName(doctorEmploymentRequestModel),
           const SizedBox(height: 10),
           Text(
-              '${'Clinic Name:'.tr()} ${doctorEmploymentRequestModel.clinicId}', //TODO: make it clinic name.
+              '${'Clinic Name:'.tr()} ${doctorEmploymentRequestModel.clinicName}',
               style: customTextStyle.bodyMedium),
           const SizedBox(height: 10),
           Text('${'Date:'.tr()} ${doctorEmploymentRequestModel.date}',
@@ -41,11 +41,22 @@ Widget doctorEmploymentCard(BuildContext context,
                           doctorEmploymentRequestModel.id;
                   return Row(
                     children: [
-                      responseButton(doctorEmploymentRequestsCubit,
-                          doctorEmploymentRequestModel, true, isLoading),
+                      responseButton(
+                          doctorEmploymentRequestsCubit,
+                          doctorEmploymentRequestModel,
+                          true,
+                          isLoading &&
+                              (doctorEmploymentRequestsCubit.isApproveClicked ??
+                                  false)),
                       SizedBox(width: responsiveUtil.screenWidth * .1),
-                      responseButton(doctorEmploymentRequestsCubit,
-                          doctorEmploymentRequestModel, false, isLoading),
+                      responseButton(
+                          doctorEmploymentRequestsCubit,
+                          doctorEmploymentRequestModel,
+                          false,
+                          isLoading &&
+                              !(doctorEmploymentRequestsCubit
+                                      .isApproveClicked ??
+                                  false)),
                     ],
                   );
                 },
@@ -88,7 +99,7 @@ GestureDetector buildDoctorRequestName(
       //     arguments: getTherapistModel.id);
     },
     child: Text(
-        doctorEmploymentRequestModel.id
+        doctorEmploymentRequestModel.doctorName
             .toString(), //TODO: it should be the doctor name
         style: customTextStyle.bodyLarge),
   );

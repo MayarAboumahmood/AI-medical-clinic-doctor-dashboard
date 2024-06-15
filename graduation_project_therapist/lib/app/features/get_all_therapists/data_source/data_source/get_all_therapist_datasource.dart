@@ -37,4 +37,31 @@ class GetAllTherapistDataSource {
     print('response ssssssssssssssssssss: ${response.body}');
     return response;
   }
+
+  Future<Response> getMyTherapist() async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.getAllTherapists);
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    return response;
+  }
+
+  removeTherapist(int therapistId) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(
+        '${ServerConfig.url}${ServerConfig.removeTherapist}${therapistId.toString()}/remove');
+    var headers = {'Authorization': token};
+    var response = await http.delete(
+      url,
+      headers: headers,
+    );
+
+    debugPrint('geting my therapist datasource: ${response.body}');
+    debugPrint('geting my therapist datasource: ${response.statusCode}');
+    return response;
+  }
 }

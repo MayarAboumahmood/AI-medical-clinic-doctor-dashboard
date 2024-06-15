@@ -33,7 +33,7 @@ class DoctorEmploymentDataSource {
 
     var response = await http.put(
       url,
-      body: {'status': status.toString()},
+      body: {'status': '$status'},
       headers: headers,
     );
 

@@ -1,15 +1,15 @@
 class DoctorEmploymentRequestModel {
   final int id;
   final String date;
-  final int clinicId;
-  final int userId;
-  final String? status;
+  final bool? status;
+  final String clinicName;
+  final String doctorName;
 
   DoctorEmploymentRequestModel({
     required this.id,
     required this.date,
-    required this.clinicId,
-    required this.userId,
+    required this.clinicName,
+    required this.doctorName,
     this.status,
   });
 
@@ -17,9 +17,9 @@ class DoctorEmploymentRequestModel {
     return DoctorEmploymentRequestModel(
       id: json['id'],
       date: json['date'],
-      clinicId: json['clinicId'],
-      userId: json['userId'],
       status: json['status'],
+      clinicName: json['clinicName'],
+      doctorName: json['doctorName'],
     );
   }
 
@@ -27,8 +27,8 @@ class DoctorEmploymentRequestModel {
     return {
       'id': id,
       'date': date,
-      'clinicId': clinicId,
-      'userId': userId,
+      'clinicName': clinicName,
+      'doctorName': doctorName,
       'status': status,
     };
   }

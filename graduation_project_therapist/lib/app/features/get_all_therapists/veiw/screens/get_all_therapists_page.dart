@@ -62,10 +62,11 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
         listener: (context, state) {
           if (state is AllTherapistErrorState) {
             print('the state is: $state');
-            customSnackBar(state.errorMessage, context);
+            customSnackBar(state.errorMessage, context, isFloating: true);
           } else if (state is AssignTherapistSuccessfullyState) {
             customSnackBar(
-                'The Therapist has been assigned Successfully', context);
+                'The Therapist has been assigned Successfully', context,
+                isFloating: true);
           }
         },
         builder: (context, state) {
@@ -89,13 +90,13 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
         context.read<GetAllTherapistCubit>();
     List<GetTherapistModel> getTherapistModels =
         _isSearching && getAllTherapistCubit.state is SearchOnAllTherapistState
-            ? getAllTherapistCubit.searchedTherapistModels
-            : getAllTherapistCubit.getTherapistModels;
+            ? getAllTherapistCubit.searchedAllTherapistModels
+            : getAllTherapistCubit.getAllTherapistModels;
 
     return getTherapistModels.isEmpty
         ? Center(
             child: buildNoElementInPage(
-              'No Therapist in the platform yet.',
+              _isSearching ? "No result!" :  'No Therapist in the platform yet.',
               Icons.hourglass_empty_rounded,
             ),
           )

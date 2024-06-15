@@ -10,6 +10,7 @@ class DesignHidderRegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignInCubit signInCubit = context.read<SignInCubit>();
+    signInCubit.passwordtextgController = TextEditingController();
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       body: Center(
@@ -20,18 +21,51 @@ class DesignHidderRegisterPage extends StatelessWidget {
                 context, bottomNavigationBar);
           }
         },
-        child: GestureDetector(
-          onTap: () {
-            signInCubit.userEmail = 'mab026550@gmail.com';
-            signInCubit.passwordtextgController.text = 'Hdr@2132';
-            signInCubit.sendSignInRequest();
+        child: BlocBuilder<SignInCubit, SignInState>(
+          builder: (context, state) {
+            bool isLoading = state is SignInLoadingState;
+            return Center(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      signInCubit.userEmail = 'mab026550@gmail.com';
+                      signInCubit.passwordtextgController.text = 'Hdr@2132';
+                      signInCubit.sendSignInRequest();
+                    },
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : Container(
+                            decoration: BoxDecoration(
+                                color: customColors.primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text('sign in',
+                                style: customTextStyle.bodyMedium),
+                          ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      signInCubit.userEmail = 'abmayar208@gmail.com';
+                      signInCubit.passwordtextgController.text = 'Hdr@2132';
+                      signInCubit.sendSignInRequest();
+                    },
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : Container(
+                            decoration: BoxDecoration(
+                                color: customColors.primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text('sign in as a therapist',
+                                style: customTextStyle.bodyMedium),
+                          ),
+                  ),
+                ],
+              ),
+            );
           },
-          child: Container(
-            decoration: BoxDecoration(
-                color: customColors.primary,
-                borderRadius: BorderRadius.circular(10)),
-            child: Text('sign in', style: customTextStyle.bodyMedium),
-          ),
         ),
       )),
     );

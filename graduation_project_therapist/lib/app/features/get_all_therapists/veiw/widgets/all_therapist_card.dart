@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/data_source/models/get_therapists_model.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
@@ -12,9 +12,8 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Widget allTherapistCard(BuildContext context,
     GetTherapistModel getTherapistModel, bool isGetAllTherapist) {
-  final getAllTherapistCubit = isGetAllTherapist
-      ? context.read<GetAllTherapistCubit>()
-      : context.read<GetMyTherapistCubit>();
+  GetAllTherapistCubit getAllTherapistCubit =
+      context.read<GetAllTherapistCubit>();
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
@@ -37,23 +36,33 @@ Widget allTherapistCard(BuildContext context,
             children: [
               BlocBuilder<GetAllTherapistCubit, GetAllTherapistState>(
                 builder: (context, state) {
-                  bool isLoading = state is AssignTherapistLoadingState;
+                  int therapistId = getAllTherapistCubit.therapistId ?? -10;
+
+                  bool isLoading = isGetAllTherapist
+                      ? (state is AssignTherapistLoadingState) &&
+                          (therapistId == getTherapistModel.id)
+                      : false;
+
                   return GeneralButtonOptions(
                       text: isGetAllTherapist ? "Assign".tr() : 'Remove'.tr(),
                       onPressed: () {
                         if (isGetAllTherapist) {
-                          getAllTherapistCubit as GetAllTherapistCubit;
                           getAllTherapistCubit
                               .assignTherapist(getTherapistModel.id);
                         } else {
-                          getAllTherapistCubit as GetMyTherapistCubit;
-                          getAllTherapistCubit
-                              .removeTherapist(getTherapistModel.id);
+                          showBottomSheetWidget(
+                              context,
+                              removeEmploymentBottomSheet(
+                                  context,
+                                  getTherapistModel.specialistProfile.fullName,
+                                  getTherapistModel.id));
                         }
                       },
                       loading: isLoading,
                       options: ButtonOptions(
-                          color: customColors.primary,
+                          color: isGetAllTherapist
+                              ? customColors.primary
+                              : customColors.error,
                           textStyle: customTextStyle.bodyMedium
                               .copyWith(color: Colors.white)));
                 },
@@ -62,6 +71,118 @@ Widget allTherapistCard(BuildContext context,
           ),
         ],
       ),
+    ),
+  );
+}
+
+Widget removeEmploymentBottomSheet(
+    BuildContext context, String employeeName, int therapistId) {
+  return SizedBox(
+      height: responsiveUtil.screenHeight * .22,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        child: Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+                color: customColors.primaryBackGround,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                )),
+            height: responsiveUtil.screenHeight * .22,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Container(
+                      height: 3,
+                      width: 40,
+                      color: customColors.secondaryBackGround,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Center(
+                      child: Text(
+                    'Are you sure you want to remove $employeeName?'.tr(),
+                    style: customTextStyle.bodyLarge
+                        .copyWith(fontWeight: FontWeight.w700),
+                  )),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      cancelLogOutButton(context),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      removeEmployeeButton(context, therapistId),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ));
+}
+
+Widget removeEmployeeButton(BuildContext context, int therapistId) {
+  GetAllTherapistCubit getAllTherapistCubit =
+      context.read<GetAllTherapistCubit>();
+
+  return BlocBuilder<GetAllTherapistCubit, GetAllTherapistState>(
+    builder: (context, state) {
+      int localTherapistId = getAllTherapistCubit.therapistId ?? -10;
+
+      bool isLoading = (state is RemoveTherapistLoadingState) &&
+          (localTherapistId == therapistId);
+      return GeneralButtonOptions(
+        text: 'Yes, remove this therapist'.tr(),
+        onPressed: () {
+          getAllTherapistCubit.removeTherapist(therapistId);
+        },
+        loading: isLoading,
+        options: ButtonOptions(
+          height: 40,
+          color: customColors.error,
+          textStyle: customTextStyle.titleSmall.copyWith(color: Colors.white),
+          borderSide: BorderSide(
+            color: customColors.error,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      );
+    },
+  );
+}
+
+GeneralButtonOptions cancelLogOutButton(BuildContext context) {
+  return GeneralButtonOptions(
+    text: 'Cancel'.tr(),
+    onPressed: () {
+      navigationService.goBack();
+    },
+    options: ButtonOptions(
+      height: 40,
+      color: customColors.primaryBackGround,
+      textStyle:
+          customTextStyle.titleSmall.copyWith(color: customColors.primaryText),
+      borderSide: BorderSide(
+        color: customColors.primary,
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(12),
     ),
   );
 }

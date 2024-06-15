@@ -54,4 +54,50 @@ class GetAllTherapistRepositoryImp {
       return left('Server Error');
     }
   }
+
+  Future<Either<String, List<GetTherapistModel>>> getMyTherapist() async {
+    try {
+      final response = await _getAllTherapistDataSource.getMyTherapist();
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = decodedResponse['data'];
+        final List<GetTherapistModel> getTherapistModel =
+            data.map((item) => GetTherapistModel.fromMap(item)).toList();
+        return right(getTherapistModel);
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get all therapist repo: $e');
+      return left('Server Error');
+    }
+  }
+
+  Future<Either<String, String>> removeTherapist(int therapistId) async {
+    try {
+      final response =
+          await _getAllTherapistDataSource.removeTherapist(therapistId);
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        return right('done');
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get all therapist repo: $e');
+      return left('Server Error');
+    }
+  }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/data_source/models/get_therapists_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/widgets/all_therapist_card.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/my_therapist/cubit/get_my_therapist_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
@@ -23,8 +23,8 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
 
   @override
   Widget build(BuildContext context) {
-    GetMyTherapistCubit getAllTherapistCubit =
-        context.read<GetMyTherapistCubit>();
+    GetAllTherapistCubit getAllTherapistCubit =
+        context.read<GetAllTherapistCubit>();
     getAllTherapistCubit.getMyTherapist();
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
@@ -39,7 +39,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
           });
         },
         onSearchChange: (searchWord) {
-          getAllTherapistCubit.searchOnAllTherapist(searchWord);
+          getAllTherapistCubit.searchOnMyTherapist(searchWord);
         },
         onSearchCanceled: () {
           setState(() {
@@ -48,14 +48,15 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
           });
         },
       ),
-      body: BlocConsumer<GetMyTherapistCubit, GetMyTherapistState>(
+      body: BlocConsumer<GetAllTherapistCubit, GetAllTherapistState>(
         listener: (context, state) {
           if (state is MyTherapistErrorState) {
             print('the state is: $state');
-            customSnackBar(state.errorMessage, context);
+            customSnackBar(state.errorMessage, context, isFloating: true);
           } else if (state is TherapistRemovedSuccessfullyState) {
             customSnackBar(
-                'The Therapist has been removed Successfully', context);
+                'The Therapist has been removed Successfully', context,
+                isFloating: true);
           }
         },
         builder: (context, state) {
@@ -77,17 +78,17 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
   Widget myTherapistListBody(
     BuildContext context,
   ) {
-    GetMyTherapistCubit getMyTherapistCubit =
-        context.read<GetMyTherapistCubit>();
+    GetAllTherapistCubit getMyTherapistCubit =
+        context.read<GetAllTherapistCubit>();
     List<GetTherapistModel> getTherapistModels =
         _isSearching && getMyTherapistCubit.state is SearchOnMyTherapistState
-            ? getMyTherapistCubit.searchedTherapistModels
-            : getMyTherapistCubit.getTherapistModels;
+            ? getMyTherapistCubit.searchedMyTherapistModels
+            : getMyTherapistCubit.getMyTherapistModels;
 
     return getTherapistModels.isEmpty
         ? Center(
             child: buildNoElementInPage(
-              'No Therapist in the platform yet.',
+              _isSearching? "No result!" :'No Therapist in the platform yet.',
               Icons.hourglass_empty_rounded,
             ),
           )

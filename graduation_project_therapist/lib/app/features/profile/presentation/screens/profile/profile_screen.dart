@@ -256,12 +256,12 @@ void logOut() async {
 void logOutClearBloc(BuildContext context) async {
   BlocProvider.of<BottomNavigationWidgetBloc>(context)
       .add(const ChangeCurrentPage(nextIndex: 0));
-
-  Navigator.pushNamedAndRemoveUntil(
-    context,
-    welcomeScreen,
-    (route) => false, // This line removes all previous routes from the stack
-  );
+  navigationService.navigationOfAllPagesToName(context, designHider);
+  // Navigator.pushNamedAndRemoveUntil(
+  //   context,
+  //   welcomeScreen,
+  //   (route) => false, // This line removes all previous routes from the stack
+  // );
 }
 
 Widget profilePageDivider() {

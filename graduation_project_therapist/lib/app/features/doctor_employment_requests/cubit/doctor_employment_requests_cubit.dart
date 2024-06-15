@@ -15,7 +15,7 @@ class DoctorEmploymentRequestsCubit
       doctoreEmploymentRequestRepositoryImp;
   int? requestID;
   List<DoctorEmploymentRequestModel> doctorEmploymentRequests = [];
-
+  bool? isApproveClicked;
   void getAllDoctorEmploymentRequests() async {
     emit(DoctorEmploymentRequestsLoadingState());
     final getData = await doctoreEmploymentRequestRepositoryImp
@@ -31,6 +31,7 @@ class DoctorEmploymentRequestsCubit
 
   void approveDoctorRequest(int id) async {
     requestID = id;
+    isApproveClicked = true;
     emit(ApproveDoctorRequestsLoadingState());
     final getData = await doctoreEmploymentRequestRepositoryImp
         .approveDoctorEmploymentRequest(id, true);
@@ -44,6 +45,7 @@ class DoctorEmploymentRequestsCubit
 
   void declineDoctorRequest(int id) async {
     requestID = id;
+    isApproveClicked = false;
     emit(ApproveDoctorRequestsLoadingState());
     final getData = await doctoreEmploymentRequestRepositoryImp
         .approveDoctorEmploymentRequest(id, false);
