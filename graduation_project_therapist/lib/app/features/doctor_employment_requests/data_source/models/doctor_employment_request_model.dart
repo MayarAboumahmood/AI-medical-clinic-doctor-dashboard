@@ -16,7 +16,7 @@ class DoctorEmploymentRequestModel {
   factory DoctorEmploymentRequestModel.fromMap(Map<String, dynamic> json) {
     return DoctorEmploymentRequestModel(
       id: json['id'],
-      date: json['date'],
+      date: json['data'] ?? json['date'] ?? 'unknown',
       status: json['status'],
       clinicName: json['clinicName'] ?? '',
       doctorName: json['doctorName'] ?? '',

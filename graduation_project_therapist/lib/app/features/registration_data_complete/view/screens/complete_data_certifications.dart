@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/steps_widget/navigat_button.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/widgets/pic_pichter_bottom_sheet_complete_certifications.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
@@ -25,6 +26,7 @@ class CompleteCertificationsPage extends StatelessWidget {
               'we recived your requiest, we will let you know the result soon',
               context,
               isFloating: true);
+          userStatus = UserStatusEnum.pending;
         } else if (state is RegistrationDataCompleteFailureState) {
           customSnackBar(state.errorMessage, context);
         }

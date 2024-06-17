@@ -77,6 +77,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 201 || response.statusCode == 200) {
       sharedPreferences!
           .setString('doctorOrTherapist', registerModel.roleId.toString());
+      isGuest = false;
       return http.Response(responseBody, response.statusCode);
     } else if (response.statusCode != 500) {
       return http.Response(responseBody, response.statusCode);
@@ -123,6 +124,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var response = await http.post(url, headers: headers, body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
+      isGuest = false;
       String accessToken = decodedResponse['data']['accessToken'];
       sharedPreferences!.setBool('isRegisterCompleted', true);
       sharedPreferences!.setString(

@@ -41,7 +41,8 @@ Widget allTherapistCard(BuildContext context,
                   bool isLoading = isGetAllTherapist
                       ? (state is AssignTherapistLoadingState) &&
                           (therapistId == getTherapistModel.id)
-                      : false;
+                      : (state is RemoveTherapistLoadingState) &&
+                          (therapistId == getTherapistModel.id);
 
                   return GeneralButtonOptions(
                       text: isGetAllTherapist ? "Assign".tr() : 'Remove'.tr(),
@@ -61,7 +62,9 @@ Widget allTherapistCard(BuildContext context,
                       loading: isLoading,
                       options: ButtonOptions(
                           color: isGetAllTherapist
-                              ? customColors.primary
+                              ? (getTherapistModel.employmentRequests != null
+                                  ? customColors.accent1
+                                  : customColors.primary)
                               : customColors.error,
                           textStyle: customTextStyle.bodyMedium
                               .copyWith(color: Colors.white)));

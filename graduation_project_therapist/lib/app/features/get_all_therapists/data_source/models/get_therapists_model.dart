@@ -1,23 +1,23 @@
 class GetTherapistModel {
   int id;
   SpecialistProfile specialistProfile;
-  dynamic employee;
+  bool? employmentRequests;
 
   GetTherapistModel({
     required this.id,
     required this.specialistProfile,
-    this.employee,
+    required this.employmentRequests,
   });
 
   GetTherapistModel copyWith({
     int? id,
     SpecialistProfile? specialistProfile,
-    dynamic employee,
+    bool? employmentRequests,
   }) {
     return GetTherapistModel(
       id: id ?? this.id,
       specialistProfile: specialistProfile ?? this.specialistProfile,
-      employee: employee ?? this.employee,
+      employmentRequests:employmentRequests ?? this.employmentRequests,
     );
   }
 
@@ -25,7 +25,7 @@ class GetTherapistModel {
     return <String, dynamic>{
       'id': id,
       'specialistProfile': specialistProfile.toMap(),
-      'employee': employee,
+      'employmentRequests': employmentRequests,
     };
   }
 
@@ -34,7 +34,7 @@ class GetTherapistModel {
       id: map['id'] as int,
       specialistProfile: SpecialistProfile.fromMap(
           map['specialistProfile'] as Map<String, dynamic>),
-      employee: map['employee'],
+      employmentRequests: map['employmentRequests'],
     );
   }
 }

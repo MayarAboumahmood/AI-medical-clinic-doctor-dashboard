@@ -129,23 +129,24 @@ class _WalletPageState extends State<WalletPage> {
 
   Widget historyList(HistoryLoadingStatuEbum historyLoadingStatuEbum) {
     WalletCubit walletCubit = context.read<WalletCubit>();
-
     if (historyLoadingStatuEbum == HistoryLoadingStatuEbum.loading) {
       return Expanded(child: smallSizeCardShimmer());
     } else if (historyLoadingStatuEbum == HistoryLoadingStatuEbum.data) {
-      return walletCubit.transactionHistory.isEmpty
-          ? buildNoElementInPage(
-              'No money transaction has been made yet.',
-              Icons.hourglass_empty_rounded,
-            )
-          : Expanded(
-              child: SingleChildScrollView(
+      return Expanded(
+          child: walletCubit.transactionHistory.isEmpty
+              ? Center(
+                  child: buildNoElementInPage(
+                    'No money transaction has been made yet.',
+                    Icons.hourglass_empty_rounded,
+                  ),
+                )
+              : SingleChildScrollView(
                   child: Column(children: [
-              ...List.generate(
-                  walletCubit.transactionHistory.length,
-                  (index) => transactionHistoryCard(
-                      context, walletCubit.transactionHistory[index]))
-            ])));
+                  ...List.generate(
+                      walletCubit.transactionHistory.length,
+                      (index) => transactionHistoryCard(
+                          context, walletCubit.transactionHistory[index]))
+                ])));
     } else {
       return Expanded(
           child: Text('Opps, Something wrong!'.tr(),

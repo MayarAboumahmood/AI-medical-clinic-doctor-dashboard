@@ -29,10 +29,10 @@ final class PatientReservationCanceledSuccessfullyState
 }
 
 final class PatientReservationErrorState extends PatientReservationsState {
-  final StatusRequest statusRequest;
-  PatientReservationErrorState({required this.statusRequest});
+  final String errorMessage;
+  PatientReservationErrorState({required this.errorMessage});
   @override
-  List<Object?> get props => [statusRequest];
+  List<Object?> get props => [errorMessage];
 }
 
 final class PatientReservationDataLoadedState extends PatientReservationsState {

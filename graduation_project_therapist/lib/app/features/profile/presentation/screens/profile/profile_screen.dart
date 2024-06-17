@@ -10,6 +10,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_fl
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/welcome_screen_widget.dart/language_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
@@ -251,6 +252,7 @@ void logOut() async {
   await sl<PrefService>().remove('doctorOrTherapist');
   await sl<PrefService>().remove('user_status');
   await sl<PrefService>().remove('AlreadyAsked');
+  userStatus = UserStatusEnum.loading;
 }
 
 void logOutClearBloc(BuildContext context) async {

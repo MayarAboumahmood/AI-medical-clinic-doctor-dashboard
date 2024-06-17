@@ -38,6 +38,7 @@ class _JoinWidgetState extends State<JoinWidget> {
   void initState() {
     super.initState();
     registerCubit = context.read<RegisterCubit>();
+    registerCubit.passwordtextgController = TextEditingController();
   }
 
   @override

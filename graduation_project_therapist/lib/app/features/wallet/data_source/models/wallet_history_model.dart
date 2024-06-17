@@ -17,7 +17,9 @@ class WalletHistoryModel {
       date: map['date'] as String,
       id: map['id'],
       amount: map['amount'].toString(),
-      status: map['status'],
+      status: map['status'] != null
+          ? (map['status'] ? 'done' : 'rejected')
+          : "Pending",
       specialistId: map['specialistId'],
     );
   }

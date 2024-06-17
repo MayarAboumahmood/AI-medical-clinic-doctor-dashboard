@@ -28,12 +28,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   void initState() {
     super.initState();
     signInCubit = context.read<SignInCubit>();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    signInCubit.clearSignInCubit();
+    signInCubit.passwordtextgController = TextEditingController();
   }
 
   @override
@@ -115,6 +110,12 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
     super.initState();
     signInCubit = context.read<SignInCubit>();
     signInCubit.passwordtextgController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    signInCubit.clearSignInCubit();
   }
 
   @override

@@ -88,7 +88,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
     return getTherapistModels.isEmpty
         ? Center(
             child: buildNoElementInPage(
-              _isSearching? "No result!" :'No Therapist in the platform yet.',
+              _isSearching ? "No result!" : "You don't have any therapist yet.",
               Icons.hourglass_empty_rounded,
             ),
           )

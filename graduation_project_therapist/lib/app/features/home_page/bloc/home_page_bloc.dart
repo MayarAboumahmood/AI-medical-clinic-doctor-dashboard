@@ -39,6 +39,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
               'user_status',
               userStatusToString(data),
             );
+            emit(GetUserStatesuccessfulyState());
           });
         } else {
           userStatus = UserStatusEnum.verified;

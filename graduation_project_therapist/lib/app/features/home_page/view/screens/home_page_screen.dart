@@ -33,11 +33,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
       },
       child: Scaffold(
         backgroundColor: customColors.primaryBackGround,
-        body: Center(
-            child: Text(
-          userStatus.name,
-          style: customTextStyle.bodyMedium,
-        )),
+        body: BlocBuilder<HomePageBloc, HomePageState>(
+          builder: (context, state) {
+            return Center(
+                child: Text(
+              userStatus.name,
+              style: customTextStyle.bodyMedium,
+            ));
+          },
+        ),
       ),
     );
   }

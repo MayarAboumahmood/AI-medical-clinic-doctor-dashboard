@@ -2,6 +2,7 @@ enum UserStatusEnum {
   unverified,
   verified,
   pending,
+  loading,
 }
 
 UserStatusEnum userStatusFromString(String status) {
@@ -12,6 +13,10 @@ UserStatusEnum userStatusFromString(String status) {
       return UserStatusEnum.pending;
     case 'verified':
       return UserStatusEnum.verified;
+    case 'loading':
+      return UserStatusEnum.loading;
+    case 'loading...':
+      return UserStatusEnum.loading;
     default:
       throw ArgumentError('Invalid user status: $status');
   }
@@ -25,5 +30,7 @@ String userStatusToString(UserStatusEnum status) {
       return 'verified';
     case UserStatusEnum.pending:
       return 'pending';
+    case UserStatusEnum.loading:
+      return 'Loading...';
   }
 }

@@ -14,3 +14,9 @@ final class FetchDataFauilerState extends HomePageState {
   @override
   List<Object?> get props => [errorMessage];
 }
+final class GetUserStatesuccessfulyState extends HomePageState {
+
+  GetUserStatesuccessfulyState();
+  @override
+  List<Object?> get props => [];
+}
