@@ -47,6 +47,9 @@ class GetAllTherapistDataSource {
       url,
       headers: headers,
     );
+    debugPrint('geting my therapist datasource: ${response.body}');
+    debugPrint('geting my therapist datasource: ${response.statusCode}');
+
     return response;
   }
 
@@ -60,8 +63,8 @@ class GetAllTherapistDataSource {
       headers: headers,
     );
 
-    debugPrint('geting my therapist datasource: ${response.body}');
-    debugPrint('geting my therapist datasource: ${response.statusCode}');
+    debugPrint('remove my therapist datasource: ${response.body}');
+    debugPrint('remove my therapist datasource: ${response.statusCode}');
     return response;
   }
 }

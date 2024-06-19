@@ -113,7 +113,6 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
-
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
@@ -144,7 +143,7 @@ class _ChatPageState extends State<ChatPage> {
               builder: (context, state) {
                 isLoadingOrError = (chatBloc.state is ChatsLoadingState ||
                     chatBloc.state is ChatErrorState);
-              
+
                 return Visibility(
                     visible: !isLoadingOrError, child: messageTextField());
               },

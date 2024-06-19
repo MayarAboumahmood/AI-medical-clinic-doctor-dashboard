@@ -1,7 +1,7 @@
 class GetTherapistModel {
   int id;
   SpecialistProfile specialistProfile;
-  bool? employmentRequests;
+  bool employmentRequests;
 
   GetTherapistModel({
     required this.id,
@@ -34,7 +34,7 @@ class GetTherapistModel {
       id: map['id'] as int,
       specialistProfile: SpecialistProfile.fromMap(
           map['specialistProfile'] as Map<String, dynamic>),
-      employmentRequests: map['employmentRequests'],
+      employmentRequests: map['employmentRequests']==null?false:true,
     );
   }
 }

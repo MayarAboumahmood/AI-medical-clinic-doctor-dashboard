@@ -4,7 +4,9 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/patient_request_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/custom_refress_indicator.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -67,18 +69,36 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
     );
   }
 
-  SingleChildScrollView patientRequestsListBody(
+  RefreshIndicator patientRequestsListBody(
       BuildContext context, List<PatientRequestModel> patientRequestModels) {
-    return SingleChildScrollView(
-      child: Column(children: [
-        ...List.generate(
-            patientRequestModels.length,
-            (index) =>
-                patientRequestCard(context, patientRequestModels[index])),
-        const SizedBox(
-          height: 50,
-        ),
-      ]),
-    );
+    return customRefreshIndicator(
+        refreshPatientRequests,
+        SizedBox(
+          height: responsiveUtil.screenHeight * .7,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: patientRequestModels.isEmpty
+                ? Center(
+                    child: buildNoElementInPage(
+                      'No request yet. Please Check Back Later!',
+                      Icons.hourglass_empty_rounded,
+                    ),
+                  )
+                : Column(children: [
+                    ...List.generate(
+                      patientRequestModels.length,
+                      (index) => patientRequestCard(
+                          context, patientRequestModels[index]),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ]),
+          ),
+        ));
+  }
+
+  Future<void> refreshPatientRequests() async {
+    patientRequestsCubit.getPatientRequests();
   }
 }

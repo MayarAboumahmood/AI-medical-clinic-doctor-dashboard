@@ -62,9 +62,9 @@ Widget allTherapistCard(BuildContext context,
                       loading: isLoading,
                       options: ButtonOptions(
                           color: isGetAllTherapist
-                              ? (getTherapistModel.employmentRequests != null
-                                  ? customColors.accent1
-                                  : customColors.primary)
+                              ? (getTherapistModel.employmentRequests
+                                  ? customColors.primary
+                                  : customColors.accent1)
                               : customColors.error,
                           textStyle: customTextStyle.bodyMedium
                               .copyWith(color: Colors.white)));

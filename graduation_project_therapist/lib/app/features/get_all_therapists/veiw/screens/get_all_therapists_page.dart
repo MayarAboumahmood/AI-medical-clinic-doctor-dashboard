@@ -6,6 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/get_all_ther
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/data_source/models/get_therapists_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/widgets/all_therapist_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/custom_refress_indicator.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
@@ -94,22 +95,36 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
             : getAllTherapistCubit.getAllTherapistModels;
 
     return getTherapistModels.isEmpty
-        ? Center(
-            child: buildNoElementInPage(
-              _isSearching ? "No result!" :  'No Therapist in the platform yet.',
-              Icons.hourglass_empty_rounded,
+        ? SizedBox(
+            height: responsiveUtil.screenHeight * .7,
+            child: Center(
+              child: buildNoElementInPage(
+                _isSearching
+                    ? "No result!"
+                    : 'No Therapist in the platform yet.',
+                Icons.hourglass_empty_rounded,
+              ),
             ),
           )
-        : SingleChildScrollView(
-            child: Column(children: [
-              ...List.generate(
-                  getTherapistModels.length,
-                  (index) => allTherapistCard(
-                      context, getTherapistModels[index], true)),
-              const SizedBox(
-                height: 50,
+        : customRefreshIndicator(
+            () async {
+              getAllTherapistCubit.getAllTherapist();
+            },
+            SizedBox(
+              height: responsiveUtil.screenHeight * .7,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(children: [
+                  ...List.generate(
+                      getTherapistModels.length,
+                      (index) => allTherapistCard(
+                          context, getTherapistModels[index], true)),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                ]),
               ),
-            ]),
+            ),
           );
   }
 }

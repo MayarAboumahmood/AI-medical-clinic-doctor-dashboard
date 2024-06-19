@@ -65,6 +65,21 @@ class DesignHidderRegisterPage extends StatelessWidget {
                                 style: customTextStyle.bodyMedium),
                           ),
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigationService.navigateTo(videoCallPage);
+                    },
+                    child: Container(
+                            decoration: BoxDecoration(
+                                color: customColors.primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text('go to Video Call Page',
+                                style: customTextStyle.bodyMedium),
+                          ),
+                  ),
                 ],
               ),
             );

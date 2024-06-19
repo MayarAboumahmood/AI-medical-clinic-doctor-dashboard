@@ -4,7 +4,9 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/view/widgets/patient_reservations_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/custom_refress_indicator.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -69,18 +71,39 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
     );
   }
 
-  SingleChildScrollView patientReservationssListBody(BuildContext context,
+  Future<void> refreshPatientReservations() async {
+    patientReservationsCubit.getPatientReservations();
+  }
+
+  Widget patientReservationssListBody(BuildContext context,
       List<PatientReservationModel> patientReservationsModels) {
-    return SingleChildScrollView(
-      child: Column(children: [
-        ...List.generate(
-            patientReservationsModels.length,
-            (index) => patientReservationCard(
-                context, patientReservationsModels[index])),
-        const SizedBox(
-          height: 50,
+    return customRefreshIndicator(
+      refreshPatientReservations,
+      SizedBox(
+        height: responsiveUtil.screenHeight * .7,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: patientReservationsModels.isEmpty
+              ? Center(
+                child: buildNoElementInPage(
+                  'No Reservation yet. Please Check Back Later!',
+                  Icons.hourglass_empty_rounded,
+                ),
+              )
+              : Column(children: [
+                  ...List.generate(
+                    patientReservationsModels.length,
+                    (index) => patientReservationCard(
+                      context,
+                      patientReservationsModels[index],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                ]),
         ),
-      ]),
+      ),
     );
   }
 }

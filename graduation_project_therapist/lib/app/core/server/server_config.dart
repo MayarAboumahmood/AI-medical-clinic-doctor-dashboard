@@ -2,7 +2,7 @@ class ServerConfig {
   static const String url = "http://127.0.0.1:3000/";
   static const String imageUrl = '${url}storage/';
   // static const String url =
-  //     "http://192.168.236.5:3000/"; //for mobile with ip config.
+  //     "http://192.168.100.18:3000/"; //for mobile with ip config.
 
   static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';

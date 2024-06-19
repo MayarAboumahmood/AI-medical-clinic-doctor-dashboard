@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chats_users_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/view/screens/home_page_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/view/screens/patient_reservations_page.dart';
@@ -49,10 +51,27 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   List<Widget> get homePageWidgets {
     return [
       const HomePageScreen(),
-      isGuest == true ? GuestWidget() : YourDataNotCompletedYetPage(),
-      isGuest == true ? GuestWidget() : const PatientRequestsPage(),
-      isGuest == true ? GuestWidget() : const PatientReservationsPage(),
-      isGuest == true ? GuestWidget() : const ProfileScreen(),
+      isGuest == true
+          ? GuestWidget()
+          : userStatus == UserStatusEnum.verified
+              ? const ChatsUsersPage()
+              : YourDataNotCompletedYetPage(),
+      isGuest == true
+          ? GuestWidget()
+          : userStatus == UserStatusEnum.verified
+              ? const PatientRequestsPage()
+              : YourDataNotCompletedYetPage(),
+      isGuest == true
+          ? GuestWidget()
+          : userStatus == UserStatusEnum.verified
+              ? const PatientReservationsPage()
+              : YourDataNotCompletedYetPage(),
+      isGuest == true
+          ? GuestWidget()
+          : userStatus == UserStatusEnum.verified ||
+                  userStatus == UserStatusEnum.pending
+              ? const ProfileScreen()
+              : YourDataNotCompletedYetPage(),
     ];
   }
 
@@ -97,22 +116,22 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                     iconPagesButton(
                         context: context,
                         icon: _currentPage == 1
-                            ? Icons.favorite
-                            : Icons.favorite_outline,
+                            ? CupertinoIcons.chat_bubble_2_fill
+                            : CupertinoIcons.chat_bubble_2,
                         currentPage: _currentPage,
                         index: 1),
                     iconPagesButton(
                         context: context,
-                        icon: _currentPage == 2
-                            ? Icons.explore
-                            : Icons.explore_outlined,
+                        icon:
+                            _currentPage == 2 ? Icons.repeat_on : Icons.repeat,
                         currentPage: _currentPage,
                         index: 2),
                     iconPagesButton(
                         context: context,
                         icon: _currentPage == 3
-                            ? CupertinoIcons.chat_bubble_2_fill
-                            : CupertinoIcons.chat_bubble_2,
+                            ? CupertinoIcons
+                                .rectangle_stack_fill_badge_person_crop
+                            : CupertinoIcons.rectangle_stack_badge_person_crop,
                         currentPage: _currentPage,
                         index: 3),
                     iconPagesButton(

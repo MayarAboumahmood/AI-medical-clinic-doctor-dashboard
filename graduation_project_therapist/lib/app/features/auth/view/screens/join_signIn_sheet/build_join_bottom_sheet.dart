@@ -42,12 +42,6 @@ class _JoinWidgetState extends State<JoinWidget> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    registerCubit.clearRegisterCubit();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return buildRegisterBlocConsumer();
   }
