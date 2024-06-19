@@ -26,6 +26,7 @@ class DesignHidderRegisterPage extends StatelessWidget {
             bool isLoading = state is SignInLoadingState;
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
                     height: responsiveUtil.screenHeight * .1,
@@ -42,8 +43,11 @@ class DesignHidderRegisterPage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: customColors.primary,
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Text('sign in',
-                                style: customTextStyle.bodyMedium),
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text('sign in',
+                                  style: customTextStyle.bodyMedium),
+                            ),
                           ),
                   ),
                   const SizedBox(
@@ -61,8 +65,11 @@ class DesignHidderRegisterPage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: customColors.primary,
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Text('sign in as a therapist',
-                                style: customTextStyle.bodyMedium),
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text('sign in as a therapist',
+                                  style: customTextStyle.bodyMedium),
+                            ),
                           ),
                   ),
                   const SizedBox(
@@ -73,12 +80,30 @@ class DesignHidderRegisterPage extends StatelessWidget {
                       navigationService.navigateTo(videoCallPage);
                     },
                     child: Container(
-                            decoration: BoxDecoration(
-                                color: customColors.primary,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text('go to Video Call Page',
-                                style: customTextStyle.bodyMedium),
-                          ),
+                      decoration: BoxDecoration(
+                          color: customColors.primary,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text('go to Video Call Page',
+                            style: customTextStyle.bodyMedium),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigationService.navigateTo(chatPage);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: customColors.primary,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text('go to Chat Page',
+                            style: customTextStyle.bodyMedium),
+                      ),
+                    ),
                   ),
                 ],
               ),

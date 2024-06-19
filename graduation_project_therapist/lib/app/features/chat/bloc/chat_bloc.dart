@@ -61,23 +61,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             debugPrint("Bloc is closed, stopping message processing.");
             return;
           }
-          var content = message.content['content'];
+          var content = message.content['content'] ?? 'unknown';
           bool iAmTheSender = false;
           String sendeDate = '';
           String messageType =
               message.content['messageType'] == 'text' ? 'text' : 'image';
           if (messageType == 'image') {
             iAmTheSender = userID.toString() ==
-                getFileSenderID(message.content['message']);
-            sendeDate = getFileDate(message.content['message']);
+                getFileSenderID(message.content['message'] ?? 'unknown');
+            sendeDate = getFileDate(message.content['message'] ?? 'unknown');
 
-            String fileId = message.content['file']['id'];
-            String fileName = message.content['file']['name'];
+            String fileId = message.content['file']['id'] ?? 'unknown';
+            String fileName = message.content['file']['name'] ?? 'unknown';
             Uri fileUrl =
                 pubnub.files.getFileUrl(channelName, fileId, fileName);
             content = fileUrl;
           } else {
-            sendeDate = message.content['time'];
+            sendeDate = message.content['time'] ?? 'unknown';
             iAmTheSender = message.content['senderId'] == userID.toString();
           }
 
@@ -119,14 +119,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 envelope.content['messageType'] == 'text' ? 'text' : 'image';
             if (messageType == 'image') {
               iAmTheSender = userID.toString() ==
-                  getFileSenderID(envelope.content['message']);
-              sendeDate = getFileDate(envelope.content['message']);
+                  getFileSenderID(envelope.content['message'] ?? 'unknown');
+              sendeDate = getFileDate(envelope.content['message'] ?? 'unknown');
 
-              String fileId = envelope.content['file']['id'];
-              String fileName = envelope.content['file']['name'];
+              String fileId = envelope.content['file']['id'] ?? 'unknown';
+              String fileName = envelope.content['file']['name'] ?? 'unknown';
               fileUrl = pubnub.files.getFileUrl(channelName, fileId, fileName);
             } else {
-              sendeDate = envelope.originalMessage['message']['time'];
+              sendeDate =
+                  envelope.originalMessage['message']['time'] ?? 'unknown';
               iAmTheSender = userID.toString() ==
                   envelope.originalMessage['message']['senderId'];
             }
@@ -166,19 +167,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         Uri? fileUrl;
         for (final envelope in history.messages) {
+          print('ssssssssssssssssssssss: the envelop: ${envelope.content}');
+          print(
+              'ssssssssssssssssssssss: the envelop: ${history.messages.length}');
           String sendeDate = '';
           bool iAmTheSender = false;
           if (!hasMessageData(envelope.originalMessage)) {
             iAmTheSender = userID.toString() ==
-                getFileSenderID(envelope.content['message']);
-            sendeDate = getFileDate(envelope.content['message']);
+                getFileSenderID(envelope.content['message'] ?? 'unknown');
+            sendeDate = getFileDate(envelope.content['message'] ?? 'unknown');
 
-            String fileId = envelope.originalMessage['message']['file']['id'];
-            String fileName =
-                envelope.originalMessage['message']['file']['name'];
+            String fileId =
+                envelope.originalMessage['message']['file']['id'] ?? 'unknown';
+            String fileName = envelope.originalMessage['message']['file']
+                    ['name'] ??
+                'unknown';
             fileUrl = pubnub.files.getFileUrl(channelName, fileId, fileName);
           } else {
-            sendeDate = envelope.content['time'];
+            sendeDate = envelope.content['time'] ?? 'unknown';
             iAmTheSender = userID.toString() ==
                 envelope.originalMessage['message']['senderId'];
           }
@@ -187,7 +193,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               type: messageTypeFromString(
                   envelope.content['messageType'] == 'text' ? 'text' : 'image'),
               content: hasMessageData(envelope.originalMessage)
-                  ? envelope.content['content']
+                  ? envelope.content['content'] ?? 'unknown'
                   : fileUrl,
               timestamp: sendeDate,
               iAmTheSender: iAmTheSender));

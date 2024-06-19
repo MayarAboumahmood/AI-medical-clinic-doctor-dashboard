@@ -52,7 +52,8 @@ bool hasMessageData(Map<String, dynamic> messageObj) {
 String assignChannelName(int userID, int user2ID) {
   int firstID = max(userID, user2ID);
   int secondID = min(userID, user2ID);
-  return '${firstID}fortime$secondID';
+  return 'chat_channel';
+  // return '${firstID}fortime$secondID';
 }
 
 String getFileSenderID(String input) {
