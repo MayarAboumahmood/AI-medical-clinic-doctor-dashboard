@@ -77,13 +77,13 @@ PreferredSizeWidget appBarPushingScreensForSearch(
         actions: isSearching
             ? [
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: onSearchCanceled,
                 ),
               ]
             : [
                 IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const  Icon(Icons.search),
                   onPressed: onSearchIconPressed,
                 ),
               ],

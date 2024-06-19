@@ -71,7 +71,8 @@ final Map<String, WidgetBuilder> routes = {
   getAllTherapistPage: (context) => const GetAllTherapistPage(),
   getMyTherapistPage: (context) => const GetMyTherapistPage(),
   walletPage: (context) => const WalletPage(),
-  doctorEmploymentRequestsPage: (context) => const DoctorEmploymentRequestsPage(),
+  doctorEmploymentRequestsPage: (context) =>
+      const DoctorEmploymentRequestsPage(),
   designHider: (context) => const DesignHidderRegisterPage(),
-  videoCallPage: (context) => const VideoCallPage(),
+  videoCallPage: (context) => VideoCallPage(),
 };

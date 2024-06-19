@@ -1,66 +1,316 @@
-import 'package:agora_uikit/agora_uikit.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+const appId = '94292e56f62b4ac59f1b5396df053647';
+const token =
+    '007eJxTYEi675F0uffq/l1W8acu2aTzHT6yY4Lv589Vlxk5mHfOWjpBgcHSxMjSKNXULM3MKMkkMdnUMs0wydTY0iwlzcDU2MzEPLm/KK0hkJHhMLc6AyMUgvgsDCWpxSUMDAC/ryAR';
 
 class VideoCallPage extends StatefulWidget {
-  const VideoCallPage({super.key});
+  final String channelName = 'test';
+  final ClientRoleType role = ClientRoleType.clientRoleBroadcaster;
+
+  VideoCallPage({
+    super.key,
+  });
 
   @override
-  VideoCallPageState createState() => VideoCallPageState();
+  State<VideoCallPage> createState() => VideoCallPageState();
 }
 
 class VideoCallPageState extends State<VideoCallPage> {
-  late final AgoraClient _client;
-
-  static const appId = '94292e56f62b4ac59f1b5396df053647';
-  static const token =
-      '007eJxTYFD7t/2B0L9al52evtf39grOkFVu36iU5Tkv8tTyuuSSvnkKDJYmRpZGqaZmaWZGSSaJyaaWaYZJpsaWZilpBqbGZibmt3sS0xoCGRlC1X4xMzJAIIjPzlCSWlxiaGTMwAAAuEUgCg==';
+  final _users = <int>[];
+  final _infoStrings = <String>[];
+  bool muted = false;
+  bool viewPanel = false;
+  bool _isInitialized = false;
+  late RtcEngine _engine;
 
   @override
   void initState() {
     super.initState();
-    _client = AgoraClient(
-      agoraConnectionData: AgoraConnectionData(
-        appId: appId,
-        channelName: 'your-channel-name',
-        tempToken: token, 
-      ),
-      enabledPermission: [
-        Permission.camera,
-        Permission.microphone,
-      ],
-    );
-
-    _initializeAgora();
+    _handlePermission();
+    initialize();
   }
 
-  Future<void> _initializeAgora() async {
-    await _client.initialize();
+  void _onToggleMute() {
+    setState(() {
+      muted = !muted;
+    });
+    _engine.muteLocalAudioStream(muted);
+  }
+
+  void _onSwitchCamera() {
+    _engine.switchCamera();
+  }
+
+  void _onToggleVideo() {
+    setState(() {
+      viewPanel = !viewPanel;
+    });
+    _engine.muteLocalVideoStream(viewPanel);
+  }
+
+  void _onCallEnd(BuildContext context) {
+    _engine.leaveChannel();
+    Navigator.pop(context);
   }
 
   @override
   void dispose() {
-    _client.sessionController.dispose();
+    _users.clear();
+    _engine.leaveChannel();
+    _engine.release();
     super.dispose();
+  }
+
+  Future<void> _handlePermission() async {
+    await [Permission.camera, Permission.microphone].request();
+  }
+
+  Future<void> initialize() async {
+    if (appId.isEmpty) {
+      setState(() {
+        _infoStrings.add('APP ID is missing, please enter your APP ID');
+        _infoStrings.add("Agora Engine is not starting");
+      });
+      return;
+    }
+
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(const RtcEngineContext(appId: appId));
+
+    await _engine.enableVideo();
+    await _engine
+        .setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting);
+    await _engine.setClientRole(role: widget.role);
+
+    _addAgoraEventHandlers();
+
+    VideoEncoderConfiguration configuration = const VideoEncoderConfiguration(
+      dimensions: VideoDimensions(width: 1080, height: 720),
+    );
+    await _engine.setVideoEncoderConfiguration(configuration);
+
+    await _engine.joinChannel(
+      token: token,
+      channelId: widget.channelName,
+      uid: 0,
+      options: const ChannelMediaOptions(),
+    );
+
+    setState(() {
+      _isInitialized = true;
+    });
+  }
+
+  void _addAgoraEventHandlers() {
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        onError: (err, msg) {
+          setState(() {
+            final info = 'Error $err: $msg';
+            _infoStrings.add(info);
+          });
+        },
+        onJoinChannelSuccess: (connection, elapsed) {
+          setState(() {
+            final info = 'Join Channel: $connection';
+            _infoStrings.add(info);
+          });
+        },
+        onLeaveChannel: (connection, stats) {
+          setState(() {
+            final info = 'Leave Channel: $stats';
+            _infoStrings.add(info);
+          });
+        },
+        onUserJoined: (connection, remoteUid, elapsed) {
+          setState(() {
+            final info = 'User Joined: $remoteUid';
+            _infoStrings.add(info);
+            _users.add(remoteUid);
+          });
+        },
+        onUserOffline: (connection, remoteUid, reason) {
+          setState(() {
+            final info = 'User Offline: $remoteUid';
+            _infoStrings.add(info);
+            _users.remove(remoteUid);
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _viewRows() {
+    final List<StatefulWidget> list = [];
+    if (widget.role == ClientRoleType.clientRoleBroadcaster) {
+      list.add(AgoraVideoView(
+        controller: VideoViewController(
+          rtcEngine: _engine,
+          canvas: const VideoCanvas(uid: 0),
+        ),
+      ));
+    }
+    for (var uid in _users) {
+      list.add(AgoraVideoView(
+        controller: VideoViewController.remote(
+          rtcEngine: _engine,
+          canvas: VideoCanvas(uid: uid),
+          connection: RtcConnection(channelId: widget.channelName),
+        ),
+      ));
+    }
+    final views = list;
+    return list.length == 1
+        ? Column(
+            children: [
+              Text(
+                "Wating for another user to enter the session",
+                style: customTextStyle.bodyMedium,
+              ),
+              Icon(Icons.hourglass_empty_rounded, color: customColors.primary),
+              Expanded(child: views[0]),
+            ],
+          )
+        : Stack(
+            children: [
+              // Add all other elements first
+              Column(
+                children: List.generate(views.length - 1, (index) {
+                  return Expanded(
+                    child: views[index + 1],
+                  );
+                }),
+              ),
+              // Add the first element last to make sure it's on top
+              myCameraView(views),
+            ],
+          );
+  }
+
+  double myCameraViewOnTop = 10;
+  double myCameraViewOnleft = 10;
+  void _onDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      myCameraViewOnTop += details.delta.dy;
+      myCameraViewOnleft += details.delta.dx;
+    });
+  }
+
+  Positioned myCameraView(List<StatefulWidget> views) {
+    return Positioned(
+      top: myCameraViewOnTop,
+      left: myCameraViewOnleft,
+      child: GestureDetector(
+        onPanUpdate: _onDragUpdate,
+        child: Container(
+          height: 200,
+          width: 150,
+          alignment: Alignment.topCenter,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(10), child: views[0]),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreens('Video Call', isFromScaffold: true),
-      body: SafeArea(
+      body: Center(
         child: Stack(
           children: [
-            AgoraVideoViewer(
-              client: _client,
-              layoutType: Layout.floating,
-              showNumberOfUsers: true,
-            ),
-            AgoraVideoButtons(
-              client: _client,
-            ),
+            _isInitialized
+                ? _viewRows()
+                : Center(
+                    child: CircularProgressIndicator(
+                    color: customColors.primary,
+                  )),
+            _toolbar(),
           ],
-        ),
+        ), // Show a loading indicator until initialized
+      ),
+    );
+  }
+
+  Widget _toolbar() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          muteButton(),
+          const SizedBox(
+            width: 20,
+          ),
+          callEndButton(),
+          const SizedBox(
+            width: 20,
+          ),
+          switchCameraButton(),
+          const SizedBox(
+            width: 20,
+          ),
+          muteVideoButton(),
+        ],
+      ),
+    );
+  }
+
+  FloatingActionButton muteVideoButton() {
+    return FloatingActionButton(
+      shape: const CircleBorder(),
+      onPressed: () => _onToggleVideo(),
+      heroTag: "btn3",
+      backgroundColor: viewPanel
+          ? customColors.primaryBackGround
+          : Colors.black54.withOpacity(0.3),
+      child: Icon(
+        viewPanel ? Icons.videocam_off : Icons.videocam,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  FloatingActionButton switchCameraButton() {
+    return FloatingActionButton(
+      shape: const CircleBorder(),
+      onPressed: _onSwitchCamera,
+      heroTag: "btn2",
+      backgroundColor: Colors.black54.withOpacity(0.3),
+      child: const Icon(Icons.switch_camera, color: Colors.white),
+    );
+  }
+
+  FloatingActionButton callEndButton() {
+    return FloatingActionButton(
+      shape: const CircleBorder(),
+      onPressed: () => _onCallEnd(context),
+      heroTag: "btn1",
+      backgroundColor: Colors.redAccent,
+      child: const Icon(Icons.call_end, color: Colors.white),
+    );
+  }
+
+  FloatingActionButton muteButton() {
+    return FloatingActionButton(
+      shape: const CircleBorder(),
+      onPressed: () => _onToggleMute(),
+      backgroundColor: muted
+          ? customColors.primaryBackGround
+          : Colors.black54.withOpacity(0.3),
+      child: Icon(
+        muted ? Icons.mic_off : Icons.mic,
+        color: Colors.white,
       ),
     );
   }

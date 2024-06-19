@@ -197,9 +197,9 @@ class InitializerWidget extends StatelessWidget {
           return const BottomNavigationWidget();
         }
       }
-      // return const DesignHidderRegisterPage();
+      return const DesignHidderRegisterPage();
 
-      return WelcomeScreen();
+      // return WelcomeScreen();
     });
   }
 }
