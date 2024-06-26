@@ -119,4 +119,11 @@ class AppString {
       "2-An administrator will contact you shortly to arrange the transfer.";
   static String moneyDescriptionForUser1 =
       "1-Enter the amount in Syrian Pounds.";
+
+  static String medicalDescriptionForUser1 =
+      "1-Confidentiality: Ensure that all patient information is kept confidential and secure, and only shared with the patient's explicit consent or as required by law.";
+  static String medicalDescriptionForUser2 =
+      "2-Accuracy: Provide accurate, clear, and evidence-based medical descriptions that reflect a thorough assessment of the patient.";
+  static String medicalDescriptionForUser3 =
+      "3-Professional Conduct: Maintain high standards of professional conduct, ethical behavior, and up-to-date knowledge in the field of psychology.";
 }

@@ -1,8 +1,8 @@
 class ServerConfig {
-  // static const String url = "http://127.0.0.1:3000/";
+  static const String url = "http://127.0.0.1:3000/";
   static const String imageUrl = '${url}storage/';
-  static const String url =
-      "http://192.168.100.13:3000/"; //for mobile with ip config.
+  // static const String url =
+      // "http://192.168.100.13:3000/"; //for mobile with ip config.
 
   static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';
@@ -37,4 +37,6 @@ class ServerConfig {
   static const String getPatientrequestUri = 'appointment/request/clinic';
   static const String acceptPatientrequest = 'appointment/request/';
   static const String rejectPatientrequest = 'appointment/request/';
+  static const String createMedicalRecordsUri = 'specs/medicalRecords';
+  static const String getAllMedicalRecordsUri = 'specs/medicalRecords/';
 }

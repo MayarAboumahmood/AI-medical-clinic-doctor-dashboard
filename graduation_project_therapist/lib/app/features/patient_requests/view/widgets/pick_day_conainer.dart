@@ -5,7 +5,14 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class PickDayContainer extends StatefulWidget {
   final void Function(String selectedDate)? whatBlocShouldDoOnTap;
-  const PickDayContainer({super.key, required this.whatBlocShouldDoOnTap});
+  final double paddingInVertical;
+  final double paddingInHorizontal;
+
+  const PickDayContainer(
+      {super.key,
+      required this.whatBlocShouldDoOnTap,
+      this.paddingInVertical = 15,
+      this.paddingInHorizontal = 10});
 
   @override
   State<PickDayContainer> createState() => _PickDayContainerState();
@@ -54,7 +61,9 @@ class _PickDayContainerState extends State<PickDayContainer> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          padding: EdgeInsets.symmetric(
+              vertical: widget.paddingInVertical,
+              horizontal: widget.paddingInHorizontal),
           child: Row(
             children: [
               Text(

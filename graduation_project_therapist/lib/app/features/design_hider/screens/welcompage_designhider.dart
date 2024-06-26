@@ -17,8 +17,10 @@ class DesignHidderRegisterPage extends StatelessWidget {
           child: BlocListener<SignInCubit, SignInState>(
         listener: (context, state) {
           if (state is SuccessRequest) {
+            // navigationService.navigationOfAllPagesToName(
+            //     context, bottomNavigationBar);
             navigationService.navigationOfAllPagesToName(
-                context, bottomNavigationBar);
+                context, medicalDescriptionPage);
           }
         },
         child: BlocBuilder<SignInCubit, SignInState>(
@@ -28,9 +30,6 @@ class DesignHidderRegisterPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(
-                    height: responsiveUtil.screenHeight * .1,
-                  ),
                   GestureDetector(
                     onTap: () {
                       signInCubit.userEmail = 'mab026550@gmail.com';
@@ -50,9 +49,6 @@ class DesignHidderRegisterPage extends StatelessWidget {
                             ),
                           ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
                   GestureDetector(
                     onTap: () {
                       signInCubit.userEmail = 'abmayar208@gmail.com';
@@ -71,9 +67,6 @@ class DesignHidderRegisterPage extends StatelessWidget {
                                   style: customTextStyle.bodyMedium),
                             ),
                           ),
-                  ),
-                  const SizedBox(
-                    height: 15,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -101,6 +94,21 @@ class DesignHidderRegisterPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: Text('go to Chat Page',
+                            style: customTextStyle.bodyMedium),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigationService.navigateTo(medicalDescriptionPage);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: customColors.primary,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text('go to medical Description Page',
                             style: customTextStyle.bodyMedium),
                       ),
                     ),

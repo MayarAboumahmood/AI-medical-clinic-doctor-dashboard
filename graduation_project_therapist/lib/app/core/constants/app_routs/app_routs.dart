@@ -12,6 +12,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/design_hider
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/view/screens/doctor_employment_requests_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_all_therapists_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_my_therapists_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/view/screens/medical_description_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
@@ -48,6 +49,7 @@ const String walletPage = '/WalletPage';
 const String doctorEmploymentRequestsPage = '/DoctorEmploymentRequestsPage';
 const String designHider = '/designHider';
 const String videoCallPage = '/VideoCallPage';
+const String medicalDescriptionPage = '/medicalDescriptionPage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -75,4 +77,5 @@ final Map<String, WidgetBuilder> routes = {
       const DoctorEmploymentRequestsPage(),
   designHider: (context) => const DesignHidderRegisterPage(),
   videoCallPage: (context) => VideoCallPage(),
+  medicalDescriptionPage: (context) => const MedicalDescriptionPage(),
 };

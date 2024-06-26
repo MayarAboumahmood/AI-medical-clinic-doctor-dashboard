@@ -44,9 +44,13 @@ makeIsisEndUserSessionVarFalseAfterTheSnackBarClosed() {
 
 String endUserSession(BuildContext context, String title) {
   if (!isEndUserSession) {
-    if (title == 'jwt expired' ||
+    if (title == 'jwt expired.' ||
+        title == 'User not found.' ||
+        title == 'Not allowed.' ||
+        title == 'jwt expired' ||
         title == 'User not found' ||
         title == 'Not allowed' ||
+        title == 'No Token Provided.' ||
         title == 'No Token Provided') {
       logOut();
       logOutClearBloc(context);
