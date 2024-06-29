@@ -10,16 +10,25 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   UserProfileCubit({required this.patientsProfileRepositoryImp})
       : super(UserProfileInitial());
   final PatientsProfileRepositoryImp patientsProfileRepositoryImp;
-  PatientProfileModel? patientProfileModel;
-
+  int cachedPatientID = -1;
   void getUserProfile(int patientID) async {
+    cachedPatientID = patientID;
     emit(UserProfileLoadingState());
     final getData =
         await patientsProfileRepositoryImp.getPatientsProfile(patientID);
     getData.fold(
         (errorMessage) =>
             emit(UserProfileErrorState(errorMessage: errorMessage)),
-        (data) => UserProfileGetData(patientProfileModel: data));
-    emit(UserProfileGetData(patientProfileModel: patientProfileModel!));
+        (data) => emit(UserProfileGetData(patientProfileModel: data)));
+  }
+
+  void assignPatientToTherapist(int therapistID) async {
+    emit(AssignPatientToTherapistLoadingState());
+    final getData = await patientsProfileRepositoryImp.assignPatientToTherapist(
+        cachedPatientID, therapistID);
+    getData.fold(
+        (errorMessage) => emit(
+            AssignPatientToTherapistErrorState(errorMessage: errorMessage)),
+        (data) => emit(PatientAssignedToTherapistState()));
   }
 }

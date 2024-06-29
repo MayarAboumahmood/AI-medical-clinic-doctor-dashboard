@@ -32,7 +32,8 @@ class MessageCard extends StatelessWidget {
       case MessageTypeEnum.text:
         return GestureDetector(
           onLongPress: () {
-            showGuestDialog(context, time, day, text ?? 'Unknown'.tr());
+            showMessageDetailsDialog(
+                context, time, day, text ?? 'Unknown'.tr());
           },
           child: BubbleSpecialOne(
             text: '$text\n$time',
@@ -55,7 +56,7 @@ class MessageCard extends StatelessWidget {
       BuildContext context, String time, String day) {
     return GestureDetector(
       onLongPress: () {
-        showGuestDialog(context, time, day, 'Image'.tr());
+        showMessageDetailsDialog(context, time, day, 'Image'.tr());
       },
       onTap: () {
         Navigator.push(
@@ -103,7 +104,6 @@ class MessageCard extends StatelessWidget {
 }
 
 String formatTime(String timeString) {
-  
   try {
     DateFormat inputFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime = inputFormat.parse(timeString);
@@ -127,7 +127,7 @@ String getDayFromDate(String timeString) {
   }
 }
 
-void showGuestDialog(
+void showMessageDetailsDialog(
     BuildContext context, String time, String day, String text) {
   showDialog(
     context: context,

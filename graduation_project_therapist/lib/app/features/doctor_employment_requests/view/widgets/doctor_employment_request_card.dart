@@ -95,8 +95,7 @@ GestureDetector buildDoctorRequestName(
     DoctorEmploymentRequestModel doctorEmploymentRequestModel) {
   return GestureDetector(
     onTap: () {
-      // navigationService.navigateTo(userProfilePage,
-      //     arguments: getTherapistModel.id);
+
     },
     child: Text(
         doctorEmploymentRequestModel.doctorName

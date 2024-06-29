@@ -13,28 +13,7 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   String? selectedTime;
   String? selectedDay;
 
-  List<PatientRequestModel> cachedUserRequests = [
-    PatientRequestModel(
-      id: 1,
-      userName: "John Doe",
-      userInfo: "Lorem consectetur adipiscing elit.",
-      userImage: "https://via.placeholder.com/150",
-    ),
-    PatientRequestModel(
-      id: 2,
-      userName: "Jane Smith",
-      userInfo:
-          "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      userImage: "https://via.placeholder.com/150",
-    ),
-    PatientRequestModel(
-      id: 3,
-      userName: "Alice Johnson",
-      userInfo:
-          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      userImage: "https://via.placeholder.com/150",
-    ),
-  ];
+  List<PatientRequestModel> cachedUserRequests = [];
   void setSelectedTime(String newSelectedTime) {
     selectedTime = newSelectedTime;
   }

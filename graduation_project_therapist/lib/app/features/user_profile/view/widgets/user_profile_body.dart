@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/therapist_dialog.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -22,17 +23,49 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
       SizedBox(height: responsiveUtil.screenHeight * .1),
       Align(
         alignment: Alignment.center,
-        child: GeneralButtonOptions(
-            text: 'Go to User medical record'.tr(),
-            onPressed: () {
-              customSnackBar('TODO', context, isFloating: true);
-            },
-            options: ButtonOptions(
-                color: customColors.primary,
-                textStyle: customTextStyle.bodyMedium)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            isDoctor
+                ? assignTherapistbutton(context)
+                : sendRequestToPatientbutton(context),
+            goToMedicalRecordsButton(context),
+          ],
+        ),
       )
     ],
   );
+}
+
+GeneralButtonOptions sendRequestToPatientbutton(BuildContext context) {
+  return GeneralButtonOptions(
+      text: 'Assign a Therapist for this patient'.tr(),
+      onPressed: () {
+        showTherapistDialog(
+            context); //Todo: show a dialog with all the data the therapist should send to set an appontmint.
+      },
+      options: ButtonOptions(
+          color: customColors.primary, textStyle: customTextStyle.bodyMedium));
+}
+
+GeneralButtonOptions assignTherapistbutton(BuildContext context) {
+  return GeneralButtonOptions(
+      text: 'Assign a Therapist for this patient'.tr(),
+      onPressed: () {
+        showTherapistDialog(context);
+      },
+      options: ButtonOptions(
+          color: customColors.primary, textStyle: customTextStyle.bodyMedium));
+}
+
+GeneralButtonOptions goToMedicalRecordsButton(BuildContext context) {
+  return GeneralButtonOptions(
+      text: 'Go to User medical records'.tr(),
+      onPressed: () {
+        customSnackBar('TODO', context, isFloating: true);
+      },
+      options: ButtonOptions(
+          color: customColors.primary, textStyle: customTextStyle.bodyMedium));
 }
 
 Divider profilePageDivider() {

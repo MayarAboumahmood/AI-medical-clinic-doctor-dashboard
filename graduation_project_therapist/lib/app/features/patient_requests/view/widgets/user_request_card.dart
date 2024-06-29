@@ -21,17 +21,17 @@ Widget userRequestCard(
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage: NetworkImage(patientRequestModel.userImage),
-              ),
-              const SizedBox(width: 16),
-              Text(patientRequestModel.userName,
+              // CircleAvatar(
+              //   radius: 24,
+              //   backgroundImage: NetworkImage('patientRequestModel.userImage'),
+              // ),
+              // const SizedBox(width: 16),
+              Text(patientRequestModel.patientName,
                   style: customTextStyle.bodyLarge),
             ],
           ),
           const SizedBox(height: 16),
-          expandedDescription(context, patientRequestModel.userInfo,
+          expandedDescription(context, patientRequestModel.description,
               backGroundColor: customColors.secondaryBackGround),
           const SizedBox(height: 16),
           Row(

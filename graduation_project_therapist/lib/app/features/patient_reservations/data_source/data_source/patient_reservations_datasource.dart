@@ -22,4 +22,22 @@ class PatientReservationsDataSource {
         'geting all PatientReservations datasource: ${response.statusCode}');
     return response;
   }
+
+  Future<Response> cancelPatientReservations(
+      int reservationID, String description) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(
+        '${ServerConfig.url}${ServerConfig.cancelPatientReservationUri}$reservationID');
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      body: {"description": description},
+      headers: headers,
+    );
+    debugPrint('geting all PatientReservations datasource: ${response.body}');
+    debugPrint(
+        'geting all PatientReservations datasource: ${response.statusCode}');
+    return response;
+  }
 }

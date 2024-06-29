@@ -52,7 +52,7 @@ class RegistrationDataCompleteRemoteDataSourceImp
       request.fields['cityId'] =
           getCityId(completeRegisterModel.selectedCity!).toString();
       request.fields['address'] =
-          getCityId(completeRegisterModel.locationInfo!).toString();
+          completeRegisterModel.locationInfo!;
     }
     List<int> listOFMedicalSpecialtyID = [];
     for (String medicalSpecialty

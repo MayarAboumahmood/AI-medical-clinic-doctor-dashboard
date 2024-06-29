@@ -12,6 +12,10 @@ final class PatientReservationsLoadingState extends PatientReservationsState {
   @override
   List<Object?> get props => [];
 }
+final class CancelOnPatientReservationLoadingState extends PatientReservationsState {
+  @override
+  List<Object?> get props => [];
+}
 
 final class PatientReservationApprovedSuccessfullyState
     extends PatientReservationsState {
@@ -31,6 +35,12 @@ final class PatientReservationCanceledSuccessfullyState
 final class PatientReservationErrorState extends PatientReservationsState {
   final String errorMessage;
   PatientReservationErrorState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+final class CancelPatientReservationErrorState extends PatientReservationsState {
+  final String errorMessage;
+  CancelPatientReservationErrorState({required this.errorMessage});
   @override
   List<Object?> get props => [errorMessage];
 }

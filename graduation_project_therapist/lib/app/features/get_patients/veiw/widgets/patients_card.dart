@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
+
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel
-    ) {
+Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel) {
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
@@ -20,11 +20,11 @@ Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildTherapistNameAndImage(getPatientsModel),
+          buildPatientNameAndImage(getPatientsModel),
           const SizedBox(height: 16),
-          expandedDescription(
-              context, getPatientsModel.specialistProfile.specInfo,
-              backGroundColor: Colors.transparent),
+          // expandedDescription(
+          //     context, getPatientsModel.specInfo,
+          //     backGroundColor: Colors.transparent),
           const SizedBox(height: 16),
         ],
       ),
@@ -103,11 +103,11 @@ GeneralButtonOptions cancelLogOutButton(BuildContext context) {
   );
 }
 
-GestureDetector buildTherapistNameAndImage(GetPatientsModel getTherapistModel) {
+GestureDetector buildPatientNameAndImage(GetPatientsModel patientsModel) {
   return GestureDetector(
     onTap: () {
-      // navigationService.navigateTo(userProfilePage,
-      //     arguments: getTherapistModel.id);
+      navigationService.navigateTo(userProfilePage,
+          arguments: patientsModel.id);
     },
     child: Row(
       children: [
@@ -116,15 +116,14 @@ GestureDetector buildTherapistNameAndImage(GetPatientsModel getTherapistModel) {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
-                url: getTherapistModel.specialistProfile.photo,
+                url: 'patientsModel.photo',
                 width: 65,
                 height: 65,
                 fit: BoxFit.cover),
           ),
         ),
         const SizedBox(width: 16),
-        Text(getTherapistModel.specialistProfile.fullName,
-            style: customTextStyle.bodyLarge),
+        Text(patientsModel.name, style: customTextStyle.bodyLarge),
       ],
     ),
   );

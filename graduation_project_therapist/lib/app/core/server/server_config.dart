@@ -41,4 +41,6 @@ class ServerConfig {
   static const String getAllMedicalRecordsUri = 'specs/medicalRecords/';
   static const String getPatientsUri = 'specs/patients';
   static const String getPatientsProfileUri = 'specs/patients/';//... id/profile
+  static const String cancelPatientReservationUri = 'appointment/cancellation/';
+  static const String assignPatientToTherapistUri = 'specs/assignment/';
 }

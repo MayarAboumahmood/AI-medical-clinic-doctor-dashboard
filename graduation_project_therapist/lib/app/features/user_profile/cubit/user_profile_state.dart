@@ -20,6 +20,22 @@ final class UserProfileLoadingState extends UserProfileState {
   List<Object?> get props => [];
 }
 
+final class AssignPatientToTherapistLoadingState extends UserProfileState {
+  @override
+  List<Object?> get props => [];
+}
+final class PatientAssignedToTherapistState extends UserProfileState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class AssignPatientToTherapistErrorState extends UserProfileState {
+  final String errorMessage;
+  AssignPatientToTherapistErrorState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
 final class UserProfileErrorState extends UserProfileState {
   final String errorMessage;
   UserProfileErrorState({required this.errorMessage});

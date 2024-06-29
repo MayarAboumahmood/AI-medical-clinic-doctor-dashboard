@@ -36,10 +36,12 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
       listener: (context, state) {
         if (state is PatientReservationErrorState) {
           customSnackBar(state.errorMessage, context);
+        } else if (state is CancelPatientReservationErrorState) {
+          customSnackBar(state.errorMessage, context);
         } else if (state is PatientReservationApprovedSuccessfullyState) {
-          customSnackBar('session confirmed Successfully', context);
+          customSnackBar('Appontment confirmed Successfully', context);
         } else if (state is PatientReservationCanceledSuccessfullyState) {
-          customSnackBar('session rejected Successfully', context);
+          customSnackBar('Appontment canceled Successfully', context);
         }
       },
       child: patientReservationssPage(context),
@@ -61,7 +63,8 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
             return patientReservationssListBody(
                 context, state.patientReservationModels);
           } else if (state is PatientReservationApprovedSuccessfullyState ||
-              state is PatientReservationCanceledSuccessfullyState) {
+              state is PatientReservationCanceledSuccessfullyState ||
+              state is CancelPatientReservationErrorState) {
             return patientReservationssListBody(
                 context, patientReservationsCubit.cachedPatientReservations);
           }
@@ -85,11 +88,11 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: patientReservationsModels.isEmpty
               ? Center(
-                child: buildNoElementInPage(
-                  'No Reservation yet. Please Check Back Later!',
-                  Icons.hourglass_empty_rounded,
-                ),
-              )
+                  child: buildNoElementInPage(
+                    'No Reservation yet. Please Check Back Later!',
+                    Icons.hourglass_empty_rounded,
+                  ),
+                )
               : Column(children: [
                   ...List.generate(
                     patientReservationsModels.length,

@@ -34,4 +34,27 @@ class PatientReservationsRepositoryImp {
       return left('Server Error');
     }
   }
+
+  Future<Either<String, String>> cancelPatientReservations(
+      int reservationID, String description) async {
+    try {
+      final response = await _patientReservationsDataSource
+          .cancelPatientReservations(reservationID, description);
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200||response.statusCode == 201) {
+        return right('done');
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in cancel Patient reservations repo: $e');
+      return left('Server Error');
+    }
+  }
 }

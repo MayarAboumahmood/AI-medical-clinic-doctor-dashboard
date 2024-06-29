@@ -37,6 +37,8 @@ import 'package:graduation_project_therapist_dashboard/app/features/registration
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/r_d_c_data_sorce.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/repo/registration_data_complete_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/patient_profile_data_source.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/repo/patient_profile_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/cubit/wallet_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/data_source/data_source/wallet_datasource.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/repo/wallet_repo.dart';
@@ -62,6 +64,8 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepositoryImpl>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<GetAllTherapistRepositoryImp>(
       () => GetAllTherapistRepositoryImp(sl()));
+  sl.registerLazySingleton<PatientsProfileRepositoryImp>(
+      () => PatientsProfileRepositoryImp(sl()));
   sl.registerLazySingleton<GetPatientsRepositoryImp>(
       () => GetPatientsRepositoryImp(sl()));
   sl.registerLazySingleton<MedicalDescriptionRepositoryImp>(
@@ -89,6 +93,8 @@ Future<void> init() async {
       () => AuthRemoteDataSourceImpl(client: http.Client()));
   sl.registerLazySingleton<HomePageDataSource>(
       () => HomePageDataSource(client: http.Client()));
+  sl.registerLazySingleton<PatientProfileDataSource>(
+      () => PatientProfileDataSource(client: http.Client()));
   sl.registerLazySingleton<GetAllTherapistDataSource>(
       () => GetAllTherapistDataSource(client: http.Client()));
   sl.registerLazySingleton<GetPatientsDataSource>(

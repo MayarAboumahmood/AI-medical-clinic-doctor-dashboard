@@ -35,9 +35,10 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
       listener: (context, state) {
         if (state is PatientRequestErrorState) {
           customSnackBar(state.errorMessage, context);
-        } else if (state is PatientRequestRejectedSuccessfullyState ||
-            state is PatientRequestApprovedSuccessfullyState) {
+        } else if (state is PatientRequestRejectedSuccessfullyState) {
           customSnackBar('session rejected Successfully', context);
+        } else if (state is PatientRequestApprovedSuccessfullyState) {
+          customSnackBar('session Approved Successfully', context);
         }
       },
       child: patientRequestsPage(context),

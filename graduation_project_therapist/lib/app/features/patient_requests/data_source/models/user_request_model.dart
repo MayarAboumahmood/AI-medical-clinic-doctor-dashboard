@@ -1,30 +1,35 @@
 class PatientRequestModel {
-  String userName;
-  String userInfo;
-  String userImage;
   int id;
+  bool? status;
+  String description;
+  String patientName;
+  String? proposedDate;
+
   PatientRequestModel({
-    required this.userName,
-    required this.userInfo,
-    required this.userImage,
     required this.id,
+    this.status,
+    required this.description,
+    required this.patientName,
+    this.proposedDate,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'userName': userName,
-      'userInfo': userInfo,
-      'userImage': userImage,
-      'id': id,
-    };
+  factory PatientRequestModel.fromMap(Map<String, dynamic> json) {
+    return PatientRequestModel(
+      id: json['id'],
+      status: json['status'],
+      description: json['description'],
+      patientName: json['patientName'],
+      proposedDate: json['proposedDate'],
+    );
   }
 
-  factory PatientRequestModel.fromMap(Map<String, dynamic> map) {
-    return PatientRequestModel(
-      userName: map['userName'] as String,
-      userInfo: map['userInfo'] as String,
-      userImage: map['userImage'] as String,
-      id: map['id'] as int,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'status': status,
+      'description': description,
+      'patientName': patientName,
+      'proposedDate': proposedDate,
+    };
   }
 }

@@ -21,7 +21,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   initState() {
     userProfileCubit = context.read<UserProfileCubit>();
-
     super.initState();
   }
 
@@ -38,20 +37,32 @@ class _UserProfilePageState extends State<UserProfilePage> {
     }
   }
 
+  PatientProfileModel? localPatientProfileModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       body: BlocConsumer<UserProfileCubit, UserProfileState>(
         listener: (context, state) {
+          print('the state in the user profile:$state');
           if (state is UserProfileErrorState) {
+            customSnackBar(state.errorMessage, context);
+          } else if (state is PatientAssignedToTherapistState) {
+            customSnackBar('Patient Assigned successfully', context);
+          } else if (state is AssignPatientToTherapistErrorState) {
             customSnackBar(state.errorMessage, context);
           }
         },
         builder: (context, state) {
+          print('the state in the user profile:$state');
+
           if (state is UserProfileLoadingState) {
             return offerAndNewOpiningShimmer();
+          } else if (state is AssignPatientToTherapistErrorState ||
+              state is PatientAssignedToTherapistState) {
+            return userProfileSilverAppBar(localPatientProfileModel!);
           } else if (state is UserProfileGetData) {
+            localPatientProfileModel = state.patientProfileModel;
             return userProfileSilverAppBar(state.patientProfileModel);
           }
           return offerAndNewOpiningShimmer();

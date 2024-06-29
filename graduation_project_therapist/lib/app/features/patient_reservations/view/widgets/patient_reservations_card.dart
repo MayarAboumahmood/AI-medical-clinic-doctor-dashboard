@@ -6,11 +6,14 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/expanded_description.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
+
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 Widget patientReservationCard(
     BuildContext context, PatientReservationModel patientReservationModel) {
@@ -28,15 +31,13 @@ Widget patientReservationCard(
         children: [
           buildUserNameAndImage(patientReservationModel),
           const SizedBox(height: 16),
-          expandedDescription(context, patientReservationModel.prefNote,
-              backGroundColor: Colors.transparent),
+          // expandedDescription(context, patientReservationModel.description,
+          //     backGroundColor: Colors.transparent),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               enterSessionButton(context, patientReservationModel),
-              const SizedBox(width: 8),
-              updateButton(context, patientReservationModel),
               const SizedBox(width: 8),
               cancelButton(context, patientReservationModel.id),
             ],
@@ -57,8 +58,8 @@ GeneralButtonOptions enterSessionButton(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
           ? () {
-           navigationService.navigateTo(chatPage); 
-          }
+              navigationService.navigateTo(chatPage);
+            }
           : () {
               customSnackBar('Not available yet', context, isFloating: true);
             },
@@ -96,14 +97,14 @@ GestureDetector buildUserNameAndImage(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
-                url: patientReservationModel.userImage ?? '',
+                url: 'patientReservationModel.userImage',
                 width: 65,
                 height: 65,
                 fit: BoxFit.cover),
           ),
         ),
         const SizedBox(width: 16),
-        Text(patientReservationModel.userName,
+        Text(patientReservationModel.patientName,
             style: customTextStyle.bodyLarge),
       ],
     ),
@@ -133,57 +134,98 @@ Widget buildCancelPatientRequestBottomSheet(
     BuildContext context, int reservationID) {
   PatientReservationsCubit patientReservationsCubit =
       context.read<PatientReservationsCubit>();
-
-  return Container(
-    padding: const EdgeInsets.all(20),
-    height: 160,
-    decoration: BoxDecoration(
-      color: customColors.primaryBackGround,
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
+  String cancelReason = '';
+  return BlocListener<PatientReservationsCubit, PatientReservationsState>(
+    listener: (context, state) {
+      if (state is CancelPatientReservationErrorState ||
+          state is PatientReservationCanceledSuccessfullyState) {
+        navigationService.goBack();
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.all(20),
+      height: responsiveUtil.screenHeight * .32,
+      decoration: BoxDecoration(
+        color: customColors.primaryBackGround,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
       ),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Are you sure you want to cancel this reservation?'.tr(),
-            style: customTextStyle.bodyMedium),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(customColors.primary),
-              ),
-              onPressed: () {
-                patientReservationsCubit
-                    .cancelOnPatientReservation(reservationID);
-                navigationService.goBack();
-              },
-              child: Text(
-                'Yes'.tr(),
-                style: customTextStyle.bodyMedium,
-              ),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(customColors.error),
-              ),
-              onPressed: () {
-                // Handle Reject Action
-                Navigator.pop(context); // Close the bottom sheet
-              },
-              child: Text(
-                'No'.tr(),
-                style: customTextStyle.bodyMedium,
-              ),
+            Text('Are you sure you want to cancel this reservation?'.tr(),
+                style: customTextStyle.bodyMedium),
+            const SizedBox(height: 20),
+            customTextField(
+                validator: (_) {//TODO: check this out the validation not wroking.
+                  return ValidationFunctions.informationValidation(
+                      cancelReason);
+                },
+                hintText: "If yes tall us why?",
+                context: context,
+                onChanged: (value) {
+                  cancelReason = value!;
+                },
+                label: 'description'),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                BlocBuilder<PatientReservationsCubit, PatientReservationsState>(
+                  builder: (context, state) {
+                    bool isLoading =
+                        state is CancelOnPatientReservationLoadingState &&
+                            patientReservationsCubit.cahcedReservationID ==
+                                reservationID;
+                    return ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(customColors.primary),
+                      ),
+                      onPressed: () {
+                        FormState? formState = formKey.currentState;
+                        if (formState!.validate()) {
+                          formState.save();
+
+                          patientReservationsCubit.cancelOnPatientReservation(
+                              reservationID, cancelReason);
+                        }
+                      },
+                      child: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(
+                              'Yes'.tr(),
+                              style: customTextStyle.bodyMedium,
+                            ),
+                    );
+                  },
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(customColors.error),
+                  ),
+                  onPressed: () {
+                    // Handle Reject Action
+                    Navigator.pop(context); // Close the bottom sheet
+                  },
+                  child: Text(
+                    'No'.tr(),
+                    style: customTextStyle.bodyMedium,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     ),
   );
 }

@@ -32,7 +32,7 @@ class PatientRequestsDataSource {
 
     var response = await http.post(
       url,
-      body: {'date': date},
+      body: {'date': "$date $time"},
       headers: headers,
     );
 

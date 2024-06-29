@@ -106,7 +106,6 @@ Widget smallSizeCardShimmer() {
                     margin: const EdgeInsets.symmetric(
                       vertical: 8.0,
                     ),
-
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8)),

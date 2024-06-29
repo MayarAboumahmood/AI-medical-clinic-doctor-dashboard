@@ -26,31 +26,39 @@ Widget patientRequestCard(
         children: [
           buildUserNameAndImage(patientRequestModel),
           const SizedBox(height: 16),
-          expandedDescription(context, patientRequestModel.userInfo,
+          expandedDescription(context, patientRequestModel.description,
               backGroundColor: Colors.transparent),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GeneralButtonOptions(
-                  text: "Accept".tr(),
-                  onPressed: () async {
-                    await showBottomSheetWidget(
-                        context,
-                        SelectTimeDateBottomSheet(
-                            requestID: patientRequestModel.id));
-                  },
-                  options: ButtonOptions(
-                      color: customColors.primary,
-                      textStyle: customTextStyle.bodyMedium
-                          .copyWith(color: Colors.white))),
-              const SizedBox(width: 8),
-              rejectButton(context, patientRequestModel.id),
-            ],
-          ),
+          isDoctor
+              ? patientRequestModel.status == true
+                  ? pendingText()
+                  : buttonRow(context, patientRequestModel)
+              : pendingText(),
         ],
       ),
     ),
+  );
+}
+
+Text pendingText() => Text('Pending'.tr(), style: customTextStyle.bodyMedium);
+
+Row buttonRow(BuildContext context, PatientRequestModel patientRequestModel) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      GeneralButtonOptions(
+          text: "Accept".tr(),
+          onPressed: () async {
+            await showBottomSheetWidget(context,
+                SelectTimeDateBottomSheet(requestID: patientRequestModel.id));
+          },
+          options: ButtonOptions(
+              color: customColors.primary,
+              textStyle:
+                  customTextStyle.bodyMedium.copyWith(color: Colors.white))),
+      const SizedBox(width: 8),
+      rejectButton(context, patientRequestModel.id),
+    ],
   );
 }
 
@@ -67,14 +75,14 @@ GestureDetector buildUserNameAndImage(PatientRequestModel patientRequestModel) {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
-                url: patientRequestModel.userImage,
+                url: 'patientRequestModel.userImage',
                 width: 65,
                 height: 65,
                 fit: BoxFit.cover),
           ),
         ),
         const SizedBox(width: 16),
-        Text(patientRequestModel.userName, style: customTextStyle.bodyLarge),
+        Text(patientRequestModel.patientName, style: customTextStyle.bodyLarge),
       ],
     ),
   );

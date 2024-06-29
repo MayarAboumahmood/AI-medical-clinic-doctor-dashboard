@@ -37,7 +37,7 @@ class GetPatientsCubit extends Cubit<GetPatientsState> {
       searchedPatientsModels.clear();
 
       for (var i in getPatientsModels) {
-        if (i.specialistProfile.fullName.toLowerCase().contains(searchWord)) {
+        if (i.name.toLowerCase().contains(searchWord)) {
           searchedPatientsModels.add(i);
         }
       }

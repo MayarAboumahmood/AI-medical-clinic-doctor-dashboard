@@ -194,8 +194,7 @@ GestureDetector buildTherapistNameAndImage(
     GetTherapistModel getTherapistModel) {
   return GestureDetector(
     onTap: () {
-      // navigationService.navigateTo(userProfilePage,
-      //     arguments: getTherapistModel.id);
+
     },
     child: Row(
       children: [

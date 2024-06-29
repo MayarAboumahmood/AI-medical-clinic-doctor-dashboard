@@ -22,4 +22,22 @@ class PatientProfileDataSource {
     debugPrint('geting patient profile datasource: ${response.statusCode}');
     return response;
   }
+
+  Future<Response> assignPatientToTherapist(
+      int patientID, int therapistID) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url =
+        Uri.parse(ServerConfig.url + ServerConfig.assignPatientToTherapistUri);
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      body: {"userId": patientID.toString(), "specId": therapistID.toString()},
+      headers: headers,
+    );
+    debugPrint('assign Patient To Therapist datasource: ${response.body}');
+    debugPrint(
+        'assign Patient To Therapist datasource: ${response.statusCode}');
+    return response;
+  }
 }
