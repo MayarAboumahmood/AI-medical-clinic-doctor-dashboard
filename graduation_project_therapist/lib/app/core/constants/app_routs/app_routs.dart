@@ -14,6 +14,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/get_all_ther
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_my_therapists_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/veiw/screens/get_patients_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/view/screens/medical_description_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/view/screens/medical_descriptions_list_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/change_password_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/edite_profile/edite_profile_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/help_center_screen.dart';
@@ -52,6 +53,7 @@ const String designHider = '/designHider';
 const String videoCallPage = '/VideoCallPage';
 const String medicalDescriptionPage = '/medicalDescriptionPage';
 const String getPatientsPage = '/GetPatientsPage';
+const String medicalDescriptionsList = '/MedicalDescriptionsList';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -81,4 +83,5 @@ final Map<String, WidgetBuilder> routes = {
   videoCallPage: (context) => VideoCallPage(),
   medicalDescriptionPage: (context) => const MedicalDescriptionPage(),
   getPatientsPage: (context) => const GetPatientsPage(),
+  medicalDescriptionsList: (context) => const MedicalDescriptionsList(),
 };

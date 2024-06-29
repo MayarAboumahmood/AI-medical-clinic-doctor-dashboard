@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/data_source/m_d_data_source.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/all_medical_records_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/medical_description_model.dart';
 
 class MedicalDescriptionRepositoryImp {
@@ -32,15 +33,21 @@ class MedicalDescriptionRepositoryImp {
       return left('Server Error');
     }
   }
-  Future<Either<String, String>> getAllMedicalRecords(
+
+  Future<Either<String, List<AllMedicalRecordsModel>>> getAllMedicalRecords(
       int patientId) async {
     try {
-      final response = await _medicalDescriptionSource
-          .getAllMedicalRecords(patientId);
+      final response =
+          await _medicalDescriptionSource.getAllMedicalRecords(patientId);
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return right('done');
+        final List<dynamic> data = decodedResponse['data'];
+
+        List<AllMedicalRecordsModel> allMedicalRecordsModel =
+            data.map((item) => AllMedicalRecordsModel.fromJson(item)).toList();
+
+        return right(allMedicalRecordsModel);
       } else if (response.statusCode == 500) {
         if (decodedResponse['error'] == 'jwt expired') {
           return left('jwt expired');

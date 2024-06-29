@@ -68,6 +68,7 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
           customSnackBar(state.errorMessage, context);
         } else if (state is CreateMedicalDescriptionSuccessState) {
           customSnackBar('the Description created successfully', context);
+          navigationService.goBack();
         }
       },
       child: Scaffold(

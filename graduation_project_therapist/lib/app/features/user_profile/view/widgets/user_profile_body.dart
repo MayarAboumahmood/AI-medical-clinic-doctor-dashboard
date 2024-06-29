@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/therapist_dialog.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
@@ -59,10 +61,12 @@ GeneralButtonOptions assignTherapistbutton(BuildContext context) {
 }
 
 GeneralButtonOptions goToMedicalRecordsButton(BuildContext context) {
+  int patientID = context.read<UserProfileCubit>().cachedPatientID;
   return GeneralButtonOptions(
       text: 'Go to User medical records'.tr(),
       onPressed: () {
-        customSnackBar('TODO', context, isFloating: true);
+        navigationService.navigateTo(medicalDescriptionsList,
+            arguments: patientID);
       },
       options: ButtonOptions(
           color: customColors.primary, textStyle: customTextStyle.bodyMedium));
