@@ -17,8 +17,9 @@ class PatientRequestsDataSource {
       url,
       headers: headers,
     );
-    debugPrint('geting all therapist datasource: ${response.body}');
-    debugPrint('geting all therapist datasource: ${response.statusCode}');
+    debugPrint('patient request therapist datasource token token: $token');
+    debugPrint('patient request therapist datasource: ${response.body}');
+    debugPrint('patient request therapist datasource: ${response.statusCode}');
     return response;
   }
 

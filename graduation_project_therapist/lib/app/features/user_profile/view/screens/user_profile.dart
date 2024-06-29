@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/user_profile_body.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -42,7 +43,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       body: BlocConsumer<UserProfileCubit, UserProfileState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is UserProfileErrorState) {
+            customSnackBar(state.errorMessage, context);
+          }
+        },
         builder: (context, state) {
           if (state is UserProfileLoadingState) {
             return offerAndNewOpiningShimmer();
@@ -55,7 +60,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  Widget userProfileSilverAppBar(PatientProfileModel PatientProfileModel) {
+  Widget userProfileSilverAppBar(PatientProfileModel patientProfileModel) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -66,19 +71,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
           backgroundColor: customColors.secondaryBackGround,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            title: Text(PatientProfileModel.name,
+            title: Text(patientProfileModel.data.fullName,
                 style: customTextStyle.headlineMedium
                     .copyWith(color: Colors.white)),
             background: getImageNetwork(
-                url: PatientProfileModel.image ??
-                    'https://via.placeholder.com/150',
+                url: 'https://via.placeholder.com/150',
                 fit: BoxFit.cover,
                 width: responsiveUtil.screenWidth,
                 height: responsiveUtil.screenHeight * .25),
           ),
         ),
         SliverToBoxAdapter(
-          child: userProfileBody(PatientProfileModel, context),
+          child: userProfileBody(patientProfileModel, context),
         ),
       ],
     );

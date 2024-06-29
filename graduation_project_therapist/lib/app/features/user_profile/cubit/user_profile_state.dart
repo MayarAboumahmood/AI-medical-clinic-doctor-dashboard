@@ -19,3 +19,10 @@ final class UserProfileLoadingState extends UserProfileState {
   @override
   List<Object?> get props => [];
 }
+
+final class UserProfileErrorState extends UserProfileState {
+  final String errorMessage;
+  UserProfileErrorState({required this.errorMessage});
+  @override
+  List<Object?> get props => [];
+}

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chats_users_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/view/screens/home_page_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
@@ -54,7 +53,8 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       isGuest == true
           ? GuestWidget()
           : userStatus == UserStatusEnum.verified
-              ? const ChatsUsersPage()
+              ? const SizedBox()
+              // const ChatsUsersPage()
               : YourDataNotCompletedYetPage(),
       isGuest == true
           ? GuestWidget()

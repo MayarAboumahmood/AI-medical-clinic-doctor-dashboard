@@ -1,7 +1,7 @@
 class AppString {
   static String activate = "Activate";
   static String addCustomPhoto = "Add Custom Photo";
-  static String bookWithEase = 'Book With Ease';
+  static String weAreHere = "We're here for you 24/7,";
   static String byjoining =
       "By joining, I agree to Tables' Terms of Use & Data Privacy Center ";
   static String camera = "Camera";
@@ -9,8 +9,8 @@ class AppString {
   static String continueAsGuest = 'Continue as guest';
   static String continueButton = "Continue";
   static String continueWithFacebook = "Continue with Facebook ";
-  static String discoverAVariety =
-      'Discover a variety of great dining and entertainment options at your fingertips.';
+  static String allDataEncrypted =
+      'All your data is securely encrypted and confidential.';
 
   static String emailAdress = 'Email Adress';
   static String enableFingerPrint = "Enable Fingerprint";
@@ -21,7 +21,7 @@ class AppString {
       "Enter a strong password for your account";
   static String enterWhereDoYouLive = "Please enter where do you live";
   static String enterYourLocation = "Enter your location";
-  static String explore = 'Explore Great Options';
+  static String privacyIsPriority = 'Your privacy is our top priority';
   static String firstName = 'First Name';
   static String gallery = "Gallery";
   static String helloWord = 'Hello Word';
@@ -31,9 +31,9 @@ class AppString {
   static String linkWithFacebook = "Link with Facebook ";
   static String mobilePhone = '+963  Mobile Phone';
   static String profilePicture = "Profile Picture";
-  static String readyToReserve = 'Ready To Reserve?';
-  static String reserveYourTable =
-      'Reserve your table or spot with ease, all at the touch of a button.';
+  static String feelSafeSharing = 'Feel safe sharing';
+  static String providingASecure =
+      'providing a secure and supportive environment for your therapy needs.';
 
   static String sendNewCode = "Send me a new code ";
   static String password = "Password";
@@ -65,8 +65,8 @@ class AppString {
   static String validationphonefirstThreeNumber =
       "The phone number should start with 963";
   static String wichOne = "Which one are you?";
-  static String youAreAllSet =
-      'You\'re all set to reserve and enjoy your next outing. Let\'s get started';
+  static String protectYourPersonalInformation =
+      'our app uses advanced security measures to protect your personal information.';
 
   static String youCanSelectPhoto =
       "You can select photo from one of this emoji or add your own photo as profile picture";

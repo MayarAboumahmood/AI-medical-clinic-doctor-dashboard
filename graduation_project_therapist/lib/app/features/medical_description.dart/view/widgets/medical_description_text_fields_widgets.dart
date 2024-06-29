@@ -95,7 +95,7 @@ Padding medicalFamilyHistoryColumn(BuildContext context) {
 Padding medicalConditionColumn(BuildContext context) {
   MedicalDescriptionCubit medicalDescriptionCubit =
       context.read<MedicalDescriptionCubit>();
-  
+
   return textFieldsColumn(
     context,
     customTextField(

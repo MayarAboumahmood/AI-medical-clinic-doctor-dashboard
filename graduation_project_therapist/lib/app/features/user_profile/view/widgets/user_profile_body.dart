@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -9,23 +9,15 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      infoSection(
-          'Date of Birth', profile.dateOfBirth.toIso8601String().split('T')[0]),
+      infoSection('Date of Birth', profile.data.dateOfBirth),
       profilePageDivider(),
-      infoSection('Relationship Status', profile.relationshipState),
+      infoSection('Relationship Status', profile.data.maritalStatus),
       profilePageDivider(),
-      infoSection('Number of Kids', profile.numberOfKids.toString()),
+      infoSection('Number of Kids', profile.data.children.toString()),
       profilePageDivider(),
-      infoSection('Current Work', profile.currentWork),
-      profile.workHoursPerDay != null ? profilePageDivider() : const SizedBox(),
-      profile.workHoursPerDay != null
-          ? infoSection(
-              'Work Hours per Day', profile.workHoursPerDay.toString())
-          : const SizedBox(),
-      profile.placeOfWork != null ? profilePageDivider() : const SizedBox(),
-      profile.placeOfWork != null
-          ? infoSection('Place of Work', profile.currentWork)
-          : const SizedBox(),
+      infoSection('Current Work', profile.data.placeOfWork),
+      infoSection('Work Hours per Day', profile.data.hoursOfWork.toString()),
+      infoSection('Place of Work', profile.data.profession),
       profilePageDivider(),
       SizedBox(height: responsiveUtil.screenHeight * .1),
       Align(

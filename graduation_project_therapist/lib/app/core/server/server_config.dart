@@ -2,7 +2,7 @@ class ServerConfig {
   static const String url = "http://127.0.0.1:3000/";
   static const String imageUrl = '${url}storage/';
   // static const String url =
-      // "http://192.168.100.13:3000/"; //for mobile with ip config.
+  // "http://192.168.100.13:3000/"; //for mobile with ip config.
 
   static const String baseURL = url;
   static const String baseURLForSearch = '$url/api/';
@@ -20,7 +20,7 @@ class ServerConfig {
   static const String resetPassword = 'specs/password/reset';
   static const String deleteAccountURL = 'specs/delete';
   static const String getAllNotificationURL = 'get_notifications';
-  static const String getAllTherapists = 'specs/';
+  static const String getAllTherapists = 'specs';
   static const String getMyTherapists = 'specs/clinic/employees';
   static const String assignTherapist = 'specs/employmentRequests/send';
   static const String removeTherapist = 'specs/clinic/employees/';
@@ -31,12 +31,14 @@ class ServerConfig {
       'specs/employmentRequests';
   static const String approveDoctorEmploymentRequestsuri =
       'specs/employmentRequests';
-  static const String getAppointmentsuri = 'appointment/clinic';
+  static const String getAppointmentsuri = 'appointment/specialist';
   static const String cancelAppointment =
       'appointment/cancellation/'; //here the id.
-  static const String getPatientrequestUri = 'appointment/request/clinic';
+  static const String getPatientrequestUri = 'appointment/request/specialist';
   static const String acceptPatientrequest = 'appointment/request/';
   static const String rejectPatientrequest = 'appointment/request/';
   static const String createMedicalRecordsUri = 'specs/medicalRecords';
   static const String getAllMedicalRecordsUri = 'specs/medicalRecords/';
+  static const String getPatientsUri = 'specs/patients';
+  static const String getPatientsProfileUri = 'specs/patients/';//... id/profile
 }

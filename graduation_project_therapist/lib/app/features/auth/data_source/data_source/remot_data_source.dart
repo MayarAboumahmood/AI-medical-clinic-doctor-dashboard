@@ -122,6 +122,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'password': password.trim(),
     });
     var response = await http.post(url, headers: headers, body: body);
+    debugPrint('login response body: ${response.body}');
+    debugPrint('login response status: ${response.statusCode}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       final decodedResponse = jsonDecode(response.body);
       isGuest = false;

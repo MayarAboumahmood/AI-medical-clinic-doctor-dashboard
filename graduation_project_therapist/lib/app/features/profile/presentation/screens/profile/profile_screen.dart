@@ -137,6 +137,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profilePageDivider(),
                 isDoctor ? doctorColumn() : therapistColumn(),
                 accountChoiceWidget(
+                    title: "Patients".tr(),
+                    icon: Icons.people,
+                    onTap: () {
+                      navigationService.navigateTo(getPatientsPage);
+                    }),
+                accountChoiceWidget(
                     title: "Wallet".tr(),
                     icon: Icons.account_balance_wallet_outlined,
                     onTap: () {
