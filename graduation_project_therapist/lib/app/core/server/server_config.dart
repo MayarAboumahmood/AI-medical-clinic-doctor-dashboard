@@ -1,5 +1,7 @@
 class ServerConfig {
-  static const String url = "http://127.0.0.1:3000/";
+  // static const String url = "http://127.0.0.1:3000/";
+  static const String url = "https://backend-cznw.onrender.com/";//the server
+
   static const String imageUrl = '${url}storage/';
   // static const String url =
   // "http://192.168.100.13:3000/"; //for mobile with ip config.
@@ -43,4 +45,6 @@ class ServerConfig {
   static const String getPatientsProfileUri = 'specs/patients/';//... id/profile
   static const String cancelPatientReservationUri = 'appointment/cancellation/';
   static const String assignPatientToTherapistUri = 'specs/assignment/';
+  static const String getMedicalRecordDetailsUri = 'specs/medicalRecords/getRecord/';
+  static const String therapistRequestToPateintUri = 'appointment/request/specialist/createRequest';
 }

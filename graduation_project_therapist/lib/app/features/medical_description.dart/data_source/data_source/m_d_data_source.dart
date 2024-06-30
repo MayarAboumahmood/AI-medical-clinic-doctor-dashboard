@@ -42,4 +42,20 @@ class MedicalDescriptionSource {
         'get all Medical Description datasource: ${response.statusCode}');
     return response;
   }
+
+  getMedicalDescriptionDetails(int medicalDescriptionID) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(
+        '${ServerConfig.url}${ServerConfig.getMedicalRecordDetailsUri}$medicalDescriptionID');
+    var headers = {'Authorization': token};
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    debugPrint('get all Medical Description datasource: ${response.body}');
+    debugPrint(
+        'get all Medical Description datasource: ${response.statusCode}');
+    return response;
+  }
 }

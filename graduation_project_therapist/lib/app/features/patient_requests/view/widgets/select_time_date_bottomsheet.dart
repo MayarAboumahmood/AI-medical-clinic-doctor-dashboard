@@ -85,21 +85,27 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
     );
   }
 
-  GeneralButtonOptions doneButton(BuildContext context) {
-    return GeneralButtonOptions(
-      text: 'Done'.tr(),
-      options: ButtonOptions(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: customColors.primary,
-          width: 1,
-        ),
-        color: customColors.primary,
-        textStyle: customTextStyle.bodyMedium,
-      ),
-      onPressed: () async {
-        navigationService.goBack();
-        patientRequestsCubit.acceptPatientRequest(widget.requestID);
+  Widget doneButton(BuildContext context) {
+    return BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
+      builder: (context, state) {
+        bool isLoading = state is PatientRequestAcceptLoadingState;
+        return GeneralButtonOptions(
+          text: 'Done'.tr(),
+          loading: isLoading,
+          options: ButtonOptions(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: customColors.primary,
+              width: 1,
+            ),
+            color: customColors.primary,
+            textStyle: customTextStyle.bodyMedium,
+          ),
+          onPressed: () async {
+            navigationService.goBack();
+            patientRequestsCubit.acceptPatientRequest(widget.requestID);
+          },
+        );
       },
     );
   }

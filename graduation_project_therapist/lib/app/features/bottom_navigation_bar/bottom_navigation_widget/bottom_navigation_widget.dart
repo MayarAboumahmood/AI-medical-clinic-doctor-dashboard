@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_patients/veiw/screens/get_patients_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/view/screens/home_page_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
@@ -59,7 +60,9 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       isGuest == true
           ? GuestWidget()
           : userStatus == UserStatusEnum.verified
-              ? const PatientRequestsPage()
+              ? isDoctor
+                  ? const PatientRequestsPage()
+                  : const GetPatientsPage()
               : YourDataNotCompletedYetPage(),
       isGuest == true
           ? GuestWidget()
@@ -122,8 +125,13 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                         index: 1),
                     iconPagesButton(
                         context: context,
-                        icon:
-                            _currentPage == 2 ? Icons.repeat_on : Icons.repeat,
+                        icon: isDoctor
+                            ? _currentPage == 2
+                                ? Icons.repeat_on
+                                : Icons.repeat
+                            : _currentPage == 2
+                                ? Icons.people_alt_outlined
+                                : Icons.people,
                         currentPage: _currentPage,
                         index: 2),
                     iconPagesButton(

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/repo/chat_repo.dart';
 
 import 'package:pubnub/pubnub.dart';
 
@@ -17,6 +18,7 @@ String subscribeKey = 'sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043';
 String secretKey = 'sec-c-MDdiNWFiYzAtY2I1ZS00MTYxLTk4MGEtMGE5YjA2Y2Y5ZWMw';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
+  ChatRepositoryImp chatRepositoryImp;
   late PubNub pubnub;
   final int userID = 2;
   Uint8List? imageToSend;
@@ -33,7 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   List<MessageModel> messages = [];
 
-  ChatBloc() : super(ChatInitial()) {
+  ChatBloc({required this.chatRepositoryImp}) : super(ChatInitial()) {
     channelName = assignChannelName(userID, user2ID);
     pubnub = PubNub(
       defaultKeyset: Keyset(
@@ -246,8 +248,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(GotAllChatsState(chatsCardsModels));
       });
     });
+
+    on<GetChatInformation>((event, emit) async {
+      final getData = await chatRepositoryImp.getChatInformation();
+      getData.fold((l) => emit(ChatErrorState(l)), (r) {
+        emit(GotChatInfoState());
+      });
+    });
+
     on<GetAllMessagesEvent>((event, emit) async {
       emit(ChatsLoadingState());
+
       await getAllMessages(emit);
     });
   }

@@ -25,7 +25,7 @@ Future<dynamic> termOfUseBottomSheet(BuildContext context) {
                   height: 20,
                 ),
                 Text(
-                  'Tables" App Usage Policy'.tr(),
+                  'SmartTherapies" App Usage Policy'.tr(),
                   style: customTextStyle.bodyLarge.copyWith(
                     color: customColors.text2,
                     fontSize: 20,
@@ -56,8 +56,9 @@ Future<dynamic> termOfUseBottomSheet(BuildContext context) {
                 const SizedBox(
                   height: 10,
                 ),
-                middelTitle('5. Intellectual Property Rights'.tr()),
+                middelTitle('5. Intellectual Property'.tr()),
                 normalDescription(AppString.intellectualPropertyRights),
+                normalDescription(AppString.intellectualPropertyRights2),
                 const SizedBox(
                   height: 10,
                 ),
@@ -67,32 +68,17 @@ Future<dynamic> termOfUseBottomSheet(BuildContext context) {
                 const SizedBox(
                   height: 10,
                 ),
-                middelTitle('7. Restaurant Booking and Payment'.tr()),
-                normalDescription(AppString.restaurantBookingPayment),
-                const SizedBox(
-                  height: 10,
-                ),
-                middelTitle('8. Cancellation and Refund'.tr()),
+                middelTitle('7. Cancellation and Refund'.tr()),
                 normalDescription(AppString.cancellationAndRefund),
                 const SizedBox(
                   height: 10,
                 ),
-                middelTitle('9. Privacy and Data Protection'.tr()),
-                normalDescription(AppString.privacyAndDataProtection),
-                const SizedBox(
-                  height: 10,
-                ),
-                middelTitle('10. Amendments to the Terms'.tr()),
-                normalDescription(AppString.amendmentsToTheTerms),
-                const SizedBox(
-                  height: 10,
-                ),
-                middelTitle('11. Disclaimer and Limitations'.tr()),
+                middelTitle('8. Disclaimer and Limitations'.tr()),
                 normalDescription(AppString.disclaimerAndLimitations),
                 const SizedBox(
                   height: 10,
                 ),
-                middelTitle('12. Contact and Support'.tr()),
+                middelTitle('9. Contact and Support'.tr()),
                 normalDescription(AppString.contactAndSupportPartOne),
                 const SizedBox(
                   height: 10,

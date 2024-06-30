@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/all_medical_records_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/medical_description_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/medical_details_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/repo/medical_description_repo.dart';
 
 part 'medical_description_state.dart';
@@ -58,5 +59,17 @@ class MedicalDescriptionCubit extends Cubit<MedicalDescriptionState> {
             GetAllMedicalDescriptionsErrorState(errorMessage: errorMessage)),
         (done) => emit(GetAllMedicalDescriptionsSuccessState(
             allMedicalDescriptions: done)));
+  }
+
+  void getMedicalDescriptionDetails(int medicalDescriptionID) async {
+    emit(GetAllMedicalDescriptionsLoadingState());
+
+    final getData = await medicalDescriptionRepositoryImp
+        .getMedicalDescriptionDetails(medicalDescriptionID);
+    getData.fold(
+        (errorMessage) => emit(
+            GetAllMedicalDescriptionsErrorState(errorMessage: errorMessage)),
+        (done) => emit(GetMedicalDescriptionsDetailsSuccessState(
+            medicalDescriptionModel: done)));
   }
 }

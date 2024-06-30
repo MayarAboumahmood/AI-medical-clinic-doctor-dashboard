@@ -20,7 +20,12 @@ Widget myTherapistToAssignCard(
           height: 50,
         ),
       ),
-      trailing: assignButton(context, getTherapistModel.id),
+      trailing: getTherapistModel.status
+          ? Text(
+              'Already assign'.tr(),
+              style: customTextStyle.bodyMedium,
+            )
+          : assignButton(context, getTherapistModel.id),
       title: Text(
         getTherapistModel.specialistProfile.fullName,
         style: customTextStyle.bodyLarge,

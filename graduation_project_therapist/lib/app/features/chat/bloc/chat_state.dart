@@ -52,6 +52,11 @@ class ChatErrorState extends ChatState {
   List<Object?> get props => [errorMessage];
 }
 
+class GotChatInfoState extends ChatState {
+  GotChatInfoState();
+  @override
+  List<Object?> get props => [];
+}
 class GotAllChatsState extends ChatState {
   final List<ChatCardModel> chatsCardsModels;
 

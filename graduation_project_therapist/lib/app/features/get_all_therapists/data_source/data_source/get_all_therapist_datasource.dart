@@ -38,9 +38,15 @@ class GetAllTherapistDataSource {
     return response;
   }
 
-  Future<Response> getMyTherapist() async {
+  Future<Response> getMyTherapist(int patientID) async {
+    Uri url;
+    if (patientID != -10) {
+      url = Uri.parse(
+          '${ServerConfig.url}${ServerConfig.getMyTherapists}?userId=$patientID');
+    } else {
+      url = Uri.parse(ServerConfig.url + ServerConfig.getMyTherapists);
+    }
     String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.getMyTherapists);
     var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(

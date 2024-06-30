@@ -1,5 +1,6 @@
 class PatientRequestModel {
   int id;
+  int patientID;
   bool? status;
   String description;
   String patientName;
@@ -7,6 +8,7 @@ class PatientRequestModel {
 
   PatientRequestModel({
     required this.id,
+    required this.patientID,
     this.status,
     required this.description,
     required this.patientName,
@@ -16,6 +18,7 @@ class PatientRequestModel {
   factory PatientRequestModel.fromMap(Map<String, dynamic> json) {
     return PatientRequestModel(
       id: json['id'],
+      patientID: json['patientId'],
       status: json['status'],
       description: json['description'],
       patientName: json['patientName'],
@@ -30,6 +33,7 @@ class PatientRequestModel {
       'description': description,
       'patientName': patientName,
       'proposedDate': proposedDate,
+      'patientId': patientID,
     };
   }
 }

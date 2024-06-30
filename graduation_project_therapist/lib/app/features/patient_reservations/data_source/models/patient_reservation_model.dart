@@ -1,12 +1,13 @@
 class PatientReservationModel {
   String patientName;
   int id;
-
+  int patientID;
   String date;
 
   PatientReservationModel({
     required this.patientName,
     required this.id,
+    required this.patientID,
     required this.date,
   });
 
@@ -14,6 +15,7 @@ class PatientReservationModel {
     return PatientReservationModel(
       patientName: json['patientName'],
       id: json['id'],
+      patientID: json['patientId'],
       date: json['date'],
     );
   }

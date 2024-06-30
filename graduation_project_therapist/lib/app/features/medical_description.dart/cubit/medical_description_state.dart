@@ -36,6 +36,15 @@ final class GetAllMedicalDescriptionsSuccessState
   List<Object?> get props => [allMedicalDescriptions];
 }
 
+final class GetMedicalDescriptionsDetailsSuccessState
+    extends MedicalDescriptionState {
+  final MedicalDescriptionDetailsModel medicalDescriptionModel;
+  GetMedicalDescriptionsDetailsSuccessState(
+      {required this.medicalDescriptionModel});
+  @override
+  List<Object?> get props => [medicalDescriptionModel];
+}
+
 final class CreateMedicalDescriptionErrorState extends MedicalDescriptionState {
   final String errorMessage;
   CreateMedicalDescriptionErrorState({required this.errorMessage});

@@ -55,9 +55,9 @@ class GetAllTherapistRepositoryImp {
     }
   }
 
-  Future<Either<String, List<GetTherapistModel>>> getMyTherapist() async {
+  Future<Either<String, List<GetTherapistModel>>> getMyTherapist(int patientID) async {
     try {
-      final response = await _getAllTherapistDataSource.getMyTherapist();
+      final response = await _getAllTherapistDataSource.getMyTherapist(patientID);
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {

@@ -52,7 +52,6 @@ class _OTPCodeStepState extends State<OTPCodeStep> {
   @override
   void dispose() {
     super.dispose();
-    context.read<RegisterCubit>().clearRegisterCubit;
     timer.cancel();
   }
 

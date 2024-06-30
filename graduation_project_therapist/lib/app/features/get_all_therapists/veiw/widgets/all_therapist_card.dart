@@ -44,30 +44,34 @@ Widget allTherapistCard(BuildContext context,
                       : (state is RemoveTherapistLoadingState) &&
                           (therapistId == getTherapistModel.id);
 
-                  return GeneralButtonOptions(
-                      text: isGetAllTherapist ? "Assign".tr() : 'Remove'.tr(),
-                      onPressed: () {
-                        if (isGetAllTherapist) {
-                          getAllTherapistCubit
-                              .assignTherapist(getTherapistModel.id);
-                        } else {
-                          showBottomSheetWidget(
-                              context,
-                              removeEmploymentBottomSheet(
+                  return getTherapistModel.employmentRequests
+                      ? const SizedBox()
+                      : GeneralButtonOptions(
+                          text:
+                              isGetAllTherapist ? "Assign".tr() : 'Remove'.tr(),
+                          onPressed: () {
+                            if (isGetAllTherapist) {
+                              getAllTherapistCubit
+                                  .assignTherapist(getTherapistModel.id);
+                            } else {
+                              showBottomSheetWidget(
                                   context,
-                                  getTherapistModel.specialistProfile.fullName,
-                                  getTherapistModel.id));
-                        }
-                      },
-                      loading: isLoading,
-                      options: ButtonOptions(
-                          color: isGetAllTherapist
-                              ? (getTherapistModel.employmentRequests
-                                  ? customColors.primary
-                                  : customColors.accent1)
-                              : customColors.error,
-                          textStyle: customTextStyle.bodyMedium
-                              .copyWith(color: Colors.white)));
+                                  removeEmploymentBottomSheet(
+                                      context,
+                                      getTherapistModel
+                                          .specialistProfile.fullName,
+                                      getTherapistModel.id));
+                            }
+                          },
+                          loading: isLoading,
+                          options: ButtonOptions(
+                              color: isGetAllTherapist
+                                  ? (getTherapistModel.employmentRequests
+                                      ? customColors.primary
+                                      : customColors.accent1)
+                                  : customColors.error,
+                              textStyle: customTextStyle.bodyMedium
+                                  .copyWith(color: Colors.white)));
                 },
               ),
             ],
@@ -193,9 +197,7 @@ GeneralButtonOptions cancelLogOutButton(BuildContext context) {
 GestureDetector buildTherapistNameAndImage(
     GetTherapistModel getTherapistModel) {
   return GestureDetector(
-    onTap: () {
-
-    },
+    onTap: () {},
     child: Row(
       children: [
         Container(

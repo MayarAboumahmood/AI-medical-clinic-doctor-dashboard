@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-void showTherapistsDialog(BuildContext context,int patientID) {
+void therapistRequestToPatientDialog(BuildContext context, int patientID) {
   GetAllTherapistCubit getAllTherapistCubit =
       context.read<GetAllTherapistCubit>();
   getAllTherapistCubit.getMyTherapist(patientID);

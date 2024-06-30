@@ -5,6 +5,8 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/data_so
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/repository_imp/auth_repository_impl.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/data_source/data_source.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/repo/chat_repo.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/cubit/doctor_employment_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/data_source/data_source/d_e_r_datasource.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/repo/doctor_employment_requests_repo.dart';
@@ -64,6 +66,8 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepositoryImpl>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<GetAllTherapistRepositoryImp>(
       () => GetAllTherapistRepositoryImp(sl()));
+  sl.registerLazySingleton<ChatRepositoryImp>(
+      () => ChatRepositoryImp(sl()));
   sl.registerLazySingleton<PatientsProfileRepositoryImp>(
       () => PatientsProfileRepositoryImp(sl()));
   sl.registerLazySingleton<GetPatientsRepositoryImp>(
@@ -91,6 +95,8 @@ Future<void> init() async {
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(client: http.Client()));
+  sl.registerLazySingleton<ChatDataSource>(
+      () => ChatDataSource(client: http.Client()));
   sl.registerLazySingleton<HomePageDataSource>(
       () => HomePageDataSource(client: http.Client()));
   sl.registerLazySingleton<PatientProfileDataSource>(
@@ -126,7 +132,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => GetPatientsCubit(getPatientsRepositoryImp: sl()));
   sl.registerLazySingleton(() => WalletCubit(walletRepositoryImp: sl()));
-  sl.registerLazySingleton(() => ChatBloc());
+  sl.registerLazySingleton(() => ChatBloc(chatRepositoryImp: sl()));
   sl.registerLazySingleton(() => HomePageBloc(homePageRepositoryImp: sl()));
   sl.registerLazySingleton(() => DoctorEmploymentRequestsCubit(
       doctoreEmploymentRequestRepositoryImp: sl()));

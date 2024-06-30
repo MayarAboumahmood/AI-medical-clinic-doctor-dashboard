@@ -46,7 +46,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         listener: (context, state) {
           print('the state in the user profile:$state');
           if (state is UserProfileErrorState) {
-            customSnackBar(state.errorMessage, context);
+            customSnackBar(state.errorMessage, context, isFloating: true);
           } else if (state is PatientAssignedToTherapistState) {
             customSnackBar('Patient Assigned successfully', context);
           } else if (state is AssignPatientToTherapistErrorState) {

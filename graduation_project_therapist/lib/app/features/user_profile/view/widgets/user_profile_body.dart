@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/send_therapist_request_topatient.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/therapist_dialog.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -29,8 +30,8 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             isDoctor
-                ? assignTherapistbutton(context)
-                : sendRequestToPatientbutton(context),
+                ? assignTherapistbutton(context, profile.data.id)
+                : sendRequestToPatientbutton(context, profile.data.fullName),
             goToMedicalRecordsButton(context),
           ],
         ),
@@ -39,22 +40,23 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
   );
 }
 
-GeneralButtonOptions sendRequestToPatientbutton(BuildContext context) {
+GeneralButtonOptions sendRequestToPatientbutton(
+    BuildContext context, String patientName) {
   return GeneralButtonOptions(
-      text: 'Assign a Therapist for this patient'.tr(),
+      text: 'Send request for $patientName'.tr(),
       onPressed: () {
-        showTherapistDialog(
-            context); //Todo: show a dialog with all the data the therapist should send to set an appontmint.
+        therapistRequestToPatientDialog(context, 1);
       },
       options: ButtonOptions(
           color: customColors.primary, textStyle: customTextStyle.bodyMedium));
 }
 
-GeneralButtonOptions assignTherapistbutton(BuildContext context) {
+GeneralButtonOptions assignTherapistbutton(
+    BuildContext context, int patientID) {
   return GeneralButtonOptions(
       text: 'Assign a Therapist for this patient'.tr(),
       onPressed: () {
-        showTherapistDialog(context);
+        showTherapistsDialog(context, patientID);
       },
       options: ButtonOptions(
           color: customColors.primary, textStyle: customTextStyle.bodyMedium));

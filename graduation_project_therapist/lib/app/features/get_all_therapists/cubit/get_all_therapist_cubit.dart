@@ -59,9 +59,9 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     });
   }
 
-  void getMyTherapist() async {
+  void getMyTherapist(int patientID) async {
     emit(MyTherapistLoadingState());
-    final getData = await getAllTherapistRepositoryImp.getMyTherapist();
+    final getData = await getAllTherapistRepositoryImp.getMyTherapist(patientID);
     getData.fold((error) {
       emit(MyTherapistErrorState(errorMessage: error));
     }, (data) {

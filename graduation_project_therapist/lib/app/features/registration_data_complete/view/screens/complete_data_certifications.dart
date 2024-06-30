@@ -19,6 +19,7 @@ class CompleteCertificationsPage extends StatelessWidget {
     return BlocListener<RegistrationDataCompleteCubit,
         RegistrationDataCompleteState>(
       listener: (context, state) {
+        print('state in the complete data register: $state');
         if (state is RegistrationDataCompleteDoneSuccseflyState) {
           navigationService.navigationOfAllPagesToName(
               context, bottomNavigationBar);

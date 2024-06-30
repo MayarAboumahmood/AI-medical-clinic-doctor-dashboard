@@ -23,7 +23,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   String? imageName;
   Uint8List? selectedImage;
 
-  void clearRegisterCubit() {
+  void clearRegisterCubit() {//TODO: use this function.
     selectedDay = DateTime(2001, 1, 1);
     imageName = null;
     selectedImage = null;

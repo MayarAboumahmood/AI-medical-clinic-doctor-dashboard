@@ -88,7 +88,7 @@ GestureDetector buildUserNameAndImage(
   return GestureDetector(
     onTap: () {
       navigationService.navigateTo(userProfilePage,
-          arguments: patientReservationModel.id);
+          arguments: patientReservationModel.patientID);
     },
     child: Row(
       children: [

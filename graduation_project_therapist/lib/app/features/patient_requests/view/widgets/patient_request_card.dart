@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/select_time_date_bottomsheet.dart';
@@ -66,7 +68,7 @@ GestureDetector buildUserNameAndImage(PatientRequestModel patientRequestModel) {
   return GestureDetector(
     onTap: () {
       navigationService.navigateTo(userProfilePage,
-          arguments: patientRequestModel.id);
+          arguments: patientRequestModel.patientID);
     },
     child: Row(
       children: [
@@ -128,19 +130,27 @@ Widget buildRejectPatientRequestBottomSheet(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(customColors.primary),
-              ),
-              onPressed: () {
-                patientRequestsCubit.rejectPatientRequest(requestID);
-                navigationService.goBack();
+            BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
+              builder: (context, state) {
+                bool isLoading = state is PatientRequestRejectLoadingState;
+                return ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(customColors.primary),
+                  ),
+                  onPressed: () {
+                    patientRequestsCubit.rejectPatientRequest(requestID);
+                    navigationService.goBack();
+                  },
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(color: Colors.white))
+                      : Text(
+                          'Yes'.tr(),
+                          style: customTextStyle.bodyMedium,
+                        ),
+                );
               },
-              child: Text(
-                'Yes'.tr(),
-                style: customTextStyle.bodyMedium,
-              ),
             ),
             ElevatedButton(
               style: ButtonStyle(

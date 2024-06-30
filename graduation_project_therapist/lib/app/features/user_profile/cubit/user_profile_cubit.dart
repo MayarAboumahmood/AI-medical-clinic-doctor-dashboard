@@ -24,8 +24,21 @@ class UserProfileCubit extends Cubit<UserProfileState> {
 
   void assignPatientToTherapist(int therapistID) async {
     emit(AssignPatientToTherapistLoadingState());
+    print('slfdjksldkfjsdklfj$cachedPatientID kjsldfslkdjfslkdjf $therapistID');
     final getData = await patientsProfileRepositoryImp.assignPatientToTherapist(
         cachedPatientID, therapistID);
+    getData.fold(
+        (errorMessage) => emit(
+            AssignPatientToTherapistErrorState(errorMessage: errorMessage)),
+        (data) => emit(PatientAssignedToTherapistState()));
+  }
+
+  void therapistRequestToPateint(
+      String date, String time, int userId, String description) async {
+    emit(AssignPatientToTherapistLoadingState());
+
+    final getData = await patientsProfileRepositoryImp
+        .therapistRequestToPateint(date, time, userId, description);
     getData.fold(
         (errorMessage) => emit(
             AssignPatientToTherapistErrorState(errorMessage: errorMessage)),

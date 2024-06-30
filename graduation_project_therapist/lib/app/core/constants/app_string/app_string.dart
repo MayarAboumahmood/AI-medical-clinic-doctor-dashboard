@@ -3,7 +3,7 @@ class AppString {
   static String addCustomPhoto = "Add Custom Photo";
   static String weAreHere = "We're here for you 24/7,";
   static String byjoining =
-      "By joining, I agree to Tables' Terms of Use & Data Privacy Center ";
+      "By joining, I agree to SmartTherapi' Terms of Use & Data Privacy Center ";
   static String camera = "Camera";
   static String chooseSource = "Choose Source";
   static String continueAsGuest = 'Continue as guest';
@@ -77,11 +77,11 @@ class AppString {
   static String unfriendMessage =
       'Please remember that unfriending someone will remove them from your friend list, and you won\'t be able to see their private posts or interact as friends on this platform.';
   static String introduction =
-      'Tables is a digital platform specialized in marketing and booking tables in restaurants. We invite you to read these terms of use carefully to ensure your understanding and agreement with these terms before using the app.';
+      'Welcome to MedTherape, a medical therapy application designed to facilitate interaction between doctors and therapists. By accessing or using the MedTherape app, you agree to comply with and be bound by the following Terms of Use. Please review these terms carefully. If you do not agree to these terms, you should not use this app.';
   static String acceptanceOfTerms =
-      'By using the "Tables" app, you agree to comply with these terms of use. If you do not agree to these terms, you must immediately stop using the app.';
+      'By using the MedTherape app, you agree to these Terms of Use and our Privacy Policy. If you are using the app on behalf of an organization, you represent that you have the authority to bind that organization to these terms.';
   static String accountRegistrationAndSecurity1 =
-      '•  Account Creation: Accurate and complete information must be provided when creating your account, including your name, age, and mobile phone number.';
+      '•  Account Creation: Accurate and complete information must be provided when creating your account, including your name, age, and mobile phone number and other infor as required.';
 
   static String accountRegistrationAndSecurity2 =
       '•  Account Security: The user is responsible for maintaining the confidentiality of the password and any other registration information. The administration must be immediately informed of any unauthorized use of your account.';
@@ -90,18 +90,15 @@ class AppString {
   static String useOfTheApp2 =
       '•  Prohibited Content: It is prohibited to post or upload content that violates the rights of others, contains threats, obscenity, or breaches of public morals or ethics, or violates local and international laws.';
   static String intellectualPropertyRights =
-      '•  App Rights: All content on the app, including texts, graphics, and logos, is protected by intellectual property rights and belongs to the "Tables" app or to registered and accredited content and service providers on the app.';
+      'All content and materials available on the app, including but not limited to text, graphics, logos, and software, are the property of MedTherape or its licensors and are protected by intellectual property laws.';
+  static String intellectualPropertyRights2 =
+      'You may not use, reproduce, or distribute any content from the app without our express written permission.';
   static String registrationAsServiceProvider1 =
       '•  Service Provider Registration: Registration as a service provider requires compliance with all national laws and regulations governing consumer protection, commercial competition, and other relevant laws.';
   static String registrationAsServiceProvider2 =
       '•  Service Provider Agreement: Registration as a service provider on the app requires a separate usage agreement with the app.';
-  static String restaurantBookingPayment =
-      '•  Booking Process: Tables are booked through the app, and users must verify the booking details accurately before completing the process. Deposit: To complete the booking, a deposit determined by the restaurant service provider is required, which is deducted from the final bill. Deposit Calculation: The deposit is calculated based on the number of people according to the service provider\'s policy. Payment Methods: Payments for bookings are made using approved and secure electronic payment methods.';
   static String cancellationAndRefund =
       '•  Cancellation Policy: Cancellation operations are subject to the cancellation policy set by the restaurant and may be subject to fees or restrictions. Refunds: In case of approval of cancellation, refunds are made according to the specified terms, after deducting any applicable fees.';
-
-  static String privacyAndDataProtection =
-      '•  Data Protection: The app is committed to protecting the privacy and personal data of users. Data Use: Collected data is used to improve the experience on the app and provide personalized services.';
 
   static String amendmentsToTheTerms =
       '•  Changes to Terms: The app reserves the right to modify the terms of use at any time. Continued use of the app after any modifications constitutes agreement to these changes.';
@@ -110,7 +107,7 @@ class AppString {
   static String contactAndSupportPartOne =
       '•  Support: For any inquiries or concerns regarding the terms of use, please contact the app\'s support team.';
   static String contactAndSupportPartTwo =
-      'By using the "Tables" app, you acknowledge and agree to comply with these terms.';
+      'By using the "SmartTherape" app, you acknowledge and agree to comply with these terms.';
   static String signUpBooking =
       "Sign up for special deals, events and other updates from restaurant's name.";
   static String moneyDescriptionForUser3 =

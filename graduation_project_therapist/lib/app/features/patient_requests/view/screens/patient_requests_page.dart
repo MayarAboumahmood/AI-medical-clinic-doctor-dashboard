@@ -57,7 +57,9 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
             return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {
             return patientRequestsListBody(context, state.patientRequestModels);
-          } else if (state is PatientRequestApprovedSuccessfullyState) {
+          } else if (state is PatientRequestApprovedSuccessfullyState ||
+              state is PatientRequestRejectLoadingState ||
+              state is PatientRequestAcceptLoadingState) {
             return patientRequestsListBody(
                 context, patientRequestsCubit.cachedUserRequests);
           } else if (state is PatientRequestRejectedSuccessfullyState) {
@@ -74,8 +76,8 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
       BuildContext context, List<PatientRequestModel> patientRequestModels) {
     return customRefreshIndicator(
         refreshPatientRequests,
-        SizedBox(
-          height: responsiveUtil.screenHeight * .7,
+        Expanded(
+          // height: responsiveUtil.screenHeight * .7,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: patientRequestModels.isEmpty

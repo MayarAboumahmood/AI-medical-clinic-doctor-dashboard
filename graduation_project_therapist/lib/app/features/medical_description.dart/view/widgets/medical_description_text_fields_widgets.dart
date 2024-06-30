@@ -148,3 +148,19 @@ Padding medicalDiagnosisColumn(BuildContext context) {
         controller: medicalDescriptionCubit.treatmentPlanController),
   );
 }
+
+Widget medicalInfoTextColumn(String firstText, String secondText) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        firstText,
+        style: customTextStyle.bodyMedium,
+      ),
+      Text(
+        secondText,
+        style: customTextStyle.bodyMedium,
+      ),
+    ]),
+  );
+}

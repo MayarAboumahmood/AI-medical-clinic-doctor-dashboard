@@ -39,6 +39,10 @@ class GetAllChatsEvent extends ChatEvent {
   List<Object?> get props => [];
 }
 
+class GetChatInformation extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}
 class GetAllMessagesEvent extends ChatEvent {
   @override
   List<Object?> get props => [];

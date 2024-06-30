@@ -26,7 +26,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
   Widget build(BuildContext context) {
     GetAllTherapistCubit getAllTherapistCubit =
         context.read<GetAllTherapistCubit>();
-    getAllTherapistCubit.getMyTherapist();
+    getAllTherapistCubit.getMyTherapist(-10);
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreensForSearch(
@@ -100,7 +100,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
           )
         : customRefreshIndicator(
             () async {
-              getMyTherapistCubit.getMyTherapist();
+              getMyTherapistCubit.getMyTherapist(-10);
             },
             SizedBox(
               height: responsiveUtil.screenHeight * .7,
