@@ -37,5 +37,8 @@ class NavigationService {
     return navigatorKey.currentState!.pop();
   }
 
-
+  Future<dynamic> replaceWith(String routeName, {Object? arguments}) {
+    return navigatorKey.currentState!
+        .pushReplacementNamed(routeName, arguments: arguments);
+  }
 }

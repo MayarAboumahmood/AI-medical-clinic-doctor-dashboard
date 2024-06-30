@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/repo/patient_profile_repo.dart';
@@ -30,11 +31,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     getData.fold(
         (errorMessage) => emit(
             AssignPatientToTherapistErrorState(errorMessage: errorMessage)),
-        (data) => emit(PatientAssignedToTherapistState()));
+        (data) => emit(PatientAssignedToTherapistState(isRequest: false)));
   }
 
-  void therapistRequestToPateint(
-      String date, String time, int userId, String description) async {
+  String date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String time = DateFormat("h:mm a").format(DateTime.now());
+  String description = '';
+  void therapistRequestToPateint(int userId) async {
     emit(AssignPatientToTherapistLoadingState());
 
     final getData = await patientsProfileRepositoryImp
@@ -42,6 +45,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     getData.fold(
         (errorMessage) => emit(
             AssignPatientToTherapistErrorState(errorMessage: errorMessage)),
-        (data) => emit(PatientAssignedToTherapistState()));
+        (data) => emit(PatientAssignedToTherapistState(isRequest: true)));
   }
 }

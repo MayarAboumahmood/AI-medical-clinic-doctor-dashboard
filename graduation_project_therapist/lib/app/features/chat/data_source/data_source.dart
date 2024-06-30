@@ -8,15 +8,16 @@ class ChatDataSource {
   http.Client client;
   ChatDataSource({required this.client});
 
-  Future<Response> getChatInformation() async {
+  Future<Response> getChatInformation(int patientId) async {
     String token = sharedPreferences!.getString('token') ?? '';
-    var url =
-        Uri.parse(ServerConfig.url + ServerConfig.createMedicalRecordsUri);
+    var url = Uri.parse(
+        ServerConfig.url + ServerConfig.getChatInfoUri + patientId.toString());
     var headers = {'Authorization': token};
     var response = await http.get(
       url,
       headers: headers,
     );
+    debugPrint('chat info Description tttttttttttttttttttt: ${token}');
     debugPrint('chat info Description datasource: ${response.body}');
     debugPrint('chat info Description datasource: ${response.statusCode}');
     return response;

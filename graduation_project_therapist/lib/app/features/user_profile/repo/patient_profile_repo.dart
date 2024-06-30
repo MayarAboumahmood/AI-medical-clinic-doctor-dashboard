@@ -64,7 +64,7 @@ class PatientsProfileRepositoryImp {
           .therapistRequestToPateint(date, time, userId, description);
       final decodedResponse = jsonDecode(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return right('done');
       } else if (response.statusCode == 500) {
         if (decodedResponse['error'] == 'jwt expired') {

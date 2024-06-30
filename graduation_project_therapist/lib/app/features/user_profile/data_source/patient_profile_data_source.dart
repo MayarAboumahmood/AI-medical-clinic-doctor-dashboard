@@ -48,12 +48,19 @@ class PatientProfileDataSource {
     var url =
         Uri.parse(ServerConfig.url + ServerConfig.therapistRequestToPateintUri);
     var headers = {'Authorization': token};
-
+    var body = {
+      'date': '${date + ' ' + time}',
+      'userId': userId.toString(),
+      "description": description
+    };
     var response = await http.post(
       url,
-      body: {'date': '', 'userId': '', "description": ''},
+      body: body,
       headers: headers,
     );
+    debugPrint(
+        'therapist Request To Pateint datasource:toke ntoekntkle jr lk ${token}');
+    debugPrint('therapist Request To Pateint datasource: ${body}');
     debugPrint('therapist Request To Pateint datasource: ${response.body}');
     debugPrint(
         'therapist Request To Pateint datasource: ${response.statusCode}');

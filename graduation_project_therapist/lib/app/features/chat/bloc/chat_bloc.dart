@@ -20,6 +20,8 @@ String secretKey = 'sec-c-MDdiNWFiYzAtY2I1ZS00MTYxLTk4MGEtMGE5YjA2Y2Y5ZWMw';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatRepositoryImp chatRepositoryImp;
   late PubNub pubnub;
+  late Channel myChannel;
+
   final int userID = 2;
   Uint8List? imageToSend;
   int chunkSize = 20;
@@ -36,7 +38,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   List<MessageModel> messages = [];
 
   ChatBloc({required this.chatRepositoryImp}) : super(ChatInitial()) {
-    channelName = assignChannelName(userID, user2ID);
+    // channelName = assignChannelName(userID, user2ID);
     pubnub = PubNub(
       defaultKeyset: Keyset(
         subscribeKey: subscribeKey,
@@ -98,11 +100,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         debugPrint('Error processing messages: $e');
       }
     });
-    final Channel myChannel = pubnub.channel(channelName);
 
     on<LoadEarlierMessagesEvent>((event, emit) async {
       emit(LoadingEarlierMessagesState());
       chunkSize += 20;
+      myChannel = pubnub.channel(channelName);
       PaginatedChannelHistory history = myChannel.history(chunkSize: chunkSize);
       try {
         await history.more(); // This fetches the next page of messages
@@ -164,6 +166,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _subscription = pubnub.subscribe(channels: {channelName});
     });
     Future<void> getAllMessages(Emitter<ChatState> emit) async {
+      print('ssssssssssssssssssssss: the envelop: $channelName');
+
+      myChannel = pubnub.channel(channelName);
       PaginatedChannelHistory history = myChannel.history(chunkSize: 20);
       await history.more();
       try {
@@ -250,8 +255,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
 
     on<GetChatInformation>((event, emit) async {
-      final getData = await chatRepositoryImp.getChatInformation();
-      getData.fold((l) => emit(ChatErrorState(l)), (r) {
+      final getData =
+          await chatRepositoryImp.getChatInformation(event.patientID);
+      getData.fold((l) => emit(ChatErrorState(l)), (chatInfoModel) {
+        channelName = chatInfoModel.data.channelName;
+        print('the channel name from the bloc: $channelName');
         emit(GotChatInfoState());
       });
     });

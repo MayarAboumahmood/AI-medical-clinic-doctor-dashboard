@@ -40,9 +40,12 @@ class GetAllChatsEvent extends ChatEvent {
 }
 
 class GetChatInformation extends ChatEvent {
+  final int patientID;
+  GetChatInformation({required this.patientID});
   @override
   List<Object?> get props => [];
 }
+
 class GetAllMessagesEvent extends ChatEvent {
   @override
   List<Object?> get props => [];

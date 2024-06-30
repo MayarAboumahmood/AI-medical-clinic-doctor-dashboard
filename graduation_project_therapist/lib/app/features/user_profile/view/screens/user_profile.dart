@@ -48,7 +48,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
           if (state is UserProfileErrorState) {
             customSnackBar(state.errorMessage, context, isFloating: true);
           } else if (state is PatientAssignedToTherapistState) {
-            customSnackBar('Patient Assigned successfully', context);
+            state.isRequest
+                ? customSnackBar('The request has been sent', context)
+                : customSnackBar('Patient Assigned successfully', context);
           } else if (state is AssignPatientToTherapistErrorState) {
             customSnackBar(state.errorMessage, context);
           }

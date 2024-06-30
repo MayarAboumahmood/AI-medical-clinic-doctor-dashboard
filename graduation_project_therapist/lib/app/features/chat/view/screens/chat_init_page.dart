@@ -16,27 +16,43 @@ class ChatInitPage extends StatefulWidget {
 }
 
 class _ChatInitPageState extends State<ChatInitPage> {
-late ChatBloc chatBloc;
+  late ChatBloc chatBloc;
 
   @override
-void initState(){
-  super.initState();
-  chatBloc=context.read<ChatBloc>();
-  chatBloc.add(GetChatInformation());
-}
+  void initState() {
+    super.initState();
+    chatBloc = context.read<ChatBloc>();
+  }
+
+  bool firstTimeDidChange = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (firstTimeDidChange) {
+      firstTimeDidChange = false;
+      final int patientID =
+          ModalRoute.of(context)!.settings.arguments as int? ?? -1;
+      String token = sharedPreferences!.getString('token') ?? '';
+      debugPrint('patientID: $patientID');
+      debugPrint('patientID: $token');
+
+      chatBloc.add(GetChatInformation(patientID: patientID));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
-        if(state is GotChatInfoState){
-          navigationService.navigateTo(chatPage);
-        }else if(state is ChatErrorState){
+        if (state is GotChatInfoState) {
+          navigationService.replaceWith(chatPage);
+        } else if (state is ChatErrorState) {
           customSnackBar(state.errorMessage, context);
           navigationService.goBack();
         }
-        },
+      },
       child: Scaffold(
+        backgroundColor: customColors.primaryBackGround,
         body: Column(
           children: [
             const SizedBox(

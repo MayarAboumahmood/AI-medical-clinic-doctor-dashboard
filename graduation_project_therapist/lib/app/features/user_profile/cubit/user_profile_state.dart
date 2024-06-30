@@ -24,9 +24,12 @@ final class AssignPatientToTherapistLoadingState extends UserProfileState {
   @override
   List<Object?> get props => [];
 }
+
 final class PatientAssignedToTherapistState extends UserProfileState {
+  final bool isRequest;
+  PatientAssignedToTherapistState({required this.isRequest});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [isRequest];
 }
 
 final class AssignPatientToTherapistErrorState extends UserProfileState {
