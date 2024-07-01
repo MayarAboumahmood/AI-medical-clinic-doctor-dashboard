@@ -59,7 +59,8 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
             return patientRequestsListBody(context, state.patientRequestModels);
           } else if (state is PatientRequestApprovedSuccessfullyState ||
               state is PatientRequestRejectLoadingState ||
-              state is PatientRequestAcceptLoadingState) {
+              state is PatientRequestAcceptLoadingState ||
+              state is PatientRequestErrorState) {
             return patientRequestsListBody(
                 context, patientRequestsCubit.cachedUserRequests);
           } else if (state is PatientRequestRejectedSuccessfullyState) {
@@ -81,10 +82,13 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: patientRequestModels.isEmpty
-                ? Center(
-                    child: buildNoElementInPage(
-                      'No request yet. Please Check Back Later!',
-                      Icons.hourglass_empty_rounded,
+                ? SizedBox(
+                    height: responsiveUtil.screenHeight * .7,
+                    child: Center(
+                      child: buildNoElementInPage(
+                        'No request yet. Please Check Back Later!',
+                        Icons.hourglass_empty_rounded,
+                      ),
                     ),
                   )
                 : Column(children: [

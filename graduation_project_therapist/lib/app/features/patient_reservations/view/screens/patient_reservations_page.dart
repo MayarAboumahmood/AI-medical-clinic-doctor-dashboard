@@ -82,30 +82,36 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
       List<PatientReservationModel> patientReservationsModels) {
     return customRefreshIndicator(
       refreshPatientReservations,
-      SizedBox(
-        height: responsiveUtil.screenHeight * .7,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: patientReservationsModels.isEmpty
-              ? Center(
-                  child: buildNoElementInPage(
-                    'No Reservation yet. Please Check Back Later!',
-                    Icons.hourglass_empty_rounded,
-                  ),
-                )
-              : Column(children: [
-                  ...List.generate(
-                    patientReservationsModels.length,
-                    (index) => patientReservationCard(
-                      context,
-                      patientReservationsModels[index],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ]),
-        ),
+      Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: patientReservationsModels.isEmpty
+                  ? SizedBox(
+                      height: responsiveUtil.screenHeight * .7,
+                      child: Center(
+                        child: buildNoElementInPage(
+                          'No Reservation yet. Please Check Back Later!',
+                          Icons.hourglass_empty_rounded,
+                        ),
+                      ),
+                    )
+                  : Column(children: [
+                      ...List.generate(
+                        patientReservationsModels.length,
+                        (index) => patientReservationCard(
+                          context,
+                          patientReservationsModels[index],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ]),
+            ),
+          ),
+        ],
       ),
     );
   }

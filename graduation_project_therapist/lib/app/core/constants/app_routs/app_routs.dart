@@ -25,6 +25,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/registration
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/view/screens/set_location_on_map.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/screens/user_profile.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/video_call/view/screens/call.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/video_call/view/screens/video_call_init_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/view/screens/wallet_page.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -58,6 +59,7 @@ const String getPatientsPage = '/GetPatientsPage';
 const String medicalDescriptionsList = '/MedicalDescriptionsList';
 const String medicalDescriptionDetails = '/MedicalDescriptionDetails';
 const String chatInitPage = '/ChatInitPage';
+const String videoCallInitPage = '/VideoCallInitPage';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -90,4 +92,5 @@ final Map<String, WidgetBuilder> routes = {
   medicalDescriptionsList: (context) => const MedicalDescriptionsList(),
   medicalDescriptionDetails: (context) => const MedicalDescriptionDetails(),
   chatInitPage: (context) => const ChatInitPage(),
+  videoCallInitPage: (context) => const VideoCallInitPage(),
 };

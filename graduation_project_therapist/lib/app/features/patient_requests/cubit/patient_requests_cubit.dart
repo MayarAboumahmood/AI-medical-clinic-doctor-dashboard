@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/repo/patient_requests_repository.dart';
@@ -10,8 +11,8 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   PatientRequestsCubit({required this.patientRequestsRepositoryImp})
       : super(PatientRequestsInitial());
   final PatientRequestsRepositoryImp patientRequestsRepositoryImp;
-  String? selectedTime;
-  String? selectedDay;
+  String? selectedTime = DateFormat('hh:mm a').format(DateTime.now());
+  String? selectedDay = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   List<PatientRequestModel> cachedUserRequests = [];
   void setSelectedTime(String newSelectedTime) {

@@ -41,6 +41,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/registration
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/patient_profile_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/repo/patient_profile_repo.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/cubit/wallet_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/data_source/data_source/wallet_datasource.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/wallet/repo/wallet_repo.dart';
@@ -66,8 +67,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepositoryImpl>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<GetAllTherapistRepositoryImp>(
       () => GetAllTherapistRepositoryImp(sl()));
-  sl.registerLazySingleton<ChatRepositoryImp>(
-      () => ChatRepositoryImp(sl()));
+  sl.registerLazySingleton<ChatRepositoryImp>(() => ChatRepositoryImp(sl()));
   sl.registerLazySingleton<PatientsProfileRepositoryImp>(
       () => PatientsProfileRepositoryImp(sl()));
   sl.registerLazySingleton<GetPatientsRepositoryImp>(
@@ -132,6 +132,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => GetPatientsCubit(getPatientsRepositoryImp: sl()));
   sl.registerLazySingleton(() => WalletCubit(walletRepositoryImp: sl()));
+  sl.registerLazySingleton(() => VideoCallBloc(chatRepositoryImp: sl()));
   sl.registerLazySingleton(() => ChatBloc(chatRepositoryImp: sl()));
   sl.registerLazySingleton(() => HomePageBloc(homePageRepositoryImp: sl()));
   sl.registerLazySingleton(() => DoctorEmploymentRequestsCubit(

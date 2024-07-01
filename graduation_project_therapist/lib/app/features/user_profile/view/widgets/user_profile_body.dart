@@ -31,7 +31,8 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
           children: [
             isDoctor
                 ? assignTherapistbutton(context, profile.data.id)
-                : sendRequestToPatientbutton(context, profile.data.fullName),
+                : sendRequestToPatientbutton(
+                    context, profile.data.fullName, profile.data.id),
             goToMedicalRecordsButton(context),
           ],
         ),
@@ -41,11 +42,11 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
 }
 
 GeneralButtonOptions sendRequestToPatientbutton(
-    BuildContext context, String patientName) {
+    BuildContext context, String patientName, int patientID) {
   return GeneralButtonOptions(
       text: 'Send request for $patientName'.tr(),
       onPressed: () {
-        therapistRequestToPatientDialog(context, 1);
+        therapistRequestToPatientDialog(context, patientID);
       },
       options: ButtonOptions(
           color: customColors.primary, textStyle: customTextStyle.bodyMedium));

@@ -14,7 +14,7 @@ Widget getImageNetwork({
   bool needAErrorBackgroundColor = true,
   bool fromBackEnd = true,
 }) {
-  // return const SizedBox();
+  return const SizedBox();
   if (fromBackEnd) {
     url = ServerConfig.imageUrl + url;
   }
@@ -61,7 +61,7 @@ Widget imageLoader({
   BoxFit fit = BoxFit.cover,
   bool fromBackEnd = true,
 }) {
-  // return const SizedBox();
+  return const SizedBox();
   if (fromBackEnd) {
     url = ServerConfig.imageUrl + url;
   }

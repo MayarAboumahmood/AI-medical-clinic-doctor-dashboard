@@ -23,7 +23,8 @@ class RegisterCubit extends Cubit<RegisterState> {
   String? imageName;
   Uint8List? selectedImage;
 
-  void clearRegisterCubit() {//TODO: use this function.
+  void clearRegisterCubit() {
+    //TODO: use this function.
     selectedDay = DateTime(2001, 1, 1);
     imageName = null;
     selectedImage = null;
@@ -95,7 +96,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     String? password,
     String? dateOfBirth,
   }) {
-    String selectedDayString = DateFormat('yyyy/MM/dd').format(selectedDay);
+    String selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
 
     userInfo = userInfo.copyWith(
       firstName: firstName ?? userInfo.firstName,

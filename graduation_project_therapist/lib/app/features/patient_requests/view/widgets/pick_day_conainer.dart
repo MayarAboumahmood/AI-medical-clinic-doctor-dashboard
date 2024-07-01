@@ -26,7 +26,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
   initState() {
     super.initState();
     selectedDay = DateTime(2001, 1, 1);
-    selectedDayString = DateFormat('yyyy/MM/dd').format(selectedDay);
+    selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
   }
 
   @override
@@ -43,7 +43,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
           (newDateTime) {
             selectedDay = newDateTime;
             setState(() {
-              selectedDayString = DateFormat('yyyy/MM/dd').format(newDateTime);
+              selectedDayString = DateFormat('yyyy-MM-dd').format(newDateTime);
             });
             widget.whatBlocShouldDoOnTap?.call(selectedDayString);
             navigationService.goBack();

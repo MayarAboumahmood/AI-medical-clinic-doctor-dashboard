@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -5,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/repo/chat_repo.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 
 import 'package:pubnub/pubnub.dart';
 
@@ -12,6 +15,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/ch
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/chat_card_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/models/message_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String publishKey = 'pub-c-720243bc-7287-40bc-8607-378fe73e2447';
 String subscribeKey = 'sub-c-8fbae32e-cb72-4994-b3db-0ddbdf57f043';
@@ -22,11 +26,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late PubNub pubnub;
   late Channel myChannel;
 
-  final int userID = 2;
+  Future<int?> getMyIdFromPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('user_profile')) return null;
+
+    String userProfileString = prefs.getString('user_profile')!;
+    Map<String, dynamic> userJson = json.decode(userProfileString);
+    return UserProfileModel.fromMap(userJson).userId;
+  }
+
+  late int userID;
   Uint8List? imageToSend;
   int chunkSize = 20;
+  Future<void> _initializeUserID() async {
+    userID = await getMyIdFromPrefs() ?? 0; // Default to 0 if userID is null
+  }
 
-  int user2ID = 1;
   late String channelName;
   Subscription? _subscription;
   List<ChatCardModel> chatsCardsModels = [
@@ -36,18 +51,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ];
 
   List<MessageModel> messages = [];
-
-  ChatBloc({required this.chatRepositoryImp}) : super(ChatInitial()) {
-    // channelName = assignChannelName(userID, user2ID);
+  void _initializePubNub() {
     pubnub = PubNub(
       defaultKeyset: Keyset(
         subscribeKey: subscribeKey,
         publishKey: publishKey,
-        userId: UserId(
-          userID.toString(),
-        ),
+        userId: UserId(userID.toString()),
       ),
     );
+  }
+
+  final Completer<void> _initializationCompleter = Completer<void>();
+  ChatBloc({required this.chatRepositoryImp}) : super(ChatInitial()) {
+    _initializeUserID().then((_) {
+      _initializePubNub();
+      _initializationCompleter.complete();
+    });
 
     on<AddImageToSendEvent>((event, emit) async {
       imageToSend = event.imageToSend;

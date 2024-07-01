@@ -54,7 +54,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     request.fields['roleId'] = registerModel.roleId.toString();
     request.fields['dateOfBirth'] = isDateOFBirthExist
         ? registerModel.dateOfBirth!
-        : DateFormat('yyyy/MM/dd').format(DateTime(2001, 1, 1));
+        : DateFormat('yyyy-MM-dd').format(DateTime(2001, 1, 1));
     request.fields['gender'] = registerModel.gender.toString();
 
     // Add image if available

@@ -385,7 +385,7 @@ class _EditeProfileState extends State<EditProfile> {
                       ),
                     ),
                     Text(
-                      DateFormat('yyyy/MM/dd').format(dateTime),
+                      DateFormat('yyyy-MM-dd').format(dateTime),
                       style: customTextStyle.bodyMedium.copyWith(
                         color: customColors.primary,
                         fontWeight: FontWeight.w400,

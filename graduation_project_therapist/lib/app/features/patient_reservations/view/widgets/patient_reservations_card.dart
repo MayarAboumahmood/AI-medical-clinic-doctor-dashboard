@@ -8,7 +8,6 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -58,10 +57,13 @@ GeneralButtonOptions enterSessionButton(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
           ? () {
-              navigationService.navigateTo(chatPage);
+              navigationService.navigateTo(videoCallInitPage,
+                  arguments: patientReservationModel.patientID);
             }
           : () {
-              customSnackBar('Not available yet', context, isFloating: true);
+              navigationService.navigateTo(videoCallInitPage,
+                  arguments: patientReservationModel.patientID);
+              // customSnackBar('Not available yet', context, isFloating: true);
             },
       options: ButtonOptions(
           color: canEnterTheSession
@@ -160,7 +162,8 @@ Widget buildCancelPatientRequestBottomSheet(
                 style: customTextStyle.bodyMedium),
             const SizedBox(height: 20),
             customTextField(
-                validator: (_) {//TODO: check this out the validation not wroking.
+                validator: (_) {
+                  //TODO: check this out the validation not wroking.
                   return ValidationFunctions.informationValidation(
                       cancelReason);
                 },

@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 const appId = '94292e56f62b4ac59f1b5396df053647';
-const token =
-    '007eJxTYEi675F0uffq/l1W8acu2aTzHT6yY4Lv589Vlxk5mHfOWjpBgcHSxMjSKNXULM3MKMkkMdnUMs0wydTY0iwlzcDU2MzEPLm/KK0hkJHhMLc6AyMUgvgsDCWpxSUMDAC/ryAR';
 
 class VideoCallPage extends StatefulWidget {
-  final String channelName = 'test';
   final ClientRoleType role = ClientRoleType.clientRoleBroadcaster;
 
   VideoCallPage({
@@ -29,12 +29,36 @@ class VideoCallPageState extends State<VideoCallPage> {
   bool viewPanel = false;
   bool _isInitialized = false;
   late RtcEngine _engine;
-
+  late VideoCallBloc videoCallBloc;
+  Timer? _callTimer;
+  String timeMessage = '';
   @override
   void initState() {
     super.initState();
+    videoCallBloc = context.read<VideoCallBloc>();
     _handlePermission();
     initialize();
+
+    _startCallTimer();
+  }
+
+  void _startCallTimer() {
+    _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final secondsLeft = 50 - timer.tick;
+      if (secondsLeft <= 10) {
+        if (mounted) {
+          setState(() {
+            timeMessage = 'Time left on call: $secondsLeft seconds';
+          });
+        }
+      }
+      if (secondsLeft <= 0) {
+        timer.cancel();
+        if (mounted) {
+          _onCallEnd(context); // End the call after 50 seconds
+        }
+      }
+    });
   }
 
   void _onToggleMute() {
@@ -65,6 +89,7 @@ class VideoCallPageState extends State<VideoCallPage> {
     _users.clear();
     _engine.leaveChannel();
     _engine.release();
+    _callTimer!.cancel();
     super.dispose();
   }
 
@@ -88,17 +113,17 @@ class VideoCallPageState extends State<VideoCallPage> {
     await _engine
         .setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting);
     await _engine.setClientRole(role: widget.role);
-
-    _addAgoraEventHandlers();
-
+    if (mounted) {
+      _addAgoraEventHandlers();
+    }
     VideoEncoderConfiguration configuration = const VideoEncoderConfiguration(
       dimensions: VideoDimensions(width: 1080, height: 720),
     );
     await _engine.setVideoEncoderConfiguration(configuration);
 
     await _engine.joinChannel(
-      token: token,
-      channelId: widget.channelName,
+      token: videoCallBloc.token,
+      channelId: videoCallBloc.channelName,
       uid: 0,
       options: const ChannelMediaOptions(),
     );
@@ -124,10 +149,10 @@ class VideoCallPageState extends State<VideoCallPage> {
           });
         },
         onLeaveChannel: (connection, stats) {
-          setState(() {
-            final info = 'Leave Channel: $stats';
-            _infoStrings.add(info);
-          });
+          // setState(() {
+          final info = 'Leave Channel: $stats';
+          _infoStrings.add(info);
+          // });
         },
         onUserJoined: (connection, remoteUid, elapsed) {
           setState(() {
@@ -162,7 +187,7 @@ class VideoCallPageState extends State<VideoCallPage> {
         controller: VideoViewController.remote(
           rtcEngine: _engine,
           canvas: VideoCanvas(uid: uid),
-          connection: RtcConnection(channelId: widget.channelName),
+          connection: RtcConnection(channelId: videoCallBloc.channelName),
         ),
       ));
     }
@@ -190,6 +215,13 @@ class VideoCallPageState extends State<VideoCallPage> {
               ),
               // Add the first element last to make sure it's on top
               myCameraView(views),
+              Positioned(
+                  left: responsiveUtil.screenWidth * .4,
+                  child: Text(
+                    timeMessage,
+                    style: customTextStyle.bodyLarge
+                        .copyWith(color: customColors.error),
+                  ))
             ],
           );
   }

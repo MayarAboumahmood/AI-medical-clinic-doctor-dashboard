@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/view/screens/doctor_employment_requests_page.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_my_therapists_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/veiw/screens/get_patients_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/view/screens/home_page_screen.dart';
@@ -54,7 +56,9 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       isGuest == true
           ? GuestWidget()
           : userStatus == UserStatusEnum.verified
-              ? const SizedBox()
+              ? isDoctor
+                  ? const GetMyTherapistPage()
+                  : const DoctorEmploymentRequestsPage()
               // const ChatsUsersPage()
               : YourDataNotCompletedYetPage(),
       isGuest == true
@@ -118,9 +122,15 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                         currentPage: _currentPage),
                     iconPagesButton(
                         context: context,
-                        icon: _currentPage == 1
-                            ? CupertinoIcons.chat_bubble_2_fill
-                            : CupertinoIcons.chat_bubble_2,
+                        icon: isDoctor
+                            ? _currentPage == 1
+                                ? CupertinoIcons
+                                    .person_crop_circle_fill_badge_checkmark
+                                : CupertinoIcons
+                                    .person_crop_circle_badge_checkmark
+                            : _currentPage == 1
+                                ? CupertinoIcons.add_circled_solid
+                                : CupertinoIcons.add_circled,
                         currentPage: _currentPage,
                         index: 1),
                     iconPagesButton(
@@ -130,8 +140,8 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                                 ? Icons.repeat_on
                                 : Icons.repeat
                             : _currentPage == 2
-                                ? Icons.people_alt_outlined
-                                : Icons.people,
+                                ? Icons.people
+                                : Icons.people_alt_outlined,
                         currentPage: _currentPage,
                         index: 2),
                     iconPagesButton(
