@@ -74,40 +74,42 @@ int getCityId(String cityName) {
       return 1;
     case 'Homs':
     case 'حمص':
-      return 2;
+      return 3;
     case 'Latakia':
     case 'اللاذقية':
-      return 3;
+      return 4;
     case 'Aleppo':
     case 'حلب':
-      return 4;
+      return 2;
     case 'Tartus':
     case 'طرطوس':
-      return 5;
+      return 10;
     case 'As-suwayda':
     case 'السويداء':
-      return 6;
+      return 14;
     case 'Hama':
     case 'حماة':
-      return 7;
+      return 5;
     case 'Idlib':
     case 'ادلب':
       return 8;
     case 'Deir ez-Zor':
     case 'دير الزور':
-      return 9;
+      return 6;
     case 'Raqqa':
     case 'الرقة':
-      return 10;
+      return 7;
     case 'Daraa':
     case 'درعا':
-      return 11;
+      return 9;
     case 'Al-Hasakah':
     case 'الحسكة':
       return 12;
     case 'Qamishli':
     case 'قامشلي':
       return 13;
+    case 'reief-Demaschk':
+      return 15;
     default:
       return -1; // Return -1 if city not found
   }
@@ -117,30 +119,34 @@ String getCityName(int cityId) {
   switch (cityId) {
     case 1:
       return 'Damascus'.tr();
-    case 2:
-      return 'Homs'.tr();
     case 3:
-      return 'Latakia'.tr();
+      return 'Homs'.tr();
     case 4:
+      return 'Latakia'.tr();
+    case 2:
       return 'Aleppo'.tr();
-    case 5:
+    case 10:
       return 'Tartus'.tr();
-    case 6:
+    case 14:
       return 'As-suwayda'.tr();
-    case 7:
+    case 5:
       return 'Hama'.tr();
     case 8:
       return 'Idlib'.tr();
-    case 9:
+    case 6:
       return 'Deir ez-Zor'.tr();
-    case 10:
+    case 7:
       return 'Raqqa'.tr();
-    case 11:
+    case 9:
       return 'Daraa'.tr();
-    case 12:
+    case 11:
       return 'Al-Hasakah'.tr();
-    case 13:
+    case 12:
       return 'Qamishli'.tr();
+    case 13:
+      return 'Jablah'.tr();
+    case 15:
+      return 'reief-Demaschk'.tr();
     default:
       return ''; // Return empty string if city ID is not found
   }

@@ -32,7 +32,6 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               buildPageIndicator(controller),
               buildLanguageIcon(context),
-
               buildButtons(context)
             ],
           )),

@@ -38,48 +38,63 @@ class CompleteRegisterModel {
 }
 
 List<String> medicalSpecialties = [
-  'Anesthesiology'.tr(),
-  'Cardiology'.tr(),
-  'Dermatology'.tr(),
-  'Endocrinology'.tr(),
-  'Gastroenterology'.tr(),
-  'Hematology'.tr(),
+  'Behavioral Therapy'.tr(),
+  'Cognitive Behavioral Therapy'.tr(),
+  'Family Therapy'.tr(),
+  'Group Therapy'.tr(),
+  'Marriage and Family Therapy'.tr(),
+  'Psychotherapy'.tr(),
+  'Psychoanalysis'.tr(),
+  'Psychiatric Nursing'.tr(),
+  'Mental Health Counseling'.tr(),
 ];
-int getSpecialtyId(String specialtyName) {
-  switch (specialtyName) {
-    case 'Anesthesiology':
-      return 1;
-    case 'Cardiology':
-      return 2;
-    case 'Dermatology':
-      return 3;
-    case 'Endocrinology':
-      return 4;
-    case 'Gastroenterology':
-      return 5;
-    case 'Hematology':
-      return 6;
+String getSpecialtyString(int therapyId) {
+  switch (therapyId) {
+    case 10:
+      return 'Behavioral Therapy';
+    case 11:
+      return 'Cognitive Behavioral Therapy';
+    case 12:
+      return 'Family Therapy';
+    case 13:
+      return 'Group Therapy';
+    case 14:
+      return 'Marriage and Family Therapy';
+    case 15:
+      return 'Psychotherapy';
+    case 16:
+      return 'Psychoanalysis';
+    case 17:
+      return 'Psychiatric Nursing';
+    case 18:
+      return 'Mental Health Counseling';
     default:
-      return -1; // Return -1 if specialty not found
+      return ''; // Return empty string if therapy ID is not found
   }
 }
 
-String getSpecialtyName(int specialtyId) {
-  switch (specialtyId) {
-    case 1:
-      return 'Anesthesiology';
-    case 2:
-      return 'Cardiology';
-    case 3:
-      return 'Dermatology';
-    case 4:
-      return 'Endocrinology';
-    case 5:
-      return 'Gastroenterology';
-    case 6:
-      return 'Hematology';
+int getSpecialtyId(String therapyId) {
+  switch (therapyId) {
+    case 'Behavioral Therapy':
+      return 10;
+    case 'Cognitive Behavioral Therapy':
+      return 11;
+    case 'Family Therapy':
+      return 12;
+    case 'Group Therapy':
+      return 13;
+    case 'Marriage and Family Therapy':
+      return 14;
+    case 'Psychotherapy':
+      return 15;
+    case 'Psychoanalysis':
+      return 16;
+    case 'Psychiatric Nursing':
+      return 17;
+    case 'Mental Health Counseling':
+      return 18;
     default:
-      return ''; // Return empty string if specialty ID is not found
+      return -1; // Return empty string if therapy ID is not found
   }
 }
 

@@ -77,31 +77,35 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
       BuildContext context, List<PatientRequestModel> patientRequestModels) {
     return customRefreshIndicator(
         refreshPatientRequests,
-        Expanded(
-          // height: responsiveUtil.screenHeight * .7,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: patientRequestModels.isEmpty
-                ? SizedBox(
-                    height: responsiveUtil.screenHeight * .7,
-                    child: Center(
-                      child: buildNoElementInPage(
-                        'No request yet. Please Check Back Later!',
-                        Icons.hourglass_empty_rounded,
-                      ),
-                    ),
-                  )
-                : Column(children: [
-                    ...List.generate(
-                      patientRequestModels.length,
-                      (index) => patientRequestCard(
-                          context, patientRequestModels[index]),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                  ]),
-          ),
+        Column(
+          children: [
+            Expanded(
+              // height: responsiveUtil.screenHeight * .7,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: patientRequestModels.isEmpty
+                    ? SizedBox(
+                        height: responsiveUtil.screenHeight * .7,
+                        child: Center(
+                          child: buildNoElementInPage(
+                            'No request yet. Please Check Back Later!',
+                            Icons.hourglass_empty_rounded,
+                          ),
+                        ),
+                      )
+                    : Column(children: [
+                        ...List.generate(
+                          patientRequestModels.length,
+                          (index) => patientRequestCard(
+                              context, patientRequestModels[index]),
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                      ]),
+              ),
+            ),
+          ],
         ));
   }
 

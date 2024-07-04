@@ -66,14 +66,14 @@ Widget buildTextAndImageInBackGround(
       ),
       //shadow from the bottom
       Container(
-        width:responsiveUtil.screenWidth,
+        width: responsiveUtil.screenWidth,
         height: double.infinity,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
               blurRadius: 70,
               color: const Color(0xFC000000),
-              offset: Offset(0, responsiveUtil.screenHeight/1.1),
+              offset: Offset(0, responsiveUtil.screenHeight / 1.1),
               spreadRadius: 100,
             )
           ],
@@ -81,7 +81,7 @@ Widget buildTextAndImageInBackGround(
       ),
 
       Align(
-        alignment:const AlignmentDirectional(0, 1),
+        alignment: const AlignmentDirectional(0, 1),
         child: Container(
           width: double.infinity,
           height: responsiveUtil.screenHeight * 1,
@@ -89,15 +89,14 @@ Widget buildTextAndImageInBackGround(
             boxShadow: [
               BoxShadow(
                 blurRadius: 70,
-                color:  const Color(0xF3000000),
-                offset: Offset(0, -responsiveUtil.screenHeight/1.1),
+                color: const Color(0xF3000000),
+                offset: Offset(0, -responsiveUtil.screenHeight / 1.1),
                 spreadRadius: 100,
               )
             ],
           ),
         ),
       ),
-      
     ],
   );
 }

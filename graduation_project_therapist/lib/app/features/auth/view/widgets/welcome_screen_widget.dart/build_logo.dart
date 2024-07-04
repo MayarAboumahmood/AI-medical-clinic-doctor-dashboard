@@ -6,12 +6,12 @@ Widget buildLogo() {
       child: Padding(
         padding: const EdgeInsets.only(top: 70),
         child: Container(
-          width: 210,
-          height: 60,
+          width: 150,
+          height: 100,
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: Image.asset('assets/images/male.png'
+              image: Image.asset('assets/images/logo2.png'
                       // AppImages.preview,
                       )
                   .image,

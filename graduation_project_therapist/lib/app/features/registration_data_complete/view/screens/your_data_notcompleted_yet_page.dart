@@ -42,9 +42,9 @@ class YourDataNotCompletedYetPage extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            'assets/images/male.png',
-            width: 290,
-            height: 90,
+            'assets/images/logo2.png',
+            width: 150,
+            height: 100,
             fit: BoxFit.cover,
           ),
         ),
