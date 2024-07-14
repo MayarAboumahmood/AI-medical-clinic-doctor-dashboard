@@ -36,7 +36,3 @@ void backgroundNotificationListener(Map<String, dynamic> data) {
   // Clear iOS app badge number
   Pushy.clearBadge();
 }
-
-void c() {
-  Pushy.launchBatteryOptimizationsActivity();
-}

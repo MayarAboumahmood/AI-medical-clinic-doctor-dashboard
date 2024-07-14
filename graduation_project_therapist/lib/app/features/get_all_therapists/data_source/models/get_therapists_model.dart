@@ -41,9 +41,18 @@ class GetTherapistModel {
       status: map['status'] ?? false,
       specialistProfile: SpecialistProfile.fromMap(
           map['specialistProfile'] as Map<String, dynamic>),
-      employmentRequests: map['employmentRequests'] == null ? false : true,
+      employmentRequests: map['employmentRequests'] == null
+          ? false
+          : getIsThereEmploymentRequet(map[
+              'employmentRequests']), //if the employment requests is null than there is no request.
     );
   }
+}
+
+bool getIsThereEmploymentRequet(Map<String, dynamic> map) {
+  return map['status'] == null ? true : false;
+//if the status null than the request is pending, if the status is false than it's rejected so it's like there is no request.
+  //if the status is true than the request is accepted and the element never came to me in the first place.
 }
 
 class SpecialistProfile {

@@ -33,8 +33,10 @@ import 'package:graduation_project_therapist_dashboard/app/features/wallet/cubit
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/language_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_blocs/user_data_block/user_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/notification_service.dart';
 import 'package:graduation_project_therapist_dashboard/generated/l10n.dart';
 import 'package:location/location.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/core/injection/app_injection.dart' as di;
@@ -59,7 +61,7 @@ UserStatusEnum userStatus = UserStatusEnum.loading;
 LocationData? globalUserLocation;
 bool comingFromRegisterOrLogin = false;
 
-void startTimerToRemoveSplashScreen() {
+/*void startTimerToRemoveSplashScreen() {
   timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
     if (t.tick == 2) {
       // Timer reached 3 seconds
@@ -67,28 +69,29 @@ void startTimerToRemoveSplashScreen() {
       FlutterNativeSplash.remove(); // Remove splash screen
     }
   });
-}
+}*/
 
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
-  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized  ();
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   // startTimerToRemoveSplashScreen();
   await di.init();
   // Start the Pushy service
-  // Pushy.listen();
+  Pushy.listen();
 
   // Enable in-app notification banners (iOS 10+)
-  // Pushy.toggleInAppBanner(true);
+  Pushy.toggleInAppBanner(true);
 
   // Set custom notification icon (Android)
-  // Pushy.setNotificationIcon('@mipmap/launcher_icon');
+  Pushy.setNotificationIcon('@mipmap/launcher_icon');
 
 // Listen for push notifications received
-  // Pushy.setNotificationListener(backgroundNotificationListener);
-  // Pushy.setNotificationClickListener((data) {});
+  Pushy.setNotificationListener(backgroundNotificationListener);
+  Pushy.setNotificationClickListener((data) {});
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await EasyLocalization.ensureInitialized();
 
   navigationService = sl.get<NavigationService>();
   sharedPreferences = await SharedPreferences.getInstance();
