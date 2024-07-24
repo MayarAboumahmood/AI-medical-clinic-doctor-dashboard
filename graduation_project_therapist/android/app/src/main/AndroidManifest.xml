@@ -32,32 +32,10 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
-            <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
             />
-            <!--  Pushy Internal Notification Receiver  -->
-            <receiver android:name="me.pushy.sdk.flutter.internal.PushyInternalReceiver"
-                android:exported="false">
-                <intent-filter>
-                    <action android:name="pushy.me" />
-                </intent-filter>
-            </receiver>
-            <!--  Pushy Update Receiver  -->
-            <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver"
-                android:exported="false">
-                <intent-filter>
-                    <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                </intent-filter>
-            </receiver>
-            <!--  Pushy Boot Receiver  -->
-            <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver"
-                android:exported="false">
-            </receiver>
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -66,6 +44,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--  Pushy Internal Notification Receiver  -->
+        <receiver android:name="me.pushy.sdk.flutter.internal.PushyInternalReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="pushy.me" />
+            </intent-filter>
+        </receiver>
+        <!--  Pushy Update Receiver  -->
+        <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+        <!--  Pushy Boot Receiver  -->
+        <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver"
+            android:exported="false">
+        </receiver>
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

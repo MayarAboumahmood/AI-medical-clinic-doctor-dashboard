@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/notification_service.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
@@ -31,7 +30,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<Response> register(
       UserInfo registerModel, Uint8List? imageBytes, String? imageName) async {
-    String deviceToken = await pushyRegister();
+    String deviceToken = 'what the fuck';
+    //await pushyRegister();
     print('the device token: $deviceToken');
     var request = http.MultipartRequest(
       'POST',
@@ -46,7 +46,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "Access-Control-Allow-Methods": "POST, OPTIONS"
       },
     );
-    
+
     bool isDateOFBirthExist = registerModel.dateOfBirth != null &&
         registerModel.dateOfBirth?.trim() != '';
     // Add text fields
@@ -122,7 +122,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var headers = {
       'Content-Type': 'application/json',
     };
-    String deviceToken = await pushyRegister();
+    String deviceToken = 'what the fuck';
+    //await pushyRegister();
     print('the device token: $deviceToken');
 
     var body = jsonEncode({

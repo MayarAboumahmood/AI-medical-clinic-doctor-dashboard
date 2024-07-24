@@ -78,21 +78,23 @@ class _GetPatientsPageState extends State<GetPatientsPage> {
             ? getPatientsCubit.searchedPatientsModels
             : getPatientsCubit.getPatientsModels;
 
-    return getpatientsModels.isEmpty
-        ? SizedBox(
-            height: responsiveUtil.screenHeight * .7,
-            child: Center(
-              child: buildNoElementInPage(
-                _isSearching ? "No result!" : "You don't have any patient yet.",
-                Icons.hourglass_empty_rounded,
+    return customRefreshIndicator(
+      () async {
+        getPatientsCubit.getPatients();
+      },
+      getpatientsModels.isEmpty
+          ? SizedBox(
+              height: responsiveUtil.screenHeight * .7,
+              child: Center(
+                child: buildNoElementInPage(
+                  _isSearching
+                      ? "No result!"
+                      : "You don't have any patient yet.",
+                  Icons.hourglass_empty_rounded,
+                ),
               ),
-            ),
-          )
-        : customRefreshIndicator(
-            () async {
-              getPatientsCubit.getPatients();
-            },
-            SizedBox(
+            )
+          : SizedBox(
               height: responsiveUtil.screenHeight * .7,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -107,6 +109,6 @@ class _GetPatientsPageState extends State<GetPatientsPage> {
                 ]),
               ),
             ),
-          );
+    );
   }
 }

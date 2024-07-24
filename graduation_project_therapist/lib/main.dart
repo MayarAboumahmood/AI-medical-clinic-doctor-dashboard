@@ -80,17 +80,17 @@ void main() async {
   // startTimerToRemoveSplashScreen();
   await di.init();
   // Start the Pushy service
-  Pushy.listen();
+  // Pushy.listen();
 
   // Enable in-app notification banners (iOS 10+)
-  Pushy.toggleInAppBanner(true);
+  // Pushy.toggleInAppBanner(true);
 
   // Set custom notification icon (Android)
-  Pushy.setNotificationIcon('@mipmap/launcher_icon');
+  // Pushy.setNotificationIcon('@mipmap/launcher_icon');
 
 // Listen for push notifications received
-  Pushy.setNotificationListener(backgroundNotificationListener);
-  Pushy.setNotificationClickListener((data) {});
+  // Pushy.setNotificationListener(backgroundNotificationListener);
+  // Pushy.setNotificationClickListener((data) {});
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   navigationService = sl.get<NavigationService>();

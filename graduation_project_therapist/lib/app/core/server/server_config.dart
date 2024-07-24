@@ -51,4 +51,5 @@ class ServerConfig {
   static const String therapistRequestToPateintUri =
       'appointment/request/specialist/createRequest';
   static const String getChatInfoUri = 'chat/getChat/';
+  static const String blockPatienturi = 'blocks';
 }

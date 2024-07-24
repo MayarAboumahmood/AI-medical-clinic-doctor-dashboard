@@ -86,23 +86,23 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
             ? getMyTherapistCubit.searchedMyTherapistModels
             : getMyTherapistCubit.getMyTherapistModels;
 
-    return getTherapistModels.isEmpty
-        ? SizedBox(
-            height: responsiveUtil.screenHeight * .7,
-            child: Center(
-              child: buildNoElementInPage(
-                _isSearching
-                    ? "No result!"
-                    : "You don't have any therapist yet.",
-                Icons.hourglass_empty_rounded,
+    return customRefreshIndicator(
+      () async {
+        getMyTherapistCubit.getMyTherapist(-10);
+      },
+      getTherapistModels.isEmpty
+          ? SizedBox(
+              height: responsiveUtil.screenHeight * .7,
+              child: Center(
+                child: buildNoElementInPage(
+                  _isSearching
+                      ? "No result!"
+                      : "You don't have any therapist yet.",
+                  Icons.hourglass_empty_rounded,
+                ),
               ),
-            ),
-          )
-        : customRefreshIndicator(
-            () async {
-              getMyTherapistCubit.getMyTherapist(-10);
-            },
-            SizedBox(
+            )
+          : SizedBox(
               height: responsiveUtil.screenHeight * .7,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -117,6 +117,6 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
                 ]),
               ),
             ),
-          );
+    );
   }
 }

@@ -63,7 +63,11 @@ class _DoctorEmploymentRequestsPageState
     List<DoctorEmploymentRequestModel> doctorEmploymentRequestsList =
         doctorEmploymentRequestsCubit.doctorEmploymentRequests;
 
-    return doctorEmploymentRequestsList.isEmpty
+    return customRefreshIndicator(
+            () async {
+              doctorEmploymentRequestsCubit.getAllDoctorEmploymentRequests();
+            },
+           doctorEmploymentRequestsList.isEmpty
         ? SizedBox(
             height: responsiveUtil.screenHeight * .7,
             child: Center(
@@ -73,11 +77,7 @@ class _DoctorEmploymentRequestsPageState
               ),
             ),
           )
-        : customRefreshIndicator(
-            () async {
-              doctorEmploymentRequestsCubit.getAllDoctorEmploymentRequests();
-            },
-            SizedBox(
+        :   SizedBox(
               height: responsiveUtil.screenHeight * .7,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),

@@ -36,6 +36,14 @@ class ValidationFunctions {
     }
     return null;
   }
+  static String? informationValidationThatCanBeEmpty(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    } else if (value.length < 6) {
+      return AppString.validationInfo.tr();
+    }
+    return null;
+  }
 
   static String? isValidEmail(String? input) {
     final RegExp regex = RegExp(

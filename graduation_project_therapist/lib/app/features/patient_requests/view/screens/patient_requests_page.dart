@@ -59,13 +59,14 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
             return patientRequestsListBody(context, state.patientRequestModels);
           } else if (state is PatientRequestApprovedSuccessfullyState ||
               state is PatientRequestRejectLoadingState ||
-              state is PatientRequestAcceptLoadingState ||
-              state is PatientRequestErrorState) {
+              state is PatientRequestAcceptLoadingState) {
             return patientRequestsListBody(
                 context, patientRequestsCubit.cachedUserRequests);
           } else if (state is PatientRequestRejectedSuccessfullyState) {
             return patientRequestsListBody(
                 context, patientRequestsCubit.cachedUserRequests);
+          } else if (state is PatientRequestErrorState) {
+            return mediumSizeCardShimmer();
           }
           return mediumSizeCardShimmer();
         },

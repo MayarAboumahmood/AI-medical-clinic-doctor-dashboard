@@ -206,6 +206,7 @@ class _EditeProfileState extends State<EditProfile> {
                       ),
                       editeInfoTextField(
                         context,
+                        canBeEmpty: true,
                         'Studies information',
                         Icons.person_outline,
                         studyInfoController.text,
@@ -217,6 +218,7 @@ class _EditeProfileState extends State<EditProfile> {
                       ),
                       editeInfoTextField(
                         context,
+                        canBeEmpty: true,
                         'Specialization information',
                         Icons.person_outline,
                         specInfoController.text,
@@ -418,7 +420,7 @@ class _EditeProfileState extends State<EditProfile> {
 
   Padding editeInfoTextField(BuildContext context, String label,
       IconData suffixIcon, String hintText, TextEditingController controller,
-      {bool isName = true}) {
+      {bool isName = true, bool canBeEmpty = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: editeProfileTextField(
@@ -427,7 +429,10 @@ class _EditeProfileState extends State<EditProfile> {
           validator: (value) {
             return isName
                 ? ValidationFunctions.nameValidation(value)
-                : ValidationFunctions.informationValidation(value);
+                : canBeEmpty
+                    ? ValidationFunctions.informationValidationThatCanBeEmpty(
+                        value)
+                    : ValidationFunctions.informationValidation(value);
           },
           context: context,
           suffixIcon: Icon(suffixIcon, color: customColors.text2, size: 22),

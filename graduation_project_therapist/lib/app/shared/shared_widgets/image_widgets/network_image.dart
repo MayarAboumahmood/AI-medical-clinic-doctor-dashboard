@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,9 +13,9 @@ Widget getImageNetwork({
   bool needAErrorBackgroundColor = true,
   bool fromBackEnd = true,
 }) {
-  if (fromBackEnd) {
-    url = ServerConfig.imageUrl + url;
-  }
+  // if (fromBackEnd) {
+  //   url = ServerConfig.imageUrl + url;
+  // }
 
   return Container(
     width: width,
@@ -60,9 +59,9 @@ Widget imageLoader({
   BoxFit fit = BoxFit.cover,
   bool fromBackEnd = true,
 }) {
-  if (fromBackEnd) {
-    url = ServerConfig.imageUrl + url;
-  }
+  // if (fromBackEnd) {
+  //   url = ServerConfig.imageUrl + url;
+  // }
 
   return CachedNetworkImage(
       width: width,
