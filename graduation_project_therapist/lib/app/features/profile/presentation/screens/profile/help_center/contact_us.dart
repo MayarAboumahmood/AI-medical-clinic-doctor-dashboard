@@ -33,9 +33,7 @@ class ContactUs extends StatelessWidget {
               ].divide(const SizedBox(height: 20)),
             ),
           ),
-          // const Spacer(),
-          //       poweredByHDR()
-        ],
+                  ],
       ),
     );
   }

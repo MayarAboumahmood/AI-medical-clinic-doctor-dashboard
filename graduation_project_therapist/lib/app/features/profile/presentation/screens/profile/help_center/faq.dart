@@ -83,7 +83,7 @@ class FAQState extends State<FAQ> {
       child: FadingEdgeScrollView.fromSingleChildScrollView(
         gradientFractionOnEnd: 0.5,
         gradientFractionOnStart: 0,
-        shouldDisposeScrollController: true,
+        // shouldDisposeScrollController: true,
         child: SingleChildScrollView(
           controller: _controller,
           child: Column(

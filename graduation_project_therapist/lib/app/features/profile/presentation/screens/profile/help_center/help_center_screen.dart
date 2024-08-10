@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/contact_us.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/help_center/faq.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/widgets/powerd_by_hdr_text.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -13,12 +12,12 @@ class HelpCenterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: poweredByHDR(),
-        backgroundColor: customColors.primaryBackGround,
-        elevation: 0,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {},
+      //   label: poweredByMayar(),
+      //   backgroundColor: customColors.primaryBackGround,
+      //   elevation: 0,
+      // ),
       backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreens('Help Center', isFromScaffold: true),
       body: SafeArea(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
-import 'package:graduation_project_therapist_dashboard/app/shared/check_internet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import '../../../core/status_requests/staus_request.dart';
@@ -29,18 +28,18 @@ void messageDisplayWidget(
     case StatusRequest.serverError:
       if (!messageAlreadyShowed) {
         messageAlreadyShowed = true;
-        if (!await checkInternet()) {
-          if (context.mounted) {
-            customSnackBar(
-              'check your internet connection',
-              context,
-            );
-          }
-        } else {
+        // if (!await checkInternet()) {
+        //   if (context.mounted) {
+        //     customSnackBar(
+        //       'check your internet connection',
+        //       context,
+        //     );
+        //   }
+        // } else {
           if (context.mounted) {
             customSnackBar('Server Error', context, isFloating: true);
           }
-        }
+        // }
       }
       break;
     default:
