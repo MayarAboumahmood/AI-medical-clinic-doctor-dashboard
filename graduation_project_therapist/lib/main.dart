@@ -61,6 +61,7 @@ UserStatusEnum userStatus = UserStatusEnum.loading;
 LocationData? globalUserLocation;
 bool comingFromRegisterOrLogin = false;
 
+
 /*void startTimerToRemoveSplashScreen() {
   timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
     if (t.tick == 2) {
