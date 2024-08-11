@@ -144,9 +144,11 @@ Widget enterChatButton(
           text: isFromBlock ? "Unblock Patient" : 'Enter Chat',
           onPressed: isFromBlock
               ? () {
-                  context
-                      .read<BlockBloc>()
-                      .add(UnBlocPatientEvent(patientId: patientsModel.id));
+                  print('ssssssssssssssssssssssssss: ${patientsModel.id}');
+
+                  context.read<BlockBloc>().add(UnBlocPatientEvent(
+                      patientId: patientsModel.id,
+                      blockedPatientName: patientsModel.name));
                 }
               : () {
                   navigationService.navigateTo(chatInitPage,

@@ -179,9 +179,71 @@ Widget buildRejectPatientRequestBottomSheet(
   );
 }
 
+Widget showConfirmBlockBottomSheet(
+    BuildContext context, int patientID, String patientName) {
+  BlockBloc blockBlock = context.read<BlockBloc>();
+  return Container(
+    padding: const EdgeInsets.all(20),
+    height: 160,
+    decoration: BoxDecoration(
+      color: customColors.primaryBackGround,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Are you sure you want to Block $patientName?'.tr(),
+            style: customTextStyle.bodyMedium),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            BlocBuilder<BlockBloc, BlockState>(
+              builder: (context, state) {
+                bool isLoading = state is BlocedPatientLoadingState;
+                return ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(customColors.primary),
+                  ),
+                  onPressed: () {
+                    blockBlock.add(BlockPatientEvent(patientId: patientID));
+                    navigationService.goBack();
+                  },
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(color: Colors.white))
+                      : Text(
+                          'Yes'.tr(),
+                          style: customTextStyle.bodyMedium,
+                        ),
+                );
+              },
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(customColors.error),
+              ),
+              onPressed: () {
+                Navigator.pop(context); // Close the bottom sheet
+              },
+              child: Text(
+                'No'.tr(),
+                style: customTextStyle.bodyMedium,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 Widget buildOptionsMenu(
     BuildContext context, PatientRequestModel patientRequestModel) {
-  BlockBloc blockBloc = context.read<BlockBloc>();
   return PopupMenuButton<String>(
     color: customColors.secondaryBackGround,
     icon: CircleAvatar(
@@ -192,8 +254,13 @@ Widget buildOptionsMenu(
         )),
     onSelected: (value) async {
       if (value == 'block') {
-        blockBloc
-            .add(BlocPatientEvent(patientId: patientRequestModel.patientID));
+        await showBottomSheetWidget(
+            context,
+            showConfirmBlockBottomSheet(
+              context,
+              patientRequestModel.patientID,
+              patientRequestModel.patientName,
+            ));
       } else if (value == 'profile') {
         navigationService.navigateTo(userProfilePage,
             arguments: patientRequestModel.patientID);

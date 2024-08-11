@@ -35,6 +35,11 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
           print('Bloc page init state');
         } else if (state is BlocFauilerState) {
           customSnackBar(state.errorMessage, context, isFloating: true);
+        } else if (state is UnBlockPatientSuccessState) {
+          customSnackBar(
+              '${state.blockedPatientName} Unblocked successfully', context,
+              isFloating: true);
+          blockBloc.add(GetAllBlocedPatientEvent());
         }
       },
       child: Scaffold(
@@ -43,17 +48,29 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
         backgroundColor: customColors.primaryBackGround,
         body: BlocBuilder<BlockBloc, BlockState>(
           builder: (context, state) {
-            if (state is GetAllBlocedPatientState) {
+            if (state is GetAllBlocedPatientState &&
+                blockBloc.allBlockedPatientModel != null) {
               return blockedPatientListBody(
-                  context, blockBloc.allBlockedPatientModel);
+                  context, blockBloc.allBlockedPatientModel!);
+            } else if (state is BlocedPatientLoadingState) {
+              return blockedShimmer();
             }
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: smallSizeCardShimmer(),
-            );
+            if (blockBloc.allBlockedPatientModel != null) {
+              return blockedPatientListBody(
+                  context, blockBloc.allBlockedPatientModel!);
+            } else {
+              return blockedShimmer();
+            }
           },
         ),
       ),
+    );
+  }
+
+  Padding blockedShimmer() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: smallSizeCardShimmer(),
     );
   }
 
@@ -84,7 +101,8 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
                                 isFromBlock: true,
                                 context,
                                 GetPatientsModel(
-                                    id: allBlockedPatientModel.data[index].id,
+                                    id: allBlockedPatientModel
+                                        .data[index].userId,
                                     name: allBlockedPatientModel
                                         .data[index].patientName))),
                         const SizedBox(

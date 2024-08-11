@@ -9,12 +9,13 @@ part 'block_state.dart';
 
 class BlockBloc extends Bloc<BlockEvent, BlockState> {
   BlockRepositoryImp blockRepositoryImp;
-  late AllBlockedPatientModel allBlockedPatientModel;
+  AllBlockedPatientModel? allBlockedPatientModel;
   BlockBloc({required this.blockRepositoryImp}) : super(BlockInitial()) {
     on<BlockEvent>((event, emit) {
       if (state is BlockInitial) {}
     });
-    on<BlocPatientEvent>((event, emit) async {
+    on<BlockPatientEvent>((event, emit) async {
+      emit(BlocedPatientLoadingState());
       final getData = await blockRepositoryImp.blockPatient(event.patientId);
       getData.fold((onError) {
         emit(BlocFauilerState(errorMessage: onError));
@@ -23,14 +24,17 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       });
     });
     on<UnBlocPatientEvent>((event, emit) async {
+      emit(UnBlocedPatientLoadingState());
       final getData = await blockRepositoryImp.unBlockPatient(event.patientId);
       getData.fold((onError) {
         emit(BlocFauilerState(errorMessage: onError));
       }, (data) {
-        emit(UnBlockPatientSuccessState());
+        emit(UnBlockPatientSuccessState(
+            blockedPatientName: event.blockedPatientName));
       });
     });
     on<GetAllBlocedPatientEvent>((event, emit) async {
+      emit(BlocedPatientLoadingState());
       final getData = await blockRepositoryImp.getAllBlocedPatientEvent();
       getData.fold((onError) {
         emit(BlocFauilerState(errorMessage: onError));
