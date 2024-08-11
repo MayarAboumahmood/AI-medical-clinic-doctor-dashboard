@@ -8,7 +8,15 @@ final class BlockInitial extends BlockState {
   List<Object?> get props => [];
 }
 
+final class UnBlockPatientSuccessState extends BlockState {
+  @override
+  List<Object?> get props => [];
+}
 final class BlockPatientSuccessState extends BlockState {
+  @override
+  List<Object?> get props => [];
+}
+final class GetAllBlocedPatientState extends BlockState {
   @override
   List<Object?> get props => [];
 }
@@ -20,8 +28,8 @@ final class BlocFauilerState extends BlockState {
   List<Object?> get props => [errorMessage];
 }
 
-final class GetUserStatesuccessfulyState extends BlockState {
-  GetUserStatesuccessfulyState();
-  @override
-  List<Object?> get props => [];
-}
+// final class GetUserStatesuccessfulyState extends BlockState {
+//   GetUserStatesuccessfulyState();
+//   @override
+//   List<Object?> get props => [];
+// }

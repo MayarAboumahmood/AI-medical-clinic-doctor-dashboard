@@ -37,7 +37,7 @@ Widget buildTextAndImageInBackGround(
         alignment: const AlignmentDirectional(0.00, 0.40),
         child: Container(
           alignment: Alignment.center,
-          height: 135,
+          height: responsiveUtil.screenHeight * .2,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [

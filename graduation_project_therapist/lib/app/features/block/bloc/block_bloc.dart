@@ -1,6 +1,6 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/data_source/models/all_blocked_patient_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block/repository/block_repository_imp.dart';
 import 'package:meta/meta.dart';
 
@@ -9,6 +9,7 @@ part 'block_state.dart';
 
 class BlockBloc extends Bloc<BlockEvent, BlockState> {
   BlockRepositoryImp blockRepositoryImp;
+  late AllBlockedPatientModel allBlockedPatientModel;
   BlockBloc({required this.blockRepositoryImp}) : super(BlockInitial()) {
     on<BlockEvent>((event, emit) {
       if (state is BlockInitial) {}
@@ -19,6 +20,23 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
         emit(BlocFauilerState(errorMessage: onError));
       }, (data) {
         emit(BlockPatientSuccessState());
+      });
+    });
+    on<UnBlocPatientEvent>((event, emit) async {
+      final getData = await blockRepositoryImp.unBlockPatient(event.patientId);
+      getData.fold((onError) {
+        emit(BlocFauilerState(errorMessage: onError));
+      }, (data) {
+        emit(UnBlockPatientSuccessState());
+      });
+    });
+    on<GetAllBlocedPatientEvent>((event, emit) async {
+      final getData = await blockRepositoryImp.getAllBlocedPatientEvent();
+      getData.fold((onError) {
+        emit(BlocFauilerState(errorMessage: onError));
+      }, (data) {
+        allBlockedPatientModel = data;
+        emit(GetAllBlocedPatientState());
       });
     });
   }

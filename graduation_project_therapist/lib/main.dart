@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/extension/app_color_extension.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/extension/app_text_field_extension.dart';
@@ -11,10 +10,10 @@ import 'package:graduation_project_therapist_dashboard/app/core/utils/responsive
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/design_hider/screens/welcompage_designhider.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/cubit/doctor_employment_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/cubit/get_patients_cubit.dart';
@@ -81,17 +80,17 @@ void main() async {
   // startTimerToRemoveSplashScreen();
   await di.init();
   // Start the Pushy service
-  // Pushy.listen();
+  Pushy.listen();
 
   // Enable in-app notification banners (iOS 10+)
-  // Pushy.toggleInAppBanner(true);
+  Pushy.toggleInAppBanner(true);
 
   // Set custom notification icon (Android)
-  // Pushy.setNotificationIcon('@mipmap/launcher_icon');
+  Pushy.setNotificationIcon('@mipmap/launcher_icon');
 
 // Listen for push notifications received
-  // Pushy.setNotificationListener(backgroundNotificationListener);
-  // Pushy.setNotificationClickListener((data) {});
+  Pushy.setNotificationListener(backgroundNotificationListener);
+  Pushy.setNotificationClickListener((data) {});
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   navigationService = sl.get<NavigationService>();
@@ -166,6 +165,9 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (_) => di.sl<GetPatientsCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.sl<BlockBloc>(),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeData>(builder: (context, theme) {

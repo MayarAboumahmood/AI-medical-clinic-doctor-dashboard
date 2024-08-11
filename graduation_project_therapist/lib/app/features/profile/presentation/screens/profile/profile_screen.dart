@@ -163,6 +163,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }),
                 profilePageDivider(),
                 accountChoiceWidget(
+                    title: "Blocked Patients".tr(),
+                    icon: Icons.block,
+                    onTap: () {
+                      navigationService.navigateTo(blockedPatients);
+                    }),
+                accountChoiceWidget(
                     isLogout: true,
                     title: "Delete your account".tr(),
                     icon: Icons.delete_outline_outlined,

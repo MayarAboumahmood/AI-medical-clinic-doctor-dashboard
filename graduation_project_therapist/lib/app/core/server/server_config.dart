@@ -52,4 +52,5 @@ class ServerConfig {
       'appointment/request/specialist/createRequest';
   static const String getChatInfoUri = 'chat/getChat/';
   static const String blockPatienturi = 'blocks';
+  static const String unBlockPatienturi = 'blocks/undo';
 }

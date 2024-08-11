@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
@@ -26,7 +27,13 @@ Widget patientRequestCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildUserNameAndImage(patientRequestModel),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildUserNameAndImage(patientRequestModel),
+              buildOptionsMenu(context, patientRequestModel),
+            ],
+          ),
           const SizedBox(height: 16),
           expandedDescription(context, patientRequestModel.description,
               backGroundColor: Colors.transparent),
@@ -171,3 +178,44 @@ Widget buildRejectPatientRequestBottomSheet(
     ),
   );
 }
+
+Widget buildOptionsMenu(
+    BuildContext context, PatientRequestModel patientRequestModel) {
+  BlockBloc blockBloc = context.read<BlockBloc>();
+  return PopupMenuButton<String>(
+    color: customColors.secondaryBackGround,
+    icon: CircleAvatar(
+        backgroundColor: customColors.primary,
+        child: Icon(
+          Icons.more_vert,
+          color: customColors.primaryText,
+        )),
+    onSelected: (value) async {
+      if (value == 'block') {
+        blockBloc
+            .add(BlocPatientEvent(patientId: patientRequestModel.patientID));
+      } else if (value == 'profile') {
+        navigationService.navigateTo(userProfilePage,
+            arguments: patientRequestModel.patientID);
+      }
+    },
+    itemBuilder: (BuildContext context) {
+      return [
+        PopupMenuItem<String>(
+          value: 'profile',
+          child: patientOptionText('View user profile'),
+        ),
+        PopupMenuItem<String>(
+          value: 'block',
+          child: patientOptionText('Block this patient'),
+        ),
+        // Add more options here if needed
+      ];
+    },
+  );
+}
+
+Text patientOptionText(String title) => Text(
+      title.tr(),
+      style: customTextStyle.bodyMedium,
+    );

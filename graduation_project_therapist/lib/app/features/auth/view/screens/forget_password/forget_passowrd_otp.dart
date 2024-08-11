@@ -19,14 +19,16 @@ class ForgetPasswordOTP extends StatelessWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
-        signInCubit.resetSignInCubit();
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          signInCubit.resetSignInCubit();
 
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          welcomeScreen,
-          (route) => false,
-        );
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            welcomeScreen,
+            (route) => false,
+          );
+        }
       },
       child: BlocConsumer<SignInCubit, SignInState>(listener: (context, state) {
         if (state is ForgetPasswordSendingEmailSuccessState) {

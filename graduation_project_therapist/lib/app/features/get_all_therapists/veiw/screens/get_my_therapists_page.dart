@@ -90,33 +90,42 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
       () async {
         getMyTherapistCubit.getMyTherapist(-10);
       },
-      getTherapistModels.isEmpty
-          ? SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: Center(
-                child: buildNoElementInPage(
-                  _isSearching
-                      ? "No result!"
-                      : "You don't have any therapist yet.",
-                  Icons.hourglass_empty_rounded,
-                ),
-              ),
-            )
-          : SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  ...List.generate(
-                      getTherapistModels.length,
-                      (index) => allTherapistCard(
-                          context, getTherapistModels[index], false)),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ]),
-              ),
+      Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: getTherapistModels.isEmpty
+                  ? SizedBox(
+                      height: responsiveUtil.screenHeight * .7,
+                      child: Center(
+                        child: buildNoElementInPage(
+                          _isSearching
+                              ? "No result!"
+                              : "You don't have any therapist yet.",
+                          Icons.hourglass_empty_rounded,
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: responsiveUtil.screenHeight * .7,
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(children: [
+                          ...List.generate(
+                              getTherapistModels.length,
+                              (index) => allTherapistCard(
+                                  context, getTherapistModels[index], false)),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                        ]),
+                      ),
+                    ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }

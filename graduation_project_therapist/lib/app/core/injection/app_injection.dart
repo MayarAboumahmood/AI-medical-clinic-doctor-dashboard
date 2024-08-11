@@ -3,6 +3,9 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/re
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/data_source/remot_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/repository_imp/auth_repository_impl.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/data_source/data_sources/block_datasource.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/repository/block_repository_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/data_source/data_source.dart';
@@ -70,6 +73,8 @@ Future<void> init() async {
   sl.registerLazySingleton<ChatRepositoryImp>(() => ChatRepositoryImp(sl()));
   sl.registerLazySingleton<PatientsProfileRepositoryImp>(
       () => PatientsProfileRepositoryImp(sl()));
+  sl.registerLazySingleton<BlockRepositoryImp>(
+      () => BlockRepositoryImp(sl()));
   sl.registerLazySingleton<GetPatientsRepositoryImp>(
       () => GetPatientsRepositoryImp(sl()));
   sl.registerLazySingleton<MedicalDescriptionRepositoryImp>(
@@ -93,6 +98,8 @@ Future<void> init() async {
 
 // Datasources
 
+  sl.registerLazySingleton<BlockDataSource>(
+      () => BlockDataSource(client: http.Client()));
   sl.registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(client: http.Client()));
   sl.registerLazySingleton<ChatDataSource>(
@@ -149,6 +156,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => BottomNavigationWidgetBloc());
   sl.registerLazySingleton(
       () => NotificationBloc(notificationRepository: sl()));
+  sl.registerLazySingleton(
+      () => BlockBloc(blockRepositoryImp: sl()));
   sl.registerLazySingleton(
       () => MedicalDescriptionCubit(medicalDescriptionRepositoryImp: sl()));
   sl.registerFactory(

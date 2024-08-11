@@ -1,14 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel) {
+Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel,
+    {bool isFromBlock = false}) {
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
@@ -21,7 +23,7 @@ Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildPatientNameAndImage(getPatientsModel),
+          buildPatientNameAndImage(context, getPatientsModel, isFromBlock),
           const SizedBox(height: 16),
           // expandedDescription(
           //     context, getPatientsModel.specInfo,
@@ -104,7 +106,8 @@ GeneralButtonOptions cancelLogOutButton(BuildContext context) {
   );
 }
 
-GestureDetector buildPatientNameAndImage(GetPatientsModel patientsModel) {
+GestureDetector buildPatientNameAndImage(
+    BuildContext context, GetPatientsModel patientsModel, bool isFromBlock) {
   return GestureDetector(
     onTap: () {
       navigationService.navigateTo(userProfilePage,
@@ -125,26 +128,37 @@ GestureDetector buildPatientNameAndImage(GetPatientsModel patientsModel) {
         ),
         const SizedBox(width: 16),
         Text(patientsModel.name, style: customTextStyle.bodyLarge),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GeneralButtonOptions(
-                text: 'Enter Chat',
-                onPressed: () {
+        enterChatButton(context, patientsModel, isFromBlock),
+      ],
+    ),
+  );
+}
+
+Widget enterChatButton(
+    BuildContext context, GetPatientsModel patientsModel, bool isFromBlock) {
+  return Expanded(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        GeneralButtonOptions(
+          text: isFromBlock ? "Unblock Patient" : 'Enter Chat',
+          onPressed: isFromBlock
+              ? () {
+                  context
+                      .read<BlockBloc>()
+                      .add(UnBlocPatientEvent(patientId: patientsModel.id));
+                }
+              : () {
                   navigationService.navigateTo(chatInitPage,
                       arguments: patientsModel.id);
                 },
-                options: ButtonOptions(
-                    textStyle: customTextStyle.bodyMedium,
-                    color: customColors.primary),
-              ),
-              const SizedBox(
-                height: 5,
-              )
-            ],
-          ),
+          options: ButtonOptions(
+              textStyle: customTextStyle.bodyMedium,
+              color: customColors.primary),
         ),
+        const SizedBox(
+          height: 5,
+        )
       ],
     ),
   );

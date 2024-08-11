@@ -6,6 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/sc
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/password_step.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/register_steps/select_image_step.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/screens/welcome_screen/wlcome_screen.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/view/screens/blocks_screen.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_init_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_page.dart';
@@ -60,6 +61,7 @@ const String medicalDescriptionsList = '/MedicalDescriptionsList';
 const String medicalDescriptionDetails = '/MedicalDescriptionDetails';
 const String chatInitPage = '/ChatInitPage';
 const String videoCallInitPage = '/VideoCallInitPage';
+const String blockedPatients = '/blockedPatients';
 
 // Define the route map
 final Map<String, WidgetBuilder> routes = {
@@ -93,4 +95,5 @@ final Map<String, WidgetBuilder> routes = {
   medicalDescriptionDetails: (context) => const MedicalDescriptionDetails(),
   chatInitPage: (context) => const ChatInitPage(),
   videoCallInitPage: (context) => const VideoCallInitPage(),
+  blockedPatients: (context) => const BlockedPatientsScreen(),
 };

@@ -51,7 +51,8 @@ String endUserSession(BuildContext context, String title) {
         title == 'User not found' ||
         title == 'Not allowed' ||
         title == 'No Token Provided.' ||
-        title == 'No Token Provided') {
+        title == 'No Token Provided' ||
+        title == 'There is another session open , please login again') {
       logOut();
       logOutClearBloc(context);
       title =

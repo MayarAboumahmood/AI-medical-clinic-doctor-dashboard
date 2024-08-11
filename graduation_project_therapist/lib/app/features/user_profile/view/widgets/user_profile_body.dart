@@ -26,8 +26,8 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
       SizedBox(height: responsiveUtil.screenHeight * .1),
       Align(
         alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Wrap(
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             isDoctor
                 ? assignTherapistbutton(context, profile.data.id)

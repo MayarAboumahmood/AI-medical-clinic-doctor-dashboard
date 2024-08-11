@@ -7,35 +7,53 @@ class BlockDataSource {
   http.Client client;
   BlockDataSource({required this.client});
 
-  Future<Response> getUserProfileData() async {
+  Future<Response> blockPatient(int patientId) async {
     String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.getUserInfourl);
+    var url = Uri.parse(ServerConfig.url + ServerConfig.blockPatienturi);
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      body: {
+        "userId": patientId.toString(),
+      },
+      headers: headers,
+    );
+    print('block user body datasource: ${response.body}');
+    print('block user status statuscode datasource: ${response.statusCode}');
+
+    return response;
+  }
+  Future<Response> unBlockPatient(int patientId) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.unBlockPatienturi);
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      body: {
+        "userId": patientId.toString(),
+      },
+      headers: headers,
+    );
+    print('unblock user body datasource: ${response.body}');
+    print('unblock user status statuscode datasource: ${response.statusCode}');
+
+    return response;
+  }
+
+  Future<Response> getAllBlocedPatientEvent() async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.blockPatienturi);
     var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(
       url,
       headers: headers,
     );
-
-    print('getint user profile body datasource: ${response.body}');
-    print('getint user profile statuscode datasource: ${response.statusCode}');
-    return response;
-  }
-
-  Future<Response> blockPatient(int patientId) async {
-    String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.blockPatienturi);
-    var headers = {'Content-Type': 'application/json', 'Authorization': token};
-
-    var response = await http.post(
-      url,
-      body: {
-        "userId": patientId,
-      },
-      headers: headers,
-    );
-    print('getint user status body datasource: ${response.body}');
-    print('getint user status statuscode datasource: ${response.statusCode}');
+    print('get All Bloced Patient status body datasource: ${response.body}');
+    print(
+        'get All Bloced Patient statuscode datasource: ${response.statusCode}');
 
     return response;
   }
