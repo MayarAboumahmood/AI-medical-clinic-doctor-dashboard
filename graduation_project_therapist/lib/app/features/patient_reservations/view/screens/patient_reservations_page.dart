@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/view/widgets/block_patient_listener.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/view/widgets/patient_reservations_card.dart';
@@ -32,19 +33,22 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PatientReservationsCubit, PatientReservationsState>(
-      listener: (context, state) {
-        if (state is PatientReservationErrorState) {
-          customSnackBar(state.errorMessage, context);
-        } else if (state is CancelPatientReservationErrorState) {
-          customSnackBar(state.errorMessage, context);
-        } else if (state is PatientReservationApprovedSuccessfullyState) {
-          customSnackBar('Appontment confirmed Successfully', context);
-        } else if (state is PatientReservationCanceledSuccessfullyState) {
-          customSnackBar('Appontment canceled Successfully', context);
-        }
-      },
-      child: patientReservationssPage(context),
+    return blockPatientListener(
+        patientReservationsCubit.getPatientReservations,
+     BlocListener<PatientReservationsCubit, PatientReservationsState>(
+        listener: (context, state) {
+          if (state is PatientReservationErrorState) {
+            customSnackBar(state.errorMessage, context);
+          } else if (state is CancelPatientReservationErrorState) {
+            customSnackBar(state.errorMessage, context);
+          } else if (state is PatientReservationApprovedSuccessfullyState) {
+            customSnackBar('Appontment confirmed Successfully', context);
+          } else if (state is PatientReservationCanceledSuccessfullyState) {
+            customSnackBar('Appontment canceled Successfully', context);
+          }
+        },
+        child: patientReservationssPage(context),
+      ),
     );
   }
 

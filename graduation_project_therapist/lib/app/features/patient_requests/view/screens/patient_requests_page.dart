@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/view/widgets/block_patient_listener.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/patient_request_card.dart';
@@ -32,17 +32,9 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BlockBloc, BlockState>(
-      listener: (context, state) {
-        print('the block user state is: $state');
-        if (state is BlocFauilerState) {
-          customSnackBar(state.errorMessage, context);
-        } else if (state is BlockPatientSuccessState) {
-          customSnackBar("Patient successfully blocked.", context);
-          patientRequestsCubit.getPatientRequests();
-        }
-      },
-      child: BlocListener<PatientRequestsCubit, PatientRequestsState>(
+    return blockPatientListener(
+      patientRequestsCubit.getPatientRequests,
+      BlocListener<PatientRequestsCubit, PatientRequestsState>(
         listener: (context, state) {
           if (state is PatientRequestErrorState) {
             customSnackBar(state.errorMessage, context);

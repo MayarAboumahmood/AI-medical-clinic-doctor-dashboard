@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/view/widgets/block_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
@@ -113,55 +114,73 @@ GestureDetector buildPatientNameAndImage(
       navigationService.navigateTo(userProfilePage,
           arguments: patientsModel.id);
     },
-    child: Row(
+    child: Column(
       children: [
-        Container(
-          decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: getImageNetwork(
-                url: 'patientsModel.photo',
-                width: 65,
-                height: 65,
-                fit: BoxFit.cover),
-          ),
+        isFromBlock ? const SizedBox() : optionMenu(context, patientsModel),
+        Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: getImageNetwork(
+                    url: 'patientsModel.photo',
+                    width: 65,
+                    height: 65,
+                    fit: BoxFit.cover),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(patientsModel.name, style: customTextStyle.bodyLarge),
+            enterChatButton1(context, patientsModel, isFromBlock),
+          ],
         ),
-        const SizedBox(width: 16),
-        Text(patientsModel.name, style: customTextStyle.bodyLarge),
-        enterChatButton(context, patientsModel, isFromBlock),
       ],
     ),
   );
 }
 
-Widget enterChatButton(
+Row optionMenu(BuildContext context, GetPatientsModel patientsModel) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      buildOptionsMenu(context, patientsModel.id, patientsModel.name),
+    ],
+  );
+}
+
+Widget enterChatButton1(
     BuildContext context, GetPatientsModel patientsModel, bool isFromBlock) {
   return Expanded(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GeneralButtonOptions(
-          text: isFromBlock ? "Unblock Patient" : 'Enter Chat',
-          onPressed: isFromBlock
-              ? () {
-                  print('ssssssssssssssssssssssssss: ${patientsModel.id}');
-
-                  context.read<BlockBloc>().add(UnBlocPatientEvent(
-                      patientId: patientsModel.id,
-                      blockedPatientName: patientsModel.name));
-                }
-              : () {
-                  navigationService.navigateTo(chatInitPage,
-                      arguments: patientsModel.id);
-                },
-          options: ButtonOptions(
-              textStyle: customTextStyle.bodyMedium,
-              color: customColors.primary),
-        ),
+        enterChatUnBlockButton(isFromBlock, patientsModel, context),
         const SizedBox(
           height: 5,
         )
       ],
     ),
+  );
+}
+
+GeneralButtonOptions enterChatUnBlockButton(
+    bool isFromBlock, GetPatientsModel patientsModel, BuildContext context) {
+  return GeneralButtonOptions(
+    text: isFromBlock ? "Unblock Patient" : 'Enter Chat',
+    onPressed: isFromBlock
+        ? () {
+            print('ssssssssssssssssssssssssss: ${patientsModel.id}');
+
+            context.read<BlockBloc>().add(UnBlocPatientEvent(
+                patientId: patientsModel.id,
+                blockedPatientName: patientsModel.name));
+          }
+        : () {
+            navigationService.navigateTo(chatInitPage,
+                arguments: patientsModel.id);
+          },
+    options: ButtonOptions(
+        textStyle: customTextStyle.bodyMedium, color: customColors.primary),
   );
 }

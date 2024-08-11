@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block/view/widgets/block_patient_listener.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/cubit/get_patients_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/cubit/get_patients_state.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
@@ -48,23 +49,26 @@ class _GetPatientsPageState extends State<GetPatientsPage> {
           });
         },
       ),
-      body: BlocConsumer<GetPatientsCubit, GetPatientsState>(
-        listener: (context, state) {
-          if (state is PatientsErrorState) {
-            print('the state is: $state');
-            customSnackBar(state.errorMessage, context, isFloating: true);
-          }
-        },
-        builder: (context, state) {
-          if (state is PatientsLoadingState) {
-            return mediumSizeCardShimmer();
-          } else if (state is PatientsLoadedState) {
+      body: blockPatientListener(
+        getPatientsCubit.getPatients,
+        BlocConsumer<GetPatientsCubit, GetPatientsState>(
+          listener: (context, state) {
+            if (state is PatientsErrorState) {
+              print('the state is: $state');
+              customSnackBar(state.errorMessage, context, isFloating: true);
+            }
+          },
+          builder: (context, state) {
+            if (state is PatientsLoadingState) {
+              return mediumSizeCardShimmer();
+            } else if (state is PatientsLoadedState) {
+              return patientsListBody(context);
+            } else if (state is SearchOnPatientsState) {
+              return patientsListBody(context);
+            }
             return patientsListBody(context);
-          } else if (state is SearchOnPatientsState) {
-            return patientsListBody(context);
-          }
-          return patientsListBody(context);
-        },
+          },
+        ),
       ),
     );
   }
@@ -82,33 +86,38 @@ class _GetPatientsPageState extends State<GetPatientsPage> {
       () async {
         getPatientsCubit.getPatients();
       },
-      getpatientsModels.isEmpty
-          ? SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: Center(
-                child: buildNoElementInPage(
-                  _isSearching
-                      ? "No result!"
-                      : "You don't have any patient yet.",
-                  Icons.hourglass_empty_rounded,
-                ),
-              ),
-            )
-          : SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  ...List.generate(
-                      getpatientsModels.length,
-                      (index) =>
-                          patientsCard(context, getpatientsModels[index])),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ]),
-              ),
+      Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: getpatientsModels.isEmpty
+                  ? noPatientWidget()
+                  : Column(children: [
+                      ...List.generate(
+                          getpatientsModels.length,
+                          (index) =>
+                              patientsCard(context, getpatientsModels[index])),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ]),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox noPatientWidget() {
+    return SizedBox(
+      height: responsiveUtil.screenHeight * .7,
+      child: Center(
+        child: buildNoElementInPage(
+          _isSearching ? "No result!" : "You don't have any patient yet.",
+          Icons.hourglass_empty_rounded,
+        ),
+      ),
     );
   }
 }
