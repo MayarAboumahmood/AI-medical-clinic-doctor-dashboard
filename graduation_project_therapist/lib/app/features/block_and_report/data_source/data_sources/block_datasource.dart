@@ -24,6 +24,7 @@ class BlockDataSource {
 
     return response;
   }
+
   Future<Response> unBlockPatient(int patientId) async {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url + ServerConfig.unBlockPatienturi);
@@ -54,6 +55,22 @@ class BlockDataSource {
     print('get All Bloced Patient status body datasource: ${response.body}');
     print(
         'get All Bloced Patient statuscode datasource: ${response.statusCode}');
+
+    return response;
+  }
+
+  reportPatient(int patientId, String description) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.reportPatientUri);
+    var headers = {'Authorization': token};
+
+    var response = await http.post(
+      url,
+      body: {'PatientID': patientId.toString(), 'description': description},
+      headers: headers,
+    );
+    print('report Patient status body datasource: ${response.body}');
+    print('report Patient statuscode datasource: ${response.statusCode}');
 
     return response;
   }

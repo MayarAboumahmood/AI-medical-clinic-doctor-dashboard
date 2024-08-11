@@ -3,9 +3,9 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/re
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/sign_in_cubit/sign_in_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/data_source/remot_data_source.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/data_source/repository_imp/auth_repository_impl.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/data_source/data_sources/block_datasource.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/repository/block_repository_imp.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/bloc/block_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/data_source/data_sources/block_datasource.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/repository/block_repository_imp.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/data_source/data_source.dart';

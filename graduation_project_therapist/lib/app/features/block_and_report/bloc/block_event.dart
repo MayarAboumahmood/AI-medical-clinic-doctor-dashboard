@@ -23,3 +23,11 @@ class GetAllBlocedPatientEvent extends BlockEvent {
   @override
   List<Object?> get props => [];
 }
+class ReportPatientEvent extends BlockEvent {
+  final int patientId;
+  final String description;
+  ReportPatientEvent({required this.patientId,required this.description});
+  @override
+  List<Object?> get props => [patientId,description];
+}
+

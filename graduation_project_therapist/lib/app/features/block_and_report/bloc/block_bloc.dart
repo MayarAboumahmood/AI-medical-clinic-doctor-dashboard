@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/data_source/models/all_blocked_patient_model.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/repository/block_repository_imp.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/data_source/models/all_blocked_patient_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/repository/block_repository_imp.dart';
 import 'package:meta/meta.dart';
 
 part 'block_event.dart';
@@ -18,7 +18,7 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       emit(BlocedPatientLoadingState());
       final getData = await blockRepositoryImp.blockPatient(event.patientId);
       getData.fold((onError) {
-        emit(BlocFauilerState(errorMessage: onError));
+        emit(BlockFauilerState(errorMessage: onError));
       }, (data) {
         emit(BlockPatientSuccessState());
       });
@@ -27,7 +27,7 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       emit(UnBlocedPatientLoadingState());
       final getData = await blockRepositoryImp.unBlockPatient(event.patientId);
       getData.fold((onError) {
-        emit(BlocFauilerState(errorMessage: onError));
+        emit(BlockFauilerState(errorMessage: onError));
       }, (data) {
         emit(UnBlockPatientSuccessState(
             blockedPatientName: event.blockedPatientName));
@@ -37,10 +37,20 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       emit(BlocedPatientLoadingState());
       final getData = await blockRepositoryImp.getAllBlocedPatientEvent();
       getData.fold((onError) {
-        emit(BlocFauilerState(errorMessage: onError));
+        emit(BlockFauilerState(errorMessage: onError));
       }, (data) {
         allBlockedPatientModel = data;
         emit(GetAllBlocedPatientState());
+      });
+    });
+    on<ReportPatientEvent>((event, emit) async {
+      // emit(BlocedPatientLoadingState());
+      final getData = await blockRepositoryImp.reportPatient(
+          event.patientId, event.description);
+      getData.fold((onError) {
+        emit(ReportFauilerState(errorMessage: onError));
+      }, (data) {
+        emit(ReportPatientSuccessState());
       });
     });
   }

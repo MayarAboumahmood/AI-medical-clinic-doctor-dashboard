@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/bloc/block_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block/data_source/models/all_blocked_patient_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/bloc/block_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/data_source/models/all_blocked_patient_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/veiw/widgets/patients_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
@@ -33,7 +33,7 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
       listener: (context, state) {
         if (state is BlockInitial) {
           print('Bloc page init state');
-        } else if (state is BlocFauilerState) {
+        } else if (state is BlockFauilerState) {
           customSnackBar(state.errorMessage, context, isFloating: true);
         } else if (state is UnBlockPatientSuccessState) {
           customSnackBar(

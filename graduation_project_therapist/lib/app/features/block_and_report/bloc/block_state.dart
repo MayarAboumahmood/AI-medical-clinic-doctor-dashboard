@@ -36,15 +36,22 @@ final class GetAllBlocedPatientState extends BlockState {
   List<Object?> get props => [];
 }
 
-final class BlocFauilerState extends BlockState {
+final class BlockFauilerState extends BlockState {
   final String errorMessage;
-  BlocFauilerState({required this.errorMessage});
+  BlockFauilerState({required this.errorMessage});
   @override
   List<Object?> get props => [errorMessage];
 }
 
-// final class GetUserStatesuccessfulyState extends BlockState {
-//   GetUserStatesuccessfulyState();
-//   @override
-//   List<Object?> get props => [];
-// }
+final class ReportFauilerState extends BlockState {
+  final String errorMessage;
+  ReportFauilerState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+
+final class ReportPatientSuccessState extends BlockState {
+  @override
+  List<Object?> get props => [];
+}
