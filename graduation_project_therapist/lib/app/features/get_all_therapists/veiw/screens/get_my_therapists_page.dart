@@ -88,6 +88,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
 
     return customRefreshIndicator(
       () async {
+        //here i send -10 becase I don't need a quary argument with the request because here I want all the therapist I have/ and when I send the patient id than I want my therapist that I can assign this patient to them.
         getMyTherapistCubit.getMyTherapist(-10);
       },
       Column(

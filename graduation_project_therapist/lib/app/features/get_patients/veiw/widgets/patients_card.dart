@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/bloc/block_bloc.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/block_option__munie.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_patients/data_source/models/get_patients_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
@@ -19,19 +19,16 @@ Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
     ),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildPatientNameAndImage(context, getPatientsModel, isFromBlock),
-          const SizedBox(height: 16),
-          // expandedDescription(
-          //     context, getPatientsModel.specInfo,
-          //     backGroundColor: Colors.transparent),
-          const SizedBox(height: 16),
-        ],
-      ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildPatientNameAndImage(context, getPatientsModel, isFromBlock),
+        const SizedBox(height: 16),
+        // expandedDescription(
+        //     context, getPatientsModel.specInfo,
+        //     backGroundColor: Colors.transparent),
+        const SizedBox(height: 16),
+      ],
     ),
   );
 }
@@ -116,7 +113,6 @@ GestureDetector buildPatientNameAndImage(
     },
     child: Column(
       children: [
-        isFromBlock ? const SizedBox() : optionMenu(context, patientsModel),
         Row(
           children: [
             Container(
@@ -124,6 +120,7 @@ GestureDetector buildPatientNameAndImage(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: getImageNetwork(
+                    forProfileImage: true,
                     url: 'patientsModel.photo',
                     width: 65,
                     height: 65,
@@ -132,9 +129,14 @@ GestureDetector buildPatientNameAndImage(
             ),
             const SizedBox(width: 16),
             Text(patientsModel.name, style: customTextStyle.bodyLarge),
-            enterChatButton1(context, patientsModel, isFromBlock),
+            const Spacer(),
+            isFromBlock
+                ? const SizedBox()
+                : buildOptionsMenu(
+                    context, patientsModel.id, patientsModel.name),
           ],
         ),
+        enterChatButton1(context, patientsModel, isFromBlock),
       ],
     ),
   );
@@ -151,16 +153,14 @@ Row optionMenu(BuildContext context, GetPatientsModel patientsModel) {
 
 Widget enterChatButton1(
     BuildContext context, GetPatientsModel patientsModel, bool isFromBlock) {
-  return Expanded(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        enterChatUnBlockButton(isFromBlock, patientsModel, context),
-        const SizedBox(
-          height: 5,
-        )
-      ],
-    ),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      enterChatUnBlockButton(isFromBlock, patientsModel, context),
+      const SizedBox(
+        height: 5,
+      )
+    ],
   );
 }
 
@@ -170,8 +170,6 @@ GeneralButtonOptions enterChatUnBlockButton(
     text: isFromBlock ? "Unblock Patient" : 'Enter Chat',
     onPressed: isFromBlock
         ? () {
-            print('ssssssssssssssssssssssssss: ${patientsModel.id}');
-
             context.read<BlockBloc>().add(UnBlocPatientEvent(
                 patientId: patientsModel.id,
                 blockedPatientName: patientsModel.name));

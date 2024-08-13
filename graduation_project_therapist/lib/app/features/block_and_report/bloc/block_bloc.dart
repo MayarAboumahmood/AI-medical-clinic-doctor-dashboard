@@ -53,5 +53,15 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
         emit(ReportPatientSuccessState());
       });
     });
+    on<ReportMedicalDescriptionEvent>((event, emit) async {
+      // emit(BlocedPatientLoadingState());
+      final getData = await blockRepositoryImp.reportMedicalDescription(
+          event.medicalDescriptionId, event.description);
+      getData.fold((onError) {
+        emit(ReportFauilerState(errorMessage: onError));
+      }, (data) {
+        emit(ReportMedicalDescriptionSuccessState());
+      });
+    });
   }
 }

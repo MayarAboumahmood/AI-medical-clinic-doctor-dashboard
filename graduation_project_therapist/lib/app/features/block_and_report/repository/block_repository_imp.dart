@@ -78,7 +78,8 @@ class BlockRepositoryImp {
   Future<Either<String, String>> reportPatient(
       int patientId, String description) async {
     try {
-      final response = await _blockDataSource.reportPatient(patientId,description);
+      final response =
+          await _blockDataSource.reportPatient(patientId, description);
       final decodedResponse = jsonDecode(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         return right('Done');
@@ -92,6 +93,28 @@ class BlockRepositoryImp {
       }
     } catch (e) {
       print('error wile reporting patient: $e');
+      return left('Server error');
+    }
+  }
+
+  Future<Either<String, String>> reportMedicalDescription(
+      int medicalDescriptionId, String description) async {
+    try {
+      final response = await _blockDataSource.reportMedicalDescription(
+          medicalDescriptionId, description);
+      final decodedResponse = jsonDecode(response.body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return right('Done');
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      print('error wile reporting description: $e');
       return left('Server error');
     }
   }

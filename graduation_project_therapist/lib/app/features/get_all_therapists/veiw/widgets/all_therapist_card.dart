@@ -205,6 +205,7 @@ GestureDetector buildTherapistNameAndImage(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
+                forProfileImage: true,
                 url: getTherapistModel.specialistProfile.photo,
                 width: 65,
                 height: 65,

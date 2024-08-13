@@ -9,10 +9,11 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 class ReportPatientBottomSheet extends StatefulWidget {
   final int patientID;
   final String patientName;
-
+  final int? medicalDescriptionId;
   const ReportPatientBottomSheet({
     required this.patientID,
     required this.patientName,
+    this.medicalDescriptionId,
     Key? key,
   }) : super(key: key);
 
@@ -42,7 +43,9 @@ class _ReportPatientBottomSheetState extends State<ReportPatientBottomSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('why do you want to report ${widget.patientName}?'.tr(),
+            Text(
+                "What concerns do you have about ${widget.patientName}'s medical description?"
+                    .tr(),
                 style: customTextStyle.bodyMedium),
             const SizedBox(height: 20),
             descriptionTextField(context),
@@ -59,10 +62,14 @@ class _ReportPatientBottomSheetState extends State<ReportPatientBottomSheet> {
                             WidgetStateProperty.all(customColors.primary),
                       ),
                       onPressed: () {
-                        print('ssssssssssssssssssssssss: $description');
-                        blockBlock.add(ReportPatientEvent(
-                            patientId: widget.patientID,
-                            description: description));
+                        widget.medicalDescriptionId != null
+                            ? blockBlock.add(ReportMedicalDescriptionEvent(
+                                medicalDescriptionId:
+                                    widget.medicalDescriptionId!,
+                                description: description))
+                            : blockBlock.add(ReportPatientEvent(
+                                patientId: widget.patientID,
+                                description: description));
                         navigationService.goBack();
                       },
                       child: isLoading

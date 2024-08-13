@@ -30,4 +30,11 @@ class ReportPatientEvent extends BlockEvent {
   @override
   List<Object?> get props => [patientId,description];
 }
+class ReportMedicalDescriptionEvent extends BlockEvent {
+  final int medicalDescriptionId;
+  final String description;
+  ReportMedicalDescriptionEvent({required this.medicalDescriptionId,required this.description});
+  @override
+  List<Object?> get props => [medicalDescriptionId,description];
+}
 

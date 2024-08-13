@@ -30,7 +30,12 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     getData.fold(
         (errorMessage) =>
             emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      cachedUserRequests.removeWhere((item) => item.id == requestID);
+      for (var item in cachedUserRequests) {
+        if (item.id == requestID) {
+          item.status = true;
+          break;
+        }
+      }
       emit(PatientRequestApprovedSuccessfullyState());
     });
   }

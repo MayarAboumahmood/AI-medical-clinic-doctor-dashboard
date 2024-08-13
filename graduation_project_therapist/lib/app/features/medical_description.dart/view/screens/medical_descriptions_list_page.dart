@@ -5,7 +5,9 @@ import 'package:graduation_project_therapist_dashboard/app/features/medical_desc
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/all_medical_records_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/view/widgets/medical_description_card.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/custom_refress_indicator.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/no_element_in_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -35,7 +37,6 @@ class _MedicalDescriptionsListState extends State<MedicalDescriptionsList> {
       final int argument =
           ModalRoute.of(context)!.settings.arguments as int? ?? 1;
       patientID = argument;
-
       medicalDescriptionCubit.getAllMedicalDescription(patientID);
     }
   }
@@ -48,10 +49,12 @@ class _MedicalDescriptionsListState extends State<MedicalDescriptionsList> {
             onPressed: () {
               navigationService.navigateTo(medicalDescriptionPage);
             },
-            label: Text(
-              'Add',
-              style: customTextStyle.bodyMedium,
-            )),
+            label: isDoctor
+                ? Text(
+                    'Add',
+                    style: customTextStyle.bodyMedium,
+                  )
+                : const SizedBox()),
         backgroundColor: customColors.primaryBackGround,
         appBar:
             appBarPushingScreens('Medical descriptions', isFromScaffold: true),
@@ -70,14 +73,36 @@ class _MedicalDescriptionsListState extends State<MedicalDescriptionsList> {
         ));
   }
 
-  SingleChildScrollView listOfMedicalRecords(
+  Widget listOfMedicalRecords(
       List<AllMedicalRecordsModel> allMedicalDescriptions) {
-    return SingleChildScrollView(
-      child: Column(
-        children: List.generate(allMedicalDescriptions.length,
-            (index) => medicalDescriptionCard(allMedicalDescriptions[index])),
+    return customRefreshIndicator(
+      () async {
+        medicalDescriptionCubit.getAllMedicalDescription(patientID);
+      },
+      Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: allMedicalDescriptions.isEmpty
+                  ? SizedBox(
+                      height: responsiveUtil.screenHeight * .7,
+                      child: Center(
+                        child: buildNoElementInPage(
+                            'No medical description available for this patient yet.',
+                            Icons.hourglass_empty_rounded),
+                      ),
+                    )
+                  : Column(
+                      children: List.generate(
+                          allMedicalDescriptions.length,
+                          (index) => medicalDescriptionCard(
+                              allMedicalDescriptions[index], patientID)),
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  }
+}

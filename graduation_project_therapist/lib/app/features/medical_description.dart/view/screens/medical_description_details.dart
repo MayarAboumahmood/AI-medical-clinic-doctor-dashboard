@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/cubit/medical_description_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/medical_description_arguments.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/data_source/models/medical_details_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/view/widgets/medical_description_text_fields_widgets.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
@@ -19,6 +22,8 @@ class MedicalDescriptionDetails extends StatefulWidget {
 
 class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
   late int medicalDescriptionId;
+  late String patientName;
+  late int patientID;
   bool firstTimeDidChange = true;
   late MedicalDescriptionCubit medicalDescriptionCubit;
   @override
@@ -32,9 +37,13 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
     super.didChangeDependencies();
     if (firstTimeDidChange) {
       firstTimeDidChange = false;
-      final int argument =
-          ModalRoute.of(context)!.settings.arguments as int? ?? -1;
-      medicalDescriptionId = argument;
+      final args =
+          ModalRoute.of(context)!.settings.arguments as MedicalDetailsArgs;
+
+      medicalDescriptionId = args.medicalDescriptionId;
+      patientName = args.patientName;
+      patientID = args.patientID;
+
       medicalDescriptionCubit
           .getMedicalDescriptionDetails(medicalDescriptionId);
     }
@@ -42,32 +51,52 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: customColors.primary,
-          onPressed: () {
-            // navigationService.navigateTo(medicalDescriptionPage);
+    return PopScope(
+      onPopInvokedWithResult: (_, result) {
+        medicalDescriptionCubit.getAllMedicalDescription(patientID);
+      },
+      child: Scaffold(
+        floatingActionButton:
+            BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
+          builder: (context, state) {
+            if (state is GetMedicalDescriptionsDetailsSuccessState)
+              return FloatingActionButton.extended(
+                  backgroundColor: customColors.primary,
+                  onPressed: () {
+                    navigationService.navigateTo(medicalDescriptionPage,
+                        arguments: state.medicalDescriptionModel);
+                  },
+                  label: isDoctor
+                      ? Text(
+                          'update',
+                          style: customTextStyle.bodyMedium,
+                        )
+                      : const SizedBox());
+            return const SizedBox();
           },
-          label: Text(
-            'update',
-            style: customTextStyle.bodyMedium,
-          )),
-      backgroundColor: customColors.primaryBackGround,
-      appBar: appBarPushingScreens('Medical descriptions details',
-          isFromScaffold: true),
-      body: BlocConsumer<MedicalDescriptionCubit, MedicalDescriptionState>(
-        listener: (context, state) {
-          if (state is GetAllMedicalDescriptionsErrorState) {
-            customSnackBar(state.errorMessage, context, isFloating: true);
-          }
-        },
-        builder: (context, state) {
-          if (state is GetMedicalDescriptionsDetailsSuccessState) {
-            return medicalDescriptiondDataColumn(state.medicalDescriptionModel);
-          } else {
-            return buildListOfShimmerForProfilePage();
-          }
-        },
+        ),
+        backgroundColor: customColors.primaryBackGround,
+        appBar: appBarPushingScreens(
+          'Medical descriptions details',
+          isFromScaffold: true,
+          optionMenu: buildAppbarOptionsMenu(
+              context, patientID, patientName, medicalDescriptionId),
+        ),
+        body: BlocConsumer<MedicalDescriptionCubit, MedicalDescriptionState>(
+          listener: (context, state) {
+            if (state is GetAllMedicalDescriptionsErrorState) {
+              customSnackBar(state.errorMessage, context, isFloating: true);
+            }
+          },
+          builder: (context, state) {
+            if (state is GetMedicalDescriptionsDetailsSuccessState) {
+              return medicalDescriptiondDataColumn(
+                  state.medicalDescriptionModel);
+            } else {
+              return buildListOfShimmerForProfilePage();
+            }
+          },
+        ),
       ),
     );
   }
@@ -143,19 +172,7 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
           height: 1,
           color: customColors.primary,
         ),
-        const SizedBox(height: 15),
-
-        // GeneralButtonOptions(
-        //     text: 'Submit',
-        //     onPressed: () {
-        //       // medicalDescriptionCubit.createNewMedicalDescription();
-        //     },
-        //     options: ButtonOptions(
-        //         width: responsiveUtil.screenWidth * .2,
-        //         color: customColors.primary,
-        //         textStyle: customTextStyle.bodyMedium)),
-
-        const SizedBox(height: 10)
+        const SizedBox(height: 25)
       ]),
     );
   }

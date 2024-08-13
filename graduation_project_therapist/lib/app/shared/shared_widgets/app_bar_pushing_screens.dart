@@ -6,7 +6,7 @@ import '../../../main.dart';
 PreferredSize appBarPushingScreens(String title,
     {bool isFromScaffold = false,
     bool showSearchIcon = false,
-    VoidCallback? onSearchIconPressed}) {
+    VoidCallback? onSearchIconPressed, Widget optionMenu=const SizedBox()}) {
   double sizeOnheight = isFromScaffold ? 0 : 100;
   return PreferredSize(
     preferredSize: Size.fromHeight(
@@ -17,24 +17,24 @@ PreferredSize appBarPushingScreens(String title,
             color: Colors.black38, offset: Offset(0, 2.0), blurRadius: 4.0)
       ]),
       child: AppBar(
-        surfaceTintColor: customColors.primaryBackGround,
-        automaticallyImplyLeading: true,
-        iconTheme: IconThemeData(
-          color: customColors
-              .text2, //to change the defalt icon color in the appbar.
-        ),
-        backgroundColor: customColors.primaryBackGround,
-        title: AnimationAppBarTitle(title: title),
-        centerTitle: true,
-        actions: showSearchIcon
-            ? [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: onSearchIconPressed,
-                ),
-              ]
-            : null,
-      ),
+          surfaceTintColor: customColors.primaryBackGround,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(
+            color: customColors
+                .text2, //to change the defalt icon color in the appbar.
+          ),
+          backgroundColor: customColors.primaryBackGround,
+          title: AnimationAppBarTitle(title: title),
+          centerTitle: true,
+          actions: [
+            showSearchIcon
+                ? IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: onSearchIconPressed,
+                  )
+                : const SizedBox(),
+                optionMenu
+          ]),
     ),
   );
 }
@@ -83,7 +83,7 @@ PreferredSizeWidget appBarPushingScreensForSearch(
               ]
             : [
                 IconButton(
-                  icon: const  Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: onSearchIconPressed,
                 ),
               ],

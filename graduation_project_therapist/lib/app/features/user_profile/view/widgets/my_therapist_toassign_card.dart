@@ -15,6 +15,7 @@ Widget myTherapistToAssignCard(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(14),
         child: getImageNetwork(
+          forProfileImage: true,
           url: getTherapistModel.specialistProfile.photo,
           width: 50,
           height: 50,

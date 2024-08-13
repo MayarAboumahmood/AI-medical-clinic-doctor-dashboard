@@ -53,5 +53,5 @@ class ServerConfig {
   static const String getChatInfoUri = 'chat/getChat/';
   static const String blockPatienturi = 'blocks';
   static const String unBlockPatienturi = 'blocks/undo';
-  static const String reportPatientUri = 'report'; //TODO
+  static const String reportPatientUri = 'reports/user';
 }

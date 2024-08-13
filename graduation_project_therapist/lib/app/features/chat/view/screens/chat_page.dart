@@ -48,9 +48,7 @@ class _ChatPageState extends State<ChatPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (firstTime) {
-      print('befor sssssssssssssssssssssssssssssssssssss');
       chatBloc.add(GetAllMessagesEvent());
-      print('after sssssssssssssssssssssssssssssssssssss');
       chatBloc.add(ReceiveNewMessageEvent());
       _jumpToBottom();
       firstTime = false;

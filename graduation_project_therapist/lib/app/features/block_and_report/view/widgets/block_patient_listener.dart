@@ -18,7 +18,7 @@ Widget blockPatientListener(
           loadPage();
         } else if (state is ReportFauilerState) {
           customSnackBar(
-              'Error while reporting patient: ${state.errorMessage}', context,
+              'Error while reporting: ${state.errorMessage}', context,
               isFloating: true);
         } else if (state is ReportPatientSuccessState) {
           customSnackBar(

@@ -12,11 +12,8 @@ Widget getImageNetwork({
   BoxFit fit = BoxFit.cover,
   bool needAErrorBackgroundColor = true,
   bool fromBackEnd = true,
+  bool forProfileImage = false,
 }) {
-  // if (fromBackEnd) {
-  //   url = ServerConfig.imageUrl + url;
-  // }
-
   return Container(
     width: width,
     color: color,
@@ -45,7 +42,8 @@ Widget getImageNetwork({
       errorBuilder:
           (BuildContext context, Object error, StackTrace? stackTrace) {
         print('the error while opening the image: $error');
-        return buildErrorBody(needAErrorBackgroundColor, width, height);
+        return buildErrorBody(
+            needAErrorBackgroundColor, width, height, forProfileImage);
       },
     ),
   );
@@ -58,6 +56,7 @@ Widget imageLoader({
   Color? color,
   BoxFit fit = BoxFit.cover,
   bool fromBackEnd = true,
+  bool forProfileImage = false,
 }) {
   // if (fromBackEnd) {
   //   url = ServerConfig.imageUrl + url;
@@ -72,7 +71,7 @@ Widget imageLoader({
       progressIndicatorBuilder: (context, url, downloadProgress) =>
           buildLoadingShimmer(width, height),
       errorWidget: (context, url, error) {
-        return buildErrorBody(true, width, height);
+        return buildErrorBody(true, width, height, forProfileImage);
       });
 }
 
@@ -88,16 +87,18 @@ Shimmer buildLoadingShimmer(double? width, double? height) {
   );
 }
 
-Container buildErrorBody(
-    bool needAErrorBackgroundColor, double? width, double? height) {
+Container buildErrorBody(bool needAErrorBackgroundColor, double? width,
+    double? height, bool forProfileImage) {
   return Container(
     color: needAErrorBackgroundColor ? customColors.secondaryBackGround : null,
     width: width,
     height: height,
-    child: const Center(
-      child: Icon(
-        Icons.error,
-      ),
-    ),
+    child: forProfileImage
+        ? Image.asset('assets/images/first charecater.png')
+        : const Center(
+            child: Icon(
+              Icons.error,
+            ),
+          ),
   );
 }

@@ -55,3 +55,7 @@ final class ReportPatientSuccessState extends BlockState {
   @override
   List<Object?> get props => [];
 }
+final class ReportMedicalDescriptionSuccessState extends BlockState {
+  @override
+  List<Object?> get props => [];
+}

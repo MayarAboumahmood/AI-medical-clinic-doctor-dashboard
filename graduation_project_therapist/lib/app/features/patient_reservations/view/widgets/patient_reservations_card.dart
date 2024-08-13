@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/block_option__munie.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/select_time_date_bottomsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
@@ -25,7 +25,7 @@ Widget patientReservationCard(
       borderRadius: BorderRadius.circular(12),
     ),
     child: Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,6 +107,7 @@ GestureDetector buildUserNameAndImage(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
+              forProfileImage: true,
                 url: 'patientReservationModel.userImage',
                 width: 65,
                 height: 65,

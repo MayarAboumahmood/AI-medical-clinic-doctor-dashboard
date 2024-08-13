@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/block_option__munie.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/data_source/models/user_request_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/screens/patient_requests_page.dart';
@@ -18,7 +18,6 @@ Widget patientRequestCard(
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
-    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
     ),
@@ -85,7 +84,8 @@ GestureDetector buildUserNameAndImage(PatientRequestModel patientRequestModel) {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
-                url: 'patientRequestModel.userImage',
+              forProfileImage: true,
+                url: '${patientRequestModel.description}.userImage',
                 width: 65,
                 height: 65,
                 fit: BoxFit.cover),
