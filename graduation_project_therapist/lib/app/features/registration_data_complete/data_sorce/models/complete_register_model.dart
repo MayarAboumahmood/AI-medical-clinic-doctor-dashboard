@@ -50,23 +50,23 @@ List<String> medicalSpecialties = [
 ];
 String getSpecialtyString(int therapyId) {
   switch (therapyId) {
-    case 10:
+    case 1:
       return 'Behavioral Therapy';
-    case 11:
+    case 2:
       return 'Cognitive Behavioral Therapy';
-    case 12:
+    case 3:
       return 'Family Therapy';
-    case 13:
+    case 4:
       return 'Group Therapy';
-    case 14:
+    case 5:
       return 'Marriage and Family Therapy';
-    case 15:
+    case 6:
       return 'Psychotherapy';
-    case 16:
+    case 7:
       return 'Psychoanalysis';
-    case 17:
+    case 8:
       return 'Psychiatric Nursing';
-    case 18:
+    case 9:
       return 'Mental Health Counseling';
     default:
       return ''; // Return empty string if therapy ID is not found

@@ -37,6 +37,9 @@ class _SignInWidgetState extends State<SignInWidget> {
       if (state is SuccessRequest) {
         navigationService.navigationOfAllPagesToName(
             context, bottomNavigationBar);
+        Future.delayed(const Duration(seconds: 1), () {
+          signInCubit.clearSignInCubit();
+        });
         comingFromRegisterOrLogin = true;
       } else if (state is SignInaccountNotverifiedState) {
         customSnackBar('Your account not verified yet', context);
@@ -110,12 +113,6 @@ class _BuildBodySignInState extends State<_BuildBodySignIn> {
     super.initState();
     signInCubit = context.read<SignInCubit>();
     signInCubit.passwordtextgController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    signInCubit.clearSignInCubit();
   }
 
   @override
