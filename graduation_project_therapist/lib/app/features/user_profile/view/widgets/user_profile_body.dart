@@ -23,11 +23,10 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
       infoSection('Work Hours per Day', profile.data.hoursOfWork.toString()),
       infoSection('Place of Work', profile.data.profession),
       profilePageDivider(),
-      SizedBox(height: responsiveUtil.screenHeight * .1),
+      SizedBox(height: responsiveUtil.screenHeight * .07),
       Align(
         alignment: Alignment.center,
         child: Wrap(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             isDoctor
                 ? assignTherapistbutton(context, profile.data.id)
@@ -36,7 +35,8 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
             goToMedicalRecordsButton(context),
           ],
         ),
-      )
+      ),
+      SizedBox(height: responsiveUtil.screenHeight * .07),
     ],
   );
 }

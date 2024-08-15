@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/cubit/user_profile_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/data_source/models/patient_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/get_phq9_recommendation.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/user_profile/view/widgets/user_profile_body.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
@@ -17,7 +20,7 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   late UserProfileCubit userProfileCubit;
-  late int requestID;
+  late int patientID;
   @override
   initState() {
     userProfileCubit = context.read<UserProfileCubit>();
@@ -32,8 +35,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
       firstTimeDidChange = false;
       final int argument =
           ModalRoute.of(context)!.settings.arguments as int? ?? 1;
-      requestID = argument;
-      userProfileCubit.getUserProfile(requestID);
+      patientID = argument;
+      userProfileCubit.getUserProfile(patientID);
+      Future.delayed(const Duration(seconds: 1), () {
+        userProfileCubit.getPatientsBotScore(patientID);
+      });
     }
   }
 
@@ -42,7 +48,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
-      body: BlocConsumer<UserProfileCubit, UserProfileState>(
+      body: BlocListener<UserProfileCubit, UserProfileState>(
         listener: (context, state) {
           print('the state in the user profile:$state');
           if (state is UserProfileErrorState) {
@@ -55,49 +61,183 @@ class _UserProfilePageState extends State<UserProfilePage> {
             customSnackBar(state.errorMessage, context);
           }
         },
-        builder: (context, state) {
-          print('the state in the user profile:$state');
+        child: userProfileSilverAppBar(),
+      ),
+    );
+  }
 
+  Widget userProfileSilverAppBar() {
+    return CustomScrollView(
+      slivers: [
+        slivarAppBar(),
+        profileBody(),
+        divider(),
+        patientBoxScoreBody(),
+      ],
+    );
+  }
+
+  SliverToBoxAdapter divider() {
+    return SliverToBoxAdapter(
+      child: Padding(
+          padding: const EdgeInsets.all(8.0), child: profilePageDivider()),
+    );
+  }
+
+  SliverToBoxAdapter profileBody() {
+    return SliverToBoxAdapter(
+      child: BlocBuilder<UserProfileCubit, UserProfileState>(
+        builder: (context, state) {
           if (state is UserProfileLoadingState) {
-            return offerAndNewOpiningShimmer();
+            return patientProfileBodyShimmer();
           } else if (state is AssignPatientToTherapistErrorState ||
-              state is PatientAssignedToTherapistState) {
-            return userProfileSilverAppBar(localPatientProfileModel!);
+              state is PatientAssignedToTherapistState ||
+              state is GetPatientBotScoreErrorState ||
+              state is GetingPatientBotScoreDoneState ||
+              state is GetPatientBotScoreLoadingState) {
+            return userProfileBody(localPatientProfileModel!, context);
           } else if (state is UserProfileGetData) {
             localPatientProfileModel = state.patientProfileModel;
-            return userProfileSilverAppBar(state.patientProfileModel);
+            return userProfileBody(state.patientProfileModel, context);
           }
-          return offerAndNewOpiningShimmer();
+          return patientProfileBodyShimmer();
         },
       ),
     );
   }
 
-  Widget userProfileSilverAppBar(PatientProfileModel patientProfileModel) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          iconTheme: IconThemeData(color: customColors.primary),
-          expandedHeight: responsiveUtil.screenHeight * .25,
-          floating: false,
-          pinned: true,
-          backgroundColor: customColors.secondaryBackGround,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: Text(patientProfileModel.data.fullName,
-                style: customTextStyle.headlineMedium
-                    .copyWith(color: Colors.white)),
-            background: getImageNetwork(
-                url: 'https://via.placeholder.com/150',
-                fit: BoxFit.cover,
-                width: responsiveUtil.screenWidth,
-                height: responsiveUtil.screenHeight * .25),
-          ),
+  String cachedScore = 'Loading...'.tr();
+  SliverToBoxAdapter patientBoxScoreBody() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 100),
+        child: BlocBuilder<UserProfileCubit, UserProfileState>(
+          builder: (context, state) {
+            if (state is GetPatientBotScoreLoadingState) {
+              return patientBotScoreShimmer();
+            } else if (state is GetPatientBotScoreErrorState) {
+              return errorTryAgainButton();
+            } else if (state is GetingPatientBotScoreDoneState) {
+              cachedScore = state.botScore;
+              return circularBotScore(state.botScore);
+            }
+            return circularBotScore(cachedScore);
+          },
         ),
-        SliverToBoxAdapter(
-          child: userProfileBody(patientProfileModel, context),
+      ),
+    );
+  }
+
+  Widget circularBotScore(String botScore) {
+    return Column(
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: customColors.secondaryText, width: 2),
+            color: customColors.secondaryBackGround,
+          ),
+          alignment: Alignment.center,
+          child: Text(botScore, style: customTextStyle.bodyLarge),
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            getPHQ9Recommendation(int.parse(botScore)),
+            style: customTextStyle.bodyMedium,
+          ),
         ),
       ],
     );
+  }
+
+  Column errorTryAgainButton() {
+    return Column(
+      children: [
+        Text("Error while retrieving the score.".tr(),
+            style: customTextStyle.bodyMedium),
+        tryAgainButton(),
+        SizedBox(
+          height: responsiveUtil.screenHeight * .1,
+        )
+      ],
+    );
+  }
+
+  GeneralButtonOptions tryAgainButton() {
+    return GeneralButtonOptions(
+        text: 'Try again',
+        onPressed: () {
+          userProfileCubit.getPatientsBotScore(patientID);
+        },
+        options: ButtonOptions(
+            color: customColors.primary, textStyle: customTextStyle.bodySmall));
+  }
+
+  SliverAppBar slivarAppBar() {
+    return SliverAppBar(
+      iconTheme: IconThemeData(color: customColors.primary),
+      expandedHeight: responsiveUtil.screenHeight * .25,
+      floating: false,
+      pinned: true,
+      backgroundColor: customColors.secondaryBackGround,
+      flexibleSpace: BlocBuilder<UserProfileCubit, UserProfileState>(
+          builder: (context, state) {
+        if (state is UserProfileLoadingState) {
+          return const SizedBox();
+        } else if (state is AssignPatientToTherapistErrorState ||
+            state is PatientAssignedToTherapistState ||
+            state is GetPatientBotScoreErrorState ||
+            state is GetingPatientBotScoreDoneState ||
+            state is GetPatientBotScoreLoadingState) {
+          return flexiblePatientName(localPatientProfileModel!.data.fullName);
+        } else if (state is UserProfileGetData) {
+          localPatientProfileModel = state.patientProfileModel;
+          return flexiblePatientName(state.patientProfileModel.data.fullName);
+        }
+        return const SizedBox();
+      }),
+    );
+  }
+
+  FlexibleSpaceBar flexiblePatientName(String patientName) {
+    return FlexibleSpaceBar(
+      centerTitle: true,
+      title: Text(patientName,
+          style: customTextStyle.headlineMedium.copyWith(color: Colors.white)),
+      background: backGroundImage(),
+    );
+  }
+
+  BlocBuilder<UserProfileCubit, UserProfileState> backGroundImage() {
+    return BlocBuilder<UserProfileCubit, UserProfileState>(
+      builder: (context, state) {
+        if (state is UserProfileLoadingState) {
+          return patientProfileImageShimmer();
+        } else if (state is AssignPatientToTherapistErrorState ||
+            state is PatientAssignedToTherapistState ||
+            state is GetPatientBotScoreErrorState ||
+            state is GetingPatientBotScoreDoneState ||
+            state is GetPatientBotScoreLoadingState) {
+          return patientImageWidget(localPatientProfileModel!.data.fullName);
+        } else if (state is UserProfileGetData) {
+          localPatientProfileModel = state.patientProfileModel;
+          return patientImageWidget(state.patientProfileModel.data.fullName);
+        }
+        return patientProfileImageShimmer();
+      },
+    );
+  }
+
+  Widget patientImageWidget(String image) {
+    return getImageNetwork(
+        url: image,
+        forProfileImage: true,
+        fit: BoxFit.cover,
+        width: responsiveUtil.screenWidth,
+        height: responsiveUtil.screenHeight * .25);
   }
 }

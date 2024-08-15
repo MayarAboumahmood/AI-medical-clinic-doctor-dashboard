@@ -66,4 +66,22 @@ class PatientProfileDataSource {
         'therapist Request To Pateint datasource: ${response.statusCode}');
     return response;
   }
+
+  Future<Response> getPatientsBotScore(int userID) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url +
+        ServerConfig.getBotScoreUri +
+        '/' +
+        userID.toString());
+    var headers = {'Authorization': token};
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    debugPrint('geting patient bot score body datasource: $userID');
+    debugPrint('geting patient bot score datasource: ${response.body}');
+    debugPrint('geting patient bot score datasource: ${response.statusCode}');
+    return response;
+  }
 }

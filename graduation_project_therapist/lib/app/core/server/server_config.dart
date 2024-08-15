@@ -55,4 +55,5 @@ class ServerConfig {
   static const String unBlockPatienturi = 'blocks/undo';
   static const String reportPatientUri = 'reports/user';
   static const String getCategoriesUri = 'categories';
+  static const String getBotScoreUri = 'botScore';
 }

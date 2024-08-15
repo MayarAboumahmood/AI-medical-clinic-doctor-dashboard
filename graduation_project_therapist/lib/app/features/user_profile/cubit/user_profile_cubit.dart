@@ -47,4 +47,17 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             AssignPatientToTherapistErrorState(errorMessage: errorMessage)),
         (data) => emit(PatientAssignedToTherapistState(isRequest: true)));
   }
+
+  void getPatientsBotScore(int userId) async {
+    // emit(GetPatientBotScoreLoadingState());
+    final getData =
+        await patientsProfileRepositoryImp.getPatientsBotScore(userId);
+    getData.fold(
+        (errorMessage) =>
+            emit(GetPatientBotScoreErrorState(errorMessage: errorMessage)),
+        (data) => emit(GetingPatientBotScoreDoneState(
+            botScore: data.data.isNotEmpty
+                ? data.data.first.score
+                : "The patient hasn't taken the test yet.".tr())));
+  }
 }

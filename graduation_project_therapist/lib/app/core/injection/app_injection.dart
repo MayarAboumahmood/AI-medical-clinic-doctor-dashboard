@@ -73,8 +73,7 @@ Future<void> init() async {
   sl.registerLazySingleton<ChatRepositoryImp>(() => ChatRepositoryImp(sl()));
   sl.registerLazySingleton<PatientsProfileRepositoryImp>(
       () => PatientsProfileRepositoryImp(sl()));
-  sl.registerLazySingleton<BlockRepositoryImp>(
-      () => BlockRepositoryImp(sl()));
+  sl.registerLazySingleton<BlockRepositoryImp>(() => BlockRepositoryImp(sl()));
   sl.registerLazySingleton<GetPatientsRepositoryImp>(
       () => GetPatientsRepositoryImp(sl()));
   sl.registerLazySingleton<MedicalDescriptionRepositoryImp>(
@@ -156,11 +155,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => BottomNavigationWidgetBloc());
   sl.registerLazySingleton(
       () => NotificationBloc(notificationRepository: sl()));
-  sl.registerLazySingleton(
-      () => BlockBloc(blockRepositoryImp: sl()));
+  sl.registerLazySingleton(() => BlockBloc(blockRepositoryImp: sl()));
   sl.registerLazySingleton(
       () => MedicalDescriptionCubit(medicalDescriptionRepositoryImp: sl()));
-  sl.registerFactory(
+  sl.registerLazySingleton(
       () => UserProfileCubit(patientsProfileRepositoryImp: sl()));
   sl.registerLazySingleton(() => ThemeBloc());
 

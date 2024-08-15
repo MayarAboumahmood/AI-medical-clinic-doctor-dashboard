@@ -33,7 +33,7 @@ class UserProfileModel {
       dateOfBirth: json['dateOfBirth'] ?? '2001-01-01',
       gender: json['gender'] as bool,
       photo: json['photo'] as String,
-      phone: json['phone'].toString(), // Ensure phone is a String
+      phone: json['phone'].toString(), 
       status: json['status'] as String,
       userId: json['userId'] as int,
       state: json['state'] as String?,

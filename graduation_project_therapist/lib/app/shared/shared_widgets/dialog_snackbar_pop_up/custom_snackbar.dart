@@ -55,9 +55,11 @@ String endUserSession(BuildContext context, String title) {
         title == 'There is another session open , please login again') {
       logOut();
       logOutClearBloc(context);
-      title =
-          "Your session has expired. Please log in again to continue using the app."
-              .tr();
+      if (title != 'There is another session open , please login again') {
+        title =
+            "Your session has expired. Please log in again to continue using the app."
+                .tr();
+      }
       isEndUserSession = true;
       makeIsisEndUserSessionVarFalseAfterTheSnackBarClosed();
     }

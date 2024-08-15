@@ -25,6 +25,25 @@ final class AssignPatientToTherapistLoadingState extends UserProfileState {
   List<Object?> get props => [];
 }
 
+final class GetPatientBotScoreLoadingState extends UserProfileState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class GetPatientBotScoreErrorState extends UserProfileState {
+  final String errorMessage;
+  GetPatientBotScoreErrorState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+final class GetingPatientBotScoreDoneState extends UserProfileState {
+  final String botScore;
+  GetingPatientBotScoreDoneState({required this.botScore});
+  @override
+  List<Object?> get props => [];
+}
+
 final class PatientAssignedToTherapistState extends UserProfileState {
   final bool isRequest;
   PatientAssignedToTherapistState({required this.isRequest});

@@ -53,7 +53,8 @@ class RegistrationDataCompleteCubit
   void submitteUserData() async {
     emit(RegistrationDataCompleteLoadingState());
     CompleteRegisterModel completeRegisterModel = CompleteRegisterModel(
-        selectedMedicalSpecialty: getCategoryIdsFromNames(selectedMedicalSpecialty),
+        selectedMedicalSpecialty:
+            getCategoryIdsFromNames(selectedMedicalSpecialty),
         locationInfo: locationInfo,
         clinicName: clinicName,
         selectedCity: selectedCity,
@@ -73,23 +74,30 @@ class RegistrationDataCompleteCubit
   }
 
   void getAllCategories() async {
-    emit(GetCategoriesLoadingState());
-    final response = await registrationDataCompleteRepoIpm.getAllCategories();
-    response.fold(
-        (error) => emit(GettingAllCategoriesFailureState(errorMessage: error)),
-        (data) {
-      categories = data;
+    if (categories == null) {
+      emit(GetCategoriesLoadingState());
+      final response = await registrationDataCompleteRepoIpm.getAllCategories();
+      response.fold(
+          (error) =>
+              emit(GettingAllCategoriesFailureState(errorMessage: error)),
+          (data) {
+        categories = data;
+        emit(GetAllCategoriesSuccseflyState());
+      });
+    } else {
       emit(GetAllCategoriesSuccseflyState());
-    });
+    }
   }
+
   List<String> getCategoryIdsFromNames(List<String> selectedNames) {
-  // Create a map of category names to IDs
-  final Map<String, int> categoryNameToIdMap = {
-    for (var category in categories!) category.name: category.id,
-  };
+    // Create a map of category names to IDs
+    final Map<String, int> categoryNameToIdMap = {
+      for (var category in categories!) category.name: category.id,
+    };
 
-  // Map the selected names to their corresponding IDs
-  return selectedNames.map((name) => categoryNameToIdMap[name]!.toString()).toList();
-}
-
+    // Map the selected names to their corresponding IDs
+    return selectedNames
+        .map((name) => categoryNameToIdMap[name]!.toString())
+        .toList();
+  }
 }
