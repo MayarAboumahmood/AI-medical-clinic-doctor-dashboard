@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/categories_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/repo/registration_data_complete_repo.dart';
 import 'package:latlong2/latlong.dart';
@@ -18,6 +19,8 @@ class RegistrationDataCompleteCubit
   String? clinicName = '';
   List<Uint8List> certificationImages = []; // List to store image paths
   LatLng? userLatLng;
+
+  List<SpeCategory>? categories;
 
   void emitInitState() {
     emit(RegistrationDataCompleteInitial());
@@ -50,7 +53,7 @@ class RegistrationDataCompleteCubit
   void submitteUserData() async {
     emit(RegistrationDataCompleteLoadingState());
     CompleteRegisterModel completeRegisterModel = CompleteRegisterModel(
-        selectedMedicalSpecialty: selectedMedicalSpecialty,
+        selectedMedicalSpecialty: getCategoryIdsFromNames(selectedMedicalSpecialty),
         locationInfo: locationInfo,
         clinicName: clinicName,
         selectedCity: selectedCity,
@@ -59,7 +62,6 @@ class RegistrationDataCompleteCubit
 
     final response = await registrationDataCompleteRepoIpm
         .completeRegister(completeRegisterModel);
-
     response.fold(
         (error) =>
             emit(RegistrationDataCompleteFailureState(errorMessage: error)),
@@ -69,4 +71,25 @@ class RegistrationDataCompleteCubit
   void gettingUserLocation() {
     emit(GettingUserLocationState());
   }
+
+  void getAllCategories() async {
+    emit(GetCategoriesLoadingState());
+    final response = await registrationDataCompleteRepoIpm.getAllCategories();
+    response.fold(
+        (error) => emit(GettingAllCategoriesFailureState(errorMessage: error)),
+        (data) {
+      categories = data;
+      emit(GetAllCategoriesSuccseflyState());
+    });
+  }
+  List<String> getCategoryIdsFromNames(List<String> selectedNames) {
+  // Create a map of category names to IDs
+  final Map<String, int> categoryNameToIdMap = {
+    for (var category in categories!) category.name: category.id,
+  };
+
+  // Map the selected names to their corresponding IDs
+  return selectedNames.map((name) => categoryNameToIdMap[name]!.toString()).toList();
+}
+
 }

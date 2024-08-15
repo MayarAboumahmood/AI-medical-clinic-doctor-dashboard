@@ -185,17 +185,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _subscription = pubnub.subscribe(channels: {channelName});
     });
     Future<void> getAllMessages(Emitter<ChatState> emit) async {
-      print('ssssssssssssssssssssss: the envelop: $channelName');
-
+      
       myChannel = pubnub.channel(channelName);
       PaginatedChannelHistory history = myChannel.history(chunkSize: 20);
       await history.more();
       try {
         Uri? fileUrl;
         for (final envelope in history.messages) {
-          print('ssssssssssssssssssssss: the envelop: ${envelope.content}');
-          print(
-              'ssssssssssssssssssssss: the envelop: ${history.messages.length}');
           String sendeDate = '';
           bool iAmTheSender = false;
           if (!hasMessageData(envelope.originalMessage)) {

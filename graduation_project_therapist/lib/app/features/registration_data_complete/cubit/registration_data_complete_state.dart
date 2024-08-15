@@ -43,3 +43,21 @@ final class RegistrationDataCompleteImagesUpdated
   @override
   List<Object?> get props => [certificationImages, dateTime];
 }
+final class GettingAllCategoriesFailureState
+    extends RegistrationDataCompleteState {
+  final String errorMessage;
+  GettingAllCategoriesFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+final class GetAllCategoriesSuccseflyState
+    extends RegistrationDataCompleteState {
+  @override
+  List<Object?> get props => [];
+}
+final class GetCategoriesLoadingState
+    extends RegistrationDataCompleteState {
+  @override
+  List<Object?> get props => [];
+}

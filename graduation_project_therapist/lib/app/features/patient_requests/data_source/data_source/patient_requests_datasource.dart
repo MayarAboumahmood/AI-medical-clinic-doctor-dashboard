@@ -35,16 +35,6 @@ class PatientRequestsDataSource {
       body: {'date': "$date $time"},
       headers: headers,
     );
-
-    print('accept patient request response ssssssssssssssssssss: ${url}');
-    print(
-        'accept patient request response ssssssssssssssssssss: ${url.toString()}');
-    print(
-        'accept patient request response ssssssssssssssssssss: $date + $time');
-    print(
-        'accept patient request response ssssssssssssssssssss: ${response.statusCode}');
-    print(
-        'accept patient request response ssssssssssssssssssss: ${response.body}');
     return response;
   }
 
@@ -59,10 +49,6 @@ class PatientRequestsDataSource {
       headers: headers,
     );
 
-    print(
-        'reject patient request response ssssssssssssssssssss: ${response.statusCode}');
-    print(
-        'reject patient request response ssssssssssssssssssss: ${response.body}');
     return response;
   }
 }

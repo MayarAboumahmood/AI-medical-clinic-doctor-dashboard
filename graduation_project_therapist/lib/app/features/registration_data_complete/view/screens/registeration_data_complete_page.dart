@@ -8,6 +8,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/auth/view/wi
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/cubit/registration_data_complete_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/registration_data_complete/data_sorce/models/complete_register_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/select_state_drop_down.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -25,6 +26,15 @@ class CompleteDataPage extends StatefulWidget {
 }
 
 class _CompleteDataPageState extends State<CompleteDataPage> {
+  late RegistrationDataCompleteCubit registrationDataCompleteCubit;
+  @override
+  initState() {
+    super.initState();
+    registrationDataCompleteCubit =
+        context.read<RegistrationDataCompleteCubit>();
+    registrationDataCompleteCubit.getAllCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +87,7 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                         registrationDataCompleteCubit.selectedCity,
                         (String? newValue) {
                         setState(() {
+                      
                           registrationDataCompleteCubit.selectedCity = newValue;
                         });
                       }, shouldActiviteValidation: true)
@@ -108,11 +119,59 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
     );
   }
 
-  MultiSelectDialogField<String> multiSelectedSpeciality(BuildContext context) {
+  Widget multiSelectedSpeciality(BuildContext context) {
     What.apple.value;
 
-    RegistrationDataCompleteCubit registrationDataCompleteCubit =
-        context.read<RegistrationDataCompleteCubit>();
+    return BlocBuilder<RegistrationDataCompleteCubit,
+        RegistrationDataCompleteState>(
+      builder: (context, state) {
+        print('ssssssssssssssss: state$state');
+        if (state is GetCategoriesLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: customColors.primary,
+            ),
+          );
+        } else if (state is GetAllCategoriesSuccseflyState) {
+          List<String> categorieNames = registrationDataCompleteCubit
+              .categories!
+              .map((category) => category.name)
+              .toList();
+          return categoriesSelector(categorieNames);
+        } else if (state is GettingAllCategoriesFailureState) {
+          return Center(
+            child: Column(
+              children: [
+                Text(
+                  "Error fetching categories. Please try again.".tr(),
+                  style: customTextStyle.bodyMedium,
+                ),
+                tryAgainButton()
+              ],
+            ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            color: customColors.primary,
+          ),
+        );
+      },
+    );
+  }
+
+  GeneralButtonOptions tryAgainButton() {
+    return GeneralButtonOptions(
+        text: 'Try again',
+        onPressed: () {
+          registrationDataCompleteCubit.getAllCategories();
+        },
+        options: ButtonOptions(
+            color: customColors.primary, textStyle: customTextStyle.bodySmall));
+  }
+
+  MultiSelectDialogField<String> categoriesSelector(
+      List<String> categorieNames) {
     return MultiSelectDialogField(
       buttonIcon: Icon(Icons.arrow_drop_down_circle_outlined,
           color: customColors.primaryText),
@@ -120,7 +179,7 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
         'Confirm',
         style: customTextStyle.bodyMedium.copyWith(color: customColors.primary),
       ),
-      items: medicalSpecialties.map((e) => MultiSelectItem(e, e)).toList(),
+      items: categorieNames.map((e) => MultiSelectItem(e, e)).toList(),
       listType: MultiSelectListType.LIST,
       backgroundColor: customColors.primaryBackGround,
       title: Text(

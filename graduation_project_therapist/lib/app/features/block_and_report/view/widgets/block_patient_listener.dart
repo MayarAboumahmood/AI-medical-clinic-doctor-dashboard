@@ -9,7 +9,6 @@ Widget blockPatientListener(
 ) {
   return BlocListener<BlockBloc, BlockState>(
       listener: (context, state) {
-        print('ssssssssssssssssssssss the state in block is: $state');
         if (state is BlockFauilerState) {
           customSnackBar(state.errorMessage, context, isFloating: true);
         } else if (state is BlockPatientSuccessState) {

@@ -92,7 +92,7 @@ class MapPageState extends State<SelectLocationMapPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (pop) {
+      onPopInvokedWithResult: (pop, s) {
         print('user current location poped');
         registrationDataCompleteCubit.emitInitState();
       },
@@ -122,18 +122,23 @@ class MapPageState extends State<SelectLocationMapPage> {
         padding: EdgeInsets.only(top: responsiveUtil.screenHeight * .7),
         child: Column(
           children: [
-            floatingActionSingleButtom(
-              Icons.assistant_navigation,
-              () {
-                if (registrationDataCompleteCubit.userLatLng != null) {
-                  navigationService.navigateTo(completeCertificationsPage);
-                } else {
-                  customSnackBar(
-                      'You should select your clinic location', context,
-                      isFloating: true);
-                }
-              },
-            ),
+            markers.isNotEmpty
+                ? floatingActionSingleButtom(
+                    Icons.assistant_navigation,
+                    () {
+                      if (registrationDataCompleteCubit.userLatLng != null) {
+                        navigationService
+                            .navigateTo(completeCertificationsPage);
+                      } else {
+                        customSnackBar(
+                            'You should select your clinic location', context,
+                            isFloating: true);
+                      }
+                    },
+                  )
+                : const SizedBox(
+                    height: 40,
+                  ),
             const SizedBox(
               height: 10,
             ),

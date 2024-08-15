@@ -13,6 +13,8 @@ abstract class RegistrationDataCompleteRemoteDataSource {
   Future<Response> completeRegister(
     CompleteRegisterModel completeRegisterModel,
   );
+
+  Future<Response> getAllCategories();
 }
 
 class RegistrationDataCompleteRemoteDataSourceImp
@@ -51,8 +53,7 @@ class RegistrationDataCompleteRemoteDataSourceImp
       request.fields['clinicName'] = completeRegisterModel.clinicName!;
       request.fields['cityId'] =
           getCityId(completeRegisterModel.selectedCity!).toString();
-      request.fields['address'] =
-          completeRegisterModel.locationInfo!;
+      request.fields['address'] = completeRegisterModel.locationInfo!;
     }
     List<int> listOFMedicalSpecialtyID = [];
     for (String medicalSpecialty
@@ -83,5 +84,22 @@ class RegistrationDataCompleteRemoteDataSourceImp
     } else {
       return http.Response('Server Error', response.statusCode);
     }
+  }
+
+  @override
+  Future<http.Response> getAllCategories() async {
+    String token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcyMzY0MDE1MCwiZXhwIjoxNzU1MTc2MTUwfQ.GtAHW13ceHiAB8MuQ1TqPDzh9cKuESSuwnyHvugORME";
+    // sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.getCategoriesUri);
+    var headers = {'Authorization': token};
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    debugPrint('geting categories datasource: ${response.body}');
+    debugPrint('geting categories datasource: ${response.statusCode}');
+    return response;
   }
 }

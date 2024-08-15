@@ -33,8 +33,6 @@ class GetAllTherapistDataSource {
       headers: headers,
     );
 
-    print('response ssssssssssssssssssss: ${response.statusCode}');
-    print('response ssssssssssssssssssss: ${response.body}');
     return response;
   }
 

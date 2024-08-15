@@ -40,10 +40,8 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
 
       // Check if the argument is null and set the boolean accordingly
       if (args == null) {
-        print('sssssssssssssssssssssssssss nulllllllllllllllllll');
         isModelAvailable = false;
       } else {
-        print('sssssssssssssssssssssssssss elssssssssssssssssss');
         medicalDescriptionDetailsModel = args;
         isModelAvailable = true;
         fullTextControllersInUpdate();

@@ -73,26 +73,26 @@ String getSpecialtyString(int therapyId) {
   }
 }
 
-int getSpecialtyId(String therapyId) {
-  switch (therapyId) {
+int getSpecialtyId(String specialtyName) {
+  switch (specialtyName) {
     case 'Behavioral Therapy':
-      return 10;
+      return 1;
     case 'Cognitive Behavioral Therapy':
-      return 11;
+      return 2;
     case 'Family Therapy':
-      return 12;
+      return 3;
     case 'Group Therapy':
-      return 13;
+      return 4;
     case 'Marriage and Family Therapy':
-      return 14;
+      return 5;
     case 'Psychotherapy':
-      return 15;
+      return 6;
     case 'Psychoanalysis':
-      return 16;
+      return 7;
     case 'Psychiatric Nursing':
-      return 17;
+      return 8;
     case 'Mental Health Counseling':
-      return 18;
+      return 9;
     default:
       return -1; // Return empty string if therapy ID is not found
   }
