@@ -87,7 +87,6 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
                         registrationDataCompleteCubit.selectedCity,
                         (String? newValue) {
                         setState(() {
-                      
                           registrationDataCompleteCubit.selectedCity = newValue;
                         });
                       }, shouldActiviteValidation: true)
@@ -132,7 +131,8 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
               color: customColors.primary,
             ),
           );
-        } else if (state is GetAllCategoriesSuccseflyState) {
+        } else if (state is GetAllCategoriesSuccseflyState ||
+            registrationDataCompleteCubit.categories != null) {
           List<String> categorieNames = registrationDataCompleteCubit
               .categories!
               .map((category) => category.name)
@@ -176,14 +176,14 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
       buttonIcon: Icon(Icons.arrow_drop_down_circle_outlined,
           color: customColors.primaryText),
       confirmText: Text(
-        'Confirm',
+        'Confirm'.tr(),
         style: customTextStyle.bodyMedium.copyWith(color: customColors.primary),
       ),
       items: categorieNames.map((e) => MultiSelectItem(e, e)).toList(),
       listType: MultiSelectListType.LIST,
       backgroundColor: customColors.primaryBackGround,
       title: Text(
-        'choose your specialization',
+        'choose your specialization'.tr(),
         style: customTextStyle.titleMedium,
       ),
       closeSearchIcon: Icon(
@@ -202,14 +202,14 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
             listOfSpecialization);
       },
       cancelText: Text(
-        'cancel',
+        'cancel'.tr(),
         style: customTextStyle.bodyMedium,
       ),
-      searchHint: 'Search on your Specialization',
+      searchHint: 'Search on your Specialization'.tr(),
       searchHintStyle: customTextStyle.bodyMedium,
       checkColor: Colors.white,
       buttonText: Text(
-        'choose your specialization',
+        'choose your specialization'.tr(),
         style: customTextStyle.bodyMedium,
       ),
       selectedColor: customColors.primary,

@@ -36,6 +36,7 @@ class ValidationFunctions {
     }
     return null;
   }
+
   static String? informationValidationThatCanBeEmpty(String? value) {
     if (value == null || value.isEmpty) {
       return null;
@@ -106,8 +107,7 @@ class ValidationFunctions {
 
   static String? validateSyrianPhoneNumber(String? input) {
     if (input == null) {
-      return AppString.validationphoneLong
-          .tr(); // Generic message for null input
+      return AppString.validationphoneLong.tr();
     } else if (input.startsWith('09') && input.length == 10) {
       // Valid case for numbers starting with '09' and 10 digits long
       return null;

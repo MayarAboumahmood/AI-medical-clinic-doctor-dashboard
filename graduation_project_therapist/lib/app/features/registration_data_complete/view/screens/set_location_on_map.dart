@@ -148,7 +148,7 @@ class MapPageState extends State<SelectLocationMapPage> {
         ),
       ),
       appBar:
-          appBarPushingScreens('Select your locaiton', isFromScaffold: true),
+          appBarPushingScreens('Select your location', isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: FlutterMap(
         mapController: _mapController,
@@ -205,7 +205,7 @@ class MapPageState extends State<SelectLocationMapPage> {
   Scaffold circularProgressScafold() {
     return Scaffold(
       appBar:
-          appBarPushingScreens('Select your locaiton', isFromScaffold: true),
+          appBarPushingScreens('Select your location', isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: Center(
           child: CircularProgressIndicator(

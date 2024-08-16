@@ -212,7 +212,7 @@ void _checkAndRequestBatteryOptimization(BuildContext context) async {
             style: customTextStyle.bodyLarge,
           ),
           content: Text(
-            'Allowing the app to run without battery restrictions can improve notification reliability and doesn\'t significantly affect battery life.'
+            "Allowing the app to run without battery restrictions can improve notification reliability and doesn't significantly affect battery life."
                 .tr(),
             style: customTextStyle.bodyMedium,
           ),
@@ -246,7 +246,7 @@ GeneralButtonOptions cancelButton() {
 
 GeneralButtonOptions goToSettingToRemoveBattaryOpButton() {
   return GeneralButtonOptions(
-    text: 'let\'s Do it'.tr(),
+    text: "let's Do it".tr(),
     options: ButtonOptions(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(

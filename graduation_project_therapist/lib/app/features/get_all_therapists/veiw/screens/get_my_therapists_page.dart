@@ -30,7 +30,7 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
       appBar: appBarPushingScreensForSearch(
-        'My Therapist',
+        'My Therapists',
         isFromScaffold: true,
         isSearching: _isSearching,
         searchController: _searchController,

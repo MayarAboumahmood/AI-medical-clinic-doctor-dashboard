@@ -51,7 +51,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
         );
       },
       child: Container(
-        width: responsiveUtil.screenWidth * .3,
+        width: responsiveUtil.screenWidth * .45,
         decoration: BoxDecoration(
           border: Border.all(
             color: customColors.primary,

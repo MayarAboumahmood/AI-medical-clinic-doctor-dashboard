@@ -63,7 +63,7 @@ Widget choosePhotoSource(
       child: InkWell(
         onTap: onPress,
         child: Text(
-          title,
+          title.tr(),
           style: customTextStyle.bodyMedium.copyWith(
               fontSize: 20,
               fontWeight: FontWeight.w400,

@@ -1,9 +1,9 @@
 class AppString {
   static String activate = "Activate";
   static String addCustomPhoto = "Add Custom Photo";
-  static String weAreHere = "We're here for you 24/7,";
+  static String weAreHere = "We're here for you 24/7";
   static String byjoining =
-      "By joining, I agree to SmartTherapi' Terms of Use & Data Privacy Center ";
+      "By joining, I agree to SmartTherapi' Terms of Use & Data Privacy Center";
   static String camera = "Camera";
   static String chooseSource = "Choose Source";
   static String continueAsGuest = 'Continue as guest';

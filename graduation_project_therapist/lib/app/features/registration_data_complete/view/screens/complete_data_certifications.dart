@@ -60,7 +60,7 @@ class CompleteCertificationsPage extends StatelessWidget {
             padding: responsiveUtil.padding(
                 responsiveUtil.screenWidth * .012, 0, 0, 0),
             child: Text(
-              "${'Add the Certifications That only the admin can see'.tr()} ",
+              'Add the Certifications That only the admin can see'.tr(),
               textAlign: TextAlign.center,
               style: customTextStyle.bodyMedium.copyWith(
                 fontSize: 14,
@@ -105,7 +105,7 @@ class CompleteCertificationsPage extends StatelessWidget {
                   customSnackBar(
                       'Opps! You have to add certifications', context);
                 }
-              }, "submitte".tr(), isLoading);
+              }, "submite".tr(), isLoading);
             },
           ),
           const SizedBox(

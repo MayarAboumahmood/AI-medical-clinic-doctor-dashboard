@@ -75,7 +75,7 @@ class YourDataNotCompletedYetPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'We\'re looking forward for you!'.tr(),
+          "We're looking forward for you!".tr(),
           style: customTextStyle.bodyMedium.copyWith(
             color: customColors.primary,
           ),
