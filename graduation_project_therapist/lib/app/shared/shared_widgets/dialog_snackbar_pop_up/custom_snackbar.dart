@@ -9,6 +9,7 @@ bool isEndUserSession = false;
 ScaffoldFeatureController? customSnackBar(String title, BuildContext context,
     {bool isFloating = false}) {
   title = endUserSession(context, title);
+  // MessageLogger.logMessage(title);
   if (!isThereIsSnackBar) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

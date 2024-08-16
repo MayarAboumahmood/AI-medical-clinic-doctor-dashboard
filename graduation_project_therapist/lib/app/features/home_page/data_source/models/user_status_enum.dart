@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 
 enum UserStatusEnum {
   unverified,
@@ -27,12 +26,12 @@ UserStatusEnum userStatusFromString(String status) {
 String userStatusToString(UserStatusEnum status) {
   switch (status) {
     case UserStatusEnum.unverified:
-      return 'unverified'.tr();
+      return 'unverified';
     case UserStatusEnum.verified:
-      return 'verified'.tr();
+      return 'verified';
     case UserStatusEnum.pending:
-      return 'pending'.tr();
+      return 'pending';
     case UserStatusEnum.loading:
-      return 'Loading...'.tr();
+      return 'Loading...';
   }
 }

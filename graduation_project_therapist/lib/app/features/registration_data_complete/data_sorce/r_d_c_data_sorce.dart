@@ -55,12 +55,8 @@ class RegistrationDataCompleteRemoteDataSourceImp
           getCityId(completeRegisterModel.selectedCity!).toString();
       request.fields['address'] = completeRegisterModel.locationInfo!;
     }
-    List<int> listOFMedicalSpecialtyID = [];
-    for (String medicalSpecialty
-        in completeRegisterModel.selectedMedicalSpecialty) {
-      listOFMedicalSpecialtyID.add(getSpecialtyId(medicalSpecialty));
-    }
-    request.fields['categories'] = listOFMedicalSpecialtyID.join(',');
+    request.fields['categories'] =
+        completeRegisterModel.selectedMedicalSpecialty.join(',');
 
     // Add image if available
     for (Uint8List? imageBytes in completeRegisterModel.certificationImages) {
@@ -76,6 +72,8 @@ class RegistrationDataCompleteRemoteDataSourceImp
     final response = await request.send();
 
     final responseBody = await response.stream.bytesToString();
+    debugPrint(
+        'error in datasource data complete BODY: ${completeRegisterModel.selectedMedicalSpecialty.join(',')}');
     debugPrint('error in datasource data complete: $responseBody');
     debugPrint('error in datasource data complete: ${response.statusCode}');
 

@@ -277,10 +277,10 @@ class _EditeProfileState extends State<EditProfile> {
                       const SizedBox(
                         height: 10,
                       ),
-                      selecteLocationOnMapButton(),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      // selecteLocationOnMapButton(),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
                       const SizedBox(
                         height: 10,
                       ),

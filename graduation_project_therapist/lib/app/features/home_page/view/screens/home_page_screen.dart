@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
@@ -54,7 +55,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   width: responsiveUtil.screenWidth * .3,
                   child: Center(
                       child: Text(
-                    userStatus.name,
+                    userStatus.name.tr(),
                     style: customTextStyle.bodyMedium,
                   )),
                 );
