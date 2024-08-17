@@ -14,19 +14,24 @@ class DoctorEmploymentRequestsCubit
   final DoctoreEmploymentRequestRepositoryImp
       doctoreEmploymentRequestRepositoryImp;
   int? requestID;
-  List<DoctorEmploymentRequestModel> doctorEmploymentRequests = [];
+  List<DoctorEmploymentRequestModel>? doctorEmploymentRequests;
   bool? isApproveClicked;
-  void getAllDoctorEmploymentRequests() async {
-    emit(DoctorEmploymentRequestsLoadingState());
-    final getData = await doctoreEmploymentRequestRepositoryImp
-        .getAllDoctorEmploymentRequests();
-    getData.fold(
-        (errorMessage) => emit(
-            DoctorEmploymentRequestsErrorState(errorMessage: errorMessage)),
-        (data) {
-      doctorEmploymentRequests = data;
+  void getAllDoctorEmploymentRequests(
+      {bool fromRefreshIndicator = false}) async {
+    if (doctorEmploymentRequests == null || fromRefreshIndicator) {
+      emit(DoctorEmploymentRequestsLoadingState());
+      final getData = await doctoreEmploymentRequestRepositoryImp
+          .getAllDoctorEmploymentRequests();
+      getData.fold(
+          (errorMessage) => emit(
+              DoctorEmploymentRequestsErrorState(errorMessage: errorMessage)),
+          (data) {
+        doctorEmploymentRequests = data;
+        emit(AllRequestLoadedSuccessfullyState());
+      });
+    } else {
       emit(AllRequestLoadedSuccessfullyState());
-    });
+    }
   }
 
   void approveDoctorRequest(int id) async {
@@ -39,8 +44,8 @@ class DoctorEmploymentRequestsCubit
         (errorMessage) => emit(
             DoctorEmploymentRequestsErrorState(errorMessage: errorMessage)),
         (data) {
-      doctorEmploymentRequests
-          .removeWhere((request) => request.id == requestID);
+      doctorEmploymentRequests ??
+          [].removeWhere((request) => request.id == requestID);
       emit(DoctorEmploymentApproveRequestsState());
     });
   }
@@ -55,9 +60,10 @@ class DoctorEmploymentRequestsCubit
         (errorMessage) => emit(
             DoctorEmploymentRequestsErrorState(errorMessage: errorMessage)),
         (data) {
-      doctorEmploymentRequests
-          .removeWhere((request) => request.id == requestID);
-
+      if (doctorEmploymentRequests != null) {
+        doctorEmploymentRequests!
+            .removeWhere((request) => request.id == requestID);
+      }
       emit(DoctorEmploymentDeclinedRequestsState());
     });
   }

@@ -115,7 +115,7 @@ Widget buildImageWithName(String name, BuildContext context) {
                 ),
               ),
               Text(
-                isDoctor ? "Doctor".tr() : "Therspist".tr(),
+                isDoctor ? "Doctor".tr() : "Therapist".tr(),
                 maxLines: 2,
                 style: customTextStyle.bodyMedium,
               ),

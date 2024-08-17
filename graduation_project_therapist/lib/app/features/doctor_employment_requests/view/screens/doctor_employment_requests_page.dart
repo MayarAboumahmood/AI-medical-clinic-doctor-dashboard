@@ -61,37 +61,45 @@ class _DoctorEmploymentRequestsPageState
     DoctorEmploymentRequestsCubit doctorEmploymentRequestsCubit =
         context.read<DoctorEmploymentRequestsCubit>();
     List<DoctorEmploymentRequestModel> doctorEmploymentRequestsList =
-        doctorEmploymentRequestsCubit.doctorEmploymentRequests;
+        doctorEmploymentRequestsCubit.doctorEmploymentRequests ?? [];
 
     return customRefreshIndicator(
-            () async {
-              doctorEmploymentRequestsCubit.getAllDoctorEmploymentRequests();
-            },
-           doctorEmploymentRequestsList.isEmpty
-        ? SizedBox(
-            height: responsiveUtil.screenHeight * .7,
-            child: Center(
-              child: buildNoElementInPage(
-                'No Requests Right Now. Please Check Back Later!',
-                Icons.hourglass_empty_rounded,
-              ),
+      () async {
+        doctorEmploymentRequestsCubit.getAllDoctorEmploymentRequests(
+            fromRefreshIndicator: true);
+      },
+      Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: doctorEmploymentRequestsList.isEmpty
+                  ? noEmploymentRequests()
+                  : Column(children: [
+                      ...List.generate(
+                          doctorEmploymentRequestsList.length,
+                          (index) => doctorEmploymentCard(
+                              context, doctorEmploymentRequestsList[index])),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ]),
             ),
-          )
-        :   SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  ...List.generate(
-                      doctorEmploymentRequestsList.length,
-                      (index) => doctorEmploymentCard(
-                          context, doctorEmploymentRequestsList[index])),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ]),
-              ),
-            ),
-          );
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox noEmploymentRequests() {
+    return SizedBox(
+      height: responsiveUtil.screenHeight * .7,
+      child: Center(
+        child: buildNoElementInPage(
+          'No Requests Right Now. Please Check Back Later!',
+          Icons.hourglass_empty_rounded,
+        ),
+      ),
+    );
   }
 }

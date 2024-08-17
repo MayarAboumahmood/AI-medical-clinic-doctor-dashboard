@@ -223,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         accountChoiceWidget(
-            title: "Doctor employment requets".tr(),
+            title: "Doctor job request.".tr(),
             icon: Icons.person_pin_rounded,
             onTap: () {
               navigationService.navigateTo(doctorEmploymentRequestsPage);

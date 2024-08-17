@@ -28,7 +28,7 @@ class GuestPopupWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'assets/images/male.png',
+                  'assets/images/logo2.png',
                   width: responsiveUtil.screenWidth * .7,
                   height: 100,
                   fit: BoxFit.contain,
