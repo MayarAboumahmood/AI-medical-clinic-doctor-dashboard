@@ -9,6 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_rese
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/network_image.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -17,6 +18,9 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 Widget patientReservationCard(
     BuildContext context, PatientReservationModel patientReservationModel) {
+  DateTime dateTime = DateTime.parse(patientReservationModel.date);
+  String formattedDate = DateFormat('yyyy-MM-dd h:mm a').format(dateTime);
+
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
@@ -37,10 +41,15 @@ Widget patientReservationCard(
                   patientReservationModel.patientName)
             ],
           ),
-          const SizedBox(height: 16),
           // expandedDescription(context, patientReservationModel.description,
           //     backGroundColor: Colors.transparent),
           const SizedBox(height: 16),
+          Text(
+            'Session time: ${formattedDate}',
+            style: customTextStyle.bodyMedium,
+          ),
+          const SizedBox(height: 16),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -59,8 +68,14 @@ GeneralButtonOptions enterSessionButton(
     BuildContext context, PatientReservationModel patientReservationModel) {
   PatientReservationsCubit patientReservationsCubit =
       context.read<PatientReservationsCubit>();
-  bool canEnterTheSession =
-      patientReservationsCubit.checkIfSessionIsNear(patientReservationModel.id);
+  var nowTime = DateTime.parse(patientReservationModel.date);
+  String formattedDateTime =
+      DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
+
+  bool canEnterTheSession = patientReservationsCubit
+      .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
+
+  print('now time: fffffffffffffff ${DateTime.parse(formattedDateTime)}');
   return GeneralButtonOptions(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
@@ -69,9 +84,8 @@ GeneralButtonOptions enterSessionButton(
                   arguments: patientReservationModel.patientID);
             }
           : () {
-              navigationService.navigateTo(videoCallInitPage,
-                  arguments: patientReservationModel.patientID);
-              // customSnackBar('Not available yet', context, isFloating: true);
+              customSnackBar('This session is not available yet', context,
+                  isFloating: true);
             },
       options: ButtonOptions(
           color: canEnterTheSession
@@ -107,7 +121,7 @@ GestureDetector buildUserNameAndImage(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: getImageNetwork(
-              forProfileImage: true,
+                forProfileImage: true,
                 url: 'patientReservationModel.userImage',
                 width: 65,
                 height: 65,

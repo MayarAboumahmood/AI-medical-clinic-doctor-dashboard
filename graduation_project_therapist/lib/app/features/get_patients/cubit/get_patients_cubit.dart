@@ -40,7 +40,7 @@ class GetPatientsCubit extends Cubit<GetPatientsState> {
       searchWord = searchWord.toLowerCase();
       searchedPatientsModels.clear();
 
-      for (var i in getPatientsModels??[]) {
+      for (var i in getPatientsModels ?? []) {
         if (i.name.toLowerCase().contains(searchWord)) {
           searchedPatientsModels.add(i);
         }

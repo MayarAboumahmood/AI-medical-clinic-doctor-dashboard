@@ -41,6 +41,12 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     getData.fold((error) {
       emit(AllTherapistErrorState(errorMessage: error));
     }, (data) {
+      for (var therapist in getAllTherapistModels!) {
+        if (therapist.specialistProfile.id == therapistId) {
+          therapist.employmentRequests = true;
+          break; // Assuming you want to stop after finding the first match
+        }
+      }
       emit(AssignTherapistSuccessfullyState());
     });
   }
@@ -75,9 +81,8 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
         getMyTherapistModels = data;
         emit(MyTherapistLoadedState(getTherapistModels: data));
       });
-    }else{
-        emit(MyTherapistLoadedState(getTherapistModels:getMyTherapistModels!));
-      
+    } else {
+      emit(MyTherapistLoadedState(getTherapistModels: getMyTherapistModels!));
     }
   }
 
@@ -89,8 +94,8 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     getData.fold((error) {
       emit(MyTherapistErrorState(errorMessage: error));
     }, (data) {
-      getMyTherapistModels??[]
-          .removeWhere((therapist) => therapist.id == therapistId);
+      getMyTherapistModels ??
+          [].removeWhere((therapist) => therapist.id == therapistId);
       emit(TherapistRemovedSuccessfullyState(dateTime: DateTime.now()));
     });
   }
@@ -102,7 +107,7 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
       searchWord = searchWord.toLowerCase();
       searchedMyTherapistModels.clear();
 
-      for (var i in getMyTherapistModels??[]) {
+      for (var i in getMyTherapistModels ?? []) {
         if (i.specialistProfile.fullName.toLowerCase().contains(searchWord)) {
           searchedMyTherapistModels.add(i);
         }

@@ -21,10 +21,14 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
 
   void setSelectedDay(String newSelectedDay) {
     selectedDay = newSelectedDay;
+    print('the day that I selected: $selectedDay');
   }
 
   void acceptPatientRequest(int requestID) async {
     emit(PatientRequestAcceptLoadingState());
+
+    print('the day that I selected: 333 $selectedDay');
+
     final getData = await patientRequestsRepositoryImp.acceptPatientRequest(
         requestID, selectedDay ?? '', selectedTime ?? '');
     getData.fold(

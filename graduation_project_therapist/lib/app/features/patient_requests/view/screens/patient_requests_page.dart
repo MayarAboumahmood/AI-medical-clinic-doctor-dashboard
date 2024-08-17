@@ -57,6 +57,7 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
       appBar: appBarPushingScreens('Patient Requests', isFromScaffold: true),
       body: BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
         builder: (context, state) {
+          print('sssssssssssssssssss the state is : $state');
           if (state is PatientRequestLoadingState) {
             return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {
@@ -70,7 +71,8 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
             return patientRequestsListBody(
                 context, patientRequestsCubit.cachedUserRequests ?? []);
           } else if (state is PatientRequestErrorState) {
-            return mediumSizeCardShimmer();
+            return patientRequestsListBody(
+                context, patientRequestsCubit.cachedUserRequests ?? []);
           }
           return mediumSizeCardShimmer();
         },

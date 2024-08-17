@@ -29,6 +29,7 @@ class PatientRequestsDataSource {
     var url = Uri.parse(
         '${ServerConfig.url}${ServerConfig.acceptPatientrequest}$requestId/set-date');
     var headers = {'Authorization': token};
+    print('the day that I selected: data ${date + ' ' + time}');
 
     var response = await http.post(
       url,

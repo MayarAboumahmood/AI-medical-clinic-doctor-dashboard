@@ -99,6 +99,43 @@ Widget buildAppbarOptionsMenu(
     },
   );
 }
+Widget buildAppbarVedieCallMenu(
+    BuildContext context,) {
+  return PopupMenuButton<String>(
+    color: customColors.secondaryBackGround,
+    icon: CircleAvatar(
+        backgroundColor: customColors.primary,
+        child: Icon(
+          Icons.more_vert,
+          color: customColors.primaryText,
+        )),
+    onSelected: (value) async {
+      if (value == 'Report') {
+        // await showBottomSheetWidget(
+        //     context,
+        //     ReportPatientBottomSheet(
+        //       patientID: patientID,
+        //       patientName: patientName,
+        //       medicalDescriptionId: medicalDescriptionId,
+        //     ));
+      } else if (value == 'profile') {
+        // navigationService.navigateTo(userProfilePage, arguments: patientID);
+      }
+    },
+    itemBuilder: (BuildContext context) {
+      return [
+        PopupMenuItem<String>(
+          value: 'profile',
+          child: patientOptionText('View user profile'),
+        ),
+        PopupMenuItem<String>(
+          value: 'Report',
+          child: patientOptionText('Report this medical record'),
+        ),
+      ];
+    },
+  );
+}
 
 Text patientOptionText(String title) => Text(
       title.tr(),

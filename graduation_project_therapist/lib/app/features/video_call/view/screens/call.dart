@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -256,7 +257,13 @@ class VideoCallPageState extends State<VideoCallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: customColors.primaryBackGround,
-      appBar: appBarPushingScreens('Video Call', isFromScaffold: true),
+      appBar: appBarPushingScreens(
+        'Video Call',
+        isFromScaffold: true,
+        optionMenu: buildAppbarVedieCallMenu(
+          context,
+        ),
+      ),
       body: Center(
         child: Stack(
           children: [

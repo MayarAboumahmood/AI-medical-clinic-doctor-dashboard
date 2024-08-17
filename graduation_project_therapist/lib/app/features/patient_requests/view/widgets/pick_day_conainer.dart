@@ -25,7 +25,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
   @override
   initState() {
     super.initState();
-    selectedDay = DateTime(2001, 1, 1);
+    selectedDay = DateTime.now();
     selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
   }
 

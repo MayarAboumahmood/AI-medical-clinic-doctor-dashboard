@@ -31,10 +31,16 @@ class PatientReservationsCubit extends Cubit<PatientReservationsState> {
     }
   }
 
-  bool checkIfSessionIsNear(int reservationID) {
-    return true;
+  bool checkIfSessionIsNear(DateTime dateOfSession) {
+    DateTime now = DateTime
+        .now(); // Get the current time in UTC to match the format of the input
+    print('now time: $now');
 
-    // Random().nextBool();
+    DateTime fiveMinutesBefore = dateOfSession.subtract(Duration(minutes: 5));
+    DateTime thirtyMinutesAfter = dateOfSession.add(Duration(minutes: 30));
+
+    // Check if the current time is within 5 minutes before or 30 minutes after the session time
+    return now.isAfter(fiveMinutesBefore) && now.isBefore(thirtyMinutesAfter);
   }
 
   void cancelOnPatientReservation(int reservationID, String description) async {

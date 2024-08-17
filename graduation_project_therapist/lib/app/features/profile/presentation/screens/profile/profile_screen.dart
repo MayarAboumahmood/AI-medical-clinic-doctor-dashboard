@@ -8,9 +8,15 @@ import 'package:graduation_project_therapist_dashboard/app/core/injection/app_in
 import 'package:graduation_project_therapist_dashboard/app/core/service/shared_preferences.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/utils/flutter_flow_util.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/view/widgets/welcome_screen_widget.dart/language_widget.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/bloc/block_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/cubit/doctor_employment_requests_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/cubit/get_all_therapist_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/get_patients/cubit/get_patients_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/bloc/profile_state.dart';
@@ -135,13 +141,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       showChangeLangeuageDrowpDownDialog(context);
                     }),
                 profilePageDivider(),
-                isDoctor ? doctorColumn() : therapistColumn(),
-                accountChoiceWidget(
-                    title: "Patients".tr(),
-                    icon: Icons.people,
-                    onTap: () {
-                      navigationService.navigateTo(getPatientsPage);
-                    }),
+                (sharedPreferences!.getString('user_status') ==
+                        UserStatusEnum.verified.name)
+                    ? isDoctor
+                        ? doctorColumn()
+                        : therapistColumn()
+                    : SizedBox(),
+                (sharedPreferences!.getString('user_status') ==
+                        UserStatusEnum.verified.name)
+                    ? accountChoiceWidget(
+                        title: "Patients".tr(),
+                        icon: Icons.people,
+                        onTap: () {
+                          navigationService.navigateTo(getPatientsPage);
+                        })
+                    : const SizedBox(),
                 accountChoiceWidget(
                     title: "Wallet".tr(),
                     icon: Icons.account_balance_wallet_outlined,
@@ -162,12 +176,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       termOfUseBottomSheet(context);
                     }),
                 profilePageDivider(),
-                accountChoiceWidget(
-                    title: "Blocked Patients".tr(),
-                    icon: Icons.block,
-                    onTap: () {
-                      navigationService.navigateTo(blockedPatients);
-                    }),
+                (sharedPreferences!.getString('user_status') ==
+                        UserStatusEnum.verified.name)
+                    ? accountChoiceWidget(
+                        title: "Blocked Patients".tr(),
+                        icon: Icons.block,
+                        onTap: () {
+                          navigationService.navigateTo(blockedPatients);
+                        })
+                    : const SizedBox(),
                 accountChoiceWidget(
                     isLogout: true,
                     title: "Delete your account".tr(),
@@ -258,6 +275,7 @@ Widget normalDescription(String description) {
 }
 
 void logOut() async {
+  await sl<PrefService>().remove('user_status');
   await sl<PrefService>().remove('token');
   await sl<PrefService>().remove('user_profile');
   await sl<PrefService>().remove('isRegisterCompleted');
@@ -270,7 +288,14 @@ void logOut() async {
 void logOutClearBloc(BuildContext context) async {
   BlocProvider.of<BottomNavigationWidgetBloc>(context)
       .add(const ChangeCurrentPage(nextIndex: 0));
-  // navigationService.navigationOfAllPagesToName(context, designHider);
+  context.read<GetAllTherapistCubit>().getAllTherapistModels = null;
+  context.read<GetAllTherapistCubit>().getMyTherapistModels = null;
+  context.read<GetPatientsCubit>().getPatientsModels = null;
+  context.read<PatientRequestsCubit>().cachedUserRequests = null;
+  context.read<DoctorEmploymentRequestsCubit>().doctorEmploymentRequests = null;
+  context.read<BlockBloc>().allBlockedPatientModel = null;
+  context.read<PatientReservationsCubit>().cachedPatientReservations = null;
+
   Navigator.pushNamedAndRemoveUntil(
     context,
     welcomeScreen,

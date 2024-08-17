@@ -3,7 +3,7 @@ import 'package:pushy_flutter/pushy_flutter.dart';
 
 Future<String> pushyRegister() async {
   try {
-    Pushy.setAppId('65f0254743c3630538fe9ee8');
+    Pushy.setAppId('668fba9225ac2f637cfcdbc5');
     // Register the user for push notifications
     String deviceToken = await Pushy.register();
     return deviceToken;
@@ -24,11 +24,13 @@ Future<String> pushyRegister() async {
 @pragma('vm:entry-point')
 void backgroundNotificationListener(Map<String, dynamic> data) {
   // Notification title
-  String notificationTitle = data['title'];
+  String notificationTitle = data['title']??data['message'];
 
   // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
   String notificationText = data['body'] ?? 'Hello World!';
 
+  print('sssssssssssssssssssssssss pushy:$notificationTitle');
+  print('sssssssssssssssssssssssss pushy:$notificationText');
   // Android: Displays a system notification
   // iOS: Displays an alert dialog
   Pushy.notify(notificationTitle, notificationText, data);

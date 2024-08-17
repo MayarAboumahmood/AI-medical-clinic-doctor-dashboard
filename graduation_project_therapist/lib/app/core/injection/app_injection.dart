@@ -145,7 +145,7 @@ Future<void> init() async {
       doctoreEmploymentRequestRepositoryImp: sl()));
   sl.registerFactory(
       () => PatientRequestsCubit(patientRequestsRepositoryImp: sl()));
-  sl.registerFactory(
+  sl.registerLazySingleton(
       () => PatientReservationsCubit(patientReservationsRepositoryImp: sl()));
   sl.registerFactory(() =>
       RegistrationDataCompleteCubit(registrationDataCompleteRepoIpm: sl()));
