@@ -23,12 +23,17 @@ class GetAllTherapistPage extends StatefulWidget {
 class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+  late GetAllTherapistCubit getAllTherapistCubit;
+  @override
+  void initState() {
+    super.initState();
+    getAllTherapistCubit =
+        context.read<GetAllTherapistCubit>();
+    getAllTherapistCubit.getAllTherapist();
+  }
 
   @override
   Widget build(BuildContext context) {
-    GetAllTherapistCubit getAllTherapistCubit =
-        context.read<GetAllTherapistCubit>();
-    getAllTherapistCubit.getAllTherapist();
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: customColors.primary,
@@ -36,7 +41,7 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
             navigationService.navigateTo(getMyTherapistPage);
           },
           label: Text(
-            'My Therapists'.tr() ,
+            'My Therapists'.tr(),
             style: customTextStyle.bodyMedium,
           )),
       backgroundColor: customColors.primaryBackGround,
@@ -93,7 +98,7 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
     List<GetTherapistModel> getTherapistModels =
         _isSearching && getAllTherapistCubit.state is SearchOnAllTherapistState
             ? getAllTherapistCubit.searchedAllTherapistModels
-            : getAllTherapistCubit.getAllTherapistModels;
+            : getAllTherapistCubit.getAllTherapistModels ?? [];
 
     return getTherapistModels.isEmpty
         ? SizedBox(
@@ -109,7 +114,7 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
           )
         : customRefreshIndicator(
             () async {
-              getAllTherapistCubit.getAllTherapist();
+              getAllTherapistCubit.getAllTherapist(fromRefreshIndicator: true);
             },
             SizedBox(
               height: responsiveUtil.screenHeight * .7,

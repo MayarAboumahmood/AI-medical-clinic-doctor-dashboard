@@ -14,7 +14,7 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
   String? selectedTime = DateFormat('hh:mm a').format(DateTime.now());
   String? selectedDay = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  List<PatientRequestModel> cachedUserRequests = [];
+  List<PatientRequestModel>? cachedUserRequests;
   void setSelectedTime(String newSelectedTime) {
     selectedTime = newSelectedTime;
   }
@@ -30,7 +30,7 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     getData.fold(
         (errorMessage) =>
             emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      for (var item in cachedUserRequests) {
+      for (var item in cachedUserRequests ?? []) {
         if (item.id == requestID) {
           item.status = true;
           break;
@@ -47,19 +47,25 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     getData.fold(
         (errorMessage) =>
             emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      cachedUserRequests.removeWhere((item) => item.id == requestID);
+      cachedUserRequests ?? [].removeWhere((item) => item.id == requestID);
       emit(PatientRequestRejectedSuccessfullyState(dateTime: DateTime.now()));
     });
   }
 
-  void getPatientRequests() async {
-    emit(PatientRequestLoadingState());
-    final getData = await patientRequestsRepositoryImp.getPatientRequests();
-    getData.fold(
-        (errorMessage) =>
-            emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      cachedUserRequests = data;
-      emit(PatientRequestDataLoadedState(patientRequestModels: data));
-    });
+  void getPatientRequests({bool fromRefreshIndicator = false}) async {
+    if (cachedUserRequests == null || fromRefreshIndicator) {
+      emit(PatientRequestLoadingState());
+      final getData = await patientRequestsRepositoryImp.getPatientRequests();
+      getData.fold(
+          (errorMessage) =>
+              emit(PatientRequestErrorState(errorMessage: errorMessage)),
+          (data) {
+        cachedUserRequests = data;
+        emit(PatientRequestDataLoadedState(patientRequestModels: data));
+      });
+    } else {
+      emit(PatientRequestDataLoadedState(
+          patientRequestModels: cachedUserRequests!));
+    }
   }
 }

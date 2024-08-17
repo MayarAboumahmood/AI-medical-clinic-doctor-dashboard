@@ -12,21 +12,25 @@ class GetPatientsCubit extends Cubit<GetPatientsState> {
       : super(GetPatientsInitial());
   Timer? _debounce;
   int? therapistId;
-  List<GetPatientsModel> getPatientsModels = [];
+  List<GetPatientsModel>? getPatientsModels;
   List<GetPatientsModel> searchedPatientsModels = [];
 
   List<GetPatientsModel> getMyTherapistModels = [];
   List<GetPatientsModel> searchedMyTherapistModels = [];
 
-  void getPatients() async {
-    emit(PatientsLoadingState());
-    final getData = await getPatientsRepositoryImp.getPatients();
-    getData.fold((error) {
-      emit(PatientsErrorState(errorMessage: error));
-    }, (data) {
-      getPatientsModels = data;
-      emit(PatientsLoadedState(getPatientsModel: getPatientsModels));
-    });
+  void getPatients({bool fromRefreshIndicator = false}) async {
+    if (getPatientsModels == null || fromRefreshIndicator) {
+      emit(PatientsLoadingState());
+      final getData = await getPatientsRepositoryImp.getPatients();
+      getData.fold((error) {
+        emit(PatientsErrorState(errorMessage: error));
+      }, (data) {
+        getPatientsModels = data;
+        emit(PatientsLoadedState(getPatientsModel: data));
+      });
+    } else {
+      emit(PatientsLoadedState(getPatientsModel: getPatientsModels!));
+    }
   }
 
   void searchOnPatients(String searchWord) {
@@ -36,7 +40,7 @@ class GetPatientsCubit extends Cubit<GetPatientsState> {
       searchWord = searchWord.toLowerCase();
       searchedPatientsModels.clear();
 
-      for (var i in getPatientsModels) {
+      for (var i in getPatientsModels??[]) {
         if (i.name.toLowerCase().contains(searchWord)) {
           searchedPatientsModels.add(i);
         }

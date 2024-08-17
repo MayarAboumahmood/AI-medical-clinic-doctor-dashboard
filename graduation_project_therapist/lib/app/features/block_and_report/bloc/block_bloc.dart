@@ -34,14 +34,18 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       });
     });
     on<GetAllBlocedPatientEvent>((event, emit) async {
-      emit(BlocedPatientLoadingState());
-      final getData = await blockRepositoryImp.getAllBlocedPatientEvent();
-      getData.fold((onError) {
-        emit(BlockFauilerState(errorMessage: onError));
-      }, (data) {
-        allBlockedPatientModel = data;
+      if (allBlockedPatientModel == null || event.fromRefreshIndicator) {
+        emit(BlocedPatientLoadingState());
+        final getData = await blockRepositoryImp.getAllBlocedPatientEvent();
+        getData.fold((onError) {
+          emit(BlockFauilerState(errorMessage: onError));
+        }, (data) {
+          allBlockedPatientModel = data;
+          emit(GetAllBlocedPatientState());
+        });
+      } else {
         emit(GetAllBlocedPatientState());
-      });
+      }
     });
     on<ReportPatientEvent>((event, emit) async {
       // emit(BlocedPatientLoadingState());

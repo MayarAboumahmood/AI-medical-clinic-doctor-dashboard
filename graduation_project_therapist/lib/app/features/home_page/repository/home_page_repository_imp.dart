@@ -43,4 +43,6 @@ class HomePageRepositoryImp {
       return left(decodedResponse['error']);
     }
   }
+
+  getRoleID() {}
 }

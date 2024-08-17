@@ -77,7 +77,7 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
   RefreshIndicator blockedPatientListBody(
       BuildContext context, AllBlockedPatientModel allBlockedPatientModel) {
     return customRefreshIndicator(
-        refreshPatientRequests,
+        refreshBlockedList,
         Column(
           children: [
             Expanded(
@@ -115,7 +115,7 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
         ));
   }
 
-  Future<void> refreshPatientRequests() async {
-    blockBloc.add(GetAllBlocedPatientEvent());
+  Future<void> refreshBlockedList() async {
+    blockBloc.add(GetAllBlocedPatientEvent(fromRefreshIndicator: true));
   }
 }

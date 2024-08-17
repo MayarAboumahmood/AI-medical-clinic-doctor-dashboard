@@ -65,10 +65,10 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
               state is PatientRequestRejectLoadingState ||
               state is PatientRequestAcceptLoadingState) {
             return patientRequestsListBody(
-                context, patientRequestsCubit.cachedUserRequests);
+                context, patientRequestsCubit.cachedUserRequests ?? []);
           } else if (state is PatientRequestRejectedSuccessfullyState) {
             return patientRequestsListBody(
-                context, patientRequestsCubit.cachedUserRequests);
+                context, patientRequestsCubit.cachedUserRequests ?? []);
           } else if (state is PatientRequestErrorState) {
             return mediumSizeCardShimmer();
           }
@@ -115,6 +115,6 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
   }
 
   Future<void> refreshPatientRequests() async {
-    patientRequestsCubit.getPatientRequests();
+    patientRequestsCubit.getPatientRequests(fromRefreshIndicator: true);
   }
 }

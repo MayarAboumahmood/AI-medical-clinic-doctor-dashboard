@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/block_patient_listener.dart';
@@ -62,25 +60,26 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
       appBar:
           appBarPushingScreens('Patient Reservations', isFromScaffold: true),
       body: BlocBuilder<PatientReservationsCubit, PatientReservationsState>(
-                  builder: (context, state) {
-      if (state is PatientReservationsLoadingState) {
-        return mediumSizeCardShimmer();
-      } else if (state is PatientReservationDataLoadedState) {
-        return patientReservationssListBody(
-            context, state.patientReservationModels);
-      } else if (state is PatientReservationApprovedSuccessfullyState ||
-          state is PatientReservationCanceledSuccessfullyState ||
-          state is CancelPatientReservationErrorState) {
-        return patientReservationssListBody(context,
-            patientReservationsCubit.cachedPatientReservations);
-      }
-      return mediumSizeCardShimmer();
-                  },
-                ),
+        builder: (context, state) {
+          if (state is PatientReservationsLoadingState) {
+            return mediumSizeCardShimmer();
+          } else if (state is PatientReservationDataLoadedState) {
+            return patientReservationssListBody(
+                context, state.patientReservationModels);
+          } else if (state is PatientReservationApprovedSuccessfullyState ||
+              state is PatientReservationCanceledSuccessfullyState ||
+              state is CancelPatientReservationErrorState) {
+            return patientReservationssListBody(context,
+                patientReservationsCubit.cachedPatientReservations ?? []);
+          }
+          return mediumSizeCardShimmer();
+        },
+      ),
     );
   }
+
   Future<void> refreshPatientReservations() async {
-    patientReservationsCubit.getPatientReservations();
+    patientReservationsCubit.getPatientReservations(fromRefreshIndicator: true);
   }
 
   Widget patientReservationssListBody(BuildContext context,

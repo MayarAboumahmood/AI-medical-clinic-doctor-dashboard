@@ -80,11 +80,11 @@ class _GetPatientsPageState extends State<GetPatientsPage> {
     List<GetPatientsModel> getpatientsModels =
         _isSearching && getPatientsCubit.state is SearchOnPatientsState
             ? getPatientsCubit.searchedPatientsModels
-            : getPatientsCubit.getPatientsModels;
+            : getPatientsCubit.getPatientsModels ?? [];
 
     return customRefreshIndicator(
       () async {
-        getPatientsCubit.getPatients();
+        getPatientsCubit.getPatients(fromRefreshIndicator: true);
       },
       Column(
         children: [

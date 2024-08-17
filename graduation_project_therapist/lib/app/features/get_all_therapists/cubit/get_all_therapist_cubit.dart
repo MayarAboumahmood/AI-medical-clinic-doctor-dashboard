@@ -12,21 +12,25 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
       : super(GetAllTherapistInitial());
   Timer? _debounce;
   int? therapistId;
-  List<GetTherapistModel> getAllTherapistModels = [];
+  List<GetTherapistModel>? getAllTherapistModels;
   List<GetTherapistModel> searchedAllTherapistModels = [];
 
-  List<GetTherapistModel> getMyTherapistModels = [];
+  List<GetTherapistModel>? getMyTherapistModels;
   List<GetTherapistModel> searchedMyTherapistModels = [];
 
-  void getAllTherapist() async {
-    emit(AllTherapistLoadingState());
-    final getData = await getAllTherapistRepositoryImp.getAllTherapist();
-    getData.fold((error) {
-      emit(AllTherapistErrorState(errorMessage: error));
-    }, (data) {
-      getAllTherapistModels = data;
-      emit(AllTherapistLoadedState(getTherapistModels: getAllTherapistModels));
-    });
+  void getAllTherapist({bool fromRefreshIndicator = false}) async {
+    if (getAllTherapistModels == null || fromRefreshIndicator) {
+      emit(AllTherapistLoadingState());
+      final getData = await getAllTherapistRepositoryImp.getAllTherapist();
+      getData.fold((error) {
+        emit(AllTherapistErrorState(errorMessage: error));
+      }, (data) {
+        getAllTherapistModels = data;
+        emit(AllTherapistLoadedState(getTherapistModels: data));
+      });
+    } else {
+      emit(AllTherapistLoadedState(getTherapistModels: getAllTherapistModels!));
+    }
   }
 
   void assignTherapist(int therapistId) async {
@@ -48,7 +52,7 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
       searchWord = searchWord.toLowerCase();
       searchedAllTherapistModels.clear();
 
-      for (var i in getAllTherapistModels) {
+      for (var i in getAllTherapistModels ?? []) {
         if (i.specialistProfile.fullName.toLowerCase().contains(searchWord)) {
           searchedAllTherapistModels.add(i);
         }
@@ -59,15 +63,22 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     });
   }
 
-  void getMyTherapist(int patientID) async {
-    emit(MyTherapistLoadingState());
-    final getData = await getAllTherapistRepositoryImp.getMyTherapist(patientID);
-    getData.fold((error) {
-      emit(MyTherapistErrorState(errorMessage: error));
-    }, (data) {
-      getMyTherapistModels = data;
-      emit(MyTherapistLoadedState(getTherapistModels: getMyTherapistModels));
-    });
+  void getMyTherapist(int patientID,
+      {bool fromRefreshIndicator = false}) async {
+    if (getMyTherapistModels == null || fromRefreshIndicator) {
+      emit(MyTherapistLoadingState());
+      final getData =
+          await getAllTherapistRepositoryImp.getMyTherapist(patientID);
+      getData.fold((error) {
+        emit(MyTherapistErrorState(errorMessage: error));
+      }, (data) {
+        getMyTherapistModels = data;
+        emit(MyTherapistLoadedState(getTherapistModels: data));
+      });
+    }else{
+        emit(MyTherapistLoadedState(getTherapistModels:getMyTherapistModels!));
+      
+    }
   }
 
   void removeTherapist(int therapistId) async {
@@ -78,7 +89,7 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     getData.fold((error) {
       emit(MyTherapistErrorState(errorMessage: error));
     }, (data) {
-      getMyTherapistModels
+      getMyTherapistModels??[]
           .removeWhere((therapist) => therapist.id == therapistId);
       emit(TherapistRemovedSuccessfullyState(dateTime: DateTime.now()));
     });
@@ -91,7 +102,7 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
       searchWord = searchWord.toLowerCase();
       searchedMyTherapistModels.clear();
 
-      for (var i in getMyTherapistModels) {
+      for (var i in getMyTherapistModels??[]) {
         if (i.specialistProfile.fullName.toLowerCase().contains(searchWord)) {
           searchedMyTherapistModels.add(i);
         }

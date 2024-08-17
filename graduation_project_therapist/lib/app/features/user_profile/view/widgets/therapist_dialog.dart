@@ -9,7 +9,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/loadin_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
-void showTherapistsDialog(BuildContext context,int patientID) {
+void showTherapistsDialog(BuildContext context, int patientID) {
   GetAllTherapistCubit getAllTherapistCubit =
       context.read<GetAllTherapistCubit>();
   getAllTherapistCubit.getMyTherapist(patientID);
@@ -57,8 +57,9 @@ void showTherapistsDialog(BuildContext context,int patientID) {
                         if (state is MyTherapistLoadingState) {
                           return Expanded(child: smallSizeCardShimmer());
                         } else if (state is MyTherapistLoadedState) {
-                          return getAllTherapistCubit
-                                  .getMyTherapistModels.isEmpty
+                          return (getAllTherapistCubit
+                                      .getMyTherapistModels?.isEmpty ??
+                                  true)
                               ? Center(
                                   child: buildNoElementInPage(
                                     "You don't have any therapist yet.",
@@ -69,11 +70,12 @@ void showTherapistsDialog(BuildContext context,int patientID) {
                                   child: Column(
                                     children: List.generate(
                                       getAllTherapistCubit
-                                          .getMyTherapistModels.length,
+                                              .getMyTherapistModels?.length ??
+                                          0,
                                       (index) => myTherapistToAssignCard(
                                           context,
                                           getAllTherapistCubit
-                                              .getMyTherapistModels[index]),
+                                              .getMyTherapistModels![index]),
                                     ),
                                   ),
                                 );

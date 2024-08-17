@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/profile/presentation/screens/profile/profile_screen.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -86,8 +88,27 @@ class YourDataNotCompletedYetPage extends StatelessWidget {
           child: completeDataButton(),
         ),
         const SizedBox(
-          height: 30,
-        )
+          height: 100,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
+          child: GestureDetector(
+              onTap: () {
+                showBottomSheetWidget(context, logOutBottomSheet(context));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: customColors.primary),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Log Out'.tr(),
+                    style: customTextStyle.bodyMedium,
+                  ),
+                ),
+              )),
+        ),
       ],
     );
   }
