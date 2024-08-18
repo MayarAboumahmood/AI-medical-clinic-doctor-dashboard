@@ -94,18 +94,14 @@ class ChooseDateWidgetState extends State<ChooseDateWidget> {
       child: Center(
         child: GestureDetector(
           onTap: () {
-            buildChooseDate(
-              context,
-              dateTime,
-              (newDateTime) {
-                setState(() {
-                  dateTime = newDateTime;
-                });
-                context.read<UserProfileCubit>().date =
-                    DateFormat('yyyy-MM-dd').format(dateTime);
-                navigationService.goBack();
-              },
-            );
+            buildChooseDate(context, dateTime, (newDateTime) {
+              setState(() {
+                dateTime = newDateTime;
+              });
+              context.read<UserProfileCubit>().date =
+                  DateFormat('yyyy-MM-dd').format(dateTime);
+              navigationService.goBack();
+            }, DatePickType.reservationDay);
           },
           child: Container(
             height: 50,

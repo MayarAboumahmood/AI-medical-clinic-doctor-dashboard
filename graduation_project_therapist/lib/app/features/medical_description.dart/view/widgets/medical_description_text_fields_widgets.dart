@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/medical_description.dart/cubit/medical_description_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -109,6 +110,7 @@ Padding medicalConditionColumn(BuildContext context) {
       whatBlocShouldDoOnTap: (selectedDate) {
         medicalDescriptionCubit.startDate = selectedDate;
       },
+      datePickType: DatePickType.nothing,
     ),
     thirdTextField: customTextField(
         context: context,

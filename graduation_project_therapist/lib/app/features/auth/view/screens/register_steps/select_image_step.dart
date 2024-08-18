@@ -6,6 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/core/constants/app_ro
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/auth/bloc/register_cubit/register_state.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/image_widgets/pic_picture_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/get_status_request_from_status_code.dart';
@@ -111,6 +112,7 @@ class SelectImageAndDateRegisterStep extends StatelessWidget {
               BlocProvider.of<RegisterCubit>(context)
                   .updateUserInfo(dateOfBirth: selectedDate);
             },
+            datePickType: DatePickType.birthDay
           ),
           SizedBox(
             height: responsiveUtil.screenHeight * .035,

@@ -5,6 +5,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/patient_requ
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_day_conainer.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/pick_time_container.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 class SelectTimeDateBottomSheet extends StatefulWidget {
@@ -46,6 +47,7 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
               whatBlocShouldDoOnTap: (selectedDate) {
                 patientRequestsCubit.setSelectedDay(selectedDate);
               },
+              datePickType: DatePickType.reservationDay
             ),
             const SizedBox(
               height: 20,

@@ -364,7 +364,7 @@ class _EditeProfileState extends State<EditProfile> {
                   dateTime = newDateTime;
                 });
                 navigationService.goBack();
-              },
+              },DatePickType.birthDay
             );
           },
           child: Container(

@@ -7,10 +7,12 @@ class PickDayContainer extends StatefulWidget {
   final void Function(String selectedDate)? whatBlocShouldDoOnTap;
   final double paddingInVertical;
   final double paddingInHorizontal;
+  final DatePickType datePickType;
 
   const PickDayContainer(
       {super.key,
       required this.whatBlocShouldDoOnTap,
+      required this.datePickType,
       this.paddingInVertical = 15,
       this.paddingInHorizontal = 10});
 
@@ -48,6 +50,7 @@ class _PickDayContainerState extends State<PickDayContainer> {
             widget.whatBlocShouldDoOnTap?.call(selectedDayString);
             navigationService.goBack();
           },
+          widget.datePickType
         );
       },
       child: Container(
