@@ -146,85 +146,78 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
           navigationService.goBack();
         }
       },
-      child: PopScope(
-        onPopInvokedWithResult: (_, result) {
-          if (isforUpdateOrEditAvailable) {
-            navigationService.goBack();
-          }
-        },
-        child: Scaffold(
-          backgroundColor: customColors.primaryBackGround,
-          appBar:
-              appBarPushingScreens('Medical Description', isFromScaffold: true),
-          body: SingleChildScrollView(
-            child: Column(children: [
-              const SizedBox(
-                height: 10,
-              ),
-              medicalDescriptionNote(AppString.medicalDescriptionForUser1),
-              const SizedBox(
-                height: 4,
-              ),
-              medicalDescriptionNote(AppString.medicalDescriptionForUser2),
-              const SizedBox(
-                height: 4,
-              ),
-              medicalDescriptionNote(AppString.medicalDescriptionForUser3),
-              const SizedBox(
-                height: 10,
-              ),
-              isforUpdateOrEditAvailable
-                  ? Column(
-                      children: [
-                        medicalDescriptionNote(
-                            "4-If you edit the medical description, the previous version will be replaced. However, if you create a new version based on it, both versions will exist."),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    )
-                  : const SizedBox(),
-              dividersWithSectionName('medical diagnosis'),
-              const SizedBox(height: 10),
-              medicalDiagnosisColumn(context),
-              const SizedBox(
-                height: 10,
-              ),
-              dividersWithSectionName('medical personal history'),
-              const SizedBox(height: 10),
-              medicalPersonalHistoryColumn(context),
-              const SizedBox(
-                height: 10,
-              ),
-              dividersWithSectionName('medical family history'),
-              const SizedBox(height: 10),
-              medicalFamilyHistoryColumn(context),
-              const SizedBox(
-                height: 10,
-              ),
-              dividersWithSectionName('medical condition'),
-              const SizedBox(height: 10),
-              medicalConditionColumn(context),
-              const SizedBox(
-                height: 10,
-              ),
-              dividersWithSectionName('medical record'),
-              const SizedBox(height: 10),
-              medicalRecordColumn(context),
-              const SizedBox(height: 5),
-              Container(
-                height: 1,
-                color: customColors.primary,
-              ),
-              const SizedBox(height: 15),
-              submitButton(),
-              const SizedBox(height: 10),
-              isforUpdateOrEditAvailable
-                  ? editButton(medicalDescriptionDetailsModel!.data.id)
-                  : const SizedBox(),
-              const SizedBox(height: 10),
-            ]),
-          ),
+      child: Scaffold(
+        backgroundColor: customColors.primaryBackGround,
+        appBar:
+            appBarPushingScreens('Medical Description', isFromScaffold: true),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            const SizedBox(
+              height: 10,
+            ),
+            medicalDescriptionNote(AppString.medicalDescriptionForUser1),
+            const SizedBox(
+              height: 4,
+            ),
+            medicalDescriptionNote(AppString.medicalDescriptionForUser2),
+            const SizedBox(
+              height: 4,
+            ),
+            medicalDescriptionNote(AppString.medicalDescriptionForUser3),
+            const SizedBox(
+              height: 10,
+            ),
+            isforUpdateOrEditAvailable
+                ? Column(
+                    children: [
+                      medicalDescriptionNote(
+                          "4-If you edit the medical description, the previous version will be replaced. However, if you create a new version based on it, both versions will exist."),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+            dividersWithSectionName('medical diagnosis'),
+            const SizedBox(height: 10),
+            medicalDiagnosisColumn(context),
+            const SizedBox(
+              height: 10,
+            ),
+            dividersWithSectionName('medical personal history'),
+            const SizedBox(height: 10),
+            medicalPersonalHistoryColumn(context),
+            const SizedBox(
+              height: 10,
+            ),
+            dividersWithSectionName('medical family history'),
+            const SizedBox(height: 10),
+            medicalFamilyHistoryColumn(context),
+            const SizedBox(
+              height: 10,
+            ),
+            dividersWithSectionName('medical condition'),
+            const SizedBox(height: 10),
+            medicalConditionColumn(context),
+            const SizedBox(
+              height: 10,
+            ),
+            dividersWithSectionName('medical record'),
+            const SizedBox(height: 10),
+            medicalRecordColumn(context),
+            const SizedBox(height: 5),
+            Container(
+              height: 1,
+              color: customColors.primary,
+            ),
+            const SizedBox(height: 15),
+            submitButton(),
+            const SizedBox(height: 10),
+            isforUpdateOrEditAvailable
+                ? editButton(medicalDescriptionDetailsModel!.data.id)
+                : const SizedBox(),
+            const SizedBox(height: 10),
+          ]),
         ),
       ),
     );
@@ -243,7 +236,7 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
             },
             loading: isLoading,
             options: ButtonOptions(
-                width: text.length * 10,
+                width: text.length > 10 ? text.length * 15 : text.length * 10,
                 color: customColors.primary,
                 textStyle: customTextStyle.bodyMedium));
       },

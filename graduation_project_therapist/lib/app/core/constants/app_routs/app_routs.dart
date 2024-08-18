@@ -10,7 +10,6 @@ import 'package:graduation_project_therapist_dashboard/app/features/block_and_re
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bottom_navigation_widget/bottom_navigation_widget.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_init_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_page.dart';
-import 'package:graduation_project_therapist_dashboard/app/features/design_hider/screens/welcompage_designhider.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/doctor_employment_requests/view/screens/doctor_employment_requests_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_all_therapists_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/get_all_therapists/veiw/screens/get_my_therapists_page.dart';
@@ -87,7 +86,6 @@ final Map<String, WidgetBuilder> routes = {
   walletPage: (context) => const WalletPage(),
   doctorEmploymentRequestsPage: (context) =>
       const DoctorEmploymentRequestsPage(),
-  designHider: (context) => const DesignHidderRegisterPage(),
   videoCallPage: (context) => VideoCallPage(),
   medicalDescriptionPage: (context) => const MedicalDescriptionPage(),
   getPatientsPage: (context) => const GetPatientsPage(),

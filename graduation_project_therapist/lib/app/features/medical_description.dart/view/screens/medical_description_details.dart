@@ -56,25 +56,22 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
         medicalDescriptionCubit.getAllMedicalDescription(patientID);
       },
       child: Scaffold(
-        floatingActionButton:
-            BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
-          builder: (context, state) {
-            if (state is GetMedicalDescriptionsDetailsSuccessState)
-              return FloatingActionButton.extended(
-                  backgroundColor: customColors.primary,
-                  onPressed: () {
-                    navigationService.navigateTo(medicalDescriptionPage,
-                        arguments: state.medicalDescriptionModel);
-                  },
-                  label: isDoctor
-                      ? Text(
-                          'update',
-                          style: customTextStyle.bodyMedium,
-                        )
-                      : const SizedBox());
-            return const SizedBox();
-          },
-        ),
+        floatingActionButton: isDoctor
+            ? BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
+                builder: (context, state) {
+                  if (state is GetMedicalDescriptionsDetailsSuccessState) {
+                    return floatinActionButtonUpdate(
+                        state.medicalDescriptionModel);
+                  } else if (medicalDescriptionCubit
+                          .cachedMedicalDescriptionModel !=
+                      null) {
+                    return floatinActionButtonUpdate(
+                        medicalDescriptionCubit.cachedMedicalDescriptionModel!);
+                  }
+                  return const SizedBox();
+                },
+              )
+            : const SizedBox(),
         backgroundColor: customColors.primaryBackGround,
         appBar: appBarPushingScreens(
           'Medical descriptions details',
@@ -86,19 +83,46 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
           listener: (context, state) {
             if (state is GetAllMedicalDescriptionsErrorState) {
               customSnackBar(state.errorMessage, context, isFloating: true);
+            } else if (medicalDescriptionCubit.cachedMedicalDescriptionModel ==
+                null) {
+              medicalDescriptionCubit
+                  .getMedicalDescriptionDetails(medicalDescriptionId);
             }
           },
           builder: (context, state) {
             if (state is GetMedicalDescriptionsDetailsSuccessState) {
               return medicalDescriptiondDataColumn(
                   state.medicalDescriptionModel);
-            } else {
+            } else if (state is GetAllMedicalDescriptionsErrorState ||
+                state is GetAllMedicalDescriptionsLoadingState) {
               return buildListOfShimmerForProfilePage();
+            } else {
+              if (medicalDescriptionCubit.cachedMedicalDescriptionModel !=
+                  null) {
+                return medicalDescriptiondDataColumn(
+                    medicalDescriptionCubit.cachedMedicalDescriptionModel!);
+              } else {
+                return buildListOfShimmerForProfilePage();
+              }
             }
           },
         ),
       ),
     );
+  }
+
+  FloatingActionButton floatinActionButtonUpdate(
+      MedicalDescriptionDetailsModel medicalDescriptionDetailsModel) {
+    return FloatingActionButton.extended(
+        backgroundColor: customColors.primary,
+        onPressed: () {
+          navigationService.navigateTo(medicalDescriptionPage,
+              arguments: medicalDescriptionDetailsModel);
+        },
+        label: Text(
+          'update',
+          style: customTextStyle.bodyMedium,
+        ));
   }
 
   SingleChildScrollView medicalDescriptiondDataColumn(

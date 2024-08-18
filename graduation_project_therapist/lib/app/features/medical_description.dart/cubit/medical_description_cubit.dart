@@ -12,6 +12,7 @@ class MedicalDescriptionCubit extends Cubit<MedicalDescriptionState> {
   MedicalDescriptionCubit({required this.medicalDescriptionRepositoryImp})
       : super(MedicalDescriptionInitial());
   int cahcedPatientID = -1;
+  MedicalDescriptionDetailsModel? cachedMedicalDescriptionModel;
 
   final MedicalDescriptionRepositoryImp medicalDescriptionRepositoryImp;
   late TextEditingController differentialDiagnosisController;
@@ -65,11 +66,15 @@ class MedicalDescriptionCubit extends Cubit<MedicalDescriptionState> {
         treatmentPlan: treatmentPlanController.text);
 
     final getData = await medicalDescriptionRepositoryImp
-        .editMedicalDescription(medicalDescriptionModel,medicalDescriptionId);
+        .editMedicalDescription(medicalDescriptionModel, medicalDescriptionId);
     getData.fold(
-        (errorMessage) => emit(
-            CreateMedicalDescriptionErrorState(errorMessage: errorMessage)),
-        (done) => emit(EditMedicalDescriptionSuccessState()));
+      (errorMessage) =>
+          emit(CreateMedicalDescriptionErrorState(errorMessage: errorMessage)),
+      (done) {
+        cachedMedicalDescriptionModel = null;
+        emit(EditMedicalDescriptionSuccessState());
+      },
+    );
   }
 
   void getAllMedicalDescription(int patientID) async {
@@ -93,7 +98,13 @@ class MedicalDescriptionCubit extends Cubit<MedicalDescriptionState> {
     getData.fold(
         (errorMessage) => emit(
             GetAllMedicalDescriptionsErrorState(errorMessage: errorMessage)),
-        (done) => emit(GetMedicalDescriptionsDetailsSuccessState(
-            medicalDescriptionModel: done)));
+        (done) {
+      cachedMedicalDescriptionModel = done;
+
+      emit(
+        GetMedicalDescriptionsDetailsSuccessState(
+            medicalDescriptionModel: done),
+      );
+    });
   }
 }

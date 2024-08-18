@@ -53,9 +53,9 @@ class MedicalDescriptionSource {
       url,
       headers: headers,
     );
-    debugPrint('get all Medical Description datasource: ${response.body}');
+    debugPrint('get Medical Description details datasource: ${response.body}');
     debugPrint(
-        'get all Medical Description datasource: ${response.statusCode}');
+        'get Medical Description details datasource: ${response.statusCode}');
     return response;
   }
 
