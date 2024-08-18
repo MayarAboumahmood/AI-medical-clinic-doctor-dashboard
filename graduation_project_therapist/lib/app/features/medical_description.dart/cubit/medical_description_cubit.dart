@@ -48,6 +48,30 @@ class MedicalDescriptionCubit extends Cubit<MedicalDescriptionState> {
         (done) => emit(CreateMedicalDescriptionSuccessState()));
   }
 
+  void editMedicalDescription(int medicalDescriptionId) async {
+    emit(EditMedicalDescriptionLoadingState());
+
+    MedicalDescriptionModel medicalDescriptionModel = MedicalDescriptionModel(
+        patientId: cahcedPatientID,
+        mainComplaint: mainComplaintController.text,
+        symptoms: symptomsController.text,
+        causes: causesController.text,
+        startDate: startDate,
+        fType: medicalFamilyHistoryTypeController.text,
+        fDescription: medicalFamilyHistoryDescriptionController.text,
+        pType: medicalPersonalHistoryTypeController.text,
+        pDescription: medicalPersonalHistoryDescriptionController.text,
+        differentialDiagnosis: differentialDiagnosisController.text,
+        treatmentPlan: treatmentPlanController.text);
+
+    final getData = await medicalDescriptionRepositoryImp
+        .editMedicalDescription(medicalDescriptionModel,medicalDescriptionId);
+    getData.fold(
+        (errorMessage) => emit(
+            CreateMedicalDescriptionErrorState(errorMessage: errorMessage)),
+        (done) => emit(EditMedicalDescriptionSuccessState()));
+  }
+
   void getAllMedicalDescription(int patientID) async {
     cahcedPatientID = patientID;
     emit(GetAllMedicalDescriptionsLoadingState());

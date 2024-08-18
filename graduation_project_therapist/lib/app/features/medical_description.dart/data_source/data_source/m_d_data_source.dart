@@ -58,4 +58,24 @@ class MedicalDescriptionSource {
         'get all Medical Description datasource: ${response.statusCode}');
     return response;
   }
+
+  Future<Response> editMedicalDescription(
+      MedicalDescriptionModel medicalDescriptionModel,
+      int medicalDescriptionId) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url +
+        ServerConfig.editMedicalRecordsUri +
+        medicalDescriptionModel.toString());
+    var headers = {'Authorization': token};
+    var body = medicalDescriptionModel.toMap();
+    var response = await http.put(
+      url,
+      body: body,
+      headers: headers,
+    );
+    debugPrint('edit Medical Description datasource: $body');
+    debugPrint('edit Medical Description datasource: ${response.body}');
+    debugPrint('edit Medical Description datasource: ${response.statusCode}');
+    return response;
+  }
 }

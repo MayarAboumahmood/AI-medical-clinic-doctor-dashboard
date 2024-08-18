@@ -39,8 +39,9 @@ class ServerConfig {
   static const String getPatientrequestUri = 'appointment/request/specialist';
   static const String acceptPatientrequest = 'appointment/request/';
   static const String rejectPatientrequest = 'appointment/request/';
-  static const String createMedicalRecordsUri = 'specs/medicalRecords';
   static const String getAllMedicalRecordsUri = 'specs/medicalRecords/';
+  static const String createMedicalRecordsUri = 'specs/medicalRecords';
+  static const String editMedicalRecordsUri = 'specs/medicalRecords/update/';
   static const String getPatientsUri = 'specs/patients';
   static const String getPatientsProfileUri =
       'specs/patients/'; //... id/profile

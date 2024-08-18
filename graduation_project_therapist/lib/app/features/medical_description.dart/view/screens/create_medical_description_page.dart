@@ -28,7 +28,7 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
   bool firstTime = true;
 
   late MedicalDescriptionDetailsModel? medicalDescriptionDetailsModel;
-  bool isModelAvailable = false;
+  bool isforUpdateOrEditAvailable = false;
 
   @override
   void didChangeDependencies() {
@@ -40,17 +40,17 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
 
       // Check if the argument is null and set the boolean accordingly
       if (args == null) {
-        isModelAvailable = false;
+        isforUpdateOrEditAvailable = false;
       } else {
         medicalDescriptionDetailsModel = args;
-        isModelAvailable = true;
+        isforUpdateOrEditAvailable = true;
         fullTextControllersInUpdate();
       }
     }
   }
 
   void fullTextControllersInUpdate() {
-    if (isModelAvailable) {
+    if (isforUpdateOrEditAvailable) {
       if (medicalDescriptionDetailsModel!.data.medicalDiagnosis.isNotEmpty) {
         medicalDescriptionCubit.differentialDiagnosisController.text =
             medicalDescriptionDetailsModel!
@@ -139,11 +139,16 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
           medicalDescriptionCubit.getAllMedicalDescription(
               medicalDescriptionCubit.cahcedPatientID);
           navigationService.goBack();
+        } else if (state is EditMedicalDescriptionSuccessState) {
+          customSnackBar('the Description edited successfully', context);
+          medicalDescriptionCubit.getAllMedicalDescription(
+              medicalDescriptionCubit.cahcedPatientID);
+          navigationService.goBack();
         }
       },
       child: PopScope(
         onPopInvokedWithResult: (_, result) {
-          if (isModelAvailable) {
+          if (isforUpdateOrEditAvailable) {
             navigationService.goBack();
           }
         },
@@ -168,6 +173,17 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
               const SizedBox(
                 height: 10,
               ),
+              isforUpdateOrEditAvailable
+                  ? Column(
+                      children: [
+                        medicalDescriptionNote(
+                            "4-If you edit the medical description, the previous version will be replaced. However, if you create a new version based on it, both versions will exist."),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
               dividersWithSectionName('medical diagnosis'),
               const SizedBox(height: 10),
               medicalDiagnosisColumn(context),
@@ -201,27 +217,55 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
                 color: customColors.primary,
               ),
               const SizedBox(height: 15),
-              BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
-                builder: (context, state) {
-                  bool isLoading =
-                      state is CreateMedicalDescriptionLoadingState;
-                  return GeneralButtonOptions(
-                      text: 'Submit',
-                      onPressed: () {
-                        medicalDescriptionCubit.createNewMedicalDescription();
-                      },
-                      loading: isLoading,
-                      options: ButtonOptions(
-                          width: responsiveUtil.screenWidth * .2,
-                          color: customColors.primary,
-                          textStyle: customTextStyle.bodyMedium));
-                },
-              ),
+              submitButton(),
+              const SizedBox(height: 10),
+              isforUpdateOrEditAvailable
+                  ? editButton(medicalDescriptionDetailsModel!.data.id)
+                  : const SizedBox(),
               const SizedBox(height: 10),
             ]),
           ),
         ),
       ),
+    );
+  }
+
+  BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState> submitButton() {
+    String text =
+        isforUpdateOrEditAvailable ? 'create new description' : 'Submit';
+    return BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
+      builder: (context, state) {
+        bool isLoading = state is CreateMedicalDescriptionLoadingState;
+        return GeneralButtonOptions(
+            text: text,
+            onPressed: () {
+              medicalDescriptionCubit.createNewMedicalDescription();
+            },
+            loading: isLoading,
+            options: ButtonOptions(
+                width: text.length * 10,
+                color: customColors.primary,
+                textStyle: customTextStyle.bodyMedium));
+      },
+    );
+  }
+
+  BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState> editButton(
+      int medDID) {
+    return BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
+      builder: (context, state) {
+        bool isLoading = state is EditMedicalDescriptionLoadingState;
+        return GeneralButtonOptions(
+            text: 'Edit This description',
+            onPressed: () {
+              medicalDescriptionCubit.editMedicalDescription(medDID);
+            },
+            loading: isLoading,
+            options: ButtonOptions(
+                width: responsiveUtil.screenWidth * .5,
+                color: customColors.primary,
+                textStyle: customTextStyle.bodyMedium));
+      },
     );
   }
 

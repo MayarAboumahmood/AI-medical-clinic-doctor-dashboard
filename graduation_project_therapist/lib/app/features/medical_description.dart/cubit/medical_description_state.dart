@@ -13,6 +13,11 @@ final class CreateMedicalDescriptionLoadingState
   @override
   List<Object?> get props => [];
 }
+final class EditMedicalDescriptionLoadingState
+    extends MedicalDescriptionState {
+  @override
+  List<Object?> get props => [];
+}
 
 final class GetAllMedicalDescriptionsLoadingState
     extends MedicalDescriptionState {
@@ -55,6 +60,12 @@ final class CreateMedicalDescriptionErrorState extends MedicalDescriptionState {
 final class CreateMedicalDescriptionSuccessState
     extends MedicalDescriptionState {
   CreateMedicalDescriptionSuccessState();
+  @override
+  List<Object?> get props => [];
+}
+final class EditMedicalDescriptionSuccessState
+    extends MedicalDescriptionState {
+
   @override
   List<Object?> get props => [];
 }
