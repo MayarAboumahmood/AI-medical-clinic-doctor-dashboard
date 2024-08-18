@@ -37,9 +37,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ModalRoute.of(context)!.settings.arguments as int? ?? 1;
       patientID = argument;
       userProfileCubit.getUserProfile(patientID);
-      Future.delayed(const Duration(seconds: 1), () {
-        userProfileCubit.getPatientsBotScore(patientID);
-      });
     }
   }
 
@@ -73,6 +70,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
         profileBody(),
         divider(),
         patientBoxScoreBody(),
+        divider(),
+        profileButton(),
       ],
     );
   }
@@ -97,6 +96,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
               state is GetPatientBotScoreLoadingState) {
             return userProfileBody(localPatientProfileModel!, context);
           } else if (state is UserProfileGetData) {
+            userProfileCubit.getPatientsBotScore(patientID);
+
             localPatientProfileModel = state.patientProfileModel;
             return userProfileBody(state.patientProfileModel, context);
           }
@@ -106,50 +107,56 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
+  SliverToBoxAdapter profileButton() {
+    return SliverToBoxAdapter(
+      child: BlocBuilder<UserProfileCubit, UserProfileState>(
+        builder: (context, state) {
+          if (state is UserProfileLoadingState) {
+            return generalElementForEachCardShimmer();
+          } else if (state is AssignPatientToTherapistErrorState ||
+              state is PatientAssignedToTherapistState ||
+              state is GetPatientBotScoreErrorState ||
+              state is GetingPatientBotScoreDoneState ||
+              state is GetPatientBotScoreLoadingState) {
+            return buildPatientProfileButtons(
+                context, localPatientProfileModel!);
+          } else if (state is UserProfileGetData) {
+            localPatientProfileModel = state.patientProfileModel;
+            return buildPatientProfileButtons(
+                context, state.patientProfileModel);
+          }
+          return generalElementForEachCardShimmer();
+        },
+      ),
+    );
+  }
+
   String cachedScore = 'Loading...'.tr();
   SliverToBoxAdapter patientBoxScoreBody() {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 100),
-        child: BlocBuilder<UserProfileCubit, UserProfileState>(
-          builder: (context, state) {
-            if (state is GetPatientBotScoreLoadingState) {
-              return patientBotScoreShimmer();
-            } else if (state is GetPatientBotScoreErrorState) {
-              return errorTryAgainButton();
-            } else if (state is GetingPatientBotScoreDoneState) {
-              cachedScore = state.botScore;
-              return circularBotScore(state.botScore);
-            }
-            return circularBotScore(cachedScore);
-          },
-        ),
+      child: BlocBuilder<UserProfileCubit, UserProfileState>(
+        builder: (context, state) {
+          if (state is GetPatientBotScoreLoadingState) {
+            return patientBotScoreShimmer();
+          } else if (state is GetPatientBotScoreErrorState) {
+            return errorTryAgainButton();
+          } else if (state is GetingPatientBotScoreDoneState) {
+            cachedScore = state.botScore;
+            return circularBotScore(state.botScore);
+          }
+          return circularBotScore(cachedScore);
+        },
       ),
     );
   }
 
   Widget circularBotScore(String botScore) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: customColors.secondaryText, width: 2),
-            color: customColors.secondaryBackGround,
-          ),
-          alignment: Alignment.center,
-          child: Text(botScore, style: customTextStyle.bodyLarge),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            getPHQ9Recommendation(int.parse(botScore)),
-            style: customTextStyle.bodyMedium,
-          ),
-        ),
+        infoSection('Bot Score: ', botScore),
+        infoSection(
+            'The PHQ9 recommendation: ', getPHQ9Recommendation(botScore)),
       ],
     );
   }

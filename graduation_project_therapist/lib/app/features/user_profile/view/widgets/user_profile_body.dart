@@ -22,22 +22,26 @@ Widget userProfileBody(PatientProfileModel profile, BuildContext context) {
       infoSection('Current Work', profile.data.placeOfWork),
       infoSection('Work Hours per Day', profile.data.hoursOfWork.toString()),
       infoSection('Place of Work', profile.data.profession),
-      profilePageDivider(),
-      SizedBox(height: responsiveUtil.screenHeight * .07),
-      Align(
-        alignment: Alignment.center,
-        child: Wrap(
-          children: [
-            isDoctor
-                ? assignTherapistbutton(context, profile.data.id)
-                : sendRequestToPatientbutton(
-                    context, profile.data.fullName, profile.data.id),
-            goToMedicalRecordsButton(context),
-          ],
-        ),
-      ),
-      SizedBox(height: responsiveUtil.screenHeight * .07),
     ],
+  );
+}
+
+Widget buildPatientProfileButtons(
+    BuildContext context, PatientProfileModel profile) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: responsiveUtil.screenHeight * .5),
+    child: Align(
+      alignment: Alignment.center,
+      child: Wrap(
+        children: [
+          isDoctor
+              ? assignTherapistbutton(context, profile.data.id)
+              : sendRequestToPatientbutton(
+                  context, profile.data.fullName, profile.data.id),
+          goToMedicalRecordsButton(context),
+        ],
+      ),
+    ),
   );
 }
 
