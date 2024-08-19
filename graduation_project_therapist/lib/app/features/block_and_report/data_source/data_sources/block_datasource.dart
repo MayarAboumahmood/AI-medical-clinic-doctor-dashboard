@@ -59,7 +59,7 @@ class BlockDataSource {
     return response;
   }
 
-Future<Response>  reportPatient(int patientId, String description) async {
+  Future<Response> reportPatient(int patientId, String description) async {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url + ServerConfig.reportPatientUri);
     var headers = {'Authorization': token};
@@ -75,22 +75,24 @@ Future<Response>  reportPatient(int patientId, String description) async {
     return response;
   }
 
-Future<Response>  reportMedicalDescription(int medicalDescriptionId, String description) async {
+  Future<Response> reportMedicalDescription(
+      int medicalDescriptionId, String description) async {
     String token = sharedPreferences!.getString('token') ?? '';
-    var url = Uri.parse(ServerConfig.url + ServerConfig.reportPatientUri);
+    var url = Uri.parse(ServerConfig.url + ServerConfig.reportMedicalRecordUri);
     var headers = {'Authorization': token};
 
     var response = await http.post(
       url,
-      body: {'medicalRecordId': medicalDescriptionId.toString(), 'description': description},
+      body: {
+        'medicalRecordId': medicalDescriptionId.toString(),
+        'description': description
+      },
       headers: headers,
     );
+    print('report Patient status body datasource: ${description}');
     print('report Patient status body datasource: ${response.body}');
     print('report Patient statuscode datasource: ${response.statusCode}');
 
     return response;
   }
-
-
- 
- }
+}

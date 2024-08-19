@@ -22,4 +22,35 @@ class ChatDataSource {
     debugPrint('chat info Description datasource: ${response.statusCode}');
     return response;
   }
+
+  Future<Response> sendCompleteSession(int appointmentId) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.videoCallCompleteUri);
+    var headers = {'Authorization': token};
+    var response = await http.post(
+      url,
+      body: {"appointmentId": appointmentId.toString()},
+      headers: headers,
+    );
+    debugPrint('video Call Complete datasource: ${response.body}');
+    debugPrint('video Call Complete datasource: ${response.statusCode}');
+    return response;
+  }
+
+  Future<Response> checkIfSessionComplete(int appointmentId) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url +
+        ServerConfig.checkIfSessionCompleteUri +
+        appointmentId.toString());
+    var headers = {'Authorization': token};
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    debugPrint(
+        'video Call check If Session Complete datasource: ${response.body}');
+    debugPrint(
+        'video Call check If Session Complete Complete datasource: ${response.statusCode}');
+    return response;
+  }
 }

@@ -9,6 +9,7 @@ part 'video_call_state.dart';
 class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
   late String token;
   late String channelName;
+  int cachedAppointmentId = -10;
 
   ChatRepositoryImp chatRepositoryImp;
   void setToken(String newToken) {
@@ -26,7 +27,26 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
       getData.fold((l) => emit(VideoCallErrorState(error: l)), (chatInfoModel) {
         channelName = chatInfoModel.data.channelName;
         token = chatInfoModel.data.token;
+        // bool isReady = chatInfoModel.data.
         emit(GotVideoInfoState());
+      });
+    });
+    on<SendCompleteSessionEvent>((event, emit) async {
+      emit(SessionCompletedLoadingState());
+
+      final getData =
+          await chatRepositoryImp.sendCompleteSession(event.appointmentId);
+      getData.fold((l) => emit(VideoCallErrorState(error: l)), (done) {
+        emit(SessionCompletedFromOneSideDoneState());
+      });
+    });
+    on<CheckIfSessionCompletedEvent>((event, emit) async {
+      emit(CheckIfSessionCompletedLoadingtState());
+
+      final getData =
+          await chatRepositoryImp.checkIfSessionComplete(event.appointmentId);
+      getData.fold((l) => emit(VideoCallErrorState(error: l)), (done) {
+        emit(SessionIsCompletedState(status: done));
       });
     });
   }

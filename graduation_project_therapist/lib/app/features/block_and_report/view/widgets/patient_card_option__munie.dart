@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/confirm_block_buttonsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/report_patient_buttonsheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/video_call/view/widget/agree_to_end_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -62,8 +63,8 @@ Widget buildOptionsMenu(
   );
 }
 
-Widget buildAppbarOptionsMenu(
-    BuildContext context, int patientID, String patientName,int medicalDescriptionId) {
+Widget buildAppbarOptionsMenu(BuildContext context, int patientID,
+    String patientName, int medicalDescriptionId) {
   return PopupMenuButton<String>(
     color: customColors.secondaryBackGround,
     icon: CircleAvatar(
@@ -99,8 +100,8 @@ Widget buildAppbarOptionsMenu(
     },
   );
 }
-Widget buildAppbarVedieCallMenu(
-    BuildContext context,) {
+
+Widget buildAppbarVedieCallMenu(BuildContext context, int appointmentId) {
   return PopupMenuButton<String>(
     color: customColors.secondaryBackGround,
     icon: CircleAvatar(
@@ -111,26 +112,22 @@ Widget buildAppbarVedieCallMenu(
         )),
     onSelected: (value) async {
       if (value == 'Report') {
-        // await showBottomSheetWidget(
-        //     context,
-        //     ReportPatientBottomSheet(
-        //       patientID: patientID,
-        //       patientName: patientName,
-        //       medicalDescriptionId: medicalDescriptionId,
-        //     ));
-      } else if (value == 'profile') {
-        // navigationService.navigateTo(userProfilePage, arguments: patientID);
+        //TODO
+      }
+      if (value == 'agree') {
+        await showBottomSheetWidget(
+            context, agreeToEndCallBottomSheet(context, appointmentId));
       }
     },
     itemBuilder: (BuildContext context) {
       return [
         PopupMenuItem<String>(
-          value: 'profile',
-          child: patientOptionText('View user profile'),
+          value: 'agree',
+          child: patientOptionText('agree to end call'),
         ),
         PopupMenuItem<String>(
           value: 'Report',
-          child: patientOptionText('Report this medical record'),
+          child: patientOptionText('Report this video call'),
         ),
       ];
     },

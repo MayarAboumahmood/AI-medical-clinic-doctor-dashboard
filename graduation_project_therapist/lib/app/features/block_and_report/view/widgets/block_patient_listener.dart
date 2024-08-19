@@ -24,6 +24,11 @@ Widget blockPatientListener(
               'Your report has been successfully submitted to the admin.',
               context,
               isFloating: true);
+        } else if (state is ReportMedicalDescriptionSuccessState) {
+          customSnackBar(
+              'Your report has been successfully submitted to the admin.',
+              context,
+              isFloating: true);
         }
       },
       child: child);

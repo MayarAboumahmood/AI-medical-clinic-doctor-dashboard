@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/patient_card_option__munie.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/app_bar_pushing_screens.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -80,9 +83,8 @@ class VideoCallPageState extends State<VideoCallPage> {
     _engine.muteLocalVideoStream(viewPanel);
   }
 
-  void _onCallEnd(BuildContext context) {
-    _engine.leaveChannel();
-    Navigator.pop(context);
+  void _onCallEnd(BuildContext context) async {
+    await showBottomSheetWidget(context, endVideoCallBottomSheet(context));
   }
 
   @override
@@ -255,27 +257,36 @@ class VideoCallPageState extends State<VideoCallPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: customColors.primaryBackGround,
-      appBar: appBarPushingScreens(
-        'Video Call',
-        isFromScaffold: true,
-        optionMenu: buildAppbarVedieCallMenu(
-          context,
+    return BlocListener<VideoCallBloc, VideoCallState>(
+      listener: (context, state) {
+        if (state is SessionCompletedFromOneSideDoneState) {
+          customSnackBar('Your request was received successfully.', context,
+              isFloating: true);
+        } else if (state is VideoCallErrorState) {
+          customSnackBar(state.error, context, isFloating: true);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: customColors.primaryBackGround,
+        appBar: appBarPushingScreens(
+          'Video Call',
+          isFromScaffold: true,
+          optionMenu: buildAppbarVedieCallMenu(
+              context, videoCallBloc.cachedAppointmentId),
         ),
-      ),
-      body: Center(
-        child: Stack(
-          children: [
-            _isInitialized
-                ? _viewRows()
-                : Center(
-                    child: CircularProgressIndicator(
-                    color: customColors.primary,
-                  )),
-            _toolbar(),
-          ],
-        ), // Show a loading indicator until initialized
+        body: Center(
+          child: Stack(
+            children: [
+              _isInitialized
+                  ? _viewRows()
+                  : Center(
+                      child: CircularProgressIndicator(
+                      color: customColors.primary,
+                    )),
+              _toolbar(),
+            ],
+          ), // Show a loading indicator until initialized
+        ),
       ),
     );
   }
@@ -350,6 +361,97 @@ class VideoCallPageState extends State<VideoCallPage> {
       child: Icon(
         muted ? Icons.mic_off : Icons.mic,
         color: Colors.white,
+      ),
+    );
+  }
+
+  Widget endVideoCallBottomSheet(BuildContext context) {
+    return BlocBuilder<VideoCallBloc, VideoCallState>(
+      builder: (context, state) {
+        if (state is SessionIsCompletedState) {
+          return endVideoCallBottomSheetBody(context, state.status);
+        } else if (state is VideoCallErrorState) {
+          return Center(
+              child: Column(
+            children: [
+              Text(
+                'Error, Try agin'.tr(),
+                style: customTextStyle.bodyMedium,
+              ),
+              GeneralButtonOptions(
+                  text: 'Try agin',
+                  onPressed: () {
+                    videoCallBloc
+                        .add(CheckIfSessionCompletedEvent(appointmentId: 1));
+                  },
+                  options: ButtonOptions(
+                      color: customColors.primary,
+                      textStyle: customTextStyle.bodyMedium))
+            ],
+          ));
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  Container endVideoCallBottomSheetBody(BuildContext context, bool status) {
+    return Container(
+        padding: const EdgeInsets.all(20),
+        height: responsiveUtil.screenHeight * .3,
+        decoration: BoxDecoration(
+          color: customColors.primaryBackGround,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                'Are you sure you want to end this video call session? The session will only be fully ended if both users agree. If you end the session without mutual agreement, the other user may choose to report this action?'
+                    .tr(),
+                style: customTextStyle.bodyMedium),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                yesButton(),
+                noButton(context),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  ElevatedButton noButton(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(customColors.error),
+      ),
+      onPressed: () {
+        Navigator.pop(context); // Close the bottom sheet
+      },
+      child: Text(
+        'No'.tr(),
+        style: customTextStyle.bodyMedium,
+      ),
+    );
+  }
+
+  ElevatedButton yesButton() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(customColors.primary),
+      ),
+      onPressed: () {
+        _engine.leaveChannel();
+        navigationService.goBack();
+      },
+      child: Text(
+        'Yes'.tr(),
+        style: customTextStyle.bodyMedium,
       ),
     );
   }

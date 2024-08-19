@@ -56,4 +56,19 @@ class MedicalDescriptionModel {
       'treatmentPlan': treatmentPlan,
     };
   }
+
+  Map<String, dynamic> toMapWithoutID() {
+    return {
+      'mainComplaint': mainComplaint,
+      'symptoms': symptoms,
+      'causes': causes,
+      'startDate': startDate,
+      'fType': fType,
+      'fDescription': fDescription,
+      'pType': pType,
+      'pDescription': pDescription,
+      'differentialDiagnosis': differentialDiagnosis,
+      'treatmentPlan': treatmentPlan,
+    };
+  }
 }

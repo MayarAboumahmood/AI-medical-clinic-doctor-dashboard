@@ -32,4 +32,48 @@ class ChatRepositoryImp {
       return left('Server Error');
     }
   }
+
+  Future<Either<String, String>> sendCompleteSession(int appointmentId) async {
+    try {
+      final response = await _chatDataSource.sendCompleteSession(appointmentId);
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return right('done');
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get all therapist repo: $e');
+      return left('Server Error');
+    }
+  }
+
+  Future<Either<String, bool>> checkIfSessionComplete(int appointmentId) async {
+    try {
+      final response =
+          await _chatDataSource.checkIfSessionComplete(appointmentId);
+      final decodedResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        decodedResponse['status'];
+        return right(decodedResponse['status']);
+      } else if (response.statusCode == 500) {
+        if (decodedResponse['error'] == 'jwt expired') {
+          return left('jwt expired');
+        }
+        return left('Server error');
+      } else {
+        return left(decodedResponse['error']);
+      }
+    } catch (e) {
+      debugPrint('error in get all therapist repo: $e');
+      return left('Server Error');
+    }
+  }
 }

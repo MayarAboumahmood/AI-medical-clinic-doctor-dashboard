@@ -41,10 +41,13 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     getData.fold((error) {
       emit(AllTherapistErrorState(errorMessage: error));
     }, (data) {
+      print('sssssssssssssssssssssss $therapistId');
       for (var therapist in getAllTherapistModels!) {
         if (therapist.specialistProfile.id == therapistId) {
           therapist.employmentRequests = true;
-          break; // Assuming you want to stop after finding the first match
+          print('sssssssssssssssssssssss ${therapist.specialistProfile.id}');
+          print('sssssssssssssssssssssss ${therapist.employmentRequests}');
+          break;
         }
       }
       emit(AssignTherapistSuccessfullyState());

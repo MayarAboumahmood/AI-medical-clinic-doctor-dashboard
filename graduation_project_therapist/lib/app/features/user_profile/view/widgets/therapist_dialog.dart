@@ -12,7 +12,7 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 void showTherapistsDialog(BuildContext context, int patientID) {
   GetAllTherapistCubit getAllTherapistCubit =
       context.read<GetAllTherapistCubit>();
-  getAllTherapistCubit.getMyTherapist(patientID);
+  getAllTherapistCubit.getMyTherapist(patientID,fromRefreshIndicator: true);
   showDialog(
     context: context,
     builder: (BuildContext context) {

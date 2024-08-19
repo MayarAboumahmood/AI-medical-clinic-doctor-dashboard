@@ -133,12 +133,12 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
           customSnackBar(state.errorMessage, context);
           medicalDescriptionCubit.getAllMedicalDescription(
               medicalDescriptionCubit.cahcedPatientID);
-          navigationService.goBack();
+          goBack(context);
         } else if (state is CreateMedicalDescriptionSuccessState) {
           customSnackBar('the Description created successfully', context);
           medicalDescriptionCubit.getAllMedicalDescription(
               medicalDescriptionCubit.cahcedPatientID);
-          navigationService.goBack();
+          goBack(context);
         } else if (state is EditMedicalDescriptionSuccessState) {
           customSnackBar('the Description edited successfully', context);
           medicalDescriptionCubit.getAllMedicalDescription(
@@ -223,6 +223,18 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
     );
   }
 
+  void goBack(BuildContext context) {
+    if (Navigator.canPop(context)) {
+      navigationService.goBack();
+    } else {
+      Future.delayed(const Duration(seconds: 1), () {
+        if (Navigator.canPop(context)) {
+          navigationService.goBack();
+        }
+      });
+    }
+  }
+
   BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState> submitButton() {
     String text =
         isforUpdateOrEditAvailable ? 'create new description' : 'Submit';
@@ -236,7 +248,7 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
             },
             loading: isLoading,
             options: ButtonOptions(
-                width: text.length > 10 ? text.length * 15 : text.length * 10,
+                width: text.length < 10 ? text.length * 15 : text.length * 10,
                 color: customColors.primary,
                 textStyle: customTextStyle.bodyMedium));
       },

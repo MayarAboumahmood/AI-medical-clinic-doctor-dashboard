@@ -19,3 +19,15 @@ class GetChatInformation extends VideoCallEvent {
   @override
   List<Object?> get props => [];
 }
+class SendCompleteSessionEvent extends VideoCallEvent {
+  final int appointmentId;
+  SendCompleteSessionEvent({required this.appointmentId});
+  @override
+  List<Object?> get props => [];
+}
+class CheckIfSessionCompletedEvent extends VideoCallEvent {
+  final int appointmentId;
+  CheckIfSessionCompletedEvent({required this.appointmentId});
+  @override
+  List<Object?> get props => [];
+}

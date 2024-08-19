@@ -6,6 +6,7 @@ import 'package:graduation_project_therapist_dashboard/app/features/block_and_re
 import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/view/widgets/select_time_date_bottomsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/cubit/patient_reservations_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/patient_reservations/data_source/models/patient_reservation_model.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/buttons/button_with_options.dart';
@@ -80,6 +81,7 @@ GeneralButtonOptions enterSessionButton(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
           ? () {
+              context.read<VideoCallBloc>().cachedAppointmentId = patientReservationModel.id;
               navigationService.navigateTo(videoCallInitPage,
                   arguments: patientReservationModel.patientID);
             }

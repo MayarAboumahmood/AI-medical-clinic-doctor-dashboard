@@ -27,8 +27,7 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
   @override
   void initState() {
     super.initState();
-    getAllTherapistCubit =
-        context.read<GetAllTherapistCubit>();
+    getAllTherapistCubit = context.read<GetAllTherapistCubit>();
     getAllTherapistCubit.getAllTherapist();
   }
 
@@ -116,20 +115,17 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
             () async {
               getAllTherapistCubit.getAllTherapist(fromRefreshIndicator: true);
             },
-            SizedBox(
-              height: responsiveUtil.screenHeight * .7,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  ...List.generate(
-                      getTherapistModels.length,
-                      (index) => allTherapistCard(
-                          context, getTherapistModels[index], true)),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ]),
-              ),
+            SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(children: [
+                ...List.generate(
+                    getTherapistModels.length,
+                    (index) => allTherapistCard(
+                        context, getTherapistModels[index], true)),
+                const SizedBox(
+                  height: 50,
+                ),
+              ]),
             ),
           );
   }

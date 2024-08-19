@@ -26,3 +26,25 @@ final class GotVideoInfoState extends VideoCallState {
   @override
   List<Object?> get props => [];
 }
+
+final class SessionCompletedFromOneSideDoneState extends VideoCallState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class SessionIsCompletedState extends VideoCallState {
+  final bool status;
+  SessionIsCompletedState({required this.status});
+  @override
+  List<Object?> get props => [status];
+}
+
+final class SessionCompletedLoadingState extends VideoCallState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class CheckIfSessionCompletedLoadingtState extends VideoCallState {
+  @override
+  List<Object?> get props => [];
+}

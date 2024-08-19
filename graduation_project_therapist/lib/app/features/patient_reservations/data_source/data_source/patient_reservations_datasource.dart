@@ -35,9 +35,9 @@ class PatientReservationsDataSource {
       body: {"description": description},
       headers: headers,
     );
-    debugPrint('geting all PatientReservations datasource: ${response.body}');
+    debugPrint('cancel Patient Reservations datasource: ${response.body}');
     debugPrint(
-        'geting all PatientReservations datasource: ${response.statusCode}');
+        'cancel Patient Reservations datasource: ${response.statusCode}');
     return response;
   }
 }

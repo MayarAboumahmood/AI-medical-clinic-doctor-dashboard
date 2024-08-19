@@ -65,9 +65,9 @@ class MedicalDescriptionSource {
     String token = sharedPreferences!.getString('token') ?? '';
     var url = Uri.parse(ServerConfig.url +
         ServerConfig.editMedicalRecordsUri +
-        medicalDescriptionModel.toString());
+        medicalDescriptionId.toString());
     var headers = {'Authorization': token};
-    var body = medicalDescriptionModel.toMap();
+    var body = medicalDescriptionModel.toMapWithoutID();
     var response = await http.put(
       url,
       body: body,

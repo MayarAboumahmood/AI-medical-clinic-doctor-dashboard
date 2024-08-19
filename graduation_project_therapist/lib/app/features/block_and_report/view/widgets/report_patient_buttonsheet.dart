@@ -6,6 +6,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_functio
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
 class ReportPatientBottomSheet extends StatefulWidget {
   final int patientID;
   final String patientName;
@@ -48,7 +50,7 @@ class _ReportPatientBottomSheetState extends State<ReportPatientBottomSheet> {
                     .tr(),
                 style: customTextStyle.bodyMedium),
             const SizedBox(height: 20),
-            descriptionTextField(context),
+            Form(key: formKey, child: descriptionTextField(context)),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,15 +64,20 @@ class _ReportPatientBottomSheetState extends State<ReportPatientBottomSheet> {
                             WidgetStateProperty.all(customColors.primary),
                       ),
                       onPressed: () {
-                        widget.medicalDescriptionId != null
-                            ? blockBlock.add(ReportMedicalDescriptionEvent(
-                                medicalDescriptionId:
-                                    widget.medicalDescriptionId!,
-                                description: description))
-                            : blockBlock.add(ReportPatientEvent(
-                                patientId: widget.patientID,
-                                description: description));
-                        navigationService.goBack();
+                        FormState? formdata = formKey.currentState;
+
+                        if (formdata != null && formdata.validate()) {
+                          formdata.save();
+                          widget.medicalDescriptionId != null
+                              ? blockBlock.add(ReportMedicalDescriptionEvent(
+                                  medicalDescriptionId:
+                                      widget.medicalDescriptionId!,
+                                  description: description))
+                              : blockBlock.add(ReportPatientEvent(
+                                  patientId: widget.patientID,
+                                  description: description));
+                          navigationService.goBack();
+                        }
                       },
                       child: isLoading
                           ? const Center(
@@ -108,7 +115,7 @@ class _ReportPatientBottomSheetState extends State<ReportPatientBottomSheet> {
     return customTextField(
         textInputType: TextInputType.emailAddress,
         validator: (value) {
-          return ValidationFunctions.isValidEmail(value!);
+          return ValidationFunctions.informationValidation(value!);
         },
         context: context,
         onChanged: (value) {

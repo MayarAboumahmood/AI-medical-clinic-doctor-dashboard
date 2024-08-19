@@ -208,8 +208,6 @@ class InitializerWidget extends StatelessWidget {
           return const BottomNavigationWidget();
         }
       }
-      // return const DesignHidderRegisterPage();
-
       return WelcomeScreen();
     });
   }

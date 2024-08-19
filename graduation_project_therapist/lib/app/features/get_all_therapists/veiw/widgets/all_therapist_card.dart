@@ -37,15 +37,16 @@ Widget allTherapistCard(BuildContext context,
               BlocBuilder<GetAllTherapistCubit, GetAllTherapistState>(
                 builder: (context, state) {
                   int therapistId = getAllTherapistCubit.therapistId ?? -10;
-
+                  bool shouldShowAssignButton =
+                      getTherapistModel.employmentRequests;
                   bool isLoading = isGetAllTherapist
                       ? (state is AssignTherapistLoadingState) &&
                           (therapistId == getTherapistModel.id)
                       : (state is RemoveTherapistLoadingState) &&
                           (therapistId == getTherapistModel.id);
 
-                  return getTherapistModel.employmentRequests
-                      ? const SizedBox()
+                  return shouldShowAssignButton
+                      ? Text('Padding'.tr(), style: customTextStyle.bodyMedium)
                       : GeneralButtonOptions(
                           text:
                               isGetAllTherapist ? "Assign".tr() : 'Remove'.tr(),
