@@ -52,7 +52,7 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (_, result) {
+      onPopInvoked: (_) {
         medicalDescriptionCubit.getAllMedicalDescription(patientID);
       },
       child: Scaffold(

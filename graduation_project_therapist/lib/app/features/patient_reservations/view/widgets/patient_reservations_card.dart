@@ -73,15 +73,17 @@ GeneralButtonOptions enterSessionButton(
   String formattedDateTime =
       DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
 
-  bool canEnterTheSession = patientReservationsCubit
-      .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
+  bool canEnterTheSession = true;
+  //TODO: fix this.
+  // patientReservationsCubit
+  //     .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
 
-  print('now time: fffffffffffffff ${DateTime.parse(formattedDateTime)}');
   return GeneralButtonOptions(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
           ? () {
-              context.read<VideoCallBloc>().cachedAppointmentId = patientReservationModel.id;
+              context.read<VideoCallBloc>().cachedAppointmentId =
+                  patientReservationModel.id;
               navigationService.navigateTo(videoCallInitPage,
                   arguments: patientReservationModel.patientID);
             }

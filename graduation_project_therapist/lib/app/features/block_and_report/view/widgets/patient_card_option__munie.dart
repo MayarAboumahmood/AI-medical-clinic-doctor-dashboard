@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/confirm_block_buttonsheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/report_patient_buttonsheet.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/view/widgets/report_video_call_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/video_call/view/widget/agree_to_end_bottom_sheet.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/check_if_rtl.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/show_bottom_sheet.dart';
@@ -112,9 +113,9 @@ Widget buildAppbarVedieCallMenu(BuildContext context, int appointmentId) {
         )),
     onSelected: (value) async {
       if (value == 'Report') {
-        //TODO
-      }
-      if (value == 'agree') {
+        await showBottomSheetWidget(
+            context, videoCallReportBottomSheet(context, appointmentId));
+      } else if (value == 'agree') {
         await showBottomSheetWidget(
             context, agreeToEndCallBottomSheet(context, appointmentId));
       }

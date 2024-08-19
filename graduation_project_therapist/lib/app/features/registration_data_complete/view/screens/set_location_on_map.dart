@@ -92,7 +92,7 @@ class MapPageState extends State<SelectLocationMapPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (pop, s) {
+      onPopInvoked: (pop) {
         print('user current location poped');
         registrationDataCompleteCubit.emitInitState();
       },
@@ -147,8 +147,8 @@ class MapPageState extends State<SelectLocationMapPage> {
           ],
         ),
       ),
-      appBar:
-          appBarPushingScreens('Select your Clinic location', isFromScaffold: true),
+      appBar: appBarPushingScreens('Select your Clinic location',
+          isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: FlutterMap(
         mapController: _mapController,
@@ -204,8 +204,8 @@ class MapPageState extends State<SelectLocationMapPage> {
 
   Scaffold circularProgressScafold() {
     return Scaffold(
-      appBar:
-          appBarPushingScreens('Select your Clinic location', isFromScaffold: true),
+      appBar: appBarPushingScreens('Select your Clinic location',
+          isFromScaffold: true),
       backgroundColor: customColors.primaryBackGround,
       body: Center(
           child: CircularProgressIndicator(

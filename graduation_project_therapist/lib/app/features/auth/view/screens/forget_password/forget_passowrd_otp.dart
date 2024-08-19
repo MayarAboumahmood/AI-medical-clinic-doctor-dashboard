@@ -19,7 +19,7 @@ class ForgetPasswordOTP extends StatelessWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvoked: (didPop) {
         if (didPop) {
           signInCubit.resetSignInCubit();
 

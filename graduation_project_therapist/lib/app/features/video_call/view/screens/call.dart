@@ -84,6 +84,8 @@ class VideoCallPageState extends State<VideoCallPage> {
   }
 
   void _onCallEnd(BuildContext context) async {
+    videoCallBloc.add(CheckIfSessionCompletedEvent(
+        appointmentId: videoCallBloc.cachedAppointmentId));
     await showBottomSheetWidget(context, endVideoCallBottomSheet(context));
   }
 
@@ -371,28 +373,34 @@ class VideoCallPageState extends State<VideoCallPage> {
         if (state is SessionIsCompletedState) {
           return endVideoCallBottomSheetBody(context, state.status);
         } else if (state is VideoCallErrorState) {
-          return Center(
-              child: Column(
-            children: [
-              Text(
-                'Error, Try agin'.tr(),
-                style: customTextStyle.bodyMedium,
-              ),
-              GeneralButtonOptions(
-                  text: 'Try agin',
-                  onPressed: () {
-                    videoCallBloc
-                        .add(CheckIfSessionCompletedEvent(appointmentId: 1));
-                  },
-                  options: ButtonOptions(
-                      color: customColors.primary,
-                      textStyle: customTextStyle.bodyMedium))
-            ],
-          ));
+          return tryAgain();
         }
-        return const SizedBox();
+        return Center(
+            child: CircularProgressIndicator(
+          color: customColors.primary,
+        ));
       },
     );
+  }
+
+  Center tryAgain() {
+    return Center(
+        child: Column(
+      children: [
+        Text(
+          'Error, Try agin'.tr(),
+          style: customTextStyle.bodyMedium,
+        ),
+        GeneralButtonOptions(
+            text: 'Try agin',
+            onPressed: () {
+              videoCallBloc.add(CheckIfSessionCompletedEvent(appointmentId: 1));
+            },
+            options: ButtonOptions(
+                color: customColors.primary,
+                textStyle: customTextStyle.bodyMedium))
+      ],
+    ));
   }
 
   Container endVideoCallBottomSheetBody(BuildContext context, bool status) {
@@ -413,6 +421,20 @@ class VideoCallPageState extends State<VideoCallPage> {
                 'Are you sure you want to end this video call session? The session will only be fully ended if both users agree. If you end the session without mutual agreement, the other user may choose to report this action?'
                     .tr(),
                 style: customTextStyle.bodyMedium),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  '${'dose the status complete:'.tr()} ',
+                  style: customTextStyle.bodyMedium,
+                ),
+                Text(
+                  status.toString(),
+                  style: customTextStyle.bodyMedium.copyWith(
+                      color: status ? Colors.green : customColors.error),
+                ),
+              ],
+            ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -447,6 +469,8 @@ class VideoCallPageState extends State<VideoCallPage> {
       ),
       onPressed: () {
         _engine.leaveChannel();
+        navigationService.goBack();
+        navigationService.goBack();
         navigationService.goBack();
       },
       child: Text(

@@ -16,8 +16,8 @@ class ReportPatientBottomSheet extends StatefulWidget {
     required this.patientID,
     required this.patientName,
     this.medicalDescriptionId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ReportPatientBottomSheetState createState() =>

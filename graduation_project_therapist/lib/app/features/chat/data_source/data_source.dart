@@ -17,9 +17,8 @@ class ChatDataSource {
       url,
       headers: headers,
     );
-    debugPrint('chat info Description tttttttttttttttttttt: ${token}');
-    debugPrint('chat info Description datasource: ${response.body}');
-    debugPrint('chat info Description datasource: ${response.statusCode}');
+    print('chat info Description datasource: ${response.body}');
+    print('chat info Description datasource: ${response.statusCode}');
     return response;
   }
 
