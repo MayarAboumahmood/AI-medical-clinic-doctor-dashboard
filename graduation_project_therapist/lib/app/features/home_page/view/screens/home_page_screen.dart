@@ -38,8 +38,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
         body: BlocBuilder<HomePageBloc, HomePageState>(
           builder: (context, state) {
             return SizedBox(
-              height: responsiveUtil.screenHeight * .3,
-              width: responsiveUtil.screenWidth * .3,
+              height: 200,
+              width: 200,
               child: Center(
                   child: Text(
                 userStatus.name.tr(),

@@ -22,7 +22,7 @@ Widget iconPagesButton({
       child: Container(
         color: Colors.transparent, // Set the color to transparent
 
-        height: 60, width: responsiveUtil.screenWidth * .1,
+        height: 60, width: MediaQuery.of(context).size.width * .1,
         child: Icon(icon,
             color: index == currentPage
                 ? customColors.primary

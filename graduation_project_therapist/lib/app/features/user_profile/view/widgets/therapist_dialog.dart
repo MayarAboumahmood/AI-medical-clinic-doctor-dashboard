@@ -12,7 +12,7 @@ import 'package:graduation_project_therapist_dashboard/main.dart';
 void showTherapistsDialog(BuildContext context, int patientID) {
   GetAllTherapistCubit getAllTherapistCubit =
       context.read<GetAllTherapistCubit>();
-  getAllTherapistCubit.getMyTherapist(patientID,fromRefreshIndicator: true);
+  getAllTherapistCubit.getMyTherapist(patientID, fromRefreshIndicator: true);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -32,7 +32,7 @@ void showTherapistsDialog(BuildContext context, int patientID) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Choose one of your therapist:'.tr(),
+                    'Choose one of your therapists:'.tr(),
                     maxLines: 2,
                     style: customTextStyle.bodyMedium,
                   ),
@@ -55,7 +55,7 @@ void showTherapistsDialog(BuildContext context, int patientID) {
                       builder: (context, state) {
                         print('state state state state state :$state');
                         if (state is MyTherapistLoadingState) {
-                          return Expanded(child: smallSizeCardShimmer());
+                          return smallSizeCardShimmer();
                         } else if (state is MyTherapistLoadedState) {
                           return (getAllTherapistCubit
                                       .getMyTherapistModels?.isEmpty ??
@@ -80,7 +80,7 @@ void showTherapistsDialog(BuildContext context, int patientID) {
                                   ),
                                 );
                         }
-                        return Expanded(child: smallSizeCardShimmer());
+                        return smallSizeCardShimmer();
                       },
                     ),
                   )

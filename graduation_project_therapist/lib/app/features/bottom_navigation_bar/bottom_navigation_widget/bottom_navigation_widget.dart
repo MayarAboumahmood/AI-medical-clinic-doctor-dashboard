@@ -187,10 +187,6 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       ),
     );
   }
-
-  SizedBox sizedBoxBetweenBottomnavBar() => SizedBox(
-        width: responsiveUtil.screenWidth * .11,
-      );
 }
 
 void _checkAndRequestBatteryOptimization(BuildContext context) async {
