@@ -60,4 +60,5 @@ class ServerConfig {
   static const String getBotScoreUri = 'botScore';
   static const String videoCallCompleteUri = 'appointment/complete';
   static const String checkIfSessionCompleteUri = 'appointment/check/';
+  static const String reportVideoCallUri = 'reports/appointment';
 }

@@ -48,3 +48,21 @@ final class CheckIfSessionCompletedLoadingtState extends VideoCallState {
   @override
   List<Object?> get props => [];
 }
+
+final class ReportingVideoCallLoadingtState extends VideoCallState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class VideoCallReportingErrorState extends VideoCallState {
+  final String errorMessage;
+  VideoCallReportingErrorState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+final class ReportingVideoCallCompletedState extends VideoCallState {
+  ReportingVideoCallCompletedState();
+  @override
+  List<Object?> get props => [];
+}

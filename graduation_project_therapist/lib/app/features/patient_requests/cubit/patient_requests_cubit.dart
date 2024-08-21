@@ -34,10 +34,12 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     getData.fold(
         (errorMessage) =>
             emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      for (var item in cachedUserRequests ?? []) {
-        if (item.id == requestID) {
-          item.status = true;
-          break;
+      if (cachedUserRequests != null) {
+        for (var item in cachedUserRequests!) {
+          if (item.id == requestID) {
+            item.status = true;
+            break;
+          }
         }
       }
       emit(PatientRequestApprovedSuccessfullyState());
@@ -51,7 +53,9 @@ class PatientRequestsCubit extends Cubit<PatientRequestsState> {
     getData.fold(
         (errorMessage) =>
             emit(PatientRequestErrorState(errorMessage: errorMessage)), (data) {
-      cachedUserRequests ?? [].removeWhere((item) => item.id == requestID);
+      if (cachedUserRequests != null) {
+        cachedUserRequests!.removeWhere((item) => item.id == requestID);
+      }
       emit(PatientRequestRejectedSuccessfullyState(dateTime: DateTime.now()));
     });
   }

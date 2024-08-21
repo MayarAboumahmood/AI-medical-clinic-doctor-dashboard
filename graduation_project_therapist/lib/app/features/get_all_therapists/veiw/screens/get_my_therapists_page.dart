@@ -108,20 +108,17 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
                         ),
                       ),
                     )
-                  : SizedBox(
-                      height: responsiveUtil.screenHeight * .7,
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(children: [
-                          ...List.generate(
-                              getTherapistModels.length,
-                              (index) => allTherapistCard(
-                                  context, getTherapistModels[index], false)),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                        ]),
-                      ),
+                  : SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(children: [
+                        ...List.generate(
+                            getTherapistModels.length,
+                            (index) => allTherapistCard(
+                                context, getTherapistModels[index], false)),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                      ]),
                     ),
             ),
           ),

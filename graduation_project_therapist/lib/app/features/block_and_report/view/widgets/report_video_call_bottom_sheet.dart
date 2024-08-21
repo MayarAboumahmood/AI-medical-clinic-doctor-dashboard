@@ -1,53 +1,73 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/video_call/bloc/video_call_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/shared/shared_functions/validation_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/text_related_widget/text_fields/text_field.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
+final _formKey = GlobalKey<FormState>();
+
 Widget videoCallReportBottomSheet(BuildContext context, int appointmentId) {
+  VideoCallBloc videoCallBloc = context.read<VideoCallBloc>();
   return BlocListener<VideoCallBloc, VideoCallState>(
     listener: (context, state) {
+      print('the state in the report bottom sheet: $state');
       if (state is SessionCompletedFromOneSideDoneState ||
-          state is VideoCallErrorState) {
+          state is VideoCallErrorState ||
+          state is VideoCallReportingErrorState) {
         navigationService.goBack();
+      } else if (state is ReportingVideoCallCompletedState) {
+        navigationService.goBack();
+        videoCallBloc.videoCallReportDescriptionController.clear();
       }
     },
-    child: Container(
-      padding: const EdgeInsets.all(20),
-      height: responsiveUtil.screenHeight * .6,
-      decoration: BoxDecoration(
-        color: customColors.primaryBackGround,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+    child: Form(
+      key: _formKey,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        height: responsiveUtil.screenHeight * .6,
+        decoration: BoxDecoration(
+          color: customColors.primaryBackGround,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            descriptionForUser(),
-            customTextField(
-                context: context,
-                controller: context.read<VideoCallBloc>().descriptionController,
-                label: 'What did the patient do wrong?'),
-            const SizedBox(height: 20),
-            reportButtons(context),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              descriptionForUser(),
+              customTextField(
+                  validator: (value) {
+                    return ValidationFunctions.informationValidation(value);
+                  },
+                  context: context,
+                  controller: context
+                      .read<VideoCallBloc>()
+                      .videoCallReportDescriptionController,
+                  label: 'What did the patient do wrong?'),
+              const SizedBox(height: 20),
+              reportButtons(context, appointmentId),
+            ],
+          ),
         ),
       ),
     ),
   );
 }
 
-Row reportButtons(BuildContext context) {
+Row reportButtons(BuildContext context, int appointmentId) {
+  VideoCallBloc videoCallBloc = context.read<VideoCallBloc>();
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       BlocBuilder<VideoCallBloc, VideoCallState>(
         builder: (context, state) {
-          bool isLoading = state is SessionCompletedLoadingState;
+          bool isLoading = state is ReportingVideoCallLoadingtState;
           return isLoading
               ? Center(
                   child: CircularProgressIndicator(
@@ -58,9 +78,17 @@ Row reportButtons(BuildContext context) {
                     backgroundColor:
                         WidgetStateProperty.all(customColors.primary),
                   ),
-                  onPressed: () {
-                    if (!isLoading) {
-                      //TODO
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      Uint8List? pic =
+                          await videoCallBloc.takeScreenshotAndReturnImage(
+                              videoCallBloc.screenshotController);
+                      if (pic != null) {
+                        if (!isLoading) {
+                          videoCallBloc.add(ReportVideoCallEvent(
+                              appointmentId: appointmentId, pic: pic));
+                        }
+                      }
                     }
                   },
                   child: isLoading

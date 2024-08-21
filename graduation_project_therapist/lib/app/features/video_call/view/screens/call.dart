@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -12,6 +11,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
 
 const appId = '94292e56f62b4ac59f1b5396df053647';
 
@@ -34,7 +34,6 @@ class VideoCallPageState extends State<VideoCallPage> {
   bool _isInitialized = false;
   late RtcEngine _engine;
   late VideoCallBloc videoCallBloc;
-  Timer? _callTimer;
   String timeMessage = '';
   @override
   void initState() {
@@ -42,27 +41,6 @@ class VideoCallPageState extends State<VideoCallPage> {
     videoCallBloc = context.read<VideoCallBloc>();
     _handlePermission();
     initialize();
-
-    _startCallTimer();
-  }
-
-  void _startCallTimer() {
-    _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final secondsLeft = 50 - timer.tick;
-      if (secondsLeft <= 10) {
-        if (mounted) {
-          setState(() {
-            timeMessage = 'Time left on call: $secondsLeft seconds';
-          });
-        }
-      }
-      if (secondsLeft <= 0) {
-        timer.cancel();
-        if (mounted) {
-          _onCallEnd(context); // End the call after 50 seconds
-        }
-      }
-    });
   }
 
   void _onToggleMute() {
@@ -94,7 +72,6 @@ class VideoCallPageState extends State<VideoCallPage> {
     _users.clear();
     _engine.leaveChannel();
     _engine.release();
-    _callTimer!.cancel();
     super.dispose();
   }
 
@@ -266,28 +243,33 @@ class VideoCallPageState extends State<VideoCallPage> {
               isFloating: true);
         } else if (state is VideoCallErrorState) {
           customSnackBar(state.error, context, isFloating: true);
+        } else if (state is VideoCallReportingErrorState) {
+          customSnackBar(state.errorMessage, context, isFloating: true);
         }
       },
-      child: Scaffold(
-        backgroundColor: customColors.primaryBackGround,
-        appBar: appBarPushingScreens(
-          'Video Call',
-          isFromScaffold: true,
-          optionMenu: buildAppbarVedieCallMenu(
-              context, videoCallBloc.cachedAppointmentId),
-        ),
-        body: Center(
-          child: Stack(
-            children: [
-              _isInitialized
-                  ? _viewRows()
-                  : Center(
-                      child: CircularProgressIndicator(
-                      color: customColors.primary,
-                    )),
-              _toolbar(),
-            ],
-          ), // Show a loading indicator until initialized
+      child: Screenshot(
+        controller: videoCallBloc.screenshotController,
+        child: Scaffold(
+          backgroundColor: customColors.primaryBackGround,
+          appBar: appBarPushingScreens(
+            'Video Call',
+            isFromScaffold: true,
+            optionMenu: buildAppbarVedieCallMenu(
+                context, videoCallBloc.cachedAppointmentId),
+          ),
+          body: Center(
+            child: Stack(
+              children: [
+                _isInitialized
+                    ? _viewRows()
+                    : Center(
+                        child: CircularProgressIndicator(
+                        color: customColors.primary,
+                      )),
+                _toolbar(),
+              ],
+            ), // Show a loading indicator until initialized
+          ),
         ),
       ),
     );
@@ -425,11 +407,11 @@ class VideoCallPageState extends State<VideoCallPage> {
             Row(
               children: [
                 Text(
-                  '${'dose the status complete:'.tr()} ',
+                  '${'Second party:'.tr()} ',
                   style: customTextStyle.bodyMedium,
                 ),
                 Text(
-                  status.toString(),
+                  status ? "Agreed".tr() : "Do Not Agree".tr(),
                   style: customTextStyle.bodyMedium.copyWith(
                       color: status ? Colors.green : customColors.error),
                 ),

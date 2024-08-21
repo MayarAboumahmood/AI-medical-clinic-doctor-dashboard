@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/server/server_config.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -50,6 +52,29 @@ class ChatDataSource {
         'video Call check If Session Complete datasource: ${response.body}');
     debugPrint(
         'video Call check If Session Complete Complete datasource: ${response.statusCode}');
+    return response;
+  }
+
+  Future<Response> reportVideoCall(
+      int appointmentId, String description, Uint8List pic) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url = Uri.parse(ServerConfig.url + ServerConfig.reportVideoCallUri);
+    var headers = {'Authorization': token};
+
+    var request = http.MultipartRequest('POST', url)
+      ..headers.addAll(headers)
+      ..fields['description'] = description
+      ..fields['appointmentId'] = appointmentId.toString()
+      ..files.add(http.MultipartFile.fromBytes(
+        'pic',
+        pic,
+        filename: 'image.jpg',
+      ));
+
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    debugPrint('report Video Call datasource: ${response.body}');
+    debugPrint('report Video Call datasource: ${response.statusCode}');
     return response;
   }
 }

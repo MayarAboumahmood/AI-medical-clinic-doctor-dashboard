@@ -73,10 +73,8 @@ GeneralButtonOptions enterSessionButton(
   String formattedDateTime =
       DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
 
-  bool canEnterTheSession = true;
-  //TODO: fix this.
-  // patientReservationsCubit
-  //     .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
+  bool canEnterTheSession = patientReservationsCubit
+      .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
 
   return GeneralButtonOptions(
       text: "Enter session".tr(),
