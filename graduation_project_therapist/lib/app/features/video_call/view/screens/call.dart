@@ -376,7 +376,8 @@ class VideoCallPageState extends State<VideoCallPage> {
         GeneralButtonOptions(
             text: 'Try agin',
             onPressed: () {
-              videoCallBloc.add(CheckIfSessionCompletedEvent(appointmentId: 1));
+              videoCallBloc.add(CheckIfSessionCompletedEvent(
+                  appointmentId: videoCallBloc.cachedAppointmentId));
             },
             options: ButtonOptions(
                 color: customColors.primary,
