@@ -73,8 +73,9 @@ GeneralButtonOptions enterSessionButton(
   String formattedDateTime =
       DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
 
-  bool canEnterTheSession = patientReservationsCubit
-      .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
+  bool canEnterTheSession = true;
+  //  patientReservationsCubit
+  //     .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
 
   return GeneralButtonOptions(
       text: "Enter session".tr(),
@@ -82,8 +83,13 @@ GeneralButtonOptions enterSessionButton(
           ? () {
               context.read<VideoCallBloc>().cachedAppointmentId =
                   patientReservationModel.id;
-              navigationService.navigateTo(videoCallInitPage,
-                  arguments: patientReservationModel.patientID);
+              navigationService.navigateTo(
+                videoCallInitPage,
+                arguments: {
+                  'patientID': patientReservationModel.patientID,
+                  'appointmentTime': patientReservationModel.date,
+                },
+              );
             }
           : () {
               customSnackBar('This session is not available yet', context,

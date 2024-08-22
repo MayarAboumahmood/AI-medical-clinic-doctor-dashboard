@@ -39,6 +39,8 @@ class VideoCallPageState extends State<VideoCallPage> {
   void initState() {
     super.initState();
     videoCallBloc = context.read<VideoCallBloc>();
+    videoCallBloc.startAppointmentTimer(
+        videoCallBloc.cachedAppointmentStartTime ?? 'No Time', context);
     _handlePermission();
     initialize();
   }

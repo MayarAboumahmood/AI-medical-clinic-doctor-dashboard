@@ -28,9 +28,11 @@ void backgroundNotificationListener(Map<String, dynamic> data) {
 
   // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
   String notificationText = data['body'] ?? 'Hello World!';
+  String notificationType = data['type'] ?? 'no type';
 
   print('sssssssssssssssssssssssss pushy:$notificationTitle');
   print('sssssssssssssssssssssssss pushy:$notificationText');
+  print('sssssssssssssssssssssssss pushy:$notificationType');
   // Android: Displays a system notification
   // iOS: Displays an alert dialog
   Pushy.notify(notificationTitle, notificationText, data);

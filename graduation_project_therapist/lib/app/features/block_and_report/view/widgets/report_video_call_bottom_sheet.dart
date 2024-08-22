@@ -80,15 +80,11 @@ Row reportButtons(BuildContext context, int appointmentId) {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Uint8List? pic =
-                          await videoCallBloc.takeScreenshotAndReturnImage(
-                              videoCallBloc.screenshotController);
-                      if (pic != null) {
                         if (!isLoading) {
                           videoCallBloc.add(ReportVideoCallEvent(
-                              appointmentId: appointmentId, pic: pic));
+                              appointmentId: appointmentId));
                         }
-                      }
+                      
                     }
                   },
                   child: isLoading

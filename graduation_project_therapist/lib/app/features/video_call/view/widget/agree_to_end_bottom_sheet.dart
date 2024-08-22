@@ -48,8 +48,6 @@ Widget agreeToEndCallBottomSheet(BuildContext context, int appointmentId) {
                           ),
                           onPressed: () {
                             if (!isLoading) {
-                              print(
-                                  'sssssssssssssssssssss: isloading in the complete $isLoading');
 
                               context.read<VideoCallBloc>().add(
                                   SendCompleteSessionEvent(

@@ -16,7 +16,6 @@ class ChatRepositoryImp {
     try {
       final response = await _chatDataSource.getChatInformation(patientId);
       final decodedResponse = jsonDecode(response.body);
-      print('sssssssssssssssssssssssss::: $decodedResponse');
       if (response.statusCode == 200 || response.statusCode == 201) {
         ChatInfoModel chatInfoModel = ChatInfoModel.fromJson(decodedResponse);
         return right(chatInfoModel);

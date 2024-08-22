@@ -44,17 +44,18 @@ class _MedicalDescriptionsListState extends State<MedicalDescriptionsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: customColors.primary,
-            onPressed: () {
-              navigationService.navigateTo(medicalDescriptionPage);
-            },
-            label: isDoctor
-                ? Text(
-                    'Add',
-                    style: customTextStyle.bodyMedium,
-                  )
-                : const SizedBox()),
+        floatingActionButton: Visibility(
+          visible: isDoctor,
+          child: FloatingActionButton.extended(
+              backgroundColor: customColors.primary,
+              onPressed: () {
+                navigationService.navigateTo(medicalDescriptionPage);
+              },
+              label: Text(
+                'Add',
+                style: customTextStyle.bodyMedium,
+              )),
+        ),
         backgroundColor: customColors.primaryBackGround,
         appBar:
             appBarPushingScreens('Medical descriptions', isFromScaffold: true),

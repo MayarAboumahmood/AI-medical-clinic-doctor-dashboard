@@ -15,7 +15,8 @@ class VideoInitEvent extends VideoCallEvent {
 
 class GetChatInformation extends VideoCallEvent {
   final int patientID;
-  GetChatInformation({required this.patientID});
+  final String appointmentTime;
+  GetChatInformation({required this.patientID,required this.appointmentTime});
   @override
   List<Object?> get props => [];
 }
@@ -36,8 +37,7 @@ class CheckIfSessionCompletedEvent extends VideoCallEvent {
 
 class ReportVideoCallEvent extends VideoCallEvent {
   final int appointmentId;
-  final Uint8List pic;
-  ReportVideoCallEvent({required this.appointmentId, required this.pic});
+  ReportVideoCallEvent({required this.appointmentId});
   @override
   List<Object?> get props => [];
 }

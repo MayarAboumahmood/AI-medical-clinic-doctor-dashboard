@@ -45,9 +45,7 @@ class DoctorEmploymentRequestsCubit
             DoctorEmploymentRequestsErrorState(errorMessage: errorMessage)),
         (data) {
       if (doctorEmploymentRequests != null) {
-        print(
-            'sssssssssssssssssssssssssss employment request approve:${requestID}');
-
+        
         doctorEmploymentRequests!
             .removeWhere((request) => request.id == requestID);
       }

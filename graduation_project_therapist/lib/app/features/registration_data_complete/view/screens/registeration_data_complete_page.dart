@@ -124,7 +124,6 @@ class _CompleteDataPageState extends State<CompleteDataPage> {
     return BlocBuilder<RegistrationDataCompleteCubit,
         RegistrationDataCompleteState>(
       builder: (context, state) {
-        print('ssssssssssssssss: state$state');
         if (state is GetCategoriesLoadingState) {
           return Center(
             child: CircularProgressIndicator(

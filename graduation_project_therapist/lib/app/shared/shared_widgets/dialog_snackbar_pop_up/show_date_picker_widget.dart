@@ -27,7 +27,6 @@ Future buildChooseDate(BuildContext context, DateTime dateTime,
       DateTime.now().day,
     );
   } else if (datePickType == DatePickType.birthDay) {
-    print('sssssssssssssss: ${DateTime.now().year - 70}');
     minDate = DateTime(
       DateTime.now().year - 70,
       DateTime.now().month,

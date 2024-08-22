@@ -214,7 +214,10 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
             submitButton(),
             const SizedBox(height: 10),
             isforUpdateOrEditAvailable
-                ? editButton(medicalDescriptionDetailsModel!.data.id)
+                ? Visibility(
+                    visible: medicalDescriptionDetailsModel!.data.doctorId ==
+                        userData?.userId,
+                    child: editButton(medicalDescriptionDetailsModel!.data.id))
                 : const SizedBox(),
             const SizedBox(height: 10),
           ]),
@@ -244,7 +247,14 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
         return GeneralButtonOptions(
             text: text,
             onPressed: () {
-              medicalDescriptionCubit.createNewMedicalDescription();
+              if (canSubmitMedicalDescription()) {
+                medicalDescriptionCubit.createNewMedicalDescription();
+              } else {
+                customSnackBar(
+                    "Please fill in at least one field before submitting.",
+                    context,
+                    isFloating: true);
+              }
             },
             loading: isLoading,
             options: ButtonOptions(
@@ -255,6 +265,28 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
     );
   }
 
+  bool canSubmitMedicalDescription() {
+    return medicalDescriptionCubit.differentialDiagnosisController.text.trim().isNotEmpty ||
+        medicalDescriptionCubit.treatmentPlanController.text
+            .trim()
+            .isNotEmpty ||
+        medicalDescriptionCubit.medicalPersonalHistoryTypeController.text
+            .trim()
+            .isNotEmpty ||
+        medicalDescriptionCubit.medicalPersonalHistoryDescriptionController.text
+            .trim()
+            .isNotEmpty ||
+        medicalDescriptionCubit.medicalFamilyHistoryTypeController.text
+            .trim()
+            .isNotEmpty ||
+        medicalDescriptionCubit.medicalFamilyHistoryDescriptionController.text
+            .trim()
+            .isNotEmpty ||
+        medicalDescriptionCubit.symptomsController.text.trim().isNotEmpty ||
+        medicalDescriptionCubit.causesController.text.trim().isNotEmpty ||
+        medicalDescriptionCubit.mainComplaintController.text.trim().isNotEmpty;
+  }
+
   BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState> editButton(
       int medDID) {
     return BlocBuilder<MedicalDescriptionCubit, MedicalDescriptionState>(
@@ -263,7 +295,14 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
         return GeneralButtonOptions(
             text: 'Edit This description',
             onPressed: () {
-              medicalDescriptionCubit.editMedicalDescription(medDID);
+              if (canSubmitMedicalDescription()) {
+                medicalDescriptionCubit.editMedicalDescription(medDID);
+              } else {
+                customSnackBar(
+                    "Please fill in at least one field before submitting.",
+                    context,
+                    isFloating: true);
+              }
             },
             loading: isLoading,
             options: ButtonOptions(

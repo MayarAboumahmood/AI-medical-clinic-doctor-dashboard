@@ -7,19 +7,22 @@ bool isThereIsSnackBar = false;
 bool isEndUserSession = false;
 
 ScaffoldFeatureController? customSnackBar(String title, BuildContext context,
-    {bool isFloating = false}) {
+    {bool isFloating = false, int duration = 2, Color? backgroundColor}) {
+  if (backgroundColor == null) {
+    backgroundColor = customColors.secondaryBackGround;
+  }
   title = endUserSession(context, title);
-  // MessageLogger.logMessage(title);
+  print('Attempting to show SnackBar with title: $title');
   if (!isThereIsSnackBar) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: isFloating ? SnackBarBehavior.floating : null,
-        backgroundColor: customColors.secondaryBackGround,
+        backgroundColor: backgroundColor,
         onVisible: () {
           isThereIsSnackBar = true;
           makeIsThereIsSnackBarVarFalseAfterTheSnackBarClosed();
         },
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: duration),
         content: Text(
           title.tr(),
           style: customTextStyle.bodyMedium

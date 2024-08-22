@@ -57,7 +57,6 @@ class _PatientRequestsPageState extends State<PatientRequestsPage> {
       appBar: appBarPushingScreens('Patient Requests', isFromScaffold: true),
       body: BlocBuilder<PatientRequestsCubit, PatientRequestsState>(
         builder: (context, state) {
-          print('sssssssssssssssssss the state is : $state');
           if (state is PatientRequestLoadingState) {
             return mediumSizeCardShimmer();
           } else if (state is PatientRequestDataLoadedState) {

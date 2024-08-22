@@ -660,5 +660,8 @@
   "Invalid phone number.": "رقم الهاتف غير صحيح.",
   "Invalid date.": "التاريخ غير صحيح.",
   "Invalid name format.": "تنسيق الاسم غير صحيح.",
-  "jwt expired": "انتهت صلاحية التوكن"
+  "jwt expired": "انتهت صلاحية التوكن",
+  "Please fill in at least one field before submitting.": "يرجى ملء حقل واحد على الأقل قبل الإرسال.",
+  "The session is over. You are free to leave.": "انتهت الجلسة. أنت حر في المغادرة.",
+  "Something want wrong, try again": "هناك خطأ ما، حاول مرة أخرى"
 }

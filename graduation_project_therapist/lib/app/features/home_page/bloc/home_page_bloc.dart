@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_status_enum.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/repository/home_page_repository_imp.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -23,6 +24,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           await getUserData(emit);
         } else if (sharedPreferences!.getString('user_profile') == null) {
           await getUserData(emit);
+        } else {
+          final String? userProfileString =
+              sharedPreferences?.getString('user_profile');
+          if (userProfileString != null && userProfileString.isNotEmpty) {
+            final Map<String, dynamic> userProfileMap =
+                jsonDecode(userProfileString);
+            userData = UserProfileModel.fromMap(userProfileMap);
+          }
         }
       }
     });
@@ -57,6 +66,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     getUserData.fold((onError) {
       emit(FetchDataFauilerState(errorMessage: onError));
     }, (data) {
+      userData = data;
       Map<String, dynamic> jsonUserInfo = data.toJson();
       sharedPreferences!.setString('user_profile', jsonEncode(jsonUserInfo));
     });

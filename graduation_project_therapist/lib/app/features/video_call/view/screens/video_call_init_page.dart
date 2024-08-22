@@ -20,7 +20,7 @@ class _VideoCallInitPageState extends State<VideoCallInitPage> {
   @override
   void initState() {
     super.initState();
-    print('sssssssssssssssssssssssss::: innnn the init');
+
     videoCallBloc = context.read<VideoCallBloc>();
   }
 
@@ -35,10 +35,15 @@ class _VideoCallInitPageState extends State<VideoCallInitPage> {
     super.didChangeDependencies();
     if (firstTimeDidChange) {
       firstTimeDidChange = false;
-      final int patientID =
-          ModalRoute.of(context)!.settings.arguments as int? ?? -1;
+      final arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-      videoCallBloc.add(GetChatInformation(patientID: patientID));
+      final int patientID = arguments['patientID'] as int? ?? -1;
+      final String appointmentTimeString =
+          arguments['appointmentTime'] as String;
+
+      videoCallBloc.add(GetChatInformation(
+          patientID: patientID, appointmentTime: appointmentTimeString));
     }
   }
 
