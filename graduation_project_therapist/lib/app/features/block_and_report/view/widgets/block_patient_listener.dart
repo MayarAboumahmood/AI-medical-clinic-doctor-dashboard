@@ -9,6 +9,12 @@ Widget blockPatientListener(
 ) {
   return BlocListener<BlockBloc, BlockState>(
       listener: (context, state) {
+        // GetPatientsCubit getPatientsCubit = context.read<GetPatientsCubit>();
+        // PatientRequestsCubit patientRequestsCubit = context.read<PatientRequestsCubit>();
+        // PatientReservationsCubit patientReservationsCubit = context.read<PatientReservationsCubit>();
+        // GetAllTherapistCubit getAllTherapistCubit = context.read<GetAllTherapistCubit>();
+        // DoctorEmploymentRequestsCubit doctorEmploymentRequestsCubit =
+        //     context.read<DoctorEmploymentRequestsCubit>();
         if (state is BlockFauilerState) {
           customSnackBar(state.errorMessage, context, isFloating: true);
         } else if (state is BlockPatientSuccessState) {

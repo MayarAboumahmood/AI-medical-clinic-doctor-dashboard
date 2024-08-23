@@ -99,7 +99,7 @@ GestureDetector buildDoctorRequestName(
     },
     child: Text(
         doctorEmploymentRequestModel.doctorName
-            .toString(), //TODO: it should be the doctor name
+            .toString(),
         style: customTextStyle.bodyLarge),
   );
 }

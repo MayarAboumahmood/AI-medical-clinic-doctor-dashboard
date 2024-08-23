@@ -67,3 +67,10 @@ class LoadEarlierMessagesEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
+
+class SendToBackendForNotification extends ChatEvent {
+  final int patientID;
+  SendToBackendForNotification({required this.patientID});
+  @override
+  List<Object?> get props => [];
+}

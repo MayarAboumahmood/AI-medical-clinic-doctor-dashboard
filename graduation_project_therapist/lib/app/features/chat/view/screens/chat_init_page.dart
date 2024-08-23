@@ -24,13 +24,14 @@ class _ChatInitPageState extends State<ChatInitPage> {
     chatBloc = context.read<ChatBloc>();
   }
 
+  int patientID = -1;
   bool firstTimeDidChange = true;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (firstTimeDidChange) {
       firstTimeDidChange = false;
-      final int patientID =
+       patientID =
           ModalRoute.of(context)!.settings.arguments as int? ?? -1;
       String token = sharedPreferences!.getString('token') ?? '';
       debugPrint('patientID: $patientID');
@@ -45,7 +46,7 @@ class _ChatInitPageState extends State<ChatInitPage> {
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is GotChatInfoState) {
-          navigationService.replaceWith(chatPage);
+          navigationService.replaceWith(chatPage, arguments: patientID);
         } else if (state is ChatErrorState) {
           customSnackBar(state.errorMessage, context);
           navigationService.goBack();

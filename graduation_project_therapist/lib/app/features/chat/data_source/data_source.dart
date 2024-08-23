@@ -77,4 +77,22 @@ class ChatDataSource {
     debugPrint('report Video Call datasource: ${response.statusCode}');
     return response;
   }
+
+  sendToBackendForNotification(
+      int patientID, String userName, String type) async {
+    String token = sharedPreferences!.getString('token') ?? '';
+    var url =
+        Uri.parse(ServerConfig.url + ServerConfig.checkIfSessionCompleteUri);
+    var headers = {'Authorization': token};
+    var response = await http.post(
+      url,
+      body: {"userId": patientID, "senderName": userName, "type": type},
+      headers: headers,
+    );
+    debugPrint(
+        'send to backend to send notification datasource: ${response.body}');
+    debugPrint(
+        'send to backend to send notification datasource: ${response.statusCode}');
+    return response;
+  }
 }

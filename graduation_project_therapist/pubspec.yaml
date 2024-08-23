@@ -85,6 +85,7 @@ dependencies:
   rename_app: ^1.6.1 
   flutter_launcher_icons: "^0.13.1"
   flutter_native_splash:
+  awesome_notifications: ^0.9.3+1
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -103,12 +104,12 @@ dev_dependencies:
 flutter_native_splash:
   android: true
   ios: false
-  image: assets/images/SMHC icon.png
-  color: '#195ddb'
+  image: assets/images/splash screen image.jpg
+  color: '#1d2429'
   android_12:
-    image: assets/images/SMHC icon.png  # Change this path to your desired splash image
+    image: assets/images/splash screen image.jpg  # Change this path to your desired splash image
     # fullscreen: true
-    color: '#195ddb' 
+    color: '#1d2429' 
     # background_image: assets/images/table splash screen.jpg
     # branding: assets/images/splash screen tabless.png
   # image_android: assets/images/splash screen tabless.png

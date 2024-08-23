@@ -194,7 +194,7 @@ Widget buildCancelPatientRequestBottomSheet(
             const SizedBox(height: 20),
             customTextField(
                 validator: (_) {
-                  //TODO: check this out the validation not wroking.
+               
                   return ValidationFunctions.informationValidation(
                       cancelReason);
                 },

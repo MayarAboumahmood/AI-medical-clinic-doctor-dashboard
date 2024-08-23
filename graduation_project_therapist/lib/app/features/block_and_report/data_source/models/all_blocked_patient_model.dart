@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class AllBlockedPatientModel {
   final bool status;
   final String message;
@@ -36,6 +38,7 @@ class BlockedUser {
   final int userId;
   final String patientName;
   final String image;
+  final String date;
 
   BlockedUser({
     required this.id,
@@ -43,6 +46,7 @@ class BlockedUser {
     required this.userId,
     required this.patientName,
     required this.image,
+    required this.date,
   });
 
   // Factory method to create a BlockedUser object from JSON
@@ -51,11 +55,11 @@ class BlockedUser {
       id: json['id'],
       doctorId: json['doctorId'],
       userId: json['userId'],
-      patientName: json['patientName']??'ToDO',
-      image: json['image']??'ToDO',
+      patientName: json['userName'] ?? 'Unknown'.tr(),
+      image: json['image'] ?? 'Unkown'.tr(),
+      date: json['date'] ?? 'Unkown'.tr(),
     );
   }
-
   // Method to convert a BlockedUser object to JSON
   Map<String, dynamic> toJson() {
     return {

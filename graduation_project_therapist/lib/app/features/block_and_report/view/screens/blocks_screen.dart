@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/block_and_report/bloc/block_bloc.dart';
@@ -96,15 +97,18 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
                       )
                     : Column(children: [
                         ...List.generate(
-                            allBlockedPatientModel.data.length,
-                            (index) => patientsCard(
-                                isFromBlock: true,
-                                context,
-                                GetPatientsModel(
-                                    id: allBlockedPatientModel
-                                        .data[index].userId,
-                                    name: allBlockedPatientModel
-                                        .data[index].patientName))),
+                          allBlockedPatientModel.data.length,
+                          (index) => patientsCard(
+                              date: getRightDateString(
+                                  allBlockedPatientModel.data[index].date),
+                              isFromBlock: true,
+                              context,
+                              GetPatientsModel(
+                                id: allBlockedPatientModel.data[index].userId,
+                                name: allBlockedPatientModel
+                                    .data[index].patientName,
+                              )),
+                        ),
                         const SizedBox(
                           height: 50,
                         ),
@@ -113,6 +117,15 @@ class _BlockedPatientsScreenState extends State<BlockedPatientsScreen> {
             ),
           ],
         ));
+  }
+
+  String getRightDateString(String dateWithBadFormate) {
+    DateTime dateTime = DateTime.parse(dateWithBadFormate);
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd h:mm a');
+
+    // Format the DateTime object to the desired format
+    String formattedDate = dateFormat.format(dateTime);
+    return formattedDate;
   }
 
   Future<void> refreshBlockedList() async {

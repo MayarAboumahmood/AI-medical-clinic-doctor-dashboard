@@ -20,6 +20,7 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       getData.fold((onError) {
         emit(BlockFauilerState(errorMessage: onError));
       }, (data) {
+        allBlockedPatientModel = null;
         emit(BlockPatientSuccessState());
       });
     });
@@ -29,6 +30,10 @@ class BlockBloc extends Bloc<BlockEvent, BlockState> {
       getData.fold((onError) {
         emit(BlockFauilerState(errorMessage: onError));
       }, (data) {
+        if (allBlockedPatientModel != null) {
+          allBlockedPatientModel!.data
+              .removeWhere((patient) => patient.userId == event.patientId);
+        }
         emit(UnBlockPatientSuccessState(
             blockedPatientName: event.blockedPatientName));
       });

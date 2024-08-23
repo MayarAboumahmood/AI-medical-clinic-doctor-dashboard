@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -80,11 +79,10 @@ Row reportButtons(BuildContext context, int appointmentId) {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                        if (!isLoading) {
-                          videoCallBloc.add(ReportVideoCallEvent(
-                              appointmentId: appointmentId));
-                        }
-                      
+                      if (!isLoading) {
+                        videoCallBloc.add(
+                            ReportVideoCallEvent(appointmentId: appointmentId));
+                      }
                     }
                   },
                   child: isLoading

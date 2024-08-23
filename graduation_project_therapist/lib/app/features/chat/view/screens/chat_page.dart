@@ -17,6 +17,8 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:image_picker/image_picker.dart';
 
+bool isThisFirstMessage = true;
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -32,6 +34,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    isThisFirstMessage = true;
     _scrollController.addListener(() {
       if (_scrollController.offset <=
               _scrollController.position.minScrollExtent &&
@@ -42,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
     chatBloc = context.read<ChatBloc>();
     chatBloc.add(SubscribeMessagesEvent());
   }
-
+late int patientID=-10;
   bool firstTime = true;
   @override
   void didChangeDependencies() {
@@ -52,6 +55,9 @@ class _ChatPageState extends State<ChatPage> {
       chatBloc.add(ReceiveNewMessageEvent());
       _jumpToBottom();
       firstTime = false;
+      patientID =
+          ModalRoute.of(context)!.settings.arguments as int;
+
     }
   }
 
@@ -315,6 +321,9 @@ class _ChatPageState extends State<ChatPage> {
   void onSubmittedTextField(String message) {
     message = message.trim();
     if (message.isNotEmpty) {
+
+      chatBloc.add(SendToBackendForNotification(
+          patientID: patientID));
       chatBloc.add(SendMessageEvent(
           message: message, messageType: MessageTypeEnum.text));
       _textFeildController.clear();

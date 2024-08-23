@@ -7,7 +7,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/bloc/chat_functions.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/chat/repo/chat_repo.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/chat/view/screens/chat_page.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/data_source/models/user_profile_model.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 
 import 'package:pubnub/pubnub.dart';
 
@@ -185,7 +187,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _subscription = pubnub.subscribe(channels: {channelName});
     });
     Future<void> getAllMessages(Emitter<ChatState> emit) async {
-      
       myChannel = pubnub.channel(channelName);
       PaginatedChannelHistory history = myChannel.history(chunkSize: 20);
       await history.more();
@@ -277,6 +278,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         print('the channel name from the bloc: $channelName');
         emit(GotChatInfoState());
       });
+    });
+    on<SendToBackendForNotification>((event, emit) async {
+      late String userName;
+      if (userData != null) {
+        userName = userData!.fullName;
+      } else {
+        userName = 'Unkown';
+      }
+      final getData = await chatRepositoryImp.sendToBackendForNotification(
+          event.patientID, userName,"message");
+      getData.fold((l) {
+        isThisFirstMessage = true;
+      }, (done) {isThisFirstMessage = true;});
     });
 
     on<GetAllMessagesEvent>((event, emit) async {

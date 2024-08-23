@@ -11,7 +11,7 @@ import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
 Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel,
-    {bool isFromBlock = false}) {
+    {bool isFromBlock = false, String date = 'Unkown'}) {
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,
@@ -22,12 +22,8 @@ Widget patientsCard(BuildContext context, GetPatientsModel getPatientsModel,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildPatientNameAndImage(context, getPatientsModel, isFromBlock),
-        const SizedBox(height: 16),
-        // expandedDescription(
-        //     context, getPatientsModel.specInfo,
-        //     backGroundColor: Colors.transparent),
-        const SizedBox(height: 16),
+        buildPatientNameAndImage(context, getPatientsModel, isFromBlock,date),
+        const SizedBox(height: 20),
       ],
     ),
   );
@@ -105,7 +101,7 @@ GeneralButtonOptions cancelLogOutButton(BuildContext context) {
 }
 
 GestureDetector buildPatientNameAndImage(
-    BuildContext context, GetPatientsModel patientsModel, bool isFromBlock) {
+    BuildContext context, GetPatientsModel patientsModel, bool isFromBlock,String date) {
   return GestureDetector(
     onTap: () {
       navigationService.navigateTo(userProfilePage,
@@ -136,6 +132,7 @@ GestureDetector buildPatientNameAndImage(
                     context, patientsModel.id, patientsModel.name),
           ],
         ),
+        Visibility(visible: isFromBlock, child: Text("${'Date'.tr()}: $date")),
         enterChatButton1(context, patientsModel, isFromBlock),
       ],
     ),

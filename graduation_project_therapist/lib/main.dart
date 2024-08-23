@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/extension/app_color_extension.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/extension/app_text_field_extension.dart';
@@ -53,30 +54,31 @@ late AppTextStylesExtension customTextStyle;
 
 SharedPreferences? sharedPreferences;
 UserProfileModel? userData;
-late Timer timer;
 bool isGuest = false;
 late bool isDoctor;
 UserStatusEnum userStatus = UserStatusEnum.loading;
 LocationData? globalUserLocation;
 bool comingFromRegisterOrLogin = false;
 
-/*void startTimerToRemoveSplashScreen() {
+late Timer timer;
+void startTimerToRemoveSplashScreen() {
   timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
     if (t.tick == 2) {
-      // Timer reached 3 seconds
+      // Timer reached 2 seconds
       t.cancel(); // Stop the timer
       FlutterNativeSplash.remove(); // Remove splash screen
     }
   });
-}*/
+}
 
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
-  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  startTimerToRemoveSplashScreen();
+
   await EasyLocalization.ensureInitialized();
 
-  // startTimerToRemoveSplashScreen();
   await di.init();
   // Start the Pushy service
   Pushy.listen();
@@ -89,11 +91,12 @@ void main() async {
 
 // Listen for push notifications received
   Pushy.setNotificationListener(backgroundNotificationListener);
-  Pushy.setNotificationClickListener((data) {});
+
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   navigationService = sl.get<NavigationService>();
   sharedPreferences = await SharedPreferences.getInstance();
+
   userStatus = userStatusFromString(
       sharedPreferences!.getString('user_status') ?? 'unverified');
   if (sharedPreferences?.getString('isDarkMode') == null) {
@@ -130,6 +133,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState;
+    Pushy.setNotificationClickListener((data) {
+      final BuildContext context =
+          navigationService.navigatorKey.currentContext!;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notificationClickListener(context, data);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     responsiveUtil = ResponsiveUtil(context);
