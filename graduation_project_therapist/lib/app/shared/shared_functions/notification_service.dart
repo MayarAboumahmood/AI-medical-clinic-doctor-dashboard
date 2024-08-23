@@ -2,7 +2,9 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/bottom_navigation_bar/bloc/bottom_navigation_widget_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/main.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 
 Future<String> pushyRegister() async {
@@ -39,11 +41,11 @@ void backgroundNotificationListener(Map<String, dynamic> data) {
   print('sssssssssssssssssssssssss pushy:$notificationType');
   // Android: Displays a system notification
   // iOS: Displays an alert dialog
-  if(notificationType == 12){
+  if (notificationType == 12) {
     showVideoCallNotification(notificationTitle, notificationText);
     //here show I show the notification of the video
-  }else{
-  Pushy.notify(notificationTitle, notificationText, data);
+  } else {
+    Pushy.notify(notificationTitle, notificationText, data);
   }
 
   // Clear iOS app badge number
@@ -75,34 +77,21 @@ Assignment  11
       body: content,
  }; */
   switch (notificationType) {
-    case '1':
+    case '5' || '3' || '1':
+      navigationService.navigationOfAllPagesToName(
+          context, bottomNavigationBar);
       bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 2));
       break;
-    case '2':
+    case '9' || '6' || '7' || '4' || '2':
+      navigationService.navigationOfAllPagesToName(
+          context, bottomNavigationBar);
+
       bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 3));
       break;
-    case '3':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 2));
-      break;
-    case '4':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 3));
-      break;
-    case '5':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 2));
-      break;
-    case '6':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 3));
-      break;
-    case '7':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 3));
-      break;
-    case '9':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 3));
-      break;
-    case '10':
-      bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 1));
-      break;
-    case '11':
+    case '10' || '11':
+      navigationService.navigationOfAllPagesToName(
+          context, bottomNavigationBar);
+
       bottomNavigationWidgetBloc.add(ChangeCurrentPage(nextIndex: 1));
       break;
 
@@ -111,16 +100,19 @@ Assignment  11
       break;
   }
 }
+
 void showVideoCallNotification(String title, String body) {
   AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: 12,  // Unique ID f.or the notification
+      id: 12, // Unique ID f.or the notification
       channelKey: 'video_call_channel',
       title: title,
       body: body,
       notificationLayout: NotificationLayout.Default,
-      largeIcon: 'asset://assets/images/video_call_icon.png',  // Your video call icon
-      bigPicture: 'asset://assets/images/video_call_background.png',  // Background image
+      largeIcon:
+          'asset://assets/images/video_call_icon.png', // Your video call icon
+      bigPicture:
+          'asset://assets/images/video_call_background.png', // Background image
       autoDismissible: false,
       locked: true,
       category: NotificationCategory.Call,
@@ -130,15 +122,15 @@ void showVideoCallNotification(String title, String body) {
         key: 'ACCEPT',
         label: 'Accept',
         color: Colors.green,
-        autoDismissible: true,        
-        actionType:ActionType.Default,
+        autoDismissible: true,
+        actionType: ActionType.Default,
       ),
       NotificationActionButton(
         key: 'DECLINE',
         label: 'Decline',
         color: Colors.red,
         autoDismissible: true,
-        actionType:ActionType.Default,
+        actionType: ActionType.Default,
       ),
     ],
   );

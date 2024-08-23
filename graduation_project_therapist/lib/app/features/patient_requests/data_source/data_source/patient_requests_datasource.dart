@@ -17,7 +17,6 @@ class PatientRequestsDataSource {
       url,
       headers: headers,
     );
-    debugPrint('patient request therapist datasource token token: $token');
     debugPrint('patient request therapist datasource: ${response.body}');
     debugPrint('patient request therapist datasource: ${response.statusCode}');
     return response;
@@ -36,6 +35,10 @@ class PatientRequestsDataSource {
       body: {'date': "$date $time"},
       headers: headers,
     );
+
+    debugPrint('patient request therapist datasource body: $time');
+    debugPrint('patient request therapist datasource body: $date');
+
     return response;
   }
 

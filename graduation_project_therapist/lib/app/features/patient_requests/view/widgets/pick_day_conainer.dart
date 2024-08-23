@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/features/patient_requests/cubit/patient_requests_cubit.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/show_date_picker_widget.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
 
@@ -27,8 +29,13 @@ class _PickDayContainerState extends State<PickDayContainer> {
   @override
   initState() {
     super.initState();
+    print('init state in pick day container');
+
     selectedDay = DateTime.now();
     selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
+    context.read<PatientRequestsCubit>().setSelectedDay(selectedDayString);
+    String? selectedTime = DateFormat('hh:mm a').format(DateTime.now());
+    context.read<PatientRequestsCubit>().setSelectedTime(selectedTime);
   }
 
   @override
@@ -39,19 +46,14 @@ class _PickDayContainerState extends State<PickDayContainer> {
   GestureDetector pickDayContainer() {
     return GestureDetector(
       onTap: () {
-        buildChooseDate(
-          context,
-          selectedDay,
-          (newDateTime) {
-            selectedDay = newDateTime;
-            setState(() {
-              selectedDayString = DateFormat('yyyy-MM-dd').format(newDateTime);
-            });
-            widget.whatBlocShouldDoOnTap?.call(selectedDayString);
-            navigationService.goBack();
-          },
-          widget.datePickType
-        );
+        buildChooseDate(context, selectedDay, (newDateTime) {
+          selectedDay = newDateTime;
+          setState(() {
+            selectedDayString = DateFormat('yyyy-MM-dd').format(newDateTime);
+          });
+          widget.whatBlocShouldDoOnTap?.call(selectedDayString);
+          navigationService.goBack();
+        }, widget.datePickType);
       },
       child: Container(
         width: responsiveUtil.screenWidth * .45,

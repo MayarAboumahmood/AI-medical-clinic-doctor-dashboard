@@ -30,7 +30,6 @@ class _PickTImeContainerState extends State<PickTImeContainer> {
   GestureDetector pickTImeContainer(String time) {
     return GestureDetector(
       onTap: () {
-        
         buildChooseTime(context, time, (newDateTime) {
           patientRequestsCubit.setSelectedTime(newDateTime);
           setState(() {
@@ -40,7 +39,7 @@ class _PickTImeContainerState extends State<PickTImeContainer> {
         });
       },
       child: Container(
-        width: responsiveUtil.screenWidth * .3,
+        width: responsiveUtil.screenWidth * .32,
         decoration: BoxDecoration(
           border: Border.all(
             color: customColors.primary,

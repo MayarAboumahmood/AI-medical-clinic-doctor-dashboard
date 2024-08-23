@@ -44,11 +44,10 @@ class _SelectTimeDateBottomSheetState extends State<SelectTimeDateBottomSheet> {
               height: 20,
             ),
             PickDayContainer(
-              whatBlocShouldDoOnTap: (selectedDate) {
-                patientRequestsCubit.setSelectedDay(selectedDate);
-              },
-              datePickType: DatePickType.reservationDay
-            ),
+                whatBlocShouldDoOnTap: (selectedDate) {
+                  patientRequestsCubit.setSelectedDay(selectedDate);
+                },
+                datePickType: DatePickType.reservationDay),
             const SizedBox(
               height: 20,
             ),
