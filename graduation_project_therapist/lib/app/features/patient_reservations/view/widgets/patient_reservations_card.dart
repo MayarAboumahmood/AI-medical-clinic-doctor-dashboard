@@ -21,6 +21,14 @@ Widget patientReservationCard(
     BuildContext context, PatientReservationModel patientReservationModel) {
   DateTime dateTime = DateTime.parse(patientReservationModel.date);
   String formattedDate = DateFormat('yyyy-MM-dd h:mm a').format(dateTime);
+  PatientReservationsCubit patientReservationsCubit =
+      context.read<PatientReservationsCubit>();
+  var nowTime = DateTime.parse(patientReservationModel.date);
+  String formattedDateTime =
+      DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
+
+  bool canEnterTheSession = patientReservationsCubit
+      .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
 
   return Card(
     color: customColors.primaryBackGround,
@@ -54,9 +62,11 @@ Widget patientReservationCard(
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              enterSessionButton(context, patientReservationModel),
+              enterSessionButton(
+                  context, patientReservationModel, canEnterTheSession),
               const SizedBox(width: 8),
-              cancelButton(context, patientReservationModel.id),
+              cancelButton(
+                  context, patientReservationModel.id, canEnterTheSession),
             ],
           ),
         ],
@@ -65,18 +75,8 @@ Widget patientReservationCard(
   );
 }
 
-GeneralButtonOptions enterSessionButton(
-    BuildContext context, PatientReservationModel patientReservationModel) {
-  PatientReservationsCubit patientReservationsCubit =
-      context.read<PatientReservationsCubit>();
-  var nowTime = DateTime.parse(patientReservationModel.date);
-  String formattedDateTime =
-      DateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").format(nowTime);
-
-  bool canEnterTheSession = true;
-  //  patientReservationsCubit
-  //     .checkIfSessionIsNear(DateTime.parse(formattedDateTime));
-
+GeneralButtonOptions enterSessionButton(BuildContext context,
+    PatientReservationModel patientReservationModel, bool canEnterTheSession) {
   return GeneralButtonOptions(
       text: "Enter session".tr(),
       onPressed: canEnterTheSession
@@ -144,22 +144,27 @@ GestureDetector buildUserNameAndImage(
   );
 }
 
-GeneralButtonOptions cancelButton(BuildContext context, int reservationID) {
+GeneralButtonOptions cancelButton(
+    BuildContext context, int reservationID, bool canEnterTheSession) {
   return GeneralButtonOptions(
     text: 'Cancel'.tr(),
     options: ButtonOptions(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
-        color: customColors.error,
+        color: canEnterTheSession ? Colors.grey : customColors.error,
         width: 1,
       ),
       color: customColors.primaryBackGround,
       textStyle: customTextStyle.bodyMedium.copyWith(color: customColors.error),
     ),
-    onPressed: () async {
-      await showBottomSheetWidget(context,
-          buildCancelPatientRequestBottomSheet(context, reservationID));
-    },
+    onPressed: canEnterTheSession
+        ? () {
+            customSnackBar("You can't cancel this session", context);
+          }
+        : () async {
+            await showBottomSheetWidget(context,
+                buildCancelPatientRequestBottomSheet(context, reservationID));
+          },
   );
 }
 
@@ -186,6 +191,7 @@ Widget buildCancelPatientRequestBottomSheet(
         ),
       ),
       child: Form(
+        key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -194,7 +200,6 @@ Widget buildCancelPatientRequestBottomSheet(
             const SizedBox(height: 20),
             customTextField(
                 validator: (_) {
-               
                   return ValidationFunctions.informationValidation(
                       cancelReason);
                 },
@@ -210,6 +215,7 @@ Widget buildCancelPatientRequestBottomSheet(
               children: [
                 BlocBuilder<PatientReservationsCubit, PatientReservationsState>(
                   builder: (context, state) {
+                    print('ssssssssssssssssss state is: $state');
                     bool isLoading =
                         state is CancelOnPatientReservationLoadingState &&
                             patientReservationsCubit.cahcedReservationID ==

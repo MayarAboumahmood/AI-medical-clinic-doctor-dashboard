@@ -52,6 +52,10 @@ class PatientReservationsCubit extends Cubit<PatientReservationsState> {
         (errorMessage) => emit(
             CancelPatientReservationErrorState(errorMessage: errorMessage)),
         (data) {
+      if (cachedPatientReservations != null) {
+        cachedPatientReservations!
+            .removeWhere((request) => request.id == reservationID);
+      }
       emit(PatientReservationCanceledSuccessfullyState());
     });
   }

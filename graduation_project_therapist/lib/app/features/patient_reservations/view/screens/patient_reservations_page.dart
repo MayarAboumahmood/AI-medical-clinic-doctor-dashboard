@@ -68,7 +68,8 @@ class _PatientReservationsPageState extends State<PatientReservationsPage> {
                 context, state.patientReservationModels);
           } else if (state is PatientReservationApprovedSuccessfullyState ||
               state is PatientReservationCanceledSuccessfullyState ||
-              state is CancelPatientReservationErrorState) {
+              state is CancelPatientReservationErrorState ||
+              state is CancelOnPatientReservationLoadingState) {
             return patientReservationssListBody(context,
                 patientReservationsCubit.cachedPatientReservations ?? []);
           }
