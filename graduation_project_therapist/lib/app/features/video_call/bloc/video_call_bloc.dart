@@ -35,13 +35,21 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
       appointmentTime = DateTime.now();
     }
 
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(minutes: 1), (timer) {
       DateTime now = DateTime.now();
-      Duration difference = appointmentTime.difference(now);
+      Duration difference =
+          DateTime.utc(now.year, now.month, now.day, now.hour, now.minute)
+              .difference(DateTime.utc(
+                  appointmentTime.year,
+                  appointmentTime.month,
+                  appointmentTime.day,
+                  appointmentTime.hour,
+                  appointmentTime.minute));
       print('Current time: $now');
-      print('Difference: $difference');
+      print('appointment time: $appointmentTime');
+      print('Difference: ${difference.inMinutes}');
 
-      if (difference.inMinutes >= 30) {
+      if (difference.inMinutes <= -30) {
         customSnackBar('The session is over. You are free to leave.', context,
             backgroundColor: customColors.primary, duration: 7);
         print('The session is over. You are free to leave.');

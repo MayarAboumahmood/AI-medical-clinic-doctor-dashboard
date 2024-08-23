@@ -38,7 +38,10 @@ Widget buildPatientProfileButtons(
               ? assignTherapistbutton(context, profile.data.id)
               : sendRequestToPatientbutton(
                   context, profile.data.fullName, profile.data.id),
-          goToMedicalRecordsButton(context),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: goToMedicalRecordsButton(context),
+          ),
         ],
       ),
     ),

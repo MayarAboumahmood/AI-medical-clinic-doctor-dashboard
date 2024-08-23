@@ -16,9 +16,11 @@ class WalletRepositoryImp {
       final decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = decodedResponse['data'];
-        final List<WalletHistoryModel> walletHistory =
-            data.map((item) => WalletHistoryModel.fromMap(item)).toList();
+        final List<dynamic> requests = decodedResponse['data']['requests'];
+        final List<WalletHistoryModel> walletHistory = requests
+            .map((item) =>
+                WalletHistoryModel.fromMap(item as Map<String, dynamic>))
+            .toList();
         return right(walletHistory);
       } else if (response.statusCode == 500) {
         if (decodedResponse['error'] == 'jwt expired') {

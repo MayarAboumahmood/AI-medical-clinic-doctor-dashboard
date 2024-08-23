@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
 import 'package:graduation_project_therapist_dashboard/app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/shared/shared_widgets/dialog_snackbar_pop_up/custom_snackbar.dart';
 import 'package:graduation_project_therapist_dashboard/main.dart';
@@ -34,17 +35,57 @@ class _HomePageScreenState extends State<HomePageScreen> {
         }
       },
       child: Scaffold(
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 100),
+          child: FloatingActionButton.extended(
+            backgroundColor: customColors.primary,
+            onPressed: () {
+              navigationService.navigateTo(helpCenter);
+            },
+            label: Text(
+              '${'Provided By:'.tr()} GMMAF',
+              style: customTextStyle.bodyMedium,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
         backgroundColor: customColors.primaryBackGround,
         body: BlocBuilder<HomePageBloc, HomePageState>(
           builder: (context, state) {
-            return SizedBox(
-              height: 200,
-              width: 200,
-              child: Center(
-                  child: Text(
-                userStatus.name.tr(),
-                style: customTextStyle.bodyMedium,
-              )),
+            return Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 6,
+                  ),
+                  Image.asset(
+                    'assets/images/SMHC icon.png',
+                    height: 200,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 6,
+                  ),
+                  Text(
+                    '${'Welcome to the platform'.tr()}',
+                    style: customTextStyle.headlineMedium,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '${isDoctor ? 'Doctor'.tr() : 'Therapist'.tr()}: ${userData?.fullName}',
+                    style: customTextStyle.headlineMedium,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    userStatus.name.tr(),
+                    style: customTextStyle.bodyMedium,
+                  ),
+                ],
+              ),
             );
           },
         ),

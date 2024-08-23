@@ -149,8 +149,22 @@ class _WalletPageState extends State<WalletPage> {
                 ])));
     } else {
       return Expanded(
-          child: Text('Opps, Something wrong!'.tr(),
-              style: customTextStyle.bodyMedium));
+          child: Column(
+        children: [
+          Text('Opps, Something wrong!'.tr(),
+              style: customTextStyle.bodyMedium),
+          GeneralButtonOptions(
+              text: 'Try again',
+              onPressed: () {
+                walletCubit.getTransactionHistory();
+              },
+              loading:
+                  historyLoadingStatuEbum == HistoryLoadingStatuEbum.loading,
+              options: ButtonOptions(
+                  color: customColors.primary,
+                  textStyle: customTextStyle.bodyMedium))
+        ],
+      ));
     }
   }
 
