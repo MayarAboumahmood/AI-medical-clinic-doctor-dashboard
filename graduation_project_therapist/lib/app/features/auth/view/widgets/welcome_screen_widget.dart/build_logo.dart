@@ -11,7 +11,7 @@ Widget buildLogo() {
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: Image.asset('assets/images/logo2.png'
+              image: Image.asset('assets/images/SMHC icon.png'
                       // AppImages.preview,
                       )
                   .image,

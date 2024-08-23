@@ -41,7 +41,7 @@ class GuestWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
-            'assets/images/logo2.png',
+            'assets/images/SMHC icon.png',
             width: 290,
             height: 90,
             fit: BoxFit.cover,
