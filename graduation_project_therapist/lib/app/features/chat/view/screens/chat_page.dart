@@ -45,7 +45,8 @@ class _ChatPageState extends State<ChatPage> {
     chatBloc = context.read<ChatBloc>();
     chatBloc.add(SubscribeMessagesEvent());
   }
-late int patientID=-10;
+
+  late int patientID = -10;
   bool firstTime = true;
   @override
   void didChangeDependencies() {
@@ -55,9 +56,7 @@ late int patientID=-10;
       chatBloc.add(ReceiveNewMessageEvent());
       _jumpToBottom();
       firstTime = false;
-      patientID =
-          ModalRoute.of(context)!.settings.arguments as int;
-
+      patientID = ModalRoute.of(context)!.settings.arguments as int;
     }
   }
 
@@ -321,9 +320,9 @@ late int patientID=-10;
   void onSubmittedTextField(String message) {
     message = message.trim();
     if (message.isNotEmpty) {
-
-      chatBloc.add(SendToBackendForNotification(
-          patientID: patientID));
+      if (isThisFirstMessage) {
+        chatBloc.add(SendToBackendForNotification(patientID: patientID));
+      }
       chatBloc.add(SendMessageEvent(
           message: message, messageType: MessageTypeEnum.text));
       _textFeildController.clear();

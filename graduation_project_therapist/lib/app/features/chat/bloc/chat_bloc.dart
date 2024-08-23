@@ -287,10 +287,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         userName = 'Unkown';
       }
       final getData = await chatRepositoryImp.sendToBackendForNotification(
-          event.patientID, userName,"message");
+          event.patientID, userName, "message");
       getData.fold((l) {
         isThisFirstMessage = true;
-      }, (done) {isThisFirstMessage = true;});
+      }, (done) {
+        isThisFirstMessage = false;
+      });
     });
 
     on<GetAllMessagesEvent>((event, emit) async {

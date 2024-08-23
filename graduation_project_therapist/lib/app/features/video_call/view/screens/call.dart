@@ -127,6 +127,11 @@ class VideoCallPageState extends State<VideoCallPage> {
           });
         },
         onJoinChannelSuccess: (connection, elapsed) {
+          print('users length: ${_users.length}');
+          if (_users.length == 0) {
+            videoCallBloc.add(SendToBackendForNotification(
+                patientID: videoCallBloc.cachedPatientID));
+          }
           setState(() {
             final info = 'Join Channel: $connection';
             _infoStrings.add(info);
