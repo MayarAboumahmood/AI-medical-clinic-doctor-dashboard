@@ -41,6 +41,7 @@ class _VideoCallInitPageState extends State<VideoCallInitPage> {
       final int patientID = arguments['patientID'] as int? ?? -1;
       final String appointmentTimeString =
           arguments['appointmentTime'] as String;
+      videoCallBloc.cachedPatientID = patientID;
 
       videoCallBloc.add(GetChatInformation(
           patientID: patientID, appointmentTime: appointmentTimeString));

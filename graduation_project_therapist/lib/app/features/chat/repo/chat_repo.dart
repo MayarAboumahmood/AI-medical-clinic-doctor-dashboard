@@ -120,7 +120,7 @@ class ChatRepositoryImp {
         return left(decodedResponse['error']);
       }
     } catch (e) {
-      debugPrint('error in report Video Call repo: $e');
+      debugPrint('error in send to backend to send notification repo: $e');
       return left('Server Error');
     }
   }

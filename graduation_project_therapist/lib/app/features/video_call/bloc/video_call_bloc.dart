@@ -19,6 +19,7 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
   int cachedAppointmentId = -10;
 
   String? cachedAppointmentStartTime;
+  int cachedPatientID = -10;
   TextEditingController videoCallReportDescriptionController =
       TextEditingController();
   ScreenshotController screenshotController = ScreenshotController();
@@ -145,6 +146,16 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
         emit(VideoCallReportingErrorState(
             errorMessage: 'Something want wrong, try again'));
       }
+    });
+    on<SendToBackendForNotification>((event, emit) async {
+      late String userName;
+      if (userData != null) {
+        userName = userData!.fullName;
+      } else {
+        userName = 'Unkown';
+      }
+      await chatRepositoryImp.sendToBackendForNotification(
+          event.patientID, userName, "video call");
     });
   }
 }

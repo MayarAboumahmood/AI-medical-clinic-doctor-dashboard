@@ -81,12 +81,19 @@ class ChatDataSource {
   sendToBackendForNotification(
       int patientID, String userName, String type) async {
     String token = sharedPreferences!.getString('token') ?? '';
-    var url =
-        Uri.parse(ServerConfig.url + ServerConfig.checkIfSessionCompleteUri);
+    print('patientID: $patientID');
+    print('userName: $userName');
+    print('type: $type');
+    var url = Uri.parse(
+        ServerConfig.url + ServerConfig.sendToBackendForNotificationUrl);
     var headers = {'Authorization': token};
     var response = await http.post(
       url,
-      body: {"userId": patientID, "senderName": userName, "type": type},
+      body: {
+        "userId": patientID.toString(),
+        "senderName": userName,
+        "type": type
+      },
       headers: headers,
     );
     debugPrint(
