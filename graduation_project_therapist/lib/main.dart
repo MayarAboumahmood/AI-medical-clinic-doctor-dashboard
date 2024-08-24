@@ -74,7 +74,7 @@ void startTimerToRemoveSplashScreen() {
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   startTimerToRemoveSplashScreen();
 
   await EasyLocalization.ensureInitialized();
