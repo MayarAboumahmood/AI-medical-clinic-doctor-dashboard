@@ -41,10 +41,14 @@ class GetAllTherapistCubit extends Cubit<GetAllTherapistState> {
     getData.fold((error) {
       emit(AllTherapistErrorState(errorMessage: error));
     }, (data) {
-      for (var therapist in getAllTherapistModels!) {
-        if (therapist.specialistProfile.id == therapistId) {
-          therapist.employmentRequests = true;
-          break;
+      if (getAllTherapistModels != null) {
+        for (var therapist in getAllTherapistModels!) {
+          if (therapist.specialistProfile.id == therapistId) {
+            print(
+                'therapist.specialistProfile.id: ${therapist.specialistProfile.id}');
+            therapist.employmentRequests = true;
+            break;
+          }
         }
       }
       emit(AssignTherapistSuccessfullyState());

@@ -114,6 +114,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           );
 
           messages.add(newReceivedMessage);
+          print('the messages: $messages');
           emit(NewMessageReceivedState(
               messageModel: newReceivedMessage, dateTime: DateTime.now()));
         }

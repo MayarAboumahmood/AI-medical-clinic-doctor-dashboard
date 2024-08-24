@@ -415,7 +415,7 @@ class VideoCallPageState extends State<VideoCallPage> {
             Row(
               children: [
                 Text(
-                  '${'Second party:'.tr()} ',
+                  '${'Both agree:'.tr()} ',
                   style: customTextStyle.bodyMedium,
                 ),
                 Text(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_string/app_string.dart';
@@ -317,7 +318,7 @@ class _MedicalDescriptionPageState extends State<MedicalDescriptionPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        note,
+        note.tr(),
         style: customTextStyle.bodySmall
             .copyWith(color: customColors.secondaryText),
       ),

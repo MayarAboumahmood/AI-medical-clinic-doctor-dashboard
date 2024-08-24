@@ -154,9 +154,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        infoSection('Bot Score: ', botScore),
-        infoSection(
-            'The PHQ9 recommendation: ', getPHQ9Recommendation(botScore)),
+        infoSection('Bot Score', botScore),
+        infoSection('The PHQ9 recommendation', getPHQ9Recommendation(botScore)),
       ],
     );
   }

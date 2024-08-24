@@ -58,7 +58,7 @@ class _VideoCallInitPageState extends State<VideoCallInitPage> {
       child: BlocListener<VideoCallBloc, VideoCallState>(
         listener: (context, state) {
           if (state is GotVideoInfoState) {
-            navigationService.navigateTo(videoCallPage);
+            navigationService.replaceWith(videoCallPage);
           } else if (state is VideoCallErrorState) {
             customSnackBar(state.error, context);
             navigationService.goBack();

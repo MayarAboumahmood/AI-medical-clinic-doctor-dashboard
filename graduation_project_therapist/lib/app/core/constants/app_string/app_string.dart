@@ -77,9 +77,9 @@ class AppString {
   static String unfriendMessage =
       'Please remember that unfriending someone will remove them from your friend list, and you won\'t be able to see their private posts or interact as friends on this platform.';
   static String introduction =
-      'Welcome to MedTherape, a medical therapy application designed to facilitate interaction between doctors and therapists. By accessing or using the MedTherape app, you agree to comply with and be bound by the following Terms of Use. Please review these terms carefully. If you do not agree to these terms, you should not use this app.';
+      'Welcome to SMC, a medical therapy application designed to facilitate interaction between doctors and therapists. By accessing or using the SMC app, you agree to comply with and be bound by the following Terms of Use. Please review these terms carefully. If you do not agree to these terms, you should not use this app.';
   static String acceptanceOfTerms =
-      'By using the MedTherape app, you agree to these Terms of Use and our Privacy Policy. If you are using the app on behalf of an organization, you represent that you have the authority to bind that organization to these terms.';
+      'By using the SMC app, you agree to these Terms of Use and our Privacy Policy. If you are using the app on behalf of an organization, you represent that you have the authority to bind that organization to these terms.';
   static String accountRegistrationAndSecurity1 =
       '•  Account Creation: Accurate and complete information must be provided when creating your account, including your name, age, and mobile phone number and other infor as required.';
 
@@ -90,7 +90,7 @@ class AppString {
   static String useOfTheApp2 =
       '•  Prohibited Content: It is prohibited to post or upload content that violates the rights of others, contains threats, obscenity, or breaches of public morals or ethics, or violates local and international laws.';
   static String intellectualPropertyRights =
-      'All content and materials available on the app, including but not limited to text, graphics, logos, and software, are the property of MedTherape or its licensors and are protected by intellectual property laws.';
+      'All content and materials available on the app, including but not limited to text, graphics, logos, and software, are the property of SMC or its licensors and are protected by intellectual property laws.';
   static String intellectualPropertyRights2 =
       'You may not use, reproduce, or distribute any content from the app without our express written permission.';
   static String registrationAsServiceProvider1 =

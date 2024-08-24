@@ -118,6 +118,8 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(
                 builder: (context, state) {
+                  print('ssssssssssssss state: $state');
+
                   if (state is ChatsLoadingState) {
                     return messageListShimmer();
                   } else if (state is GotAllMessagesState) {
@@ -129,8 +131,10 @@ class _ChatPageState extends State<ChatPage> {
                     _scrollToBottom();
                     return listOfMessagesBody();
                   } else if (state is NewMessageReceivedState) {
-                    messages.add(state.messageModel);
-                    _scrollToBottom();
+                    if (!messages.contains(state.messageModel)) {
+                      messages.add(state.messageModel);
+                      _scrollToBottom();
+                    }
                     return listOfMessagesBody();
                   } else if (state is EarlierMessagesLoadedState) {
                     messages.clear();

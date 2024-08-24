@@ -33,10 +33,14 @@ class DoctorEmploymentDataSource {
 
     var response = await http.put(
       url,
-      body: {'status': '$status'},
+      body: {'status': "$status"},
       headers: headers,
     );
-
+    print('the response aprove doctor emp request data source:$status');
+    print(
+        'the response aprove doctor emp request data source:${response.statusCode}');
+    print(
+        'the response aprove doctor emp request data source:${response.body}');
     return response;
   }
 }

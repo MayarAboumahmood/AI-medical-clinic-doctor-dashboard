@@ -76,9 +76,11 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
           }
         },
         builder: (context, state) {
+          print('the state is: $state');
           if (state is AllTherapistLoadingState) {
             return mediumSizeCardShimmer();
-          } else if (state is AllTherapistLoadedState) {
+          } else if (state is AllTherapistLoadedState ||
+              state is AssignTherapistSuccessfullyState) {
             return allTherapistListBody(context);
           } else if (state is SearchOnAllTherapistState) {
             return allTherapistListBody(context);
@@ -99,23 +101,30 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
             ? getAllTherapistCubit.searchedAllTherapistModels
             : getAllTherapistCubit.getAllTherapistModels ?? [];
 
-    return getTherapistModels.isEmpty
-        ? SizedBox(
-            height: responsiveUtil.screenHeight * .7,
-            child: Center(
-              child: buildNoElementInPage(
-                _isSearching
-                    ? "No result!"
-                    : 'No Therapist in the platform yet.',
-                Icons.hourglass_empty_rounded,
+    return customRefreshIndicator(
+      () async {
+        getAllTherapistCubit.getAllTherapist(fromRefreshIndicator: true);
+      },
+      getTherapistModels.isEmpty
+          ? SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: responsiveUtil.screenHeight * .7,
+                    child: Center(
+                      child: buildNoElementInPage(
+                        _isSearching
+                            ? "No result!"
+                            : 'No Therapist in the platform yet.',
+                        Icons.hourglass_empty_rounded,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          )
-        : customRefreshIndicator(
-            () async {
-              getAllTherapistCubit.getAllTherapist(fromRefreshIndicator: true);
-            },
-            SingleChildScrollView(
+            )
+          : SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(children: [
                 ...List.generate(
@@ -127,6 +136,6 @@ class _GetAllTherapistPageState extends State<GetAllTherapistPage> {
                 ),
               ]),
             ),
-          );
+    );
   }
 }

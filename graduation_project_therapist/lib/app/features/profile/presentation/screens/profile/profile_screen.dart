@@ -115,12 +115,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                accountChoiceWidget(
-                    title: "Notification".tr(),
-                    icon: Icons.notifications_none_outlined,
-                    onTap: () {
-                      navigationService.navigateTo('/notification');
-                    }),
+                // accountChoiceWidget(
+                //     title: "Notification".tr(),
+                //     icon: Icons.notifications_none_outlined,
+                //     onTap: () {
+                //       navigationService.navigateTo('/notification');
+                //     }),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Align(

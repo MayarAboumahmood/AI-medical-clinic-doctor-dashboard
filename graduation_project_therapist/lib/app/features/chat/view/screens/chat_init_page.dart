@@ -31,8 +31,7 @@ class _ChatInitPageState extends State<ChatInitPage> {
     super.didChangeDependencies();
     if (firstTimeDidChange) {
       firstTimeDidChange = false;
-       patientID =
-          ModalRoute.of(context)!.settings.arguments as int? ?? -1;
+      patientID = ModalRoute.of(context)!.settings.arguments as int? ?? -1;
       String token = sharedPreferences!.getString('token') ?? '';
       debugPrint('patientID: $patientID');
       debugPrint('patientID: $token');

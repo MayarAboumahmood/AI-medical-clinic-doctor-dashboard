@@ -91,38 +91,33 @@ class _GetMyTherapistPageState extends State<GetMyTherapistPage> {
         //here i send -10 becase I don't need a quary argument with the request because here I want all the therapist I have/ and when I send the patient id than I want my therapist that I can assign this patient to them.
         getMyTherapistCubit.getMyTherapist(-10, fromRefreshIndicator: true);
       },
-      Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: getTherapistModels.isEmpty
-                  ? SizedBox(
-                      height: responsiveUtil.screenHeight * .7,
-                      child: Center(
-                        child: buildNoElementInPage(
-                          _isSearching
-                              ? "No result!"
-                              : "You don't have any therapist yet.",
-                          Icons.hourglass_empty_rounded,
-                        ),
+      SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            getTherapistModels.isEmpty
+                ? SizedBox(
+                    height: responsiveUtil.screenHeight * .7,
+                    child: Center(
+                      child: buildNoElementInPage(
+                        _isSearching
+                            ? "No result!"
+                            : "You don't have any therapist yet.",
+                        Icons.hourglass_empty_rounded,
                       ),
-                    )
-                  : SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(children: [
-                        ...List.generate(
-                            getTherapistModels.length,
-                            (index) => allTherapistCard(
-                                context, getTherapistModels[index], false)),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                      ]),
                     ),
-            ),
-          ),
-        ],
+                  )
+                : Column(children: [
+                    ...List.generate(
+                        getTherapistModels.length,
+                        (index) => allTherapistCard(
+                            context, getTherapistModels[index], false)),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ]),
+          ],
+        ),
       ),
     );
   }

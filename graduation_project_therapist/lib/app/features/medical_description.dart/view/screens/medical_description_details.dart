@@ -120,7 +120,7 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
               arguments: medicalDescriptionDetailsModel);
         },
         label: Text(
-          'update',
+          'update'.tr(),
           style: customTextStyle.bodyMedium,
         ));
   }
@@ -149,8 +149,8 @@ class _MedicalDescriptionDetailsState extends State<MedicalDescriptionDetails> {
         const SizedBox(height: 10),
         medicalRecordData.medicalDiagnosis.isNotEmpty
             ? medicalInfoTextColumn(
-                'differential Diagnosis: ${medicalRecordData.medicalDiagnosis.first.differentialDiagnosis}',
-                'treatment Plan: ${medicalRecordData.medicalDiagnosis.first.treatmentPlan}')
+                '${'differential Diagnosis:'.tr()} ${medicalRecordData.medicalDiagnosis.first.differentialDiagnosis}',
+                '${'treatment Plan:'.tr()} ${medicalRecordData.medicalDiagnosis.first.treatmentPlan}')
             : const SizedBox(),
         const SizedBox(
           height: 10,

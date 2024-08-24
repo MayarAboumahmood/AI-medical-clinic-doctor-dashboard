@@ -18,13 +18,10 @@ class FAQ extends StatefulWidget {
 
 class FAQState extends State<FAQ> {
   final List<FAQItem> faqItems = [
-    FAQItem(
-        "SmartTherapies_intro", "SmartTherapies_intro_description", 'General'),
-    FAQItem("SmartTherapies_functions", "SmartTherapies_functions_description",
-        'General'),
+    FAQItem("SMC_intro", "SMC_intro_description", 'General'),
+    FAQItem("SMC_functions", "SMC_functions_description", 'General'),
     FAQItem("register_login", "register_login_description", "Account"),
-    FAQItem("search_SmartTherapies", "search_SmartTherapies_description",
-        "Service"),
+    FAQItem("search_SMC", "search_SMC_description", "Service"),
     FAQItem("booking_process", "booking_process_description", "Service"),
     FAQItem(
         "manage_reservations", "manage_reservations_description", "Account"),

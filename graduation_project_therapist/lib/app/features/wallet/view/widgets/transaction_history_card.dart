@@ -27,17 +27,17 @@ Widget transactionHistoryCard(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Date: ${walletHistory.date}',
+            '${'Date:'.tr()} ${walletHistory.date}',
             style: customTextStyle.bodyMedium,
           ),
           const SizedBox(height: 8.0),
           Text(
-            'Amount: ${walletHistory.amount}',
+            '${'Amount:'.tr()} ${walletHistory.amount}',
             style: customTextStyle.bodyMedium,
           ),
           const SizedBox(height: 8.0),
           Text(
-            'Status: ${walletHistory.status}',
+            '${'Status:'.tr()} ${walletHistory.status}',
             style: customTextStyle.bodyMedium,
           ),
           const SizedBox(height: 8.0),
@@ -56,8 +56,7 @@ Widget transactionHistoryCard(
                         textStyle: customTextStyle.bodyMedium,
                         width: responsiveUtil.screenWidth * .65,
                         walletHistory.withdrawSpecialistTransaction!
-                                .withdrawSpecialistApprovement!.description +
-                            'sdfsdfslkjdflsdlkjfskldjfkdljsdfsdfslkjdflsdlkjfskldjfkdljsdfsdfslkjdflsdlkjfskldjfkdlj',
+                            .withdrawSpecialistApprovement!.description,
                         backGroundColor: Colors.transparent),
                   ],
                 )
@@ -71,7 +70,7 @@ Widget transactionHistoryCard(
               children: [
                 const SizedBox(height: 8.0),
                 Text(
-                  'Transaction Proof:',
+                  'Transaction Proof:'.tr(),
                   style: customTextStyle.bodyMedium,
                 ),
                 const SizedBox(height: 8.0),

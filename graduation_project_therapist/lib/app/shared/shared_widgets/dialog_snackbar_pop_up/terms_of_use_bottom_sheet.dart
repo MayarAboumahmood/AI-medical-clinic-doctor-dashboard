@@ -25,7 +25,7 @@ Future<dynamic> termOfUseBottomSheet(BuildContext context) {
                   height: 20,
                 ),
                 Text(
-                  'SmartTherapies" App Usage Policy'.tr(),
+                  'SMC" App Usage Policy'.tr(),
                   style: customTextStyle.bodyLarge.copyWith(
                     color: customColors.text2,
                     fontSize: 20,

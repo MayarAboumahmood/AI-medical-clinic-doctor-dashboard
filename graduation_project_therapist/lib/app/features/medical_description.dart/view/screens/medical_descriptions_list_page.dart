@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project_therapist_dashboard/app/core/constants/app_routs/app_routs.dart';
@@ -52,7 +53,7 @@ class _MedicalDescriptionsListState extends State<MedicalDescriptionsList> {
                 navigationService.navigateTo(medicalDescriptionPage);
               },
               label: Text(
-                'Add',
+                'Add'.tr(),
                 style: customTextStyle.bodyMedium,
               )),
         ),

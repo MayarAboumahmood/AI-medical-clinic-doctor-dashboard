@@ -54,37 +54,39 @@ class _HomePageScreenState extends State<HomePageScreen> {
         body: BlocBuilder<HomePageBloc, HomePageState>(
           builder: (context, state) {
             return Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 6,
-                  ),
-                  Image.asset(
-                    'assets/images/SMHC icon.png',
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 6,
-                  ),
-                  Text(
-                    '${'Welcome to the platform'.tr()}',
-                    style: customTextStyle.headlineMedium,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    '${isDoctor ? 'Doctor'.tr() : 'Therapist'.tr()}: ${userData?.fullName}',
-                    style: customTextStyle.headlineMedium,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    userStatus.name.tr(),
-                    style: customTextStyle.bodyMedium,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 6,
+                    ),
+                    Image.asset(
+                      'assets/images/SMHC icon.png',
+                      height: 200,
+                    ),
+                    // SizedBox(
+                    //   height: MediaQuery.of(context).size.height / 6,
+                    // ),
+                    Text(
+                      '${'Welcome to the platform'.tr()}',
+                      style: customTextStyle.headlineMedium,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '${isDoctor ? 'Doctor'.tr() : 'Therapist'.tr()}: ${userData?.fullName}',
+                      style: customTextStyle.headlineMedium,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      userStatus.name.tr(),
+                      style: customTextStyle.bodyMedium,
+                    ),
+                  ],
+                ),
               ),
             );
           },

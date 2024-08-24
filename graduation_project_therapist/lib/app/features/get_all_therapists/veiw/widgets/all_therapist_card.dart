@@ -14,6 +14,8 @@ Widget allTherapistCard(BuildContext context,
     GetTherapistModel getTherapistModel, bool isGetAllTherapist) {
   GetAllTherapistCubit getAllTherapistCubit =
       context.read<GetAllTherapistCubit>();
+  print(
+      'ssssssssssssssssssssssssssssssssssss: employmentRequests: ${getTherapistModel.employmentRequests}');
   return Card(
     color: customColors.primaryBackGround,
     elevation: 4,

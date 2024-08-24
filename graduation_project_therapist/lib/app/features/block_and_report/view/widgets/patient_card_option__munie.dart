@@ -75,7 +75,7 @@ Widget buildAppbarOptionsMenu(BuildContext context, int patientID,
           color: customColors.primaryText,
         )),
     onSelected: (value) async {
-      if (value == 'Report') {
+      if (value == 'Report' && isDoctor) {
         await showBottomSheetWidget(
             context,
             ReportPatientBottomSheet(
@@ -88,16 +88,25 @@ Widget buildAppbarOptionsMenu(BuildContext context, int patientID,
       }
     },
     itemBuilder: (BuildContext context) {
-      return [
-        PopupMenuItem<String>(
-          value: 'profile',
-          child: patientOptionText('View user profile'),
-        ),
-        PopupMenuItem<String>(
-          value: 'Report',
-          child: patientOptionText('Report this medical record'),
-        ),
-      ];
+      if (isDoctor) {
+        return [
+          PopupMenuItem<String>(
+            value: 'profile',
+            child: patientOptionText('View user profile'),
+          ),
+          PopupMenuItem<String>(
+            value: 'Report',
+            child: patientOptionText('Report this medical record'),
+          ),
+        ];
+      } else {
+        return [
+          PopupMenuItem<String>(
+            value: 'profile',
+            child: patientOptionText('View user profile'),
+          ),
+        ];
+      }
     },
   );
 }
